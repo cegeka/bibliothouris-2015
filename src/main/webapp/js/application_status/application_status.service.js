@@ -14,6 +14,11 @@
             return $http.get("/api/status")
                 .then(function(response){
                     return response.data;
+                }, function(){
+                    return $http.get("/bibliothouris/api/status")
+                        .then(function(response){
+                            return response.data;
+                        });
                 });
         }
     }
