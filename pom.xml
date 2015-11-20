@@ -286,6 +286,6 @@
 
         <db.url>jdbc:oracle:thin:@localhost:1521:XE</db.url>
         <db.user>system</db.user>
-        <db.password>razer</db.password>
+        <db.password>system</db.password>
     </properties>
 </project>
