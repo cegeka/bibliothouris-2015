@@ -1,9 +1,14 @@
-<div class="well span9">
-
-{{vm.status.environment}}
-
-
-    <hr>
-
-
+<div class="jumbotron text-center">
+    <h1>Bibliothouris</h1>
+    <p>- Application status page -</p>
 </div>
+
+<div class="panel panel-default">
+    <div class="panel-heading  has-error">
+        <h3 class="panel-title">Application environment details</h3>
+    </div>
+    <div class="panel-body">
+        <b>Environment: </b> {{vm.status.environment}}
+    </div>
+</div>
+
