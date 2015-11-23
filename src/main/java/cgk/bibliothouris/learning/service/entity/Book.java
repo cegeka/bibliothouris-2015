@@ -15,7 +15,7 @@ public class Book {
     @Column(name = "TITLE")
     private String title;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "BOOK_AUTHOR",
             joinColumns = @JoinColumn(name = "BOOK_ID"),
