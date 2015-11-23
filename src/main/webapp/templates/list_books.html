@@ -1,4 +1,21 @@
-<p>
-    List all books
-</p>
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">All books</div>
+
+    <!-- Table -->
+    <table class="table">
+        <tr>
+            <th>ISBN</th>
+            <th> Title </th>
+            <th> Author`s first name </th>
+            <th> Author`s last name </th>
+        </tr>
+        <tr ng-repeat = "book in books">
+            <td>{{book.id}}</td>
+            <td>{{book.title}}</td>
+            <td>{{book.authors}}</td>
+        </tr>
+
+    </table>
+</div>
 
