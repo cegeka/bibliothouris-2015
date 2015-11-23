@@ -3,6 +3,7 @@ package cgk.bibliothouris.learning.service.entity;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "BOOK_USER")
 public class User {
 
     @Id
