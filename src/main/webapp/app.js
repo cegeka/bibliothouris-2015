@@ -10,6 +10,14 @@
                     controller: "ApplicationStatusController",
                     controllerAs: "vm"
                 })
+                .when("/books/add", {
+                    templateUrl: "templates/add_book.html",
+                    controller: "AddBookCtrl"
+                })
+                .when("/books", {
+                    templateUrl: "templates/list_books.html",
+                    controller: "ListBooksCtrl"
+                })
                 .otherwise({redirectTo:"/status"});
         });
 })();
