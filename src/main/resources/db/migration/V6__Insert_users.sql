@@ -1,0 +1,1 @@
+INSERT INTO BOOK_USER VALUES(BOOK_USER_SEQUENCE.nextVal, 'admin', 'admin');
