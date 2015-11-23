@@ -1,6 +1,7 @@
 package cgk.bibliothouris.learning.service.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -11,6 +12,9 @@ public class Book {
     @SequenceGenerator(name = "book_sequence", sequenceName = "BOOK_SEQUENCE", allocationSize = 1)
     @Column(name = "BOOK_ID")
     private Integer id;
+
+    @Column(name = "ISBN")
+    private String isbn;
 
     @Column(name = "TITLE")
     private String title;
@@ -31,6 +35,14 @@ public class Book {
         this.id = id;
     }
 
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -45,5 +57,37 @@ public class Book {
 
     public void setAuthors(List<Author> listOfAuthors) {
         this.authors = listOfAuthors;
+    }
+
+    public static class BookBuilder {
+        private Book book;
+
+        private BookBuilder() {
+            book = new Book();
+            book.setAuthors(new ArrayList<>());
+        }
+
+        public BookBuilder withIsbn(String isbn) {
+            book.isbn = isbn;
+            return this;
+        }
+
+        public BookBuilder withTitle(String title) {
+            book.title = title;
+            return this;
+        }
+
+        public BookBuilder withAuthors(List<Author> authors) {
+            book.authors = authors;
+            return this;
+        }
+
+        public static BookBuilder book() {
+            return new BookBuilder();
+        }
+
+        public Book build() {
+            return book;
+        }
     }
 }

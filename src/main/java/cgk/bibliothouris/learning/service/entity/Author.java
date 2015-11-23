@@ -40,4 +40,30 @@ public class Author {
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
+
+    public static class AuthorBuilder {
+        private Author author;
+
+        private AuthorBuilder() {
+            author = new Author();
+        }
+
+        public AuthorBuilder withLastName(String lastName) {
+            author.lastName = lastName;
+            return this;
+        }
+
+        public AuthorBuilder withFirstName(String firstName) {
+            author.firstName = firstName;
+            return this;
+        }
+
+        public static AuthorBuilder author() {
+            return new AuthorBuilder();
+        }
+
+        public Author build() {
+            return author;
+        }
+    }
 }
