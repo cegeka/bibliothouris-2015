@@ -12,6 +12,7 @@
         <profile>
             <id>dev</id>
             <activation>
+                <activeByDefault>true</activeByDefault>
                 <property>
                     <name>build.profile.id</name>
                     <value>dev</value>
@@ -24,7 +25,7 @@
         <profile>
             <id>acc</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+
                 <property>
                     <name>build.profile.id</name>
                     <value>acc</value>
