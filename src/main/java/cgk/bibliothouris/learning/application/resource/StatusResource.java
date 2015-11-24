@@ -1,4 +1,4 @@
-package cgk.bibliothouris.learning.application;
+package cgk.bibliothouris.learning.application.resource;
 
 import cgk.bibliothouris.learning.application.transferobject.Status;
 import org.springframework.beans.factory.annotation.Value;

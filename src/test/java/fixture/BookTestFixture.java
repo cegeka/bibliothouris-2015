@@ -1,4 +1,4 @@
-package integration;
+package fixture;
 
 import cgk.bibliothouris.learning.service.entity.Author;
 import cgk.bibliothouris.learning.service.entity.Book;
