@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.HashSet;
 import java.util.List;
@@ -20,16 +19,16 @@ public class BookRepositoryJPA implements BookRepository {
 
     @Override
     public Book createBook(Book book) {
-        Set<Author> authors = book.getAuthors();
         Set<Author> persistedAuthors = new HashSet<>();
 
-        for (Author author : authors) {
-            TypedQuery<Author> query = entityManager.createQuery("select a from Author a where a.lastName = :last_name and a.firstName = :first_name", Author.class);
-            query.setParameter("last_name", author.getLastName());
-            query.setParameter("first_name", author.getFirstName());
-            List<Author> aus = query.getResultList();
-            if (!aus.isEmpty()) {
-                persistedAuthors.add(aus.get(0));
+        for (Author author : book.getAuthors()) {
+            TypedQuery<Author> query = entityManager.createNamedQuery(Author.FIND_AUHTORS_BY_FIRSTNAME_AND_LASTNAME, Author.class);
+            query.setParameter("firstName", author.getFirstName());
+            query.setParameter("lastName", author.getLastName());
+            List<Author> authors = query.getResultList();
+
+            if (!authors.isEmpty()) {
+                persistedAuthors.add(authors.get(0));
             } else {
                 entityManager.persist(author);
                 persistedAuthors.add(author);
@@ -37,7 +36,6 @@ public class BookRepositoryJPA implements BookRepository {
         }
 
         book.setAuthors(persistedAuthors);
-
         entityManager.persist(book);
 
         return book;

@@ -1,6 +1,11 @@
 package cgk.bibliothouris.learning.service.entity;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -15,6 +20,7 @@ import java.util.Set;
 public class Book {
 
     public static final String LIST_ALL_BOOKS = "LIST_ALL_BOOKS";
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_sequence")
     @SequenceGenerator(name = "book_sequence", sequenceName = "BOOK_SEQUENCE", allocationSize = 1)
@@ -22,9 +28,13 @@ public class Book {
     private Integer id;
 
     @Column(name = "ISBN")
+    @NotBlank(message = "Book ISBN is empty or is missing")
+    @Size(max = 32, message = "Book ISBN is too long")
     private String isbn;
 
     @Column(name = "TITLE")
+    @NotBlank(message = "Book title is empty or is missing")
+    @Size(max = 255, message = "Book title is too long")
     private String title;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -32,6 +42,7 @@ public class Book {
             name = "BOOK_AUTHOR",
             joinColumns = @JoinColumn(name = "BOOK_ID"),
             inverseJoinColumns = @JoinColumn(name = "AUTHOR_ID"))
+    @Valid
     private Set<Author> authors;
 
     public Integer getId() {

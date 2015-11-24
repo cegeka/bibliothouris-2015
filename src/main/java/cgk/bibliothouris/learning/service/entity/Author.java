@@ -1,11 +1,20 @@
 package cgk.bibliothouris.learning.service.entity;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @XmlRootElement
+@NamedQueries({
+        @NamedQuery(name = Author.FIND_AUHTORS_BY_FIRSTNAME_AND_LASTNAME,
+                    query = "SELECT a FROM Author a WHERE a.firstName = :firstName AND a.lastName = :lastName")
+})
 public class Author {
+
+    public static final String FIND_AUHTORS_BY_FIRSTNAME_AND_LASTNAME = "FIND_AUHTORS_BY_FIRSTNAME_AND_LASTNAME";
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "author_sequence")
@@ -14,9 +23,12 @@ public class Author {
     private Integer id;
 
     @Column(name = "LAST_NAME")
+    @NotBlank(message = "Author last name is empty or is missing")
+    @Size(max = 255, message = "Author last name is too long")
     private String lastName;
 
     @Column(name = "FIRST_NAME")
+    @Size(max = 255, message = "Author first name is too long")
     private String firstName;
 
     public Integer getId() {

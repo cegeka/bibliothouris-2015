@@ -35,15 +35,27 @@ public class BookTestFixture {
 
     public static Book createBookWithOneAuthor() {
         return Book.BookBuilder.book().withTitle("Clean Code")
-                .withAuthors(createOneAuthor())
-                .withIsbn("978-0-13-235088-4")
-                .build();
+                                        .withAuthors(createOneAuthor())
+                                        .withIsbn("978-0-13-235088-4")
+                                        .build();
     }
 
     public static Book createBookWithFourAuthors() {
         return Book.BookBuilder.book().withTitle("Design Patterns")
-                .withAuthors(createFourAuthors())
-                .withIsbn("978-0-201-63361-0")
-                .build();
+                                        .withAuthors(createFourAuthors())
+                                        .withIsbn("978-0-201-63361-0")
+                                        .build();
+        }
+
+    public static Book createBookWithoutISBN() {
+        return Book.BookBuilder.book().withTitle("Clean Code")
+                                        .withAuthors(createOneAuthor())
+                                        .build();
+    }
+
+    public static Book createBookWithoutTitle() {
+        return Book.BookBuilder.book().withIsbn("978-0-201-63361-0")
+                                        .withAuthors(createOneAuthor())
+                                        .build();
     }
 }
