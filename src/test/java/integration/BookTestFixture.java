@@ -3,27 +3,27 @@ package integration;
 import cgk.bibliothouris.learning.service.entity.Author;
 import cgk.bibliothouris.learning.service.entity.Book;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class BookTestFixture {
 
-    public static List<Author> createOneAuthor() {
+    public static Set<Author> createOneAuthor() {
         Author author = Author.AuthorBuilder.author().withFirstName("Robert C.").withLastName("Martin").build();
 
-        List<Author> authors = new ArrayList<>();
+        Set<Author> authors = new HashSet<>();
         authors.add(author);
 
         return authors;
     }
 
-    public static List<Author> createFourAuthors() {
+    public static Set<Author> createFourAuthors() {
         Author author1 = Author.AuthorBuilder.author().withFirstName("Erich").withLastName("Gamma").build();
         Author author2 = Author.AuthorBuilder.author().withFirstName("Richard").withLastName("Helm").build();
         Author author3 = Author.AuthorBuilder.author().withFirstName("John").withLastName("Vlissides").build();
         Author author4 = Author.AuthorBuilder.author().withFirstName("Ralph").withLastName("Johnson").build();
 
-        List<Author> authors = new ArrayList<>();
+        Set<Author> authors = new HashSet<>();
         authors.add(author1);
         authors.add(author2);
         authors.add(author3);
