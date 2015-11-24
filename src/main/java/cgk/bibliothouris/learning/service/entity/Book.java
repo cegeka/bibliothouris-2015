@@ -6,11 +6,14 @@ import java.util.List;
 
 @Entity
 @NamedQueries({
-        @NamedQuery(name = Book.LIST_ALL_BOOKS, query = "SELECT b FROM Book b")
+        @NamedQuery(name = Book.LIST_ALL_BOOKS, query = "SELECT b FROM Book b"),
+        @NamedQuery(name = Book.DELETE_ALL_BOOKS, query = "DELETE FROM Book b")
 })
 public class Book {
 
     public static final String LIST_ALL_BOOKS = "LIST_ALL_BOOKS";
+    public static final String DELETE_ALL_BOOKS = "DELETE_ALL_BOOKS";
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_sequence")
     @SequenceGenerator(name = "book_sequence", sequenceName = "BOOK_SEQUENCE", allocationSize = 1)
