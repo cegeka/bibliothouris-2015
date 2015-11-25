@@ -1,9 +1,7 @@
 (function() {
-    console.log("app.js");
-
     angular
         .module("Bibliothouris", ["ngRoute"])
-        .config(function($routeProvider){
+        .config(function($routeProvider, $httpProvider){
             $routeProvider
                 .when("/status", {
                     templateUrl: "templates/application_status.html",
@@ -11,17 +9,15 @@
                     controllerAs: "vm"
                 })
                 .when("/books/add", {
-                    templateUrl: "templates/add_book.html",
-                    controller: "AddBookCtrl"
+                    templateUrl: "templates/add_book.html"
                 })
                 .when("/books", {
                     templateUrl: "templates/list_books.html",
                     controller: "ListBooksCtrl"
                 })
-                .when("/login", {
-                    templateUrl: "templates/login.html",
-                    controller: "LoginCtrl"
-                })
                 .otherwise({redirectTo:"/status"});
+
+            $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
         });
+
 })();
