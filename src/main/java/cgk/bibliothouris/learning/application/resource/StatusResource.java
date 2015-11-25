@@ -13,7 +13,7 @@ import javax.ws.rs.core.Response;
 
 @Component("statusResource")
 @Path("/status")
-@PropertySource("classpath:properties/${spring.profiles.active}.properties")
+@PropertySource("classpath:properties/${spring.profiles.active:dev}.properties")
 public class StatusResource {
 
     @Value("${env.name}")
@@ -22,8 +22,9 @@ public class StatusResource {
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_PLAIN})
     public Response getStatus() {
-        System.out.println("-- ENV -" + activeProfile +  "- LOADED -- ");
+        System.out.println("-- ENV -" + activeProfile + "- LOADED -- ");
         return Response.status(Response.Status.OK).entity(new Status(activeProfile)).build();
     }
+
 
 }

@@ -12,6 +12,7 @@
         <profile>
             <id>dev</id>
             <activation>
+                <activeByDefault>true</activeByDefault>
                 <property>
                     <name>build.profile.id</name>
                     <value>dev</value>
@@ -24,6 +25,7 @@
         <profile>
             <id>acc</id>
             <activation>
+
                 <property>
                     <name>build.profile.id</name>
                     <value>acc</value>
@@ -169,6 +171,13 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-framework-bom</artifactId>
+                <version>4.2.2.RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <dependencies>
@@ -211,6 +220,21 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-aspects</artifactId>
             <version>${spring-beans.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring.security.version}</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.ext</groupId>
@@ -322,6 +346,7 @@
         <slf4j.version>1.6.4</slf4j.version>
         <logback.version>1.0.13</logback.version>
         <spring-beans.version>4.2.2.RELEASE</spring-beans.version>
+        <spring.security.version>4.0.3.RELEASE</spring.security.version>
         <jersey.version>2.22.1</jersey.version>
         <hibernate.version>5.0.3.Final</hibernate.version>
 

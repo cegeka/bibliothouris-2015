@@ -18,6 +18,10 @@
                     templateUrl: "templates/list_books.html",
                     controller: "ListBooksCtrl"
                 })
+                .when("/login", {
+                    templateUrl: "templates/login.html",
+                    controller: "LoginCtrl"
+                })
                 .otherwise({redirectTo:"/status"});
         });
 })();
