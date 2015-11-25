@@ -17,12 +17,16 @@ import org.springframework.web.filter.RequestContextFilter;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import javax.ws.rs.core.Application;
+import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.core.GenericType;
+import java.util.List;
 
 public class ITBookResource extends JerseyTest {
 
     private BookServiceClient client;
     private Book bookWithOneAuthor;
     private static String PATH = "/books";
+
 
     @Override
     protected Application configure() {
@@ -44,6 +48,7 @@ public class ITBookResource extends JerseyTest {
     @After
     public void tearDown() {
         // TODO: Leave the DB clean after the tests execution
+
     }
 
     @Test
@@ -51,5 +56,14 @@ public class ITBookResource extends JerseyTest {
         Book newBook = client.post(PATH, bookWithOneAuthor).readEntity(Book.class);
 
         assertThat(newBook.getId()).isNotNull();
+    }
+
+    @Test
+    public void givenAListOfBooks_GET_returnsTheListOfBooks() {
+        Book newBook = client.post(PATH, bookWithOneAuthor).readEntity(Book.class);
+
+        List<Book> returnedList = client.getBooks(PATH).readEntity(new GenericType<List<Book>>() {});
+
+        assertThat(returnedList).contains(newBook);
     }
 }

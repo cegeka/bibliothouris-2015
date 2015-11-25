@@ -1,6 +1,6 @@
 package unit;
 
-import cgk.bibliothouris.learning.application.BookResource;
+import cgk.bibliothouris.learning.application.resource.BookResource;
 import cgk.bibliothouris.learning.service.BookService;
 import cgk.bibliothouris.learning.service.entity.Book;
 import org.junit.Test;

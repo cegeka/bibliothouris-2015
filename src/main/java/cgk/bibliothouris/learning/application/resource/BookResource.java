@@ -7,12 +7,10 @@ import cgk.bibliothouris.learning.service.entity.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.net.URI;
+import java.util.List;
 
 @Path("/books")
 @Component
@@ -23,6 +21,16 @@ public class BookResource {
 
     @Context
     private UriInfo uriInfo;
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllBooks(){
+        List<Book> books = bookService.findAllBooks();
+        if(books.size() == 0){
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok().entity(new GenericEntity<List<Book>>(books){}).build();
+    }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)

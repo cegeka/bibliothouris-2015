@@ -38,4 +38,8 @@ public class BookService {
         if (!bookConstraintViolations.isEmpty())
             throw new ValidationException(bookConstraintViolations.iterator().next().getMessage());
     }
+
+    public void deleteAllBooks(){
+        bookRepository.deleteAllBooks();
+    }
 }
