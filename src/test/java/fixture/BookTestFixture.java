@@ -32,6 +32,15 @@ public class BookTestFixture {
         return authors;
     }
 
+    public static Set<Author> createOneAuthorWithoutLastName() {
+        Author author = Author.AuthorBuilder.author().withFirstName("Robert C.").build();
+
+        Set<Author> authors = new HashSet<>();
+        authors.add(author);
+
+        return authors;
+    }
+
 
     public static Book createBookWithOneAuthor() {
         return Book.BookBuilder.book().withTitle("Clean Code")
@@ -57,5 +66,11 @@ public class BookTestFixture {
         return Book.BookBuilder.book().withIsbn("978-0-201-63361-0")
                                         .withAuthors(createOneAuthor())
                                         .build();
+    }
+
+    public static Book createBookWithOneAuthorWithoutLastName() {
+        return Book.BookBuilder.book().withIsbn("978-0-201-63361-0")
+                .withAuthors(createOneAuthorWithoutLastName())
+                .build();
     }
 }

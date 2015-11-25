@@ -36,7 +36,7 @@ public class BookServiceTest {
     }
 
     @Test
-    public void givenANewValidBook_createBook_returnsTheNewBook() {
+    public void givenAValidBook_createBook_returnsTheNewBook() {
         Mockito.when(mockRepository.createBook(bookWithOneAuthor)).thenReturn(bookWithOneAuthor);
 
         Book newBook = service.createBook(bookWithOneAuthor);
@@ -60,10 +60,7 @@ public class BookServiceTest {
 
     @Test(expected = ValidationException.class)
     public void givenABookWithOneAuthorWithoutLastName_createBook_throwsValidationException() {
-        Author authorWithoutLastName = Author.AuthorBuilder.author().withFirstName("Robert C.").build();
-        Set<Author> authors = new HashSet<>();
-        authors.add(authorWithoutLastName);
-        Book book = Book.BookBuilder.book().withTitle("Clean Code").withIsbn("978-0-13-235088-4").withAuthors(authors).build();
+        Book book = BookTestFixture.createBookWithOneAuthorWithoutLastName();
 
         service.createBook(book);
     }
