@@ -12,6 +12,7 @@
         <profile>
             <id>dev</id>
             <activation>
+                <activeByDefault>true</activeByDefault>
                 <property>
                     <name>build.profile.id</name>
                     <value>dev</value>
@@ -24,6 +25,7 @@
         <profile>
             <id>acc</id>
             <activation>
+
                 <property>
                     <name>build.profile.id</name>
                     <value>acc</value>
@@ -87,6 +89,38 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.15</version>
+                <executions>
+                    <!--
+                        Ensures that both integration-test and verify goals of the Failsafe Maven
+                        plugin are executed.
+                    -->
+                    <execution>
+                        <id>integration-tests</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                        <configuration>
+                            <!-- Sets the VM argument line used when integration tests are run. -->
+                            <argLine>${failsafeArgLine}</argLine>
+                            <!--
+                                Skips integration tests if the value of skip.integration.tests property
+                                is true
+                            -->
+                            <skipTests>${skip.integration.tests}</skipTests>
+                            <!-- <parallel>methods</parallel>
+                             <threadCount>8</threadCount>-->
+                            <!-- <excludes>
+                                 <exclude>**/integration/**/IT*.java</exclude>
+                             </excludes>-->
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.6</version>
                 <configuration>
@@ -137,6 +171,13 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-framework-bom</artifactId>
+                <version>4.2.2.RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <dependencies>
@@ -179,6 +220,21 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-aspects</artifactId>
             <version>${spring-beans.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring.security.version}</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.ext</groupId>
@@ -272,6 +328,17 @@
             <artifactId>hibernate-java8</artifactId>
             <version>${hibernate.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.glassfish.web</groupId>
+            <artifactId>javax.el</artifactId>
+            <version>2.2.4</version>
+        </dependency>
     </dependencies>
     <properties>
         <build.profile.id>acc</build.profile.id>
@@ -279,6 +346,7 @@
         <slf4j.version>1.6.4</slf4j.version>
         <logback.version>1.0.13</logback.version>
         <spring-beans.version>4.2.2.RELEASE</spring-beans.version>
+        <spring.security.version>4.0.3.RELEASE</spring.security.version>
         <jersey.version>2.22.1</jersey.version>
         <hibernate.version>5.0.3.Final</hibernate.version>
 

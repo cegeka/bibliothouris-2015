@@ -22,7 +22,7 @@ import java.util.Properties;
 
 @EnableTransactionManagement
 @ComponentScan({"cgk.bibliothouris.learning"})
-@PropertySource("classpath:properties/${spring.profiles.active}.properties")
+@PropertySource("classpath:properties/${spring.profiles.active:dev}.properties")
 @Configuration
 public class JpaConfig {
 
