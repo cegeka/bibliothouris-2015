@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html ng-app="Bibliothouris">
 <head lang="en">
-
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,6 +9,7 @@
 
     <link rel="stylesheet" href="../components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="../css/footer.css">
+    <link rel="stylesheet" href="../css/template.css">
 </head>
 
 <body >
@@ -26,6 +26,7 @@
             </button>
             <a class="navbar-brand" href="#/home">Home</a>
         </div>
+
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
@@ -56,9 +57,16 @@
 
 <script src="../components/angular/angular.js"></script>
 <script src="../components/angular-route/angular-route.js"></script>
+<script src="../components/jquery/jquery.js"></script>
+<script src="../components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="../components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+
 <script src="app.js"></script>
 <script src="js/application_status/application_status.controller.js"></script>
 <script src="js/application_status/application_status.service.js"></script>
+<script src="js/add_book/add_book.controller.js"></script>
 <script src="js/list_books/ListBooksCtrl.js"></script>
+<script src="js/service/rest_api.service.js"></script>
+
 </body>
 </html>

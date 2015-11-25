@@ -1,4 +1,59 @@
-<p>
-    Add book
-</p>
+<form class="form-horizontal" ng-submit="vm.submitForm()">
+    <div class="form-group">
+        <label for="title" class="col-sm-2 control-label required">Title</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="title" placeholder="Title" ng-model="vm.book.title">
+        </div>
+    </div>
+
+    <div class="form-group" ng-repeat="author in vm.book.authors track by $index" ng-init="inputFieldName = $index">
+        <label for="authors" class="col-sm-2 control-label required" ng-show="$index == 0">Authors</label>
+        <div class="col-sm-10" ng-class="{'col-sm-push-2':$index!=0}">
+            <div class="row">
+                <div class="col-sm-11" id="authors">
+                    <div class="row">
+                        <div class="col-sm-6">
+                                <input type="text" class="form-control" placeholder="First name {{$index}}" ng-model="vm.book.authors[$index].firstName">
+                        </div>
+                        <div class="col-sm-6">
+                                <input type="text" class="form-control" placeholder="Last name {{$index}}" ng-model="vm.book.authors[$index].lastName">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    <button class="btn btn-default full-width" type="button" ng-click="vm.deleteAuthor($index)">
+                        <i class="glyphicon glyphicon-trash"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-11 col-sm-1">
+            <button type="button" class="btn btn-default full-width" ng-click="vm.addAuthor()">
+                <i class="glyphicon glyphicon-plus"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="isbn" class="col-sm-2 control-label required">ISBN</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="isbn" placeholder="ISBN" ng-model="vm.book.isbn">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-6">
+            <div class="btn-group btn-group-justified">
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-default">Save</button>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default" ng-click="vm.resetForm()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 

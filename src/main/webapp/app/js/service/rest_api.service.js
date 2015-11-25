@@ -10,7 +10,7 @@
 
         return service;
 
-        function addBook() {
+        function addBook(book) {
             return $http.post("/api/books", book)
                 .then(function(response){
                     return response.data;

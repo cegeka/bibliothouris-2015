@@ -18,7 +18,8 @@
     "bootstrap": "3.3.0",
     "angular-route": "~1.4.7",
     "angular-resource": "~1.4.7",
-    "ui-bootstrap": "~0.14.3"
+    "ui-bootstrap": "~0.14.3",
+    "angular-bootstrap": "~0.14.3"
   },
   "install" : {
     "path"  : {

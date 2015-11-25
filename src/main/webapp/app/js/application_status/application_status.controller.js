@@ -1,19 +1,21 @@
 (function() {
     angular
         .module("Bibliothouris")
-        .controller("ApplicationStatusController", ApplicationStatusController);
+        .controller("ApplicationStatusCtrl", ApplicationStatusCtrl);
 
-    function ApplicationStatusController(applicationStatusService) {
+    function ApplicationStatusCtrl(applicationStatusService) {
         var vm = this;
+
         vm.status = {};
+
         activate();
+
         function activate() {
             applicationStatusService
                 .getStatus()
                 .then(function(data){
                     vm.status = data;
                 });
-        };
-        console.log("controller");
+        }
     }
 })();
