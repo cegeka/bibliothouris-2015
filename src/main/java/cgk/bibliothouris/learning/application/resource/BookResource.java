@@ -21,14 +21,13 @@ public class BookResource {
     @Autowired
     private BookService bookService;
 
-    public void setBookService(BookService bookService) {
-        this.bookService = bookService;
-    }
+    @Context
+    private UriInfo uriInfo;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createBook(Book book, @Context UriInfo uriInfo) {
+    public Response createBook(Book book) {
         try {
             Book newBook = bookService.createBook(book);
             String uri = uriInfo.getAbsolutePath() + "/" + newBook.getId();

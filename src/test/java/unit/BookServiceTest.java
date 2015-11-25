@@ -2,11 +2,9 @@ package unit;
 
 import cgk.bibliothouris.learning.repository.BookRepository;
 import cgk.bibliothouris.learning.service.BookService;
-import cgk.bibliothouris.learning.service.entity.Author;
 import cgk.bibliothouris.learning.service.entity.Book;
 import cgk.bibliothouris.learning.service.exception.ValidationException;
 import fixture.BookTestFixture;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -14,10 +12,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BookServiceTest {
@@ -28,20 +23,14 @@ public class BookServiceTest {
     @Mock
     private BookRepository mockRepository;
 
-    private Book bookWithOneAuthor;
-
-    @Before
-    public void setUp() {
-        bookWithOneAuthor = BookTestFixture.createBookWithOneAuthor();
-    }
-
     @Test
     public void givenAValidBook_createBook_returnsTheNewBook() {
-        Mockito.when(mockRepository.createBook(bookWithOneAuthor)).thenReturn(bookWithOneAuthor);
+        Book book = BookTestFixture.createBookWithOneAuthor();
+        Mockito.when(mockRepository.createBook(book)).thenReturn(book);
 
-        Book newBook = service.createBook(bookWithOneAuthor);
+        Book newBook = service.createBook(book);
 
-        assertThat(newBook).isEqualTo(bookWithOneAuthor);
+        assertThat(newBook).isEqualTo(book);
     }
 
     @Test(expected = ValidationException.class)
