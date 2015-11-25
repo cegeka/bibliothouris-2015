@@ -1,19 +1,17 @@
 <div class="panel panel-default">
-    <!-- Default panel contents -->
-    <div class="panel-heading">All books</div>
-
-    <!-- Table -->
+    <div class="panel-heading"><strong>All books</strong></div>
     <table class="table">
         <tr>
             <th>ISBN</th>
-            <th> Title </th>
-            <th> Author`s first name </th>
-            <th> Author`s last name </th>
+            <th>Title</th>
+            <th>Authors` names</th>
         </tr>
         <tr ng-repeat = "book in books">
-            <td>{{book.id}}</td>
+            <td>{{book.isbn}}</td>
             <td>{{book.title}}</td>
-            <td>{{book.authors}}</td>
+            <td >
+                <span ng-repeat="author in book.authors"> {{author.firstName}} {{author.lastName}} {{$last ? '' : ', '}}</span>
+            </td>
         </tr>
 
     </table>

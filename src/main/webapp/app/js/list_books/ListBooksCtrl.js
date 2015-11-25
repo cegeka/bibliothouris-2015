@@ -1,7 +1,7 @@
 var booksApp = angular.module("Bibliothouris");
 booksApp.controller("ListBooksCtrl", ListBooksCtrl);
-function ListBooksCtrl($scope){
-    $scope.books = [{
+function ListBooksCtrl($scope, restService){
+   /* $scope.books = [{
             id: "123",
             title: "Clean Code",
             authors: "Robert C. Martin"
@@ -16,6 +16,14 @@ function ListBooksCtrl($scope){
             title: "Clean Code",
             authors: "Robert C. Martin"
         },
-    ]
+    ]*/
+
+    restService.getBooks().then(function(data){
+        $scope.books = data;
+        console.log($scope.books);
+    })
+
+
+
 }
 
