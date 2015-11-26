@@ -2,7 +2,12 @@
     width: 100%;
 }
 
-.control-label.required:after {
+.control-label.required-mark:after {
+    content:" *";
+    color:darkred;
+}
+
+.form-control.required-mark1:after {
     content:" *";
     color:darkred;
 }

@@ -1,22 +1,22 @@
 <form class="form-horizontal" ng-submit="vm.submitForm()">
     <div class="form-group">
-        <label for="title" class="col-sm-2 control-label required">Title</label>
+        <label for="title" class="col-sm-2 control-label required-mark">Title</label>
         <div class="col-sm-10">
             <input type="text" class="form-control" id="title" placeholder="Title" ng-model="vm.book.title">
         </div>
     </div>
 
     <div class="form-group" ng-repeat="author in vm.book.authors track by $index" ng-init="inputFieldName = $index">
-        <label for="authors" class="col-sm-2 control-label required" ng-show="$index == 0">Authors</label>
+        <label for="authors" class="col-sm-2 control-label required-mark" ng-show="$index == 0">Authors</label>
         <div class="col-sm-10" ng-class="{'col-sm-push-2':$index!=0}">
             <div class="row">
                 <div class="col-sm-11" id="authors">
                     <div class="row">
                         <div class="col-sm-6">
-                                <input type="text" class="form-control" placeholder="First name {{$index}}" ng-model="vm.book.authors[$index].firstName">
+                            <input type="text" class="form-control required-mark1" placeholder="First name {{$index + 1}} (optional)" ng-model="vm.book.authors[$index].firstName">
                         </div>
                         <div class="col-sm-6">
-                                <input type="text" class="form-control" placeholder="Last name {{$index}}" ng-model="vm.book.authors[$index].lastName">
+                            <input type="text" class="form-control" placeholder="Last name {{$index + 1}} (required)" ng-model="vm.book.authors[$index].lastName">
                         </div>
                     </div>
                 </div>
@@ -37,7 +37,7 @@
     </div>
 
     <div class="form-group">
-        <label for="isbn" class="col-sm-2 control-label required">ISBN</label>
+        <label for="isbn" class="col-sm-2 control-label required-mark">ISBN</label>
         <div class="col-sm-10">
             <input type="text" class="form-control" id="isbn" placeholder="ISBN" ng-model="vm.book.isbn">
         </div>
