@@ -10,22 +10,37 @@ import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
+import javax.sql.DataSource;
+
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    AuthenticationFailure authFailure;
+    private AuthenticationFailure authFailure;
 
     @Autowired
-    AuthenticationSuccess authSuccess;
+    private LogoutSuccess logoutSuccess;
+
 
     @Autowired
-    EntryPointUnauthorized unauthorizedHandler;
+    private AuthenticationSuccess authSuccess;
 
     @Autowired
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("bill").password("123").roles("USER");
+    private EntryPointUnauthorized unauthorizedHandler;
+
+    @Autowired
+    private DataSource dataSource;
+
+    @Autowired
+    public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
+
+        auth.jdbcAuthentication().dataSource(dataSource)
+                .usersByUsernameQuery(
+                        "select username,password,enabled from book_user where username=?")
+                .authoritiesByUsernameQuery(
+                        "select username,role from user_roles where username=?");
     }
 
     @Override
@@ -40,10 +55,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/app/js/**").authenticated()
                 .and()
                 .formLogin()
+                .successHandler(authSuccess)
+                .failureHandler(authFailure)
                 .loginPage("/login.html")
-                .loginProcessingUrl("/auth")
+                .loginProcessingUrl("/auth/login")
                 .defaultSuccessUrl("/app", true)
                 .failureUrl("/login?error")
+                .and()
+                .logout()
+                .logoutUrl("/auth/logout")
+                .logoutSuccessUrl("/login?logout")
+                .logoutSuccessHandler(logoutSuccess)
+                .clearAuthentication(true)
+                .deleteCookies()
+                .invalidateHttpSession(true)
                 .and()
                 .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
     }
