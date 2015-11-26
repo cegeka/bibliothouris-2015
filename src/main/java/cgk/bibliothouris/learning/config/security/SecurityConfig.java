@@ -17,8 +17,6 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private AuthenticationFailure authFailure;
 
     @Autowired
     private LogoutSuccess logoutSuccess;
@@ -32,6 +30,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private DataSource dataSource;
+
+    @Autowired
+    private AuthenticationFailedHandler authFailHandler;
 
     @Autowired
     public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
@@ -48,6 +49,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .httpBasic()
                 .and()
+                .exceptionHandling()
+                .accessDeniedPage("/login")
+                .and()
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/app/**").authenticated()
@@ -55,12 +59,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/app/js/**").authenticated()
                 .and()
                 .formLogin()
-                .successHandler(authSuccess)
-                .failureHandler(authFailure)
                 .loginPage("/login.html")
+                .permitAll()
+                .successHandler(authSuccess)
+                .failureHandler(authFailHandler)
                 .loginProcessingUrl("/auth/login")
                 .defaultSuccessUrl("/app", true)
-                .failureUrl("/login?error")
                 .and()
                 .logout()
                 .logoutUrl("/auth/logout")
