@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import javax.persistence.Query;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -41,5 +42,9 @@ public class BookService {
 
     public void deleteAllBooks(){
         bookRepository.deleteAllBooks();
+    }
+
+    public Long countBooks(){
+        return bookRepository.countBooks();
     }
 }

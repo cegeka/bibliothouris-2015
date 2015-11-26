@@ -1,29 +1,38 @@
 var booksApp = angular.module("Bibliothouris");
 booksApp.controller("ListBooksCtrl", ListBooksCtrl);
 function ListBooksCtrl($scope, restService){
-   /* $scope.books = [{
-            id: "123",
-            title: "Clean Code",
-            authors: "Robert C. Martin"
-        },
-        {
-            id: "123",
-            title: "Clean Code",
-            authors: "Robert C. Martin"
-        },
-        {
-            id: "123",
-            title: "Clean Code",
-            authors: "Robert C. Martin"
-        },
-    ]*/
 
-    restService.getBooks().then(function(data){
+    $scope.bigTotalItems = 100;
+    $scope.start = 0;
+    $scope.end = 5;
+
+    restService.getBooks($scope.start, $scope.end).then(function(data){
         $scope.books = data;
         console.log($scope.books);
-    })
+    });
 
+    restService.countBooks().then(function(data){
+        $scope.totalItems = data;
+        console.log($scope.totalItems);
+    });
 
+    $scope.setPage = function (pageNo) {
+        $scope.currentPage = pageNo;
+    };
 
+    $scope.pageChanged = function() {
+        start2 = ($scope.bigCurrentPage - 1) * $scope.maxSize;
+        console.log(start2);
+        end2 = start2 + $scope.maxSize;
+        console.log(end2);
+        restService.getBooks(start2, end2).then(function(data){
+            $scope.books = data;
+            console.log($scope.books);
+        })
+    };
+
+    $scope.itemsPerPage = 5;
+    $scope.maxSize = 5;
+    $scope.bigCurrentPage = 1;
 }
 

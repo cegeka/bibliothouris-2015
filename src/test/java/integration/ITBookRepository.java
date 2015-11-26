@@ -56,6 +56,8 @@ public class ITBookRepository {
         assertThat(foundBooks).contains(book1);
     }
 
+
+
     @Test
     public void givenTwoBooks_findBooks_findTwoBooks() {
         Book book1 = bookRepository.createBook(bookWithOneAuthor);

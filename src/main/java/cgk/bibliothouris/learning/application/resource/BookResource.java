@@ -32,6 +32,18 @@ public class BookResource {
         return Response.ok().entity(new GenericEntity<List<Book>>(books){}).build();
     }
 
+    @GET
+    @Path("/size")
+    @Produces("text/plain")
+    public Response getBooksNumber(){
+        Long count = bookService.countBooks();
+        System.out.println(count);
+        if(count == 0){
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok().entity(count).build();
+    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

@@ -11,4 +11,6 @@ public interface BookRepository {
     List<Book> findAllBooks(int start, int end);
 
     void deleteAllBooks();
+
+    Long countBooks();
 }

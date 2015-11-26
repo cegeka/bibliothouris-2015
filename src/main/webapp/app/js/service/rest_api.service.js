@@ -7,6 +7,7 @@
         var service = {
             addBook: addBook,
             getBooks: getBooks,
+            countBooks: countBooks,
             getAuthors: getAuthors
         };
 
@@ -19,13 +20,20 @@
                 });
         }
 
-        function getBooks() {
-            return $http.get("/api/books?start=0&end=5")
+        function getBooks(start, end) {
+            return $http.get("/api/books?start=" + start + "&end=" + end)
                 .then(function(response){
                     return response.data;
                 });
         }
 
+        function countBooks() {
+            return $http.get("/api/books/size")
+                .then(function(response){
+                    return response.data;
+                });
+        }
+        
         function getAuthors() {
             return $http.get("/api/authors")
                 .then(function(response){

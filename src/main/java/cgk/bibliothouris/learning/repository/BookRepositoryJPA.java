@@ -54,4 +54,9 @@ public class BookRepositoryJPA implements BookRepository {
         Query deleteAllQuery = entityManager.createNamedQuery(Book.DELETE_ALL_BOOKS);
         deleteAllQuery.executeUpdate();
     }
+
+    public Long countBooks(){
+        TypedQuery<Long> countQuery = entityManager.createNamedQuery(Book.COUNT_BOOKS, Long.class);
+        return countQuery.getSingleResult();
+    }
 }
