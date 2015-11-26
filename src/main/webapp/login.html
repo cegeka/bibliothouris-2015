@@ -10,13 +10,14 @@
 </head>
 <body>
 <div class="container">
-    <form class="form-signin" name='f' action="auth" method='POST'>
-        <label for="inputEmail" class="sr-only">Email address</label>
-        <input name="username" type="username" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">
+    <form class="form-signin" name='f' action="auth/login" method='POST'>
+        <label for="inputUsername" class="sr-only">Email address</label>
+        <input name="username" type="username" id="inputUsername" class="form-control" placeholder="Username" required="" autofocus="">
         <label for="inputPassword" class="sr-only">Password</label>
         <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" id="loginButton">Sign in</button>
     </form>
 </div>
 </body>
 </html>
+
