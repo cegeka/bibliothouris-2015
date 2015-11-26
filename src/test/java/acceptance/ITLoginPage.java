@@ -1,4 +1,4 @@
-package integration;
+package acceptance;
 
 import integration.pageobject.LoginPage;
 import org.junit.AfterClass;
@@ -9,7 +9,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ITSeleniumLoginPage {
+public class ITLoginPage {
 
     private static final WebDriver driver = new FirefoxDriver();
     private LoginPage login;
@@ -26,7 +26,7 @@ public class ITSeleniumLoginPage {
     }
 
     @Test
-    public void something() throws InterruptedException {
+    public void givenGoodCredentials_ThenloginIsSuccessful() throws InterruptedException {
         login.inputTextIntoUsernameField("admin");
         login.inputTextIntoPasswordField("admin");
         login.clickOnLoginButton();
@@ -35,7 +35,7 @@ public class ITSeleniumLoginPage {
     }
 
     @Test
-    public void something2() throws InterruptedException {
+    public void givenBadCredentials_ThenLoginFails() throws InterruptedException {
         login.inputTextIntoUsernameField("invalidPassword");
         login.inputTextIntoPasswordField("invalidPassword");
         login.clickOnLoginButton();
