@@ -16,7 +16,7 @@
                 .then(function(response){
                     return response.data;
                 });
-        };
+        }
 
         function getBooks() {
             return $http.get("/api/books")

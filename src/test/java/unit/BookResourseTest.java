@@ -15,8 +15,11 @@ import org.mockito.runners.MockitoJUnitRunner;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.times;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BookResourseTest {
@@ -70,5 +73,40 @@ public class BookResourseTest {
         Response response = bookResource.createBook(book);
 
         assertThat(response.getLocation()).isEqualTo(URI.create("http://localhost:8080/webapi/books/1"));
+    }
+
+    @Test
+    public void givenAListOfBooks_findAllBooks_return200OKResponse() {
+        List<Book> books = new ArrayList<>();
+        books.add(new Book());
+        Mockito.when(mockBookService.findAllBooks()).thenReturn(books);
+
+        Response response = bookResource.getAllBooks();
+
+        Mockito.verify(mockBookService, times(1)).findAllBooks();
+        assertThat(response.getStatusInfo()).isEqualTo(Response.Status.OK);
+    }
+
+    @Test
+    public void givenAListOfBooks_findAllBooks_returnCorrectEntity() {
+        List<Book> books = new ArrayList<>();
+        books.add(new Book());
+        Mockito.when(mockBookService.findAllBooks()).thenReturn(books);
+
+        Response response = bookResource.getAllBooks();
+
+        Mockito.verify(mockBookService, times(1)).findAllBooks();
+        assertThat(response.getEntity()).isEqualTo(books);
+    }
+
+    @Test
+    public void givenAnEmptyListOfBooks_findAllBooks_return404NotFound() {
+        List<Book> books = new ArrayList<>();
+        Mockito.when(mockBookService.findAllBooks()).thenReturn(books);
+
+        Response response = bookResource.getAllBooks();
+
+        Mockito.verify(mockBookService, times(1)).findAllBooks();
+        assertThat(response.getStatusInfo()).isEqualTo(Response.Status.NOT_FOUND);
     }
 }
