@@ -29,8 +29,8 @@ public class BookService {
         return bookRepository.createBook(book);
     }
 
-    public List<Book> findAllBooks(){
-        return bookRepository.findAllBooks();
+    public List<Book> findAllBooks(int start, int end){
+        return bookRepository.findAllBooks(start, end);
     }
 
     private void validateBook(Book book) {

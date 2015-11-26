@@ -14,7 +14,7 @@ import java.util.Set;
 
 @Entity
 @NamedQueries({
-        @NamedQuery(name = Book.LIST_ALL_BOOKS, query = "SELECT b FROM Book b"),
+        @NamedQuery(name = Book.LIST_ALL_BOOKS, query = "SELECT b FROM Book b ORDER BY b.title"),
         @NamedQuery(name = Book.DELETE_ALL_BOOKS, query = "DELETE FROM Book b")
 })
 @XmlRootElement

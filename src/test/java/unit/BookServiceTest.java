@@ -60,9 +60,9 @@ public class BookServiceTest {
     @Test
     public void givenOneBook_findAllBooks_returnsTheBook() {
         List<Book> listOfBooks = new ArrayList<>();
-        Mockito.when(mockRepository.findAllBooks()).thenReturn(listOfBooks);
+        Mockito.when(mockRepository.findAllBooks(0,5)).thenReturn(listOfBooks);
 
-        List<Book> books = service.findAllBooks();
+        List<Book> books = service.findAllBooks(0,5);
 
         assertThat(books).isEqualTo(listOfBooks);
     }

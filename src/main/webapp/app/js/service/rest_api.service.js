@@ -20,7 +20,7 @@
         }
 
         function getBooks() {
-            return $http.get("/api/books")
+            return $http.get("/api/books?start=0&end=5")
                 .then(function(response){
                     return response.data;
                 });

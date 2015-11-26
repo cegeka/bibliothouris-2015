@@ -6,24 +6,27 @@
         <div class="table-responsive">
             <table class="table">
                 <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Authors</th>
-                        <th>ISBN</th>
-                    </tr>
+                <tr>
+                    <th>Title</th>
+                    <th>Authors</th>
+                    <th>ISBN</th>
+                </tr>
                 </thead>
 
                 <tbody>
-                    <tr ng-repeat = "book in books">
-                        <td>{{book.title}}</td>
-                         <td>
-                            <!--<span><a href="#" data-toggle="tooltip" title="Hooray!">Hover over me</a></span> </td>-->
-                            <span ng-repeat="author in book.authors"> {{author.firstName}} {{author.lastName}} {{$last ? '' : ', '}}</span>
-                        </td>
-                        <td>{{book.isbn}}</td>
-                    </tr>
+                <tr ng-repeat = "book in books">
+                    <td>{{book.title}}</td>
+                    <td>
+                        <!--<span><a href="#" data-toggle="tooltip" title="Hooray!">Hover over me</a></span> </td>-->
+                        <span ng-repeat="author in book.authors"> {{author.firstName}} {{author.lastName}} {{$last ? '' : ', '}}</span>
+                    </td>
+                    <td>{{book.isbn}}</td>
+                </tr>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+
+<uib-pagination boundary-links="true" items-per-page="itemsPerPage" total-items="totalItems" ng-model="bigCurrentPage" max-size="maxSize" num-pages="numPages" ng-change="pageChanged()" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
+

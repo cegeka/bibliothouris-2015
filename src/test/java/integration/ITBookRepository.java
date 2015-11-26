@@ -50,7 +50,7 @@ public class ITBookRepository {
     public void givenOneBook_findBooks_findTheBook() {
         Book book1 = bookRepository.createBook(bookWithOneAuthor);
 
-        List<Book> foundBooks = bookRepository.findAllBooks();
+        List<Book> foundBooks = bookRepository.findAllBooks(0,5);
 
         assertThat(foundBooks.size()).isEqualTo(1);
         assertThat(foundBooks).contains(book1);
@@ -61,7 +61,7 @@ public class ITBookRepository {
         Book book1 = bookRepository.createBook(bookWithOneAuthor);
         Book book2 = bookRepository.createBook(bookWithFourAuthors);
 
-        List<Book> foundBooks = bookRepository.findAllBooks();
+        List<Book> foundBooks = bookRepository.findAllBooks(0,5);
 
         assertThat(foundBooks.size()).isEqualTo(2);
         assertThat(foundBooks).contains(book1);
