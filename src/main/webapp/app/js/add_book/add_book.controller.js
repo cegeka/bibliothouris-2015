@@ -7,11 +7,19 @@
         var vm = this;
         vm.originalBook = {};
         vm.book = {};
+        vm.authors = {};
 
         vm.addAuthor = addAuthor;
         vm.deleteAuthor = deleteAuthor;
         vm.submitForm = submitForm;
         vm.resetForm = resetForm;
+
+        vm.onSelect = function (item, index) {
+            vm.book.authors[index] = angular.copy(item);
+            console.log(item);
+            console.log(vm.authors);
+
+        };
 
         activate();
 
@@ -20,6 +28,12 @@
                 authors: [""]
             };
             vm.book = angular.copy(vm.originalBook);
+
+            restService
+                .getAuthors()
+                .then(function(data){
+                    vm.authors = data;
+                });
         }
 
         function addAuthor() {

@@ -42,11 +42,13 @@ public class BookRepositoryJPA implements BookRepository {
         return book;
     }
 
+    @Override
     public List<Book> findAllBooks(){
         TypedQuery<Book> selectAllQuery = entityManager.createNamedQuery(Book.LIST_ALL_BOOKS, Book.class);
         return selectAllQuery.getResultList();
     }
 
+    @Override
     public void deleteAllBooks(){
         Query deleteAllQuery = entityManager.createNamedQuery(Book.DELETE_ALL_BOOKS);
         deleteAllQuery.executeUpdate();

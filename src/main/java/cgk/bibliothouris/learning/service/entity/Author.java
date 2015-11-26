@@ -9,11 +9,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @XmlRootElement
 @NamedQueries({
+        @NamedQuery(name = Author.FIND_ALL_AUTHORS, query = "SELECT a FROM Author a"),
         @NamedQuery(name = Author.FIND_AUHTORS_BY_FIRSTNAME_AND_LASTNAME,
                     query = "SELECT a FROM Author a WHERE a.firstName = :firstName AND a.lastName = :lastName")
 })
 public class Author {
 
+    public static final String FIND_ALL_AUTHORS = "FIND_ALL_AUTHORS";
     public static final String FIND_AUHTORS_BY_FIRSTNAME_AND_LASTNAME = "FIND_AUHTORS_BY_FIRSTNAME_AND_LASTNAME";
 
     @Id

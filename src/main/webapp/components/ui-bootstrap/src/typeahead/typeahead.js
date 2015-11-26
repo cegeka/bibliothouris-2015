@@ -533,7 +533,7 @@ angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.position'])
   }]);
 
 /* Deprecated typeahead below */
-  
+
 angular.module('ui.bootstrap.typeahead')
   .value('$typeaheadSuppressWarning', false)
   .service('typeaheadParser', ['$parse', 'uibTypeaheadParser', '$log', '$typeaheadSuppressWarning', function($parse, uibTypeaheadParser, $log, $typeaheadSuppressWarning) {
@@ -963,7 +963,7 @@ angular.module('ui.bootstrap.typeahead')
       }
     };
   }])
-  
+
   .directive('typeaheadPopup', ['$typeaheadSuppressWarning', '$log', function($typeaheadSuppressWarning, $log) {
     return {
       scope: {
@@ -979,7 +979,7 @@ angular.module('ui.bootstrap.typeahead')
         return attrs.popupTemplateUrl || 'template/typeahead/typeahead-popup.html';
       },
       link: function(scope, element, attrs) {
-        
+
         if (!$typeaheadSuppressWarning) {
           $log.warn('typeahead-popup is now deprecated. Use uib-typeahead-popup instead.');
         }
@@ -1003,7 +1003,7 @@ angular.module('ui.bootstrap.typeahead')
       }
     };
   }])
-  
+
   .directive('typeaheadMatch', ['$templateRequest', '$compile', '$parse', '$typeaheadSuppressWarning', '$log', function($templateRequest, $compile, $parse, $typeaheadSuppressWarning, $log) {
     return {
       restrict: 'EA',
@@ -1026,7 +1026,7 @@ angular.module('ui.bootstrap.typeahead')
       }
     };
   }])
-  
+
   .filter('typeaheadHighlight', ['$sce', '$injector', '$log', '$typeaheadSuppressWarning', function($sce, $injector, $log, $typeaheadSuppressWarning) {
     var isSanitizePresent;
     isSanitizePresent = $injector.has('$sanitize');

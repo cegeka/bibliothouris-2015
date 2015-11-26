@@ -13,10 +13,18 @@
                 <div class="col-sm-11" id="authors">
                     <div class="row">
                         <div class="col-sm-6">
-                            <input type="text" class="form-control required-mark1" placeholder="First name {{$index + 1}} (optional)" ng-model="vm.book.authors[$index].firstName">
+                            <input type="text" class="form-control required-mark1"
+                                   placeholder="First name {{$index + 1}} (optional)"
+                                   ng-model="vm.book.authors[$index].firstName"
+                                   uib-typeahead="state.firstName for state in vm.authors | filter:$viewValue | limitTo:8"
+                                   typeahead-on-select='vm.onSelect($item, $index)' typeahead-select-on-exact="true">
                         </div>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control" placeholder="Last name {{$index + 1}} (required)" ng-model="vm.book.authors[$index].lastName">
+                            <input type="text" class="form-control"
+                                   placeholder="Last name {{$index + 1}} (required)"
+                                   ng-model="vm.book.authors[$index].lastName"
+                                   uib-typeahead="state.lastName for state in vm.authors | filter:$viewValue | limitTo:8"
+                                   typeahead-on-select='vm.onSelect($item, $index)'typeahead-select-on-exact="true">
                         </div>
                     </div>
                 </div>
@@ -55,5 +63,7 @@
             </div>
         </div>
     </div>
+
+
 </form>
 
