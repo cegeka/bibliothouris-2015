@@ -2,22 +2,28 @@
 <hr style="border-color: midnightblue"/>
 
 <div class="panel panel-default">
-    <div class="panel-heading"><strong>All books</strong></div>
-    <table class="table">
-        <tr>
-            <th>Title</th>
-            <th>Authors</th>
-            <th>ISBN</th>
-        </tr>
-        <tr ng-repeat = "book in books">
-            <td>{{book.title}}</td>
-             <td>
-                <!--<span><a href="#" data-toggle="tooltip" title="Hooray!">Hover over me</a></span> </td>-->
-                <span ng-repeat="author in book.authors"> {{author.firstName}} {{author.lastName}} {{$last ? '' : ', '}}</span>
-            </td>
-            <td>{{book.isbn}}</td>
-        </tr>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Authors</th>
+                        <th>ISBN</th>
+                    </tr>
+                </thead>
 
-    </table>
+                <tbody>
+                    <tr ng-repeat = "book in books">
+                        <td>{{book.title}}</td>
+                         <td>
+                            <!--<span><a href="#" data-toggle="tooltip" title="Hooray!">Hover over me</a></span> </td>-->
+                            <span ng-repeat="author in book.authors"> {{author.firstName}} {{author.lastName}} {{$last ? '' : ', '}}</span>
+                        </td>
+                        <td>{{book.isbn}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
-
