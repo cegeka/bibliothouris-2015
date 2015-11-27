@@ -6,12 +6,11 @@
     <table class="table">
         <tr>
             <th>Title</th>
-            <th>Authors` names</th>
+            <th>Authors</th>
             <th>ISBN</th>
         </tr>
         <tr ng-repeat = "book in books">
             <td>{{book.title}}</td>
-            <td >
              <td>
                 <!--<span><a href="#" data-toggle="tooltip" title="Hooray!">Hover over me</a></span> </td>-->
                 <span ng-repeat="author in book.authors"> {{author.firstName}} {{author.lastName}} {{$last ? '' : ', '}}</span>
