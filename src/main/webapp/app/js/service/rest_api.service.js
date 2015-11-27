@@ -27,7 +27,7 @@
         }
 
         function getAuthors() {
-            return $http.get("/api/books/authors")
+            return $http.get("/api/authors")
                 .then(function(response){
                     return response.data;
                 });

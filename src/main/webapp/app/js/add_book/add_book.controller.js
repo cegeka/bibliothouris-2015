@@ -15,10 +15,8 @@
         vm.resetForm = resetForm;
 
         vm.onSelect = function (item, index) {
-            vm.book.authors[index] = angular.copy(item);
-            console.log(item);
-            console.log(vm.authors);
-
+            vm.book.authors[index].firstName = item.firstName;
+            vm.book.authors[index].lastName = item.lastName;
         };
 
         activate();
