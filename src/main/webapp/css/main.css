@@ -6,3 +6,15 @@ body {
     margin: 0;
     padding: 0;
 }
+
+.table-column-ellipsis {
+    margin-right: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.table-fixed {
+    table-layout:fixed;
+    width: 100%;
+}

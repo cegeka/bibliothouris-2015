@@ -4,19 +4,19 @@
 <div class="panel panel-default">
     <div class="panel-body">
         <div class="table-responsive">
-            <table class="table">
+            <table class="table table-fixed">
                 <thead>
                 <tr>
-                    <th>Title</th>
-                    <th>Authors</th>
-                    <th>ISBN</th>
+                    <th width=40%>Title</th>
+                    <th width=40%>Authors</th>
+                    <th width=20%>ISBN</th>
                 </tr>
                 </thead>
 
                 <tbody>
                 <tr ng-repeat = "book in books">
-                    <td>{{book.title}}</td>
-                    <td>
+                    <td class="table-column-ellipsis">{{book.title}}</td>
+                    <td class="table-column-ellipsis">
                         <!--<span><a href="#" data-toggle="tooltip" title="Hooray!">Hover over me</a></span> </td>-->
                         <span ng-repeat="author in book.authors"> {{author.firstName}} {{author.lastName}} {{$last ? '' : ', '}}</span>
                     </td>
@@ -30,5 +30,3 @@
         <uib-pagination boundary-links="true" items-per-page="itemsPerPage" total-items="totalItems" ng-model="bigCurrentPage" max-size="maxSize" num-pages="numPages" ng-change="pageChanged()" class="pagination paginationFooter" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
     </div>
 </div>
-
-
