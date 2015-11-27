@@ -79,7 +79,7 @@ public class BookResourceTest {
     public void givenAListOfBooks_findAllBooks_return200OKResponse() {
         List<Book> books = new ArrayList<>();
         books.add(new Book());
-        Mockito.when(mockService.findAllBooks()).thenReturn(books);
+        Mockito.when(mockBookService.findAllBooks(0,5)).thenReturn(books);
 
         Response response = bookResource.getAllBooks(Integer.toString(0),Integer.toString(5));
 
@@ -91,7 +91,7 @@ public class BookResourceTest {
     public void givenAListOfBooks_findAllBooks_returnCorrectEntity() {
         List<Book> books = new ArrayList<>();
         books.add(new Book());
-        Mockito.when(mockService.findAllBooks(0,5)).thenReturn(books);
+        Mockito.when(mockBookService.findAllBooks(0,5)).thenReturn(books);
 
         Response response = bookResource.getAllBooks(Integer.toString(0),Integer.toString(5));
 
@@ -102,7 +102,7 @@ public class BookResourceTest {
     @Test
     public void givenAnEmptyListOfBooks_findAllBooks_return404NotFound() {
         List<Book> books = new ArrayList<>();
-        Mockito.when(mockService.findAllBooks(0,5)).thenReturn(books);
+        Mockito.when(mockBookService.findAllBooks(0,5)).thenReturn(books);
 
         Response response = bookResource.getAllBooks(Integer.toString(0),Integer.toString(5));
 
