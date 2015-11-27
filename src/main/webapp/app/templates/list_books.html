@@ -1,7 +1,10 @@
 <h3 style="color: midnightblue">All books</h3>
 <hr style="border-color: midnightblue"/>
+<div class="alert alert-info text-center" role="alert" ng-show="{{noBooks}}">
+    <a href="#" class="alert-link">There are no books to be displayed!</a>
+</div>
 
-<div class="panel panel-default">
+<div class="panel panel-default" ng-show="{{!noBooks}}">
     <div class="panel-body">
         <div class="table-responsive">
             <table class="table table-fixed">
