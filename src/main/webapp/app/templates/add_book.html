@@ -1,6 +1,6 @@
 <h3 style="color: midnightblue">Add a new book </h3>
 <hr style="border-color: midnightblue"/>
-<form class="form-horizontal" novalidate ng-submit="vm.submitForm(add)" name="add">
+<form class="form-horizontal" novalidate ng-submit="vm.submitForm(add)" name="add" id="addForm">
     <div class="form-group has-feedback">
         <label for="title" class="col-sm-2 control-label required-mark">Title</label>
         <div class="col-sm-10">
@@ -18,7 +18,7 @@
                 <div class="col-sm-11" id="authors">
                     <div class="row">
                         <div class="col-sm-6">
-                            <input name="firstName" type="text" class="form-control required-mark1"
+                            <input name="firstName" type="text" class="form-control required-mark1" id="firstName"
                                    placeholder="First name {{$index + 1}} (optional)"
                                    ng-model="vm.book.authors[$index].firstName"
                                    uib-typeahead="author.firstName + ' ' + author.lastName for author in vm.authors | filter:$viewValue | limitTo:8"
@@ -27,7 +27,7 @@
 
                         </div>
                         <div class="col-sm-6">
-                            <input id="lastName" name="lastName" type="text" class="form-control"
+                            <input name="lastName" type="text" class="form-control" id="lastName"
                                    placeholder="Last name {{$index + 1}} (required)"
                                    ng-model="vm.book.authors[$index].lastName"
                                    uib-typeahead="state.lastName for state in vm.authors | filter:$viewValue | limitTo:8"
@@ -60,16 +60,16 @@
             <input name="isbn" type="text" class="form-control" id="isbn" placeholder="ISBN" ng-model="vm.book.isbn" required>
             <span ng-show="vm.showFeedback(add.isbn.$error)" class="glyphicon glyphicon-ok form-control-feedback has-success" aria-hidden="true"></span>
             <div ng-messages="add.title.$error" style="color:maroon" role="alert" ng-if='add.isbn.$dirty || add.$submitted'>
-                <div ng-message="required">You did not enter an ISBN code</div>
+                <div ng-message="required" id="isbn-required-msg">You did not enter an ISBN code</div>
             </div>
         </div>
     </div>
     <div class="form-group">
         <div class="col-sm-offset-4 col-sm-2">
-            <button type="submit" class="btn btn-primary full-width">Save</button>
+            <button type="submit" id="submit" class="btn btn-primary full-width">Save</button>
         </div>
         <div class="col-sm-2">
-            <button type="button" class="btn btn-default full-width" ng-click="vm.resetForm(add)">Cancel</button>
+            <button type="button" id="cancel" class="btn btn-default full-width" ng-click="vm.resetForm(add)">Cancel</button>
         </div>
     </div>
 </form>
