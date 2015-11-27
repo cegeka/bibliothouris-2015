@@ -40,6 +40,6 @@ public class ITLoginPage {
         login.inputTextIntoPasswordField("invalidPassword");
         login.clickOnLoginButton();
 
-        assertThat(driver.getTitle().contains("Error report")).isTrue();
+        assertThat(driver.getCurrentUrl().contains("login.html?error")).isTrue();
     }
 }
