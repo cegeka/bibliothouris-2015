@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html >
+<html ng-app="Login">
 <head lang="en">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,15 +9,23 @@
     <link rel="stylesheet" href="/css/login.css">
 </head>
 <body>
-<div class="container">
+
+<div class="container" ng-controller="LoginCtrl as vm">
+
     <form class="form-signin" name='f' action="auth/login" method='POST'>
-        <label for="inputUsername" class="sr-only">Email address</label>
-        <input name="username" type="username" id="inputUsername" class="form-control" placeholder="Username" required="" autofocus="">
+        <label for="inputUsername" class="sr-only">Username</label>
+        <input name="username" type="username" id="inputUsername" class="form-control" placeholder="Username"
+               required="" autofocus="">
         <label for="inputPassword" class="sr-only">Password</label>
-        <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
+        <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password"
+               required="">
         <button class="btn btn-lg btn-primary btn-block" type="submit" id="loginButton">Sign in</button>
     </form>
 </div>
+<script src="components/angular/angular.js"></script>
+<script src="components/angular-route/angular-route.js"></script>
+<script src="login.js"></script>
+<script src="login/login_controller.js"></script>
 </body>
 </html>
 
