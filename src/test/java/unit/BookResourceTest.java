@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.times;
 
 @RunWith(MockitoJUnitRunner.class)
-public class BookResourseTest {
+public class BookResourceTest {
 
     @InjectMocks
     private BookResource bookResource;
