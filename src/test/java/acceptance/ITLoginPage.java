@@ -1,6 +1,6 @@
 package acceptance;
 
-import integration.pageobject.LoginPage;
+import acceptance.pageobject.LoginPage;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +16,7 @@ public class ITLoginPage {
 
     @Before
     public void setup() {
-        driver.get("http://localhost:8080/");
+        driver.get("http://localhost:8090/");
         login = new LoginPage(driver);
     }
 
@@ -27,8 +27,10 @@ public class ITLoginPage {
 
     @Test
     public void givenGoodCredentials_ThenloginIsSuccessful() throws InterruptedException {
-        login.inputTextIntoUsernameField("admin");
-        login.inputTextIntoPasswordField("admin");
+        String validPassword = "admin";
+
+        login.inputTextIntoUsernameField(validPassword);
+        login.inputTextIntoPasswordField(validPassword);
         login.clickOnLoginButton();
 
         assertThat(driver.getCurrentUrl().contains("/#/status")).isTrue();
@@ -36,8 +38,10 @@ public class ITLoginPage {
 
     @Test
     public void givenBadCredentials_ThenLoginFails() throws InterruptedException {
-        login.inputTextIntoUsernameField("invalidPassword");
-        login.inputTextIntoPasswordField("invalidPassword");
+        String invalidPassword = "invalidPassword";
+
+        login.inputTextIntoUsernameField(invalidPassword);
+        login.inputTextIntoPasswordField(invalidPassword);
         login.clickOnLoginButton();
 
         assertThat(driver.getCurrentUrl().contains("login.html?error")).isTrue();
