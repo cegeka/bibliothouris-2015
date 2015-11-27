@@ -10,14 +10,12 @@ function ListBooksCtrl($scope, restService){
     restService.getBooks($scope.start, $scope.end).then(function(data){
         $scope.books = data;
         console.log($scope.books);
-    }, function(data){
         $scope.noBooks = false;
     });
 
     restService.countBooks().then(function(data){
         $scope.totalItems = data;
         console.log($scope.totalItems);
-    }, function(data){
         $scope.noBooks = false;
     });
 
@@ -33,7 +31,6 @@ function ListBooksCtrl($scope, restService){
         restService.getBooks(start2, end2).then(function(data){
             $scope.books = data;
             console.log($scope.books);
-        }, function(data){
             $scope.noBooks = false;
         });
     };
