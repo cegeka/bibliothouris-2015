@@ -18,7 +18,7 @@
             vm.book.authors[index].firstName = item.firstName;
             vm.book.authors[index].lastName = item.lastName;
         };
-
+        vm.validateFilledIn = '';
         activate();
 
         function activate() {
@@ -84,5 +84,10 @@
                 '</div>'
             });
         }
+
+        vm.showFeedback = function(data){
+            return !data.required;
+        }
+
     }
 })();
