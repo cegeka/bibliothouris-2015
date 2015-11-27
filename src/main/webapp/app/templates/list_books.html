@@ -1,18 +1,22 @@
+<h3 style="color: midnightblue">All books</h3>
+<hr style="border-color: midnightblue"/>
+
 <div class="panel panel-default">
     <div class="panel-heading"><strong>All books</strong></div>
     <table class="table">
         <tr>
-            <th>ISBN</th>
             <th>Title</th>
             <th>Authors` names</th>
+            <th>ISBN</th>
         </tr>
         <tr ng-repeat = "book in books">
-            <td>{{book.isbn}}</td>
             <td>{{book.title}}</td>
             <td >
-             <td>   <span><a href="#" data-toggle="tooltip" title="Hooray!">Hover over me</a></span> </td>
+             <td>
+                <!--<span><a href="#" data-toggle="tooltip" title="Hooray!">Hover over me</a></span> </td>-->
                 <span ng-repeat="author in book.authors"> {{author.firstName}} {{author.lastName}} {{$last ? '' : ', '}}</span>
             </td>
+            <td>{{book.isbn}}</td>
         </tr>
 
     </table>
