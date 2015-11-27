@@ -88,14 +88,14 @@ public class BookResourceTest {
     }
 
     @Test
-    public void givenAListOfBooks_findAllBooks_returnCorrectEntity() {
+    public void givenAListOfBooks_findAllBooksWithoutParams_returnCorrectEntity() {
         List<Book> books = new ArrayList<>();
         books.add(new Book());
-        Mockito.when(mockBookService.findAllBooks("0","5")).thenReturn(books);
+        Mockito.when(mockBookService.findAllBooks("","")).thenReturn(books);
 
-        Response response = bookResource.getAllBooks(Integer.toString(0),Integer.toString(5));
+        Response response = bookResource.getAllBooks("","");
 
-        Mockito.verify(mockBookService, times(1)).findAllBooks("0","5");
+        Mockito.verify(mockBookService, times(1)).findAllBooks("","");
         assertThat(response.getEntity()).isEqualTo(books);
     }
 
@@ -109,4 +109,5 @@ public class BookResourceTest {
         Mockito.verify(mockBookService, times(1)).findAllBooks("0","5");
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.NOT_FOUND);
     }
+
 }

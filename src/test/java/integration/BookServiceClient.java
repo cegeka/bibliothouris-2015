@@ -23,4 +23,5 @@ public class BookServiceClient {
                      .request(MediaType.APPLICATION_JSON)
                      .get(Response.class);
     }
+
 }

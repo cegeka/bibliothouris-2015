@@ -56,8 +56,6 @@ public class ITBookRepository {
         assertThat(foundBooks).contains(book1);
     }
 
-
-
     @Test
     public void givenTwoBooks_findBooks_findTwoBooks() {
         Book book1 = bookRepository.createBook(bookWithOneAuthor);
@@ -69,4 +67,15 @@ public class ITBookRepository {
         assertThat(foundBooks).contains(book1);
         assertThat(foundBooks).contains(book2);
     }
+
+    @Test
+    public void givenTwoBooks_countBooks_returnBooksNumber() {
+        Book book1 = bookRepository.createBook(bookWithOneAuthor);
+        Book book2 = bookRepository.createBook(bookWithFourAuthors);
+
+        Long count = bookRepository.countBooks();
+
+        assertThat(count).isEqualTo(2);
+    }
+
 }

@@ -67,5 +67,14 @@ public class BookServiceTest {
         assertThat(books).isEqualTo(listOfBooks);
     }
 
+    @Test
+    public void givenOneBook_findAllBooksWithNegativeParams_returnsListOfBooks() {
+        List<Book> listOfBooks = new ArrayList<>();
+        Mockito.when(mockRepository.findAllBooks(-1,-3)).thenReturn(listOfBooks);
+
+        List<Book> books = service.findAllBooks("-1","-3");
+
+        assertThat(books).isEqualTo(listOfBooks);
+    }
 
 }
