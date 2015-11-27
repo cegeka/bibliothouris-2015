@@ -34,10 +34,12 @@ public class BookService {
 
         if (start == null || isNegative(start)) {
             startPosition = 0;
-        } else if (end == null || isNegative(end)) {
-            endPosition = Integer.valueOf(countBooks().intValue());
         } else {
             startPosition = Integer.valueOf(start);
+        }
+        if (end == null || isNegative(end)) {
+            endPosition = Integer.valueOf(countBooks().intValue());
+        } else {
             endPosition = Integer.valueOf(end);
         }
         return bookRepository.findAllBooks(startPosition, endPosition);
