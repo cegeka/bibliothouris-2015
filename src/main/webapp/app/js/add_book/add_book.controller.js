@@ -45,18 +45,22 @@
                 vm.book.authors.push("");
         }
 
-        function submitForm() {
-            restService
-                .addBook(vm.book)
-                .then(function(data){
-                    $location.path("/books/" + data.id);
-                    createNotification("Book <strong>" + data.title + "</strong> was added in the library!", "success")
-                }, function(data){
-                    createNotification("Something wrong happened when you tried to add a new book!", "danger")
-                });
+        function submitForm(bookForm) {
+            if(bookForm.$valid){
+                restService
+                    .addBook(vm.book)
+                    .then(function(data){
+                        $location.path("/books/" + data.id);
+                        createNotification("Book <strong>" + data.title + "</strong> was added in the library!", "success")
+                    }, function(data){
+                        createNotification("Something wrong happened when you tried to add a new book!", "danger")
+                    });
+            }
+
         }
 
-        function resetForm() {
+        function resetForm(bookForm) {
+            bookForm.$setPristine();
             vm.book = angular.copy(vm.originalBook);
         }
 

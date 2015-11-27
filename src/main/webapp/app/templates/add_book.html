@@ -1,11 +1,14 @@
 <h3 style="color: midnightblue">Add a new book </h3>
 <hr style="border-color: midnightblue"/>
-<form class="form-horizontal" ng-submit="vm.submitForm()" name="add">
+<form class="form-horizontal" novalidate ng-submit="vm.submitForm(add)" name="add">
     <div class="form-group has-feedback">
         <label for="title" class="col-sm-2 control-label required-mark">Title</label>
         <div class="col-sm-10">
             <input name="title" type="text" class="form-control" id="title" placeholder="Title" ng-model="vm.book.title" required>
             <span ng-show="vm.showFeedback(add.title.$error)" class="glyphicon glyphicon-ok form-control-feedback has-success" aria-hidden="true"></span>
+            <div ng-messages="add.title.$error" style="color:maroon" role="alert" ng-if='add.title.$dirty || add.$submitted'>
+                <div ng-message="required">You did not enter a title</div>
+            </div>
         </div>
     </div>
     <div class="form-group has-feedback"  ng-repeat="author in vm.book.authors track by $index" ng-init="inputFieldName = $index">
@@ -21,6 +24,7 @@
                                    uib-typeahead="author.firstName + ' ' + author.lastName for author in vm.authors | filter:$viewValue | limitTo:8"
                                    typeahead-on-select='vm.onSelect($item, $index)' typeahead-select-on-exact="true">
                             <span ng-show="vm.showFeedback(add.lastName.$error)" class="glyphicon glyphicon-ok form-control-feedback has-success" aria-hidden="true"></span>
+
                         </div>
                         <div class="col-sm-6">
                             <input id="lastName" name="lastName" type="text" class="form-control"
@@ -29,6 +33,9 @@
                                    uib-typeahead="state.lastName for state in vm.authors | filter:$viewValue | limitTo:8"
                                    typeahead-select-on-exact="true" required>
                             <span ng-show="vm.showFeedback(add.lastName.$error)" class="glyphicon glyphicon-ok form-control-feedback has-success" aria-hidden="true"></span>
+                            <div ng-messages="add.title.$error" style="color:maroon" role="alert" ng-if='add.isbn.$dirty || add.$submitted'>
+                                <div ng-message="required">You did not enter an author last name</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -52,6 +59,9 @@
         <div class="col-sm-10">
             <input name="isbn" type="text" class="form-control" id="isbn" placeholder="ISBN" ng-model="vm.book.isbn" required>
             <span ng-show="vm.showFeedback(add.isbn.$error)" class="glyphicon glyphicon-ok form-control-feedback has-success" aria-hidden="true"></span>
+            <div ng-messages="add.title.$error" style="color:maroon" role="alert" ng-if='add.isbn.$dirty || add.$submitted'>
+                <div ng-message="required">You did not enter an ISBN code</div>
+            </div>
         </div>
     </div>
     <div class="form-group">
@@ -59,7 +69,7 @@
             <button type="submit" class="btn btn-primary full-width">Save</button>
         </div>
         <div class="col-sm-2">
-            <button type="button" class="btn btn-default full-width" ng-click="vm.resetForm()">Cancel</button>
+            <button type="button" class="btn btn-default full-width" ng-click="vm.resetForm(add)">Cancel</button>
         </div>
     </div>
 </form>
