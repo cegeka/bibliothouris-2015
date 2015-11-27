@@ -1,3 +1,8 @@
 body {
     background-color: #eee;
 }
+
+.paginationFooter {
+    margin: 0;
+    padding: 0;
+}
