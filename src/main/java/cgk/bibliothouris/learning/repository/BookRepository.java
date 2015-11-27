@@ -8,7 +8,7 @@ public interface BookRepository {
 
     Book createBook(Book book);
 
-    List<Book> findAllBooks(int start, int end);
+    List<Book> findAllBooks(Integer start, Integer end);
 
     void deleteAllBooks();
 

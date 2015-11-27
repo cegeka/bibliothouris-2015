@@ -10,9 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import javax.persistence.Query;
+import javax.swing.text.html.Option;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -30,8 +32,27 @@ public class BookService {
         return bookRepository.createBook(book);
     }
 
-    public List<Book> findAllBooks(int start, int end){
-        return bookRepository.findAllBooks(start, end);
+    public List<Book> findAllBooks(String start, String end){
+        Integer startPosition = null;
+        Integer endPosition = null;
+
+        if( start==null || isNegative(start) ) {
+            startPosition = 0;
+        }
+
+        if( end==null || isNegative(end) ){
+            endPosition = Integer.valueOf(countBooks().intValue());
+        }
+        return bookRepository.findAllBooks(startPosition, endPosition);
+    }
+
+    private boolean isNegative(String number) {
+        try {
+            if (Integer.parseInt(number) < 0)
+                return true;
+        } catch (NumberFormatException e) {
+        }
+        return false;
     }
 
     private void validateBook(Book book) {

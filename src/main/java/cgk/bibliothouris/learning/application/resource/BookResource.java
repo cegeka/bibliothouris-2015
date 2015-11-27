@@ -25,7 +25,7 @@ public class BookResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllBooks(@QueryParam("start") String start, @QueryParam("end") String end){
-        List<Book> books = bookService.findAllBooks(Integer.parseInt(start), Integer.parseInt(end));
+        List<Book> books = bookService.findAllBooks(start, end);
         if(books.size() == 0){
             return Response.status(Response.Status.NOT_FOUND).build();
         }

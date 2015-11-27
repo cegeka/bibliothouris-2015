@@ -42,7 +42,7 @@ public class BookRepositoryJPA implements BookRepository {
         return book;
     }
 
-    public List<Book> findAllBooks(int start, int end){
+    public List<Book> findAllBooks(Integer start, Integer end){
         TypedQuery<Book> selectAllQuery = entityManager.createNamedQuery(Book.LIST_ALL_BOOKS, Book.class)
                                                        .setMaxResults(end - start)
                                                        .setFirstResult(start);
