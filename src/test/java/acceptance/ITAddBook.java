@@ -47,7 +47,7 @@ public class ITAddBook extends BaseAcceptance {
         addBookPage.inputTextIntoLastNameField("Creanga");
         addBookPage.inputTextIntoFirstNameField("Ion");
         addBookPage.clickOnSubmitButton();
-        Thread.sleep(2500);
+        Thread.sleep(3500);
         assertThat(driver.getCurrentUrl().contains("/app/#/status")).isTrue();
     }
 }

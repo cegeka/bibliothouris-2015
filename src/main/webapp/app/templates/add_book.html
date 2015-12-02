@@ -11,6 +11,7 @@
             </div>
         </div>
     </div>
+
     <div class="form-group has-feedback"  ng-repeat="author in vm.book.authors track by $index" ng-init="inputFieldName = $index">
         <label for="authors" class="col-sm-2 control-label required-mark" ng-show="$index == 0">Authors</label>
         <div class="col-sm-10" ng-class="{'col-sm-push-2':$index!=0}">
@@ -33,7 +34,7 @@
                                    uib-typeahead="state.lastName for state in vm.authors | filter:$viewValue | limitTo:8"
                                    typeahead-select-on-exact="true" required>
                             <span ng-show="vm.showFeedback(add.lastName.$error)" class="glyphicon glyphicon-ok form-control-feedback has-success" aria-hidden="true"></span>
-                            <div ng-messages="add.title.$error" style="color:maroon" role="alert" ng-if='add.isbn.$dirty || add.$submitted'>
+                            <div ng-messages="add.lastName.$error" style="color:maroon" role="alert" ng-if='add.lastName.$dirty || add.$submitted'>
                                 <div ng-message="required">You did not enter an author last name</div>
                             </div>
                         </div>
@@ -59,7 +60,7 @@
         <div class="col-sm-10">
             <input name="isbn" type="text" class="form-control" id="isbn" placeholder="ISBN" ng-model="vm.book.isbn" required>
             <span ng-show="vm.showFeedback(add.isbn.$error)" class="glyphicon glyphicon-ok form-control-feedback has-success" aria-hidden="true"></span>
-            <div ng-messages="add.title.$error" style="color:maroon" role="alert" ng-if='add.isbn.$dirty || add.$submitted'>
+            <div ng-messages="add.isbn.$error" style="color:maroon" role="alert" ng-if='add.isbn.$dirty || add.$submitted'>
                 <div ng-message="required" id="isbn-required-msg">You did not enter an ISBN code</div>
             </div>
         </div>
