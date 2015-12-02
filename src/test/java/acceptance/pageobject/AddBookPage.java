@@ -16,13 +16,13 @@ public class AddBookPage {
     WebElement inputTitle;
 
     @FindBy(how = How.ID, using = "firstName")
-    WebElement firstName;
+    WebElement inputFirstName;
 
     @FindBy(how = How.ID, using = "lastName")
-    WebElement lastName;
+    WebElement inputLastName;
 
     @FindBy(how = How.ID, using = "isbn")
-    WebElement isbn;
+    WebElement inputIsbn;
 
     @FindBy(how = How.ID, using = "submit")
     WebElement submitButton;
@@ -38,16 +38,16 @@ public class AddBookPage {
         inputTitle.sendKeys(title);
     }
 
-    public void inputTextIntoFirstNameField(String name){
-        firstName.sendKeys(name);
+    public void inputTextIntoFirstNameField(String firstName){
+        inputFirstName.sendKeys(firstName);
     }
 
-    public void inputTextIntoLastNameField(String name){
-        lastName.sendKeys(name);
+    public void inputTextIntoLastNameField(String lastName){
+        inputLastName.sendKeys(lastName);
     }
 
-    public void inputTextIntoIsbnField(String code){
-        isbn.sendKeys(code);
+    public void inputTextIntoIsbnField(String isbn){
+        inputIsbn.sendKeys(isbn);
     }
 
     public void clickOnSubmitButton(){

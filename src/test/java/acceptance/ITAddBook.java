@@ -42,10 +42,10 @@ public class ITAddBook extends BaseAcceptance {
 
     @Test
     public void whenWeAddABook_ThenItIsAdded() throws InterruptedException {
-        addBookPage.inputTextIntoTitleField("title");
-        addBookPage.inputTextIntoIsbnField("someIsbnName");
-        addBookPage.inputTextIntoLastNameField("someLastName");
-        addBookPage.inputTextIntoFirstNameField("someFirstName");
+        addBookPage.inputTextIntoTitleField("Amintiri din copilarie");
+        addBookPage.inputTextIntoIsbnField("111-1111-111-11");
+        addBookPage.inputTextIntoLastNameField("Creanga");
+        addBookPage.inputTextIntoFirstNameField("Ion");
         addBookPage.clickOnSubmitButton();
         Thread.sleep(2500);
         assertThat(driver.getCurrentUrl().contains("/app/#/status")).isTrue();
