@@ -15,6 +15,15 @@ public class AddBookPage {
     @FindBy(how = How.ID, using = "title")
     WebElement inputTitle;
 
+    @FindBy(how = How.ID, using = "firstName")
+    WebElement firstName;
+
+    @FindBy(how = How.ID, using = "lastName")
+    WebElement lastName;
+
+    @FindBy(how = How.ID, using = "isbn")
+    WebElement isbn;
+
     @FindBy(how = How.ID, using = "submit")
     WebElement submitButton;
 
@@ -27,6 +36,18 @@ public class AddBookPage {
 
     public void inputTextIntoTitleField(String title){
         inputTitle.sendKeys(title);
+    }
+
+    public void inputTextIntoFirstNameField(String name){
+        firstName.sendKeys(name);
+    }
+
+    public void inputTextIntoLastNameField(String name){
+        lastName.sendKeys(name);
+    }
+
+    public void inputTextIntoIsbnField(String code){
+        isbn.sendKeys(code);
     }
 
     public void clickOnSubmitButton(){

@@ -9,24 +9,19 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ITLoginPage {
+public class ITLogin extends BaseAcceptance{
 
-    private static final WebDriver driver = new FirefoxDriver();
+    private static final WebDriver driver = getDriver();
     private LoginPage login;
 
     @Before
     public void setup() {
-        driver.get("http://localhost:8090/");
+        driver.get(baseUrl);
         login = new LoginPage(driver);
     }
 
-    @AfterClass
-    public static void tearDown() {
-        driver.quit();
-    }
-
     @Test
-    public void givenGoodCredentials_ThenloginIsSuccessful() throws InterruptedException {
+    public void givenGoodCredentials_ThenloginIsSuccessful() {
         String validPassword = "admin";
 
         login.inputTextIntoUsernameField(validPassword);
@@ -37,7 +32,7 @@ public class ITLoginPage {
     }
 
     @Test
-    public void givenBadCredentials_ThenLoginFails() throws InterruptedException {
+    public void givenBadCredentials_ThenLoginFails() {
         String invalidPassword = "invalidPassword";
 
         login.inputTextIntoUsernameField(invalidPassword);

@@ -1,6 +1,5 @@
 package acceptance;
 
-import acceptance.pageobject.BaseAcceptance;
 import acceptance.pageobject.ListPage;
 import acceptance.pageobject.LoginPage;
 import org.assertj.core.api.Assertions;
@@ -9,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 
-public class ITListPage  extends BaseAcceptance {
+public class ITList extends BaseAcceptance {
 
     private LoginPage login;
     private ListPage listPage;
@@ -18,7 +17,7 @@ public class ITListPage  extends BaseAcceptance {
 
     @Before
     public void setup() {
-        driver.get("http://localhost:8090/");
+        driver.get(baseUrl);
         login = new LoginPage(driver);
         listPage = new ListPage(driver);
         login();
@@ -32,12 +31,6 @@ public class ITListPage  extends BaseAcceptance {
         login.inputTextIntoPasswordField(validPassword);
         login.clickOnLoginButton();
     }
-
-    @AfterClass
-    public static void tearDown() {
-        driver.quit();
-    }
-
 
     @Test
     public void booksAreListed() throws InterruptedException {

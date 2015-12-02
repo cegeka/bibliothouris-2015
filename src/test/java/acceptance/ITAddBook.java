@@ -1,31 +1,24 @@
 package acceptance;
 
 import acceptance.pageobject.AddBookPage;
-import acceptance.pageobject.BaseAcceptance;
 import acceptance.pageobject.LoginPage;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ITAddBookPage extends BaseAcceptance {
+public class ITAddBook extends BaseAcceptance {
 
     private static WebDriver driver = getDriver();
     private AddBookPage addBookPage;
 
     @Before
     public void setup() {
-        driver.get("http://localhost:8080/app/#/books/add");
+        driver.get(baseUrl);
         login();
         addBookPage = new AddBookPage(driver);
         addBookPage.clickOnAddBookButton();
-    }
-
-    @AfterClass
-    public static void tearDown() {
-        driver.quit();
     }
 
     private void login() {
@@ -45,5 +38,16 @@ public class ITAddBookPage extends BaseAcceptance {
         addBookPage.clickOnSubmitButton();
 
         assertThat(addBookPage.getIsbnRequiredMessage()).isNotNull();
+    }
+
+    @Test
+    public void whenWeAddABook_ThenItIsAdded() throws InterruptedException {
+        addBookPage.inputTextIntoTitleField("title");
+        addBookPage.inputTextIntoIsbnField("someIsbnName");
+        addBookPage.inputTextIntoLastNameField("someLastName");
+        addBookPage.inputTextIntoFirstNameField("someFirstName");
+        addBookPage.clickOnSubmitButton();
+        Thread.sleep(2500);
+        assertThat(driver.getCurrentUrl().contains("/app/#/status")).isTrue();
     }
 }
