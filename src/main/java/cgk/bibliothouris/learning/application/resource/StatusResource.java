@@ -1,6 +1,7 @@
 package cgk.bibliothouris.learning.application.resource;
 
 import cgk.bibliothouris.learning.application.transferobject.Status;
+import cgk.bibliothouris.learning.config.AppConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
@@ -10,6 +11,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
+import java.util.concurrent.TimeUnit;
 
 @Component("statusResource")
 @Path("/status")
@@ -22,9 +26,20 @@ public class StatusResource {
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_PLAIN})
     public Response getStatus() {
-        System.out.println("-- ENV -" + activeProfile + "- LOADED -- ");
-        return Response.status(Response.Status.OK).entity(new Status(activeProfile)).build();
+        Status status = Status.StatusBuilder.status().withEnvironment(activeProfile).withUpTime(getServerUpTime()).build();
+
+        return Response.status(Response.Status.OK).entity(status).build();
     }
 
+    private String getServerUpTime() {
+        RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
+        long upTime = rb.getUptime();
 
+        long days = TimeUnit.MILLISECONDS.toDays(upTime);
+        long hours = TimeUnit.MILLISECONDS.toHours(upTime) - TimeUnit.MILLISECONDS.toHours(days);
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(upTime) - TimeUnit.MILLISECONDS.toMinutes(hours);
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(upTime) - TimeUnit.MILLISECONDS.toSeconds(minutes);
+
+        return String.format("%d days, %d hours, %d minutes and %d seconds", days, hours, minutes, seconds);
+    }
 }
