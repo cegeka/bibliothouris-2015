@@ -13,6 +13,8 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+import java.net.URI;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MemberResourceTest {
@@ -22,6 +24,9 @@ public class MemberResourceTest {
 
     @Mock
     private MemberService service;
+
+    @Mock
+    private UriInfo uriInfo;
 
     @Test
     public void whenWePostMember_WeGetUUIDBack() {
@@ -44,5 +49,19 @@ public class MemberResourceTest {
 
         Assertions.assertThat(response.getStatus()).isEqualTo(200);
     }
+
+    @Test
+    public void whenWePostMember_WeGetUIDinLocation() {
+        String expectedUri = "someUri";
+        Member expectedMember = MemberTestFixture.createMember();
+        URI expectedLocation = URI.create(expectedUri + "/" + expectedMember.getUUID());
+        Mockito.when(service.createMember(expectedMember)).thenReturn(expectedMember);
+        Mockito.when(uriInfo.getAbsolutePath()).thenReturn(URI.create(expectedUri));
+
+        Response response = resource.addMember(expectedMember);
+
+        Assertions.assertThat(response.getLocation()).isEqualTo(expectedLocation);
+    }
+
 
 }

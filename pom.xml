@@ -331,7 +331,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>${hibernate.version}</version>
+            <version>5.2.2.Final</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish.web</groupId>
