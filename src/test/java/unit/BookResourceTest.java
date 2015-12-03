@@ -13,6 +13,7 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 import java.util.ArrayList;
@@ -23,6 +24,8 @@ import static org.mockito.Mockito.times;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BookResourceTest {
+
+    private final static Integer BOOK_ID = 1;
 
     @InjectMocks
     private BookResource bookResource;
@@ -40,7 +43,7 @@ public class BookResourceTest {
 
         Response response = bookResource.createBook(book);
 
-        assertThat(response.getStatusInfo()).isEqualTo(Response.Status.BAD_REQUEST);
+        assertThat(response.getStatusInfo()).isEqualTo(Status.BAD_REQUEST);
     }
 
     @Test
@@ -50,7 +53,7 @@ public class BookResourceTest {
 
         Response response = bookResource.createBook(book);
 
-        assertThat(response.getStatusInfo()).isEqualTo(Response.Status.OK);
+        assertThat(response.getStatusInfo()).isEqualTo(Status.OK);
     }
 
     @Test
@@ -66,7 +69,7 @@ public class BookResourceTest {
     @Test
     public void givenAValidBook_createBook_returnsLinkToTheNewBook() {
         Book book = BookTestFixture.createBookWithOneAuthor();
-        book.setId(1);
+        book.setId(BOOK_ID);
         Mockito.when(mockBookService.createBook(book)).thenReturn(book);
         Mockito.when(mockUriInfo.getAbsolutePath()).thenReturn(URI.create("http://localhost:8080/webapi/books"));
 
@@ -84,7 +87,7 @@ public class BookResourceTest {
         Response response = bookResource.getAllBooks(Integer.toString(0),Integer.toString(5));
 
         Mockito.verify(mockBookService, times(1)).findAllBooks("0","5");
-        assertThat(response.getStatusInfo()).isEqualTo(Response.Status.OK);
+        assertThat(response.getStatusInfo()).isEqualTo(Status.OK);
     }
 
     @Test
@@ -107,7 +110,36 @@ public class BookResourceTest {
         Response response = bookResource.getAllBooks(Integer.toString(0),Integer.toString(5));
 
         Mockito.verify(mockBookService, times(1)).findAllBooks("0","5");
-        assertThat(response.getStatusInfo()).isEqualTo(Response.Status.NOT_FOUND);
+        assertThat(response.getStatusInfo()).isEqualTo(Status.NOT_FOUND);
+    }
+
+    @Test
+    public void givenAWrongBookId_getBookById_returns404NOTFOUND() {
+        Mockito.when(mockBookService.findBookById(BOOK_ID)).thenReturn(null);
+
+        Response response = bookResource.getBook(BOOK_ID);
+
+        assertThat(response.getStatusInfo()).isEqualTo(Status.NOT_FOUND);
+        assertThat(response.getEntity()).isEqualTo(null);
+    }
+
+    @Test
+    public void givenAValidBookId_getBookById_returns200OK() {
+        Mockito.when(mockBookService.findBookById(BOOK_ID)).thenReturn(new Book());
+
+        Response response = bookResource.getBook(BOOK_ID);
+
+        assertThat(response.getStatusInfo()).isEqualTo(Status.OK);
+    }
+
+    @Test
+    public void givenAValidBookId_getBookById_returnsCorrectBook() {
+        Book expectedBook = new Book();
+        Mockito.when(mockBookService.findBookById(BOOK_ID)).thenReturn(expectedBook);
+
+        Response response = bookResource.getBook(BOOK_ID);
+
+        assertThat(response.getEntity()).isEqualTo(expectedBook);
     }
 
 }

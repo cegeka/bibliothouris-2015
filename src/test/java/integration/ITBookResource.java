@@ -60,9 +60,17 @@ public class ITBookResource extends JerseyTest {
     public void givenAListOfBooks_GET_returnsTheListOfBooks() {
         Book newBook = client.post(PATH, bookWithOneAuthor).readEntity(Book.class);
 
-        List<Book> returnedList = client.getBooks(PATH).readEntity(new GenericType<List<Book>>() {
-        });
+        List<Book> returnedList = client.get(PATH).readEntity(new GenericType<List<Book>>() {});
 
         assertThat(returnedList).contains(newBook);
+    }
+
+    @Test
+    public void givenABook_GETById_returnsTheCorrectBook() {
+        Book book = client.post(PATH, bookWithOneAuthor).readEntity(Book.class);
+
+        Book foundBook = client.get(PATH + "/" + book.getId()).readEntity(Book.class);
+
+        assertThat(foundBook).isEqualTo(book);
     }
 }

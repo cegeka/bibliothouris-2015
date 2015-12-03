@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import javax.ws.rs.core.Response.Status;
 import java.net.URI;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class BookResource {
     public Response getAllBooks(@QueryParam("start") String start, @QueryParam("end") String end){
         List<Book> books = bookService.findAllBooks(start, end);
         if(books.size() == 0){
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Status.NOT_FOUND).build();
         }
         return Response.ok().entity(new GenericEntity<List<Book>>(books){}).build();
     }
@@ -39,7 +40,7 @@ public class BookResource {
         Long count = bookService.countBooks();
         System.out.println(count);
         if(count == 0){
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Status.NOT_FOUND).build();
         }
         return Response.ok().entity(count).build();
     }
@@ -53,11 +54,23 @@ public class BookResource {
             String uri = uriInfo.getAbsolutePath() + "/" + newBook.getId();
             return Response.ok().entity(newBook).location(URI.create(uri)).build();
         } catch (ValidationException e) {
-            return getStringResponse(Response.Status.BAD_REQUEST, e.getMessage());
+            return getStringResponse(Status.BAD_REQUEST, e.getMessage());
         }
     }
 
-    private Response getStringResponse(Response.Status status, String message) {
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("{bookId}")
+    public Response getBook(@PathParam("bookId") Integer bookId) {
+        Book book = bookService.findBookById(bookId);
+
+        if(book == null)
+            return Response.status(Status.NOT_FOUND).build();
+
+        return Response.ok().entity(book).build();
+    }
+
+    private Response getStringResponse(Status status, String message) {
         StringTO stringTO = new StringTO();
         stringTO.setMessage(message);
 

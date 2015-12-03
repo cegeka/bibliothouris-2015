@@ -18,7 +18,7 @@ public class BookServiceClient {
                     .post(Entity.entity(entity, MediaType.APPLICATION_JSON));
     }
 
-    public Response getBooks(String path) {
+    public Response get(String path) {
         return target.path(path)
                      .request(MediaType.APPLICATION_JSON)
                      .get(Response.class);
