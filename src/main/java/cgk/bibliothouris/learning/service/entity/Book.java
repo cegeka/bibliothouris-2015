@@ -56,8 +56,11 @@ public class Book {
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "BOOK_ID")
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "BOOK_CATEGORY",
+            joinColumns = @JoinColumn(name = "BOOK_ID"),
+            inverseJoinColumns = @JoinColumn(name = "CATEGORY_ID"))
     private Set<BookCategory> categories;
 
     @Column(name = "PAGES")
