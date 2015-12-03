@@ -1,5 +1,7 @@
 package cgk.bibliothouris.learning.service.entity;
 
+import cgk.bibliothouris.learning.service.dateconverter.LocalDateAdapter;
+import cgk.bibliothouris.learning.service.dateconverter.LocalDateAttributeConverter;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
@@ -7,6 +9,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -49,7 +53,66 @@ public class Book {
     @Valid
     private Set<Author> authors;
 
+    @Column(name = "DESCRIPTION")
+    private String description;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "BOOK_ID")
+    private Set<BookCategory> categories;
+
+    @Column(name = "PAGES")
+    private Integer pages;
+
+    @Column(name = "PUBLICATION_DATE")
+    @Convert(converter = LocalDateAttributeConverter.class)
+    private LocalDate date;
+
+    @Column(name = "PUBLISHER")
+    private String publisher;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Set<BookCategory> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<BookCategory> categories) {
+        this.categories = categories;
+    }
+
+    public Integer getPages() {
+        return pages;
+    }
+
+    public void setPages(Integer pages) {
+        this.pages = pages;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
+
     public Integer getId() {
+
         return id;
     }
 
@@ -81,12 +144,28 @@ public class Book {
         this.authors = listOfAuthors;
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Book book = (Book) o;
+
+        if (id != null ? !id.equals(book.id) : book.id != null) return false;
+
+        return true;
+    }
+
     public static class BookBuilder {
         private Book book;
 
         private BookBuilder() {
             book = new Book();
-            book.setAuthors(new HashSet<>());
+        }
+
+        public static BookBuilder book() {
+            return new BookBuilder();
         }
 
         public BookBuilder withIsbn(String isbn) {
@@ -104,25 +183,33 @@ public class Book {
             return this;
         }
 
-        public static BookBuilder book() {
-            return new BookBuilder();
+        public BookBuilder withDescription(String description) {
+            book.description = description;
+            return this;
+        }
+
+        public BookBuilder withCategories(Set<BookCategory> categories) {
+            book.categories = categories;
+            return this;
+        }
+
+        public BookBuilder withPages(Integer pages) {
+            book.pages = pages;
+            return this;
+        }
+
+        public BookBuilder withPublicationDate(LocalDate date) {
+            book.date = date;
+            return this;
+        }
+
+        public BookBuilder withPublisher(String publisher) {
+            book.publisher = publisher;
+            return this;
         }
 
         public Book build() {
             return book;
         }
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Book book = (Book) o;
-
-        if (id != null ? !id.equals(book.id) : book.id != null) return false;
-
-        return true;
-    }
-
 }

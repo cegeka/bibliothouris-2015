@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ITBookResource extends JerseyTest {
 
     private BookServiceClient client;
-    private Book bookWithOneAuthor;
+    private Book bookWithOneAuthor, bookWithOneAuthorAndOneCategory;
     private static String PATH = "/books";
 
 
@@ -42,6 +42,7 @@ public class ITBookResource extends JerseyTest {
         client = new BookServiceClient(target());
 
         bookWithOneAuthor = BookTestFixture.createBookWithOneAuthor();
+        bookWithOneAuthorAndOneCategory =  BookTestFixture.createBookWithOneAuthorAndOneCategory();
     }
 
     @After

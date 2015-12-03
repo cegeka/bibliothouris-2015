@@ -2,7 +2,10 @@ package fixture;
 
 import cgk.bibliothouris.learning.service.entity.Author;
 import cgk.bibliothouris.learning.service.entity.Book;
+import cgk.bibliothouris.learning.service.entity.BookCategory;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,6 +18,28 @@ public class BookTestFixture {
         authors.add(author);
 
         return authors;
+    }
+
+    public static Set<BookCategory> createOneCategory() {
+        BookCategory category = BookCategory.CategoryBuilder.category().withCategory("Science").build();
+
+        Set<BookCategory> categories = new HashSet<>();
+        categories.add(category);
+
+        return categories;
+    }
+
+    public static Set<BookCategory> createThreeCategories() {
+        BookCategory category = BookCategory.CategoryBuilder.category().withCategory("Science").build();
+        BookCategory category2 = BookCategory.CategoryBuilder.category().withCategory("Programming").build();
+        BookCategory category3 = BookCategory.CategoryBuilder.category().withCategory("Agile").build();
+
+        Set<BookCategory> categories = new HashSet<>();
+        categories.add(category);
+        categories.add(category2);
+        categories.add(category3);
+
+        return categories;
     }
 
     public static Set<Author> createFourAuthors() {
@@ -47,6 +72,30 @@ public class BookTestFixture {
                                         .withAuthors(createOneAuthor())
                                         .withIsbn("978-0-13-235088-4")
                                         .build();
+    }
+
+    public static Book createBookWithOneAuthorAndOneCategory() {
+        return Book.BookBuilder.book().withTitle("Clean Code")
+                .withAuthors(createOneAuthor())
+                .withIsbn("978-0-13-235088-4")
+                .withDescription("Great book for learning how to write clean code")
+                .withCategories(createOneCategory())
+                .withPages(430)
+                .withPublicationDate(LocalDate.of(2013, Month.MARCH, 23))
+                .withPublisher("Prentice Hall")
+                .build();
+    }
+
+    public static Book createBookWithOneAuthorAndThreeCategories() {
+        return Book.BookBuilder.book().withTitle("Clean Code")
+                .withAuthors(createOneAuthor())
+                .withIsbn("978-0-13-235088-4")
+                .withDescription("Great book for learning how to write clean code")
+                .withCategories(createThreeCategories())
+                .withPages(430)
+                .withPublicationDate(LocalDate.of(2013, Month.MARCH, 23))
+                .withPublisher("Prentice Hall")
+                .build();
     }
 
     public static Book createBookWithFourAuthors() {

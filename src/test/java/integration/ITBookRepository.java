@@ -23,12 +23,15 @@ public class ITBookRepository {
 
     @Autowired
     private BookRepository bookRepository;
-    private Book bookWithOneAuthor, bookWithFourAuthors;
+    private Book bookWithOneAuthor, bookWithFourAuthors, bookWithOneAuthorAndOneCategory,
+                 bookWithOneAuthorAndThreeCategories;
 
     @Before
     public void setUp() {
         bookWithOneAuthor = BookTestFixture.createBookWithOneAuthor();
         bookWithFourAuthors = BookTestFixture.createBookWithFourAuthors();
+        bookWithOneAuthorAndOneCategory = BookTestFixture.createBookWithOneAuthorAndOneCategory();
+        bookWithOneAuthorAndThreeCategories = BookTestFixture.createBookWithOneAuthorAndThreeCategories();
         bookRepository.deleteAllBooks();
     }
 
@@ -42,6 +45,20 @@ public class ITBookRepository {
     @Test
     public void givenANewBookWithFourAuthors_createBook_createsNewBookWithFourAuthors() {
         Book newBook = bookRepository.createBook(bookWithFourAuthors);
+
+        assertThat(newBook.getId()).isNotNull();
+    }
+
+    @Test
+    public void givenANewBookWithOneAuthorAndOneCategory_createBook_createsNewBookWithOneAuthorAndOneCategory() {
+        Book newBook = bookRepository.createBook(bookWithOneAuthorAndOneCategory);
+
+        assertThat(newBook.getId()).isNotNull();
+    }
+
+    @Test
+    public void givenANewBookWithOneAuthorAndOneCategory_createBook_createsNewBookWithOneAuthorAndThreeCategories() {
+        Book newBook = bookRepository.createBook(bookWithOneAuthorAndThreeCategories);
 
         assertThat(newBook.getId()).isNotNull();
     }
@@ -66,6 +83,26 @@ public class ITBookRepository {
         assertThat(foundBooks.size()).isEqualTo(2);
         assertThat(foundBooks).contains(book1);
         assertThat(foundBooks).contains(book2);
+    }
+
+    @Test
+    public void givenOneBookWithOneAuthorAndOneCategory_findBooks_findTheBook() {
+        Book book1 = bookRepository.createBook(bookWithOneAuthorAndOneCategory);
+
+        List<Book> foundBooks = bookRepository.findAllBooks(0,5);
+
+        assertThat(foundBooks.size()).isEqualTo(1);
+        assertThat(foundBooks).contains(book1);
+    }
+
+    @Test
+    public void givenOneBookWithOneAuthorAndThreeCategories_findBooks_findTheBook() {
+        Book book1 = bookRepository.createBook(bookWithOneAuthorAndThreeCategories);
+
+        List<Book> foundBooks = bookRepository.findAllBooks(0,5);
+
+        assertThat(foundBooks.size()).isEqualTo(1);
+        assertThat(foundBooks).contains(book1);
     }
 
     @Test
