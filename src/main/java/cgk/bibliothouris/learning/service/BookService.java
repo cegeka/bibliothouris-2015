@@ -28,6 +28,7 @@ public class BookService {
         return bookRepository.createBook(book);
     }
 
+    @Transactional(readOnly = true)
     public List<Book> findAllBooks(String start, String end) {
         Integer startPosition = null;
         Integer endPosition = null;
@@ -45,6 +46,20 @@ public class BookService {
         return bookRepository.findAllBooks(startPosition, endPosition);
     }
 
+    @Transactional(readOnly = true)
+    public Long countBooks() {
+        return bookRepository.countBooks();
+    }
+
+    @Transactional(readOnly = true)
+    public Book findBookById(Integer bookId) {
+        return bookRepository.findBookById(bookId);
+    }
+
+    public void deleteAllBooks() {
+        bookRepository.deleteAllBooks();
+    }
+
     private boolean isNegative(String number) {
         try {
             if (Integer.parseInt(number) < 0)
@@ -58,13 +73,5 @@ public class BookService {
         Set<ConstraintViolation<Book>> bookConstraintViolations = validator.validate(book);
         if (!bookConstraintViolations.isEmpty())
             throw new ValidationException(bookConstraintViolations.iterator().next().getMessage());
-    }
-
-    public void deleteAllBooks() {
-        bookRepository.deleteAllBooks();
-    }
-
-    public Long countBooks() {
-        return bookRepository.countBooks();
     }
 }

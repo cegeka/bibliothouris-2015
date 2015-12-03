@@ -77,4 +77,14 @@ public class BookServiceTest {
         assertThat(books).isEqualTo(listOfBooks);
     }
 
+    @Test
+    public void givenABookId_findBookById_returnsTheCorrectBook() {
+        Book book = BookTestFixture.createBookWithOneAuthor();
+        Mockito.when(mockRepository.findBookById(book.getId())).thenReturn(book);
+
+        Book foundBook = service.findBookById(book.getId());
+
+        assertThat(foundBook).isEqualTo(book);
+    }
+
 }
