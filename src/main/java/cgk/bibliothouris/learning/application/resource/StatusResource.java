@@ -11,6 +11,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.xml.transform.sax.SAXSource;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.util.concurrent.TimeUnit;
@@ -36,9 +37,9 @@ public class StatusResource {
         long upTime = rb.getUptime();
 
         long days = TimeUnit.MILLISECONDS.toDays(upTime);
-        long hours = TimeUnit.MILLISECONDS.toHours(upTime) - TimeUnit.MILLISECONDS.toHours(days);
-        long minutes = TimeUnit.MILLISECONDS.toMinutes(upTime) - TimeUnit.MILLISECONDS.toMinutes(hours);
-        long seconds = TimeUnit.MILLISECONDS.toSeconds(upTime) - TimeUnit.MILLISECONDS.toSeconds(minutes);
+        long hours = TimeUnit.MILLISECONDS.toHours(upTime) - TimeUnit.DAYS.toHours(days);
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(upTime) - TimeUnit.HOURS.toMinutes(hours);
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(upTime) - TimeUnit.MINUTES.toSeconds(minutes);
 
         return String.format("%d days, %d hours, %d minutes and %d seconds", days, hours, minutes, seconds);
     }
