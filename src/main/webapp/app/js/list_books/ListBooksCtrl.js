@@ -1,6 +1,6 @@
 var booksApp = angular.module("Bibliothouris");
 booksApp.controller("ListBooksCtrl", ListBooksCtrl);
-function ListBooksCtrl($scope, restService){
+function ListBooksCtrl($scope, restService, $location){
 
     $scope.bigTotalItems = 100;
     $scope.start = 0;
@@ -12,6 +12,10 @@ function ListBooksCtrl($scope, restService){
         console.log($scope.books);
         $scope.noBooks = false;
     });
+
+    $scope.showBook = function(bookId) {
+        $location.path($location.url() + "/" + bookId);
+    };
 
     restService.countBooks().then(function(data){
         $scope.totalItems = data;

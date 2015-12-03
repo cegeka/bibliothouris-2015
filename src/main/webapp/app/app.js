@@ -19,6 +19,11 @@
                     templateUrl: "templates/list_books.html",
                     controller: "ListBooksCtrl"
                 })
+                .when("/books/:bookId", {
+                    templateUrl: "templates/list_book_details.html",
+                    controller: "ListBookDetailsCtrl",
+                    controllerAs: "vm"
+                })
                 .when("/login", {
                     templateUrl: "templates/login.html",
                     controller: "LoginCtrl"

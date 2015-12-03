@@ -18,7 +18,7 @@
             vm.book.authors[index].firstName = item.firstName;
             vm.book.authors[index].lastName = item.lastName;
         };
-        vm.validateFilledIn = '';
+        vm.validateFilledIn = '';       // TODO: it seems to be unused! To be checked!
         activate();
 
         function activate() {
