@@ -4,7 +4,7 @@ CREATE TABLE LIBRARY_MEMBER (
   BIRTH_DATE      DATE                     NOT NULL,
   LAST_NAME       VARCHAR2(35)             NOT NULL,
   FIRST_NAME      VARCHAR2(35)             NOT NULL,
-  ADRESS          VARCHAR2(200),
+  ADDRESS          VARCHAR2(200),
   POSTAL_CODE     NUMBER(10),
   CITY            VARCHAR2(16),
   EMAIL           VARCHAR2(64),

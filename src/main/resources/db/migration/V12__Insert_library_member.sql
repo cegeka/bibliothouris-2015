@@ -3,7 +3,7 @@ INSERT INTO LIBRARY_MEMBER VALUES(
   '1880222333444',
   '18-JUN-1910',
   'Clark',
-  'kent',
+  'Kent',
   'Smallville',
   040965,
   'USA',
