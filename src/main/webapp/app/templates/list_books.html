@@ -21,7 +21,7 @@
                     <td class="table-column-ellipsis">{{book.title}}</td>
                     <td class="table-column-ellipsis">
                         <!--<span><a href="#" data-toggle="tooltip" title="Hooray!">Hover over me</a></span> </td>-->
-                        <span ng-repeat="author in book.authors"> {{author.firstName}} {{author.lastName}} {{$last ? '' : ', '}}</span>
+                        <span ng-repeat="author in book.authors"> {{author.firstName}} {{author.lastName}}{{$last ? '' : ', '}}</span>
                     </td>
                     <td>{{book.isbn}}</td>
                 </tr>
