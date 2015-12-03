@@ -59,4 +59,9 @@ public class BookRepositoryJPA implements BookRepository {
         TypedQuery<Long> countQuery = entityManager.createNamedQuery(Book.COUNT_BOOKS, Long.class);
         return countQuery.getSingleResult();
     }
+
+    @Override
+    public Book findBookById(Integer bookId) {
+        return entityManager.find(Book.class, bookId);
+    }
 }

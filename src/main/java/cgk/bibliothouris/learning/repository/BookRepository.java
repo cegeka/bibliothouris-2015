@@ -13,4 +13,6 @@ public interface BookRepository {
     void deleteAllBooks();
 
     Long countBooks();
+
+    Book findBookById(Integer bookId);
 }

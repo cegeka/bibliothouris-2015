@@ -78,4 +78,13 @@ public class ITBookRepository {
         assertThat(count).isEqualTo(2);
     }
 
+    @Test
+    public void givenABookId_findBookById_returnsTheCorrectBook() {
+        Book book = bookRepository.createBook(bookWithOneAuthor);
+
+        Book foundBook = bookRepository.findBookById(book.getId());
+
+        assertThat(foundBook).isEqualTo(book);
+    }
+
 }
