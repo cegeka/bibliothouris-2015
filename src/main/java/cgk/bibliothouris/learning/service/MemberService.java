@@ -5,6 +5,7 @@ import cgk.bibliothouris.learning.service.entity.Member;
 import cgk.bibliothouris.learning.service.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -12,6 +13,7 @@ import javax.validation.Validator;
 import java.util.Set;
 
 @Service
+@Transactional
 public class MemberService {
 
     private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();

@@ -1,13 +1,14 @@
 package cgk.bibliothouris.learning.service.entity;
 
+import cgk.bibliothouris.learning.service.dateconverter.LocalDateAdapter;
 import cgk.bibliothouris.learning.service.dateconverter.LocalDateAttributeConverter;
-import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 
 @Entity
@@ -17,8 +18,6 @@ public class Member {
 
     @Id
     @Column(name = "U_ID")
-    @NotBlank(message = "UID is missing")
-    @Size(max = 36, message = "UID should be 36 characters long")
     private String UUID;
 
     @Column(name = "BIRTH_DATE")
@@ -45,7 +44,7 @@ public class Member {
     private String lastName;
 
     @Column(name = "ADDRESS")
-    private String adress;
+    private String address;
 
     @Column(name = "POSTAL_CODE")
     private Integer postalCode;
@@ -79,6 +78,14 @@ public class Member {
         return firstName;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -92,11 +99,11 @@ public class Member {
     }
 
     public String getAdress() {
-        return adress;
+        return address;
     }
 
     public void setAdress(String adress) {
-        this.adress = adress;
+        this.address = adress;
     }
 
     public Integer getPostalCode() {
@@ -131,6 +138,14 @@ public class Member {
         this.phoneNumber = phoneNumber;
     }
 
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -140,7 +155,7 @@ public class Member {
         Member member = (Member) o;
 
         if (UUID != null ? !UUID.equals(member.UUID) : member.UUID != null) return false;
-        if (adress != null ? !adress.equals(member.adress) : member.adress != null) return false;
+        if (address != null ? !address.equals(member.address) : member.address != null) return false;
         if (birthDate != null ? !birthDate.equals(member.birthDate) : member.birthDate != null) return false;
         if (city != null ? !city.equals(member.city) : member.city != null) return false;
         if (email != null ? !email.equals(member.email) : member.email != null) return false;
@@ -161,7 +176,7 @@ public class Member {
         result = 31 * result + (nationalNumber != null ? nationalNumber.hashCode() : 0);
         result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
-        result = 31 * result + (adress != null ? adress.hashCode() : 0);
+        result = 31 * result + (address != null ? address.hashCode() : 0);
         result = 31 * result + (postalCode != null ? postalCode.hashCode() : 0);
         result = 31 * result + (city != null ? city.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
@@ -202,7 +217,7 @@ public class Member {
         }
 
         public MemberBuilder withAdress(String adress) {
-            member.adress = adress;
+            member.address = adress;
             return this;
         }
 

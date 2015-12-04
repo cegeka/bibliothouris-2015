@@ -5,10 +5,12 @@ import cgk.bibliothouris.learning.service.MemberService;
 import cgk.bibliothouris.learning.service.entity.Member;
 import cgk.bibliothouris.learning.service.exception.ValidationException;
 import fixture.MemberTestFixture;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -47,5 +49,15 @@ public class MemberServiceTest {
         Member member = MemberTestFixture.createInvalidMemberWithNoNationalNumber();
 
          service.createMember(member);
+    }
+
+    @Test
+    public void givenValidMember_whenValidated_shouldReturnMember() {
+        Member member = MemberTestFixture.createMember();
+        Mockito.when(mockRepository.createMember(member)).thenReturn(member);
+
+        Member createdMember = service.createMember(member);
+
+        Assertions.assertThat(member).isEqualTo(createdMember);
     }
 }

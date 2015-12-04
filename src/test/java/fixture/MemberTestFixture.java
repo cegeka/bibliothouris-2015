@@ -1,6 +1,8 @@
 package fixture;
 
 import cgk.bibliothouris.learning.service.entity.Member;
+import net.sf.cglib.core.Local;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -8,16 +10,17 @@ import java.util.UUID;
 public class MemberTestFixture {
 
     public static Member createMember() {
+        LocalDate date = LocalDate.of(2015,4,4);
         return Member.MemberBuilder.member()
                 .withAdress("DefaultAdress")
                 .withCity("DefaultCity")
                 .withEmail("DefaultEmail")
                 .withFirstName("Stumpy")
                 .withLastName("Lumpy")
-                .withNationalNumber("123123123")
+                .withNationalNumber(String.valueOf(RandomStringUtils.randomNumeric(12)))
                 .withPostalCode(123123)
                 .withUUID(UUID.randomUUID().toString())
-                .withBirthDate(LocalDate.now())
+                .withBirthDate(date)
                 .withPhoneNumber(07673322222)
                 .build();
     }
