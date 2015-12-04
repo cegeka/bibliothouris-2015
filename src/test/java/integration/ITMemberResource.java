@@ -12,7 +12,7 @@ import org.springframework.web.filter.RequestContextFilter;
 
 import javax.ws.rs.core.Application;
 
-public class ITLibraryMemberResource extends JerseyTest{
+public class ITMemberResource extends JerseyTest{
 
     @Override
     protected Application configure() {

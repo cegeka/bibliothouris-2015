@@ -1,6 +1,7 @@
 package cgk.bibliothouris.learning.service.entity;
 
 import cgk.bibliothouris.learning.service.dateconverter.LocalDateAttributeConverter;
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
@@ -27,15 +28,18 @@ public class Member {
 
     @Column(name = "NATIONAL_NUMBER")
     @NotBlank(message = "National number is missing")
+    @NotNull(message = "National number is missing")
     @Size(max = 32, message = "National Number should be at most 32 characters long")
     private String nationalNumber;
 
     @NotBlank(message = "First name is missing")
+    @NotNull(message = "First name is missing")
     @Size(max = 35, message = "First name should be at most 35 characters long")
     @Column(name = "FIRST_NAME")
     private String firstName;
 
     @NotBlank(message = "Last name is missing")
+    @NotNull(message = "Last name is missing")
     @Size(max = 35, message = "Last name should be at most 35 characters long")
     @Column(name = "LAST_NAME")
     private String lastName;

@@ -1,7 +1,9 @@
 package cgk.bibliothouris.learning.service;
 
+import cgk.bibliothouris.learning.repository.MemberRepository;
 import cgk.bibliothouris.learning.service.entity.Member;
 import cgk.bibliothouris.learning.service.exception.ValidationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolation;
@@ -14,10 +16,13 @@ public class MemberService {
 
     private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
+    @Autowired
+    private MemberRepository repository;
+
     public Member createMember(Member member) {
         validateMember(member);
 
-        return null;
+        return repository.createMember(member);
     }
 
     private void validateMember(Member member) {

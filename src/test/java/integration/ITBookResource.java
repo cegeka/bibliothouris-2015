@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ITBookResource extends JerseyTest {
 
-    private BookServiceClient client;
+    private TestIntegrationClient client;
     private Book bookWithOneAuthor, bookWithOneAuthorAndOneCategory;
     private static String PATH = "/books";
 
@@ -39,7 +39,7 @@ public class ITBookResource extends JerseyTest {
 
     @Before
     public void setUpTests() {
-        client = new BookServiceClient(target());
+        client = new TestIntegrationClient(target());
 
         bookWithOneAuthor = BookTestFixture.createBookWithOneAuthor();
         bookWithOneAuthorAndOneCategory =  BookTestFixture.createBookWithOneAuthorAndOneCategory();

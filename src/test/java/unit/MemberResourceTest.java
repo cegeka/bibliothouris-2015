@@ -3,6 +3,7 @@ package unit;
 import cgk.bibliothouris.learning.application.resource.MemberResource;
 import cgk.bibliothouris.learning.service.MemberService;
 import cgk.bibliothouris.learning.service.entity.Member;
+import cgk.bibliothouris.learning.service.exception.ValidationException;
 import fixture.MemberTestFixture;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -29,7 +30,7 @@ public class MemberResourceTest {
     private UriInfo uriInfo;
 
     @Test
-    public void whenWePostMember_WeGetUUIDBack() {
+    public void whenWePostValidMember_WeGetUUIDBack() {
         Member expectedMember = MemberTestFixture.createMember();
 
         Mockito.when(service.createMember(expectedMember)).thenReturn(expectedMember);
@@ -40,18 +41,18 @@ public class MemberResourceTest {
     }
 
     @Test
-    public void whenWePostMember_WeGetOKStatus() {
+    public void whenWePostValidMember_WeGetOKStatus() {
         Member expectedMember = MemberTestFixture.createMember();
 
         Mockito.when(service.createMember(expectedMember)).thenReturn(expectedMember);
 
         Response response = resource.addMember(expectedMember);
 
-        Assertions.assertThat(response.getStatus()).isEqualTo(200);
+        Assertions.assertThat(response.getStatus()).isEqualTo(Response.Status.OK.getStatusCode());
     }
 
     @Test
-    public void whenWePostMember_WeGetUIDinLocation() {
+    public void whenWePostValidMember_WeGetUIDinLocation() {
         String expectedUri = "someUri";
         Member expectedMember = MemberTestFixture.createMember();
         URI expectedLocation = URI.create(expectedUri + "/" + expectedMember.getUUID());
@@ -63,5 +64,15 @@ public class MemberResourceTest {
         Assertions.assertThat(response.getLocation()).isEqualTo(expectedLocation);
     }
 
+    @Test
+    public void whenWePostInvalidMember_WeGetExceptionStatus() {
+        Member expectedMember = MemberTestFixture.createInvalidMemberWithNoLastName();
+
+        Mockito.when(service.createMember(expectedMember)).thenThrow(ValidationException.class);
+
+        Response response = resource.addMember(expectedMember);
+
+        Assertions.assertThat(response.getStatus()).isEqualTo(Response.Status.BAD_REQUEST.getStatusCode());
+    }
 
 }
