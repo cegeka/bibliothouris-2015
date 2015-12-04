@@ -69,7 +69,7 @@ public class Book {
 
     @Column(name = "PAGES")
     //@Range(min=1, max=99999)
-    @Digits(integer = 5, fraction = 0)
+    //@Digits(integer = 5, fraction = 0)
     private Integer pages;
 
     @Column(name = "PUBLICATION_DATE")

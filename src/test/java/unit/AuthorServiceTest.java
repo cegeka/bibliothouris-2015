@@ -18,7 +18,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 public class AuthorServiceTest {
 
-
     @InjectMocks
     private AuthorService service;
 

@@ -28,7 +28,7 @@ public class BookServiceTest {
 
     @Test
     public void givenAValidBook_createBook_returnsTheNewBook() {
-        Book book = BookTestFixture.createBookWithOneAuthor();
+        Book book = BookTestFixture.createBookWithOneAuthorAndOneCategory();
         Mockito.when(mockRepository.createBook(book)).thenReturn(book);
 
         Book newBook = service.createBook(book);
@@ -57,6 +57,20 @@ public class BookServiceTest {
         service.createBook(book);
     }
 
+    @Test(expected = ValidationException.class)
+    public void givenABookWithOneAuthorWithoutCategory_createBook_throwsValidationException() {
+        Book book = BookTestFixture.createBookWithoutCategory();
+
+        service.createBook(book);
+    }
+
+    @Test(expected = ValidationException.class)
+    public void givenABookWithOneAuthorWithNegativePagesNumber_createBook_throwsValidationException() {
+        Book book = BookTestFixture.createBookWithNegativePageNumber();
+
+        service.createBook(book);
+    }
+
     @Test
     public void givenOneBook_findAllBooks_returnsTheBook() {
         List<Book> listOfBooks = new ArrayList<>();
@@ -79,7 +93,7 @@ public class BookServiceTest {
 
     @Test
     public void givenABookId_findBookById_returnsTheCorrectBook() {
-        Book book = BookTestFixture.createBookWithOneAuthor();
+        Book book = BookTestFixture.createBookWithOneAuthorAndOneCategory();
         Mockito.when(mockRepository.findBookById(book.getId())).thenReturn(book);
 
         Book foundBook = service.findBookById(book.getId());

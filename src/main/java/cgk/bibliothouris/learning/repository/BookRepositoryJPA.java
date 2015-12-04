@@ -2,6 +2,7 @@ package cgk.bibliothouris.learning.repository;
 
 import cgk.bibliothouris.learning.service.entity.Author;
 import cgk.bibliothouris.learning.service.entity.Book;
+import cgk.bibliothouris.learning.service.entity.BookCategory;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -20,6 +21,16 @@ public class BookRepositoryJPA implements BookRepository {
 
     @Override
     public Book createBook(Book book) {
+        Book bookWithAuthors = getBookWithPersistedAuthors(book);
+
+        Book bookWithAuthorsAndCategories = getBookWithPersistedCategories(bookWithAuthors);
+
+        entityManager.persist(bookWithAuthorsAndCategories);
+
+        return bookWithAuthorsAndCategories;
+    }
+
+    private Book getBookWithPersistedAuthors(Book book){
         Set<Author> persistedAuthors = new HashSet<>();
 
         for (Author author : book.getAuthors()) {
@@ -37,7 +48,27 @@ public class BookRepositoryJPA implements BookRepository {
         }
 
         book.setAuthors(persistedAuthors);
-        entityManager.persist(book);
+
+        return book;
+    }
+
+    public Book getBookWithPersistedCategories(Book book) {
+        Set<BookCategory> persistedCategories = new HashSet<>();
+
+        for(BookCategory category : book.getCategories()) {
+            TypedQuery<BookCategory> query = entityManager.createNamedQuery(BookCategory.FIND_CATEGORY_BY_TYPE, BookCategory.class);
+            query.setParameter("category", category.getCategory());
+            List<BookCategory> categories = query.getResultList();
+
+            if(!categories.isEmpty()) {
+                persistedCategories.add(categories.get(0));
+            } else {
+                entityManager.persist(category);
+                persistedCategories.add(category);
+            }
+        }
+
+        book.setCategories(persistedCategories);
 
         return book;
     }

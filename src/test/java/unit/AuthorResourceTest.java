@@ -3,9 +3,6 @@ package unit;
 import cgk.bibliothouris.learning.application.resource.AuthorResource;
 import cgk.bibliothouris.learning.service.AuthorService;
 import cgk.bibliothouris.learning.service.entity.Author;
-import cgk.bibliothouris.learning.service.entity.Book;
-import cgk.bibliothouris.learning.service.exception.ValidationException;
-import fixture.BookTestFixture;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -14,7 +11,6 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.ws.rs.core.Response;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 

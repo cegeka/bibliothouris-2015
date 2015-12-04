@@ -38,44 +38,44 @@ public class BookResourceTest {
 
     @Test
     public void givenAnInvalidBook_createBook_returns400BADREQUEST() {
-//        Book book = BookTestFixture.createBookWithoutTitle();
-//        Mockito.when(mockBookService.createBook(book)).thenThrow(ValidationException.class);
-//
-//        Response response = bookResource.createBook(book);
-//
-//        assertThat(response.getStatusInfo()).isEqualTo(Status.BAD_REQUEST);
+        Book book = BookTestFixture.createBookWithoutTitle();
+        Mockito.when(mockBookService.createBook(book)).thenThrow(ValidationException.class);
+
+        Response response = bookResource.createBook(book);
+
+        assertThat(response.getStatusInfo()).isEqualTo(Status.BAD_REQUEST);
     }
 
     @Test
     public void givenAValidBook_createBook_returns200OK() {
-//        Book book = BookTestFixture.createBookWithOneAuthor();
-//        Mockito.when(mockBookService.createBook(book)).thenReturn(book);
-//
-//        Response response = bookResource.createBook(book);
-//
-//        assertThat(response.getStatusInfo()).isEqualTo(Status.OK);
+        Book book = BookTestFixture.createBookWithOneAuthor();
+        Mockito.when(mockBookService.createBook(book)).thenReturn(book);
+
+        Response response = bookResource.createBook(book);
+
+        assertThat(response.getStatusInfo()).isEqualTo(Status.OK);
     }
 
     @Test
     public void givenAValidBook_createBook_returnsCorrectBook() {
-//        Book book = BookTestFixture.createBookWithOneAuthor();
-//        Mockito.when(mockBookService.createBook(book)).thenReturn(book);
-//
-//        Response response = bookResource.createBook(book);
-//
-//        assertThat(response.getEntity()).isEqualTo(book);
+        Book book = BookTestFixture.createBookWithOneAuthor();
+        Mockito.when(mockBookService.createBook(book)).thenReturn(book);
+
+        Response response = bookResource.createBook(book);
+
+        assertThat(response.getEntity()).isEqualTo(book);
     }
 
     @Test
     public void givenAValidBook_createBook_returnsLinkToTheNewBook() {
-//        Book book = BookTestFixture.createBookWithOneAuthor();
-//        book.setId(BOOK_ID);
-//        Mockito.when(mockBookService.createBook(book)).thenReturn(book);
-//        Mockito.when(mockUriInfo.getAbsolutePath()).thenReturn(URI.create("http://localhost:8080/webapi/books"));
-//
-//        Response response = bookResource.createBook(book);
-//
-//        assertThat(response.getLocation()).isEqualTo(URI.create("http://localhost:8080/webapi/books/1"));
+        Book book = BookTestFixture.createBookWithOneAuthor();
+        book.setId(BOOK_ID);
+        Mockito.when(mockBookService.createBook(book)).thenReturn(book);
+        Mockito.when(mockUriInfo.getAbsolutePath()).thenReturn(URI.create("http://localhost:8080/webapi/books"));
+
+        Response response = bookResource.createBook(book);
+
+        assertThat(response.getLocation()).isEqualTo(URI.create("http://localhost:8080/webapi/books/1"));
     }
 
     @Test

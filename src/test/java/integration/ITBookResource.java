@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ITBookResource extends JerseyTest {
 
     private TestIntegrationClient client;
-    private Book bookWithOneAuthor, bookWithOneAuthorAndOneCategory;
+    private Book bookWithOneAuthorAndOneCategory;
     private static String PATH = "/books";
 
 
@@ -41,7 +41,6 @@ public class ITBookResource extends JerseyTest {
     public void setUpTests() {
         client = new TestIntegrationClient(target());
 
-        bookWithOneAuthor = BookTestFixture.createBookWithOneAuthor();
         bookWithOneAuthorAndOneCategory =  BookTestFixture.createBookWithOneAuthorAndOneCategory();
     }
 
@@ -52,14 +51,14 @@ public class ITBookResource extends JerseyTest {
 
     @Test
     public void givenABook_POST_createsANewBook() {
-        Book newBook = client.post(PATH, bookWithOneAuthor).readEntity(Book.class);
+        Book newBook = client.post(PATH, bookWithOneAuthorAndOneCategory).readEntity(Book.class);
 
         assertThat(newBook.getId()).isNotNull();
     }
 
     @Test
     public void givenAListOfBooks_GET_returnsTheListOfBooks() {
-        Book newBook = client.post(PATH, bookWithOneAuthor).readEntity(Book.class);
+        Book newBook = client.post(PATH, bookWithOneAuthorAndOneCategory).readEntity(Book.class);
 
         List<Book> returnedList = client.get(PATH).readEntity(new GenericType<List<Book>>() {});
 
@@ -68,7 +67,7 @@ public class ITBookResource extends JerseyTest {
 
     @Test
     public void givenABook_GETById_returnsTheCorrectBook() {
-        Book book = client.post(PATH, bookWithOneAuthor).readEntity(Book.class);
+        Book book = client.post(PATH, bookWithOneAuthorAndOneCategory).readEntity(Book.class);
 
         Book foundBook = client.get(PATH + "/" + book.getId()).readEntity(Book.class);
 

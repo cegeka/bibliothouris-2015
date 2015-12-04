@@ -8,8 +8,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name = "CATEGORY")
+@NamedQueries({
+        @NamedQuery(name = BookCategory.FIND_ALL_CATEGORIES, query = "SELECT bc FROM BookCategory bc ORDER BY bc.category"),
+        @NamedQuery(name = BookCategory.FIND_CATEGORY_BY_TYPE, query = "SELECT bc FROM BookCategory bc WHERE bc.category = :category")
+        //SELECT a FROM Author a WHERE a.firstName = :firstName AND a.lastName = :lastName
+})
 @XmlRootElement
 public class BookCategory {
+
+    public static final String FIND_ALL_CATEGORIES = "FIND_ALL_CATEGORIES";
+    public static final String FIND_CATEGORY_BY_TYPE = "FIND_CATEGORY_BY_TYPE";
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "category_sequence")

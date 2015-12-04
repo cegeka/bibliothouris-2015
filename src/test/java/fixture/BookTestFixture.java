@@ -67,12 +67,19 @@ public class BookTestFixture {
     }
 
 
-    public static Book createBookWithOneAuthor() {
+    /*public static Book createBookWithOneAuthor() {
         return Book.BookBuilder.book().withTitle("Clean Code")
                                         .withAuthors(createOneAuthor())
                                         .withIsbn("978-0-13-235088-4")
                                         .build();
     }
+
+    public static Book createBookWithFourAuthors() {
+        return Book.BookBuilder.book().withTitle("Design Patterns")
+                .withAuthors(createFourAuthors())
+                .withIsbn("978-0-201-63361-0")
+                .build();
+    }*/
 
     public static Book createBookWithOneAuthorAndOneCategory() {
         return Book.BookBuilder.book().withTitle("Clean Code")
@@ -98,28 +105,70 @@ public class BookTestFixture {
                 .build();
     }
 
-    public static Book createBookWithFourAuthors() {
-        return Book.BookBuilder.book().withTitle("Design Patterns")
-                                        .withAuthors(createFourAuthors())
-                                        .withIsbn("978-0-201-63361-0")
-                                        .build();
-        }
-
     public static Book createBookWithoutISBN() {
         return Book.BookBuilder.book().withTitle("Clean Code")
                                         .withAuthors(createOneAuthor())
+                                        .withDescription("Great book for learning how to write clean code")
+                                        .withCategories(createThreeCategories())
+                                        .withPages(430)
+                                        .withPublicationDate(LocalDate.of(2013, Month.MARCH, 23))
+                                        .withPublisher("Prentice Hall")
                                         .build();
+    }
+
+    public static Book createBookWithoutCategory() {
+        return Book.BookBuilder.book().withTitle("Clean Code")
+                .withAuthors(createOneAuthor())
+                .withDescription("Great book for learning how to write clean code")
+                .withCategories(createThreeCategories())
+                .withPages(430)
+                .withPublicationDate(LocalDate.of(2013, Month.MARCH, 23))
+                .withPublisher("Prentice Hall")
+                .build();
+    }
+
+    public static Book createBookWithNegativePageNumber() {
+        return Book.BookBuilder.book().withTitle("Clean Code")
+                .withAuthors(createOneAuthor())
+                .withDescription("Great book for learning how to write clean code")
+                .withCategories(createThreeCategories())
+                .withPages(-4)
+                .withPublicationDate(LocalDate.of(2013, Month.MARCH, 23))
+                .withPublisher("Prentice Hall")
+                .build();
     }
 
     public static Book createBookWithoutTitle() {
         return Book.BookBuilder.book().withIsbn("978-0-201-63361-0")
                                         .withAuthors(createOneAuthor())
+                                        .withDescription("Great book for learning how to write clean code")
+                                        .withCategories(createThreeCategories())
+                                        .withPages(430)
+                                        .withPublicationDate(LocalDate.of(2013, Month.MARCH, 23))
+                                        .withPublisher("Prentice Hall")
                                         .build();
     }
 
     public static Book createBookWithOneAuthorWithoutLastName() {
         return Book.BookBuilder.book().withIsbn("978-0-201-63361-0")
                 .withAuthors(createOneAuthorWithoutLastName())
+                .withDescription("Great book for learning how to write clean code")
+                .withCategories(createThreeCategories())
+                .withPages(430)
+                .withPublicationDate(LocalDate.of(2013, Month.MARCH, 23))
+                .withPublisher("Prentice Hall")
+                .build();
+    }
+
+    public static Book createBookWithFourAuthorsAndThreeCategories() {
+        return Book.BookBuilder.book().withTitle("Clean Code")
+                .withAuthors(createFourAuthors())
+                .withIsbn("978-0-13-235088-4")
+                .withDescription("Great book for learning how to write clean code")
+                .withCategories(createThreeCategories())
+                .withPages(430)
+                .withPublicationDate(LocalDate.of(2013, Month.MARCH, 23))
+                .withPublisher("Prentice Hall")
                 .build();
     }
 }

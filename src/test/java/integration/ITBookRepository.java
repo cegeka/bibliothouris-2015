@@ -23,30 +23,15 @@ public class ITBookRepository {
 
     @Autowired
     private BookRepository bookRepository;
-    private Book bookWithOneAuthor, bookWithFourAuthors, bookWithOneAuthorAndOneCategory,
-                 bookWithOneAuthorAndThreeCategories;
+    private Book bookWithOneAuthorAndOneCategory,
+                 bookWithOneAuthorAndThreeCategories, bookWithFourAuthorsAndThreeCategories;
 
     @Before
     public void setUp() {
-        bookWithOneAuthor = BookTestFixture.createBookWithOneAuthor();
-        bookWithFourAuthors = BookTestFixture.createBookWithFourAuthors();
         bookWithOneAuthorAndOneCategory = BookTestFixture.createBookWithOneAuthorAndOneCategory();
         bookWithOneAuthorAndThreeCategories = BookTestFixture.createBookWithOneAuthorAndThreeCategories();
+        bookWithFourAuthorsAndThreeCategories = BookTestFixture.createBookWithFourAuthorsAndThreeCategories();
         bookRepository.deleteAllBooks();
-    }
-
-    @Test
-    public void givenANewBookWithOneAuthor_createBook_createsNewBookWithOneAuthor() {
-        Book newBook = bookRepository.createBook(bookWithOneAuthor);
-
-        assertThat(newBook.getId()).isNotNull();
-    }
-
-    @Test
-    public void givenANewBookWithFourAuthors_createBook_createsNewBookWithFourAuthors() {
-        Book newBook = bookRepository.createBook(bookWithFourAuthors);
-
-        assertThat(newBook.getId()).isNotNull();
     }
 
     @Test
@@ -57,46 +42,21 @@ public class ITBookRepository {
     }
 
     @Test
-    public void givenANewBookWithOneAuthorAndOneCategory_createBook_createsNewBookWithOneAuthorAndThreeCategories() {
+    public void givenANewBookWithOneAuthorAndThreeCategory_createBook_createsNewBookWithOneAuthorAndThreeCategories() {
         Book newBook = bookRepository.createBook(bookWithOneAuthorAndThreeCategories);
 
         assertThat(newBook.getId()).isNotNull();
     }
 
     @Test
+    public void givenANewBookWithFourAuthorAndThreeCategories_createBook_createsNewBookWithFourAuthorsAndThreeCategories() {
+        Book newBook = bookRepository.createBook(bookWithFourAuthorsAndThreeCategories);
+
+        assertThat(newBook.getId()).isNotNull();
+    }
+
+    @Test
     public void givenOneBook_findBooks_findTheBook() {
-        Book book1 = bookRepository.createBook(bookWithOneAuthor);
-
-        List<Book> foundBooks = bookRepository.findAllBooks(0,5);
-
-        assertThat(foundBooks.size()).isEqualTo(1);
-        assertThat(foundBooks).contains(book1);
-    }
-
-    @Test
-    public void givenTwoBooks_findBooks_findTwoBooks() {
-        Book book1 = bookRepository.createBook(bookWithOneAuthor);
-        Book book2 = bookRepository.createBook(bookWithFourAuthors);
-
-        List<Book> foundBooks = bookRepository.findAllBooks(0,5);
-
-        assertThat(foundBooks.size()).isEqualTo(2);
-        assertThat(foundBooks).contains(book1);
-        assertThat(foundBooks).contains(book2);
-    }
-
-    @Test
-    public void givenOneBookWithOneAuthorAndOneCategory_findBooks_findTheBook() {
-        Book book1 = bookRepository.createBook(bookWithOneAuthorAndOneCategory);
-
-        List<Book> foundBooks = bookRepository.findAllBooks(0,5);
-
-        assertThat(foundBooks.size()).isEqualTo(1);
-        assertThat(foundBooks).contains(book1);
-    }
-
-    @Test
-    public void givenOneBookWithOneAuthorAndThreeCategories_findBooks_findTheBook() {
         Book book1 = bookRepository.createBook(bookWithOneAuthorAndThreeCategories);
 
         List<Book> foundBooks = bookRepository.findAllBooks(0,5);
@@ -106,9 +66,21 @@ public class ITBookRepository {
     }
 
     @Test
+    public void givenTwoBooks_findBooks_findTwoBooks() {
+        Book book1 = bookRepository.createBook(bookWithFourAuthorsAndThreeCategories);
+        Book book2 = bookRepository.createBook(bookWithOneAuthorAndOneCategory);
+
+        List<Book> foundBooks = bookRepository.findAllBooks(0,5);
+
+        assertThat(foundBooks.size()).isEqualTo(2);
+        assertThat(foundBooks).contains(book1);
+        assertThat(foundBooks).contains(book2);
+    }
+
+    @Test
     public void givenTwoBooks_countBooks_returnBooksNumber() {
-        Book book1 = bookRepository.createBook(bookWithOneAuthor);
-        Book book2 = bookRepository.createBook(bookWithFourAuthors);
+        Book book1 = bookRepository.createBook(bookWithOneAuthorAndOneCategory);
+        Book book2 = bookRepository.createBook(bookWithFourAuthorsAndThreeCategories);
 
         Long count = bookRepository.countBooks();
 
@@ -117,7 +89,7 @@ public class ITBookRepository {
 
     @Test
     public void givenABookId_findBookById_returnsTheCorrectBook() {
-        Book book = bookRepository.createBook(bookWithOneAuthor);
+        Book book = bookRepository.createBook(bookWithOneAuthorAndOneCategory);
 
         Book foundBook = bookRepository.findBookById(book.getId());
 
