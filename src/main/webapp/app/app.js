@@ -28,6 +28,10 @@
                     templateUrl: "templates/login.html",
                     controller: "LoginCtrl"
                 })
+                .when("/member/add", {
+                    templateUrl: "templates/add_member.html",
+                    controller: "AddMemberCtrl"
+                })
                 .otherwise({redirectTo:"/status"});
 
             $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';

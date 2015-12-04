@@ -36,9 +36,10 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li><a href="#books/add">Add book</a></li>
+                <li><a href="#member/add">Add member</a></li>
                 <li><a href="#books">List books</a></li>
             </ul>
-            <form class="navbar-form navbar-left" role="search">
+            <form class="navbar-form navbar-right" role="search">
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="Search">
                 </div>
@@ -50,8 +51,9 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/auth/logout">Logout</a></li>
             </ul>
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
+
+        </div>
+    </div>
 </nav>
 <div class="container">
     <ng-view></ng-view>
@@ -75,6 +77,7 @@
 <script src="js/application_status/application_status.controller.js"></script>
 <script src="js/application_status/application_status.service.js"></script>
 <script src="js/add_book/add_book.controller.js"></script>
+<script src="js/add_member/add_member_controller.js"></script>
 <script src="js/list_book_details/list_book_details.controller.js"></script>
 <script src="js/list_books/ListBooksCtrl.js"></script>
 <script src="js/service/rest_api.service.js"></script>
