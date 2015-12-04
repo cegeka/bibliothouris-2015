@@ -2,6 +2,7 @@ package cgk.bibliothouris.learning.service.entity;
 
 import cgk.bibliothouris.learning.service.dateconverter.LocalDateAdapter;
 import cgk.bibliothouris.learning.service.dateconverter.LocalDateAttributeConverter;
+import javassist.bytecode.ByteArray;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
@@ -10,6 +11,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -72,6 +75,16 @@ public class Book {
 
     @Column(name = "PUBLISHER")
     private String publisher;
+
+//    public String getCover() {
+//        return cover;
+//    }
+//
+//    public void setCover(String cover) {
+//        this.cover = cover;
+//    }
+//
+//    private String cover;
 
     public String getDescription() {
         return description;
@@ -146,6 +159,7 @@ public class Book {
     public void setAuthors(Set<Author> listOfAuthors) {
         this.authors = listOfAuthors;
     }
+
 
 
     @Override

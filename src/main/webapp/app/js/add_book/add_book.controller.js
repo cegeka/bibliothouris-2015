@@ -13,6 +13,7 @@
         vm.deleteAuthor = deleteAuthor;
         vm.submitForm = submitForm;
         vm.resetForm = resetForm;
+        vm.removeUploadCover = removeUploadCover;
 
         vm.onSelect = function (item, index) {
             vm.book.authors[index].firstName = item.firstName;
@@ -46,15 +47,39 @@
         }
 
         function submitForm(bookForm) {
+            console.log(vm.book);
+            console.log(vm.cover);
+
+            var reader = new FileReader();
+            //reader.onload = function(){
+            //    vm.book.cover = "abc";
+            //};
+            reader.readAsBinaryString(vm.cover);
+            console.log(reader.result);
+
+            vm.book.cover = reader.result;
+
             if(bookForm.$valid){
-                restService
-                    .addBook(vm.book)
-                    .then(function(data){
-                        $location.path("/books/" + data.id);
-                        createNotification("Book <strong>" + data.title + "</strong> was added in the library!", "success")
-                    }, function(data){
-                        createNotification("Something wrong happened when you tried to add a new book!", "danger")
-                    });
+                var reader = new FileReader();
+                reader.onload = function(){
+                    vm.book.cover = reader.result;
+
+                    restService
+                        .addBook(vm.book)
+                        .then(function(data){
+                            $location.path("/books/" + data.id);
+                            createNotification("Book <strong>" + data.title + "</strong> was added in the library!", "success")
+                        }, function(data){
+                            createNotification("Something wrong happened when you tried to add a new book!", "danger")
+                        });
+                };
+                reader.readAsBinaryString(vm.cover);
+                //console.log(reader.result);
+                //
+                //vm.book.cover = reader.result;
+
+
+
             }
 
         }
@@ -62,6 +87,11 @@
         function resetForm(bookForm) {
             bookForm.$setPristine();
             vm.book = angular.copy(vm.originalBook);
+        }
+
+        function removeUploadCover() {
+            vm.book.cover = null;
+            console.log(vm.aaa);
         }
 
         function createNotification(message, type) {

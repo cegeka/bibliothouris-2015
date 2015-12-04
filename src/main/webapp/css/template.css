@@ -19,3 +19,9 @@
 .table.no-top-border > tbody > tr:first-child > th, .table.no-top-border > tbody > tr:first-child > td {
     border: none;
 }
+
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}

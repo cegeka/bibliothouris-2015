@@ -15,6 +15,7 @@
         return service;
 
         function addBook(book) {
+            console.log(book);
             return $http.post("/api/books", book)
                 .then(function(response){
                     return response.data;

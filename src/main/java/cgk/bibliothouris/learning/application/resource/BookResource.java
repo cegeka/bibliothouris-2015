@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.Status;
+import java.io.File;
+import java.io.InputStream;
 import java.net.URI;
 import java.util.List;
 
