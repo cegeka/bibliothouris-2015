@@ -4,11 +4,11 @@ import cgk.bibliothouris.learning.service.dateconverter.LocalDateAdapter;
 import cgk.bibliothouris.learning.service.dateconverter.LocalDateAttributeConverter;
 import javassist.bytecode.ByteArray;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.ByteArrayInputStream;
@@ -57,6 +57,7 @@ public class Book {
     private Set<Author> authors;
 
     @Column(name = "DESCRIPTION")
+    @Size(max = 2000, message = "Book description is too long")
     private String description;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -67,6 +68,8 @@ public class Book {
     private Set<BookCategory> categories;
 
     @Column(name = "PAGES")
+    //@Range(min=1, max=99999)
+    @Digits(integer = 5, fraction = 0)
     private Integer pages;
 
     @Column(name = "PUBLICATION_DATE")
@@ -74,6 +77,7 @@ public class Book {
     private LocalDate date;
 
     @Column(name = "PUBLISHER")
+    @Size(max = 250, message = "Book publisher name is too long")
     private String publisher;
 
 //    public String getCover() {

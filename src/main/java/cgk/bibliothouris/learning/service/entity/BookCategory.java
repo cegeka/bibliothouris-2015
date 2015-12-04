@@ -1,6 +1,9 @@
 package cgk.bibliothouris.learning.service.entity;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
@@ -15,6 +18,8 @@ public class BookCategory {
     private Integer id;
 
     @Column(name = "TYPE")
+    @NotBlank(message = "Book category type is empty or is missing")
+    @Size(max = 255, message = "Book category type is too long")
     private String category;
 
     public Integer getId() {
