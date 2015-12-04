@@ -36,8 +36,8 @@ public class StatusResource {
 
         long days = TimeUnit.MILLISECONDS.toDays(upTime);
         long hours = TimeUnit.MILLISECONDS.toHours(upTime) - TimeUnit.DAYS.toHours(days);
-        long minutes = TimeUnit.MILLISECONDS.toMinutes(upTime) - TimeUnit.HOURS.toMinutes(hours);
-        long seconds = TimeUnit.MILLISECONDS.toSeconds(upTime) - TimeUnit.MINUTES.toSeconds(minutes);
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(upTime) - TimeUnit.DAYS.toMinutes(days) - TimeUnit.HOURS.toMinutes(hours);
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(upTime) - TimeUnit.DAYS.toSeconds(days) - TimeUnit.HOURS.toSeconds(hours) - TimeUnit.MINUTES.toSeconds(minutes);
 
         return String.format("%d days, %d hours, %d minutes and %d seconds", days, hours, minutes, seconds);
     }
