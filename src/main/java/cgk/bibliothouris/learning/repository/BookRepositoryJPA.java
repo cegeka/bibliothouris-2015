@@ -23,9 +23,9 @@ public class BookRepositoryJPA implements BookRepository {
     public Book createBook(Book book) {
         Book bookWithAuthors = getBookWithPersistedAuthors(book);
 
-//        Book bookWithAuthorsAndCategories = getBookWithPersistedCategories(bookWithAuthors);
+        Book bookWithAuthorsAndCategories = getBookWithPersistedCategories(bookWithAuthors);
 
-        entityManager.persist(bookWithAuthors);
+        entityManager.persist(bookWithAuthorsAndCategories);
 
         return bookWithAuthors;
     }
