@@ -102,7 +102,7 @@ public class ITBookRepository {
         bookRepository.createBook(bookWithOneAuthorAndOneCategory);
         bookRepository.createBook(bookWithFourAuthorsAndThreeCategories);
 
-        List<BookTitleTO> bookTitles = bookRepository.getAllBookTitles();
+        List<BookTitleTO> bookTitles = bookRepository.findAllBookTitles();
 
         assertThat(bookTitles.size()).isEqualTo(1);
     }

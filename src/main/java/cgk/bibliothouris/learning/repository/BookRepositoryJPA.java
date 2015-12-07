@@ -55,7 +55,7 @@ public class BookRepositoryJPA implements BookRepository {
     }
 
     @Override
-    public List<BookTitleTO> getAllBookTitles() {
+    public List<BookTitleTO> findAllBookTitles() {
         return entityManager.createNamedQuery(Book.GET_BOOK_TITLES, BookTitleTO.class).getResultList();
     }
 

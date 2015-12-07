@@ -1,5 +1,6 @@
 package unit;
 
+import cgk.bibliothouris.learning.application.transferobject.BookTitleTO;
 import cgk.bibliothouris.learning.repository.BookRepository;
 import cgk.bibliothouris.learning.service.BookService;
 import cgk.bibliothouris.learning.service.entity.Book;
@@ -13,6 +14,7 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -99,6 +101,16 @@ public class BookServiceTest {
         Book foundBook = service.findBookById(book.getId());
 
         assertThat(foundBook).isEqualTo(book);
+    }
+
+    @Test
+    public void givenOneBook_findAllBookTitles_returnsTheCorrectBookTitle() {
+        Book book = BookTestFixture.createBookWithOneAuthorAndOneCategory();
+        Mockito.when(mockRepository.findAllBookTitles()).thenReturn(Arrays.asList(new BookTitleTO(book.getTitle())));
+
+        List<BookTitleTO> foundBookTitles = service.findAllBookTitles();
+
+        assertThat(foundBookTitles.get(0).getTitle()).isEqualTo(book.getTitle());
     }
 
 }

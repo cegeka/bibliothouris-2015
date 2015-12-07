@@ -1,5 +1,6 @@
 package cgk.bibliothouris.learning.service;
 
+import cgk.bibliothouris.learning.application.transferobject.BookTitleTO;
 import cgk.bibliothouris.learning.repository.BookRepository;
 import cgk.bibliothouris.learning.service.entity.Book;
 import cgk.bibliothouris.learning.service.exception.ValidationException;
@@ -54,6 +55,11 @@ public class BookService {
     @Transactional(readOnly = true)
     public Book findBookById(Integer bookId) {
         return bookRepository.findBookById(bookId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<BookTitleTO> findAllBookTitles() {
+        return bookRepository.findAllBookTitles();
     }
 
     public void deleteAllBooks() {

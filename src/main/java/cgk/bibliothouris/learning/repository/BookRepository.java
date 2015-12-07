@@ -17,5 +17,5 @@ public interface BookRepository {
 
     Book findBookById(Integer bookId);
 
-    List<BookTitleTO> getAllBookTitles();
+    List<BookTitleTO> findAllBookTitles();
 }
