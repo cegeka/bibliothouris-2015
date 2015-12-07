@@ -1,6 +1,7 @@
 package integration;
 
 import cgk.bibliothouris.learning.application.resource.BookResource;
+import cgk.bibliothouris.learning.application.transferobject.BookTitleTO;
 import cgk.bibliothouris.learning.config.JpaConfig;
 import cgk.bibliothouris.learning.service.entity.Book;
 import fixture.BookTestFixture;
@@ -72,5 +73,15 @@ public class ITBookResource extends JerseyTest {
         Book foundBook = client.get(PATH + "/" + book.getId()).readEntity(Book.class);
 
         assertThat(foundBook).isEqualTo(book);
+    }
+
+    @Test
+    public void givenAListOfBookTitles_GET_returnsTheCorrectListOfBookTitles() {
+        Book book = client.post(PATH, bookWithOneAuthorAndOneCategory).readEntity(Book.class);
+        BookTitleTO expectedBookTitle = new BookTitleTO(book.getTitle());
+
+        List<BookTitleTO> foundBookTitles = client.get(PATH + "/titles").readEntity(new GenericType<List<BookTitleTO>>() {});
+
+        assertThat(foundBookTitles).contains(expectedBookTitle);
     }
 }

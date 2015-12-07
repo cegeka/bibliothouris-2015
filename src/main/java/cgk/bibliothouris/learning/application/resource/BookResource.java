@@ -1,5 +1,6 @@
 package cgk.bibliothouris.learning.application.resource;
 
+import cgk.bibliothouris.learning.application.transferobject.BookTitleTO;
 import cgk.bibliothouris.learning.application.transferobject.StringTO;
 import cgk.bibliothouris.learning.service.exception.ValidationException;
 import cgk.bibliothouris.learning.service.BookService;
@@ -70,6 +71,18 @@ public class BookResource {
             return Response.status(Status.NOT_FOUND).build();
 
         return Response.ok().entity(book).build();
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/titles")
+    public Response getBookTitles() {
+        List<BookTitleTO> bookTitles = bookService.findAllBookTitles();
+
+        if(bookTitles.size() == 0)
+            return Response.status(Status.NOT_FOUND).build();
+
+        return Response.ok().entity(new GenericEntity<List<BookTitleTO>>(bookTitles){}).build();
     }
 
     private Response getStringResponse(Status status, String message) {

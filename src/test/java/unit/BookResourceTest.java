@@ -1,6 +1,7 @@
 package unit;
 
 import cgk.bibliothouris.learning.application.resource.BookResource;
+import cgk.bibliothouris.learning.application.transferobject.BookTitleTO;
 import cgk.bibliothouris.learning.service.BookService;
 import cgk.bibliothouris.learning.service.entity.Book;
 import cgk.bibliothouris.learning.service.exception.ValidationException;
@@ -17,6 +18,7 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -142,4 +144,33 @@ public class BookResourceTest {
         assertThat(response.getEntity()).isEqualTo(expectedBook);
     }
 
+    @Test
+    public void givenAnEmptyListOfBookTitles_getBookTitles_returns404NotFound() {
+        List<BookTitleTO> bookTitles = new ArrayList<>();
+        Mockito.when(mockBookService.findAllBookTitles()).thenReturn(bookTitles);
+
+        Response response = bookResource.getBookTitles();
+
+        assertThat(response.getStatusInfo()).isEqualTo(Status.NOT_FOUND);
+    }
+
+    @Test
+    public void givenAListOfBookTitles_getBookTitles_returns200OK() {
+        List<BookTitleTO> bookTitles = Arrays.asList(new BookTitleTO("Clean Code"));
+        Mockito.when(mockBookService.findAllBookTitles()).thenReturn(bookTitles);
+
+        Response response = bookResource.getBookTitles();
+
+        assertThat(response.getStatusInfo()).isEqualTo(Status.OK);
+    }
+
+    @Test
+    public void givenAListOfBookTitles_getBookTitles_returnsTheCorrectListOfBookTitles() {
+        List<BookTitleTO> bookTitles = Arrays.asList(new BookTitleTO("Clean Code"));
+        Mockito.when(mockBookService.findAllBookTitles()).thenReturn(bookTitles);
+
+        Response response = bookResource.getBookTitles();
+
+        assertThat(response.getEntity()).isEqualTo(bookTitles);
+    }
 }
