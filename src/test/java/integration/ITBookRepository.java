@@ -1,5 +1,6 @@
 package integration;
 
+import cgk.bibliothouris.learning.application.transferobject.BookTitleTO;
 import cgk.bibliothouris.learning.config.AppConfig;
 import cgk.bibliothouris.learning.repository.BookRepository;
 import cgk.bibliothouris.learning.service.entity.Book;
@@ -94,6 +95,16 @@ public class ITBookRepository {
         Book foundBook = bookRepository.findBookById(book.getId());
 
         assertThat(foundBook).isEqualTo(book);
+    }
+
+    @Test
+    public void givenTwoBooks_getAllBookTtitle_returnsTheCorrectBookTitlesList() {
+        bookRepository.createBook(bookWithOneAuthorAndOneCategory);
+        bookRepository.createBook(bookWithFourAuthorsAndThreeCategories);
+
+        List<BookTitleTO> bookTitles = bookRepository.getAllBookTitles();
+
+        assertThat(bookTitles.size()).isEqualTo(1);
     }
 
 }

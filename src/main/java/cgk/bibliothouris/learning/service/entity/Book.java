@@ -16,7 +16,8 @@ import java.util.Set;
 @NamedQueries({
         @NamedQuery(name = Book.LIST_ALL_BOOKS, query = "SELECT b FROM Book b ORDER BY b.title"),
         @NamedQuery(name = Book.DELETE_ALL_BOOKS, query = "DELETE FROM Book b"),
-        @NamedQuery(name = Book.COUNT_BOOKS, query = "SELECT COUNT(b.id) FROM Book b")
+        @NamedQuery(name = Book.COUNT_BOOKS, query = "SELECT COUNT(b.id) FROM Book b"),
+        @NamedQuery(name = Book.GET_BOOK_TITLES, query = "SELECT DISTINCT new cgk.bibliothouris.learning.application.transferobject.BookTitleTO(b.title) FROM Book b")
 })
 @XmlRootElement
 public class Book {
@@ -24,6 +25,7 @@ public class Book {
     public static final String LIST_ALL_BOOKS = "LIST_ALL_BOOKS";
     public static final String DELETE_ALL_BOOKS = "DELETE_ALL_BOOKS";
     public static final String COUNT_BOOKS = "COUNT_BOOKS";
+    public static final String GET_BOOK_TITLES = "GET_BOOK_TITLES";
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_sequence")

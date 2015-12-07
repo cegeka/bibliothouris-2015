@@ -1,5 +1,6 @@
 package cgk.bibliothouris.learning.repository;
 
+import cgk.bibliothouris.learning.application.transferobject.BookTitleTO;
 import cgk.bibliothouris.learning.service.entity.Author;
 import cgk.bibliothouris.learning.service.entity.Book;
 import cgk.bibliothouris.learning.service.entity.BookCategory;
@@ -30,6 +31,34 @@ public class BookRepositoryJPA implements BookRepository {
         return bookWithAuthors;
     }
 
+    public List<Book> findAllBooks(Integer start, Integer end){
+        TypedQuery<Book> selectAllQuery = entityManager.createNamedQuery(Book.LIST_ALL_BOOKS, Book.class)
+                                                       .setMaxResults(end - start)
+                                                       .setFirstResult(start);
+        return selectAllQuery.getResultList();
+    }
+
+    @Override
+    public void deleteAllBooks(){
+        Query deleteAllQuery = entityManager.createNamedQuery(Book.DELETE_ALL_BOOKS);
+        deleteAllQuery.executeUpdate();
+    }
+
+    public Long countBooks(){
+        TypedQuery<Long> countQuery = entityManager.createNamedQuery(Book.COUNT_BOOKS, Long.class);
+        return countQuery.getSingleResult();
+    }
+
+    @Override
+    public Book findBookById(Integer bookId) {
+        return entityManager.find(Book.class, bookId);
+    }
+
+    @Override
+    public List<BookTitleTO> getAllBookTitles() {
+        return entityManager.createNamedQuery(Book.GET_BOOK_TITLES, BookTitleTO.class).getResultList();
+    }
+
     private Book getBookWithPersistedAuthors(Book book){
         Set<Author> persistedAuthors = new HashSet<>();
 
@@ -52,7 +81,7 @@ public class BookRepositoryJPA implements BookRepository {
         return book;
     }
 
-    public Book getBookWithPersistedCategories(Book book) {
+    private Book getBookWithPersistedCategories(Book book) {
         Set<BookCategory> persistedCategories = new HashSet<>();
 
         for(BookCategory category : book.getCategories()) {
@@ -71,28 +100,5 @@ public class BookRepositoryJPA implements BookRepository {
         book.setCategories(persistedCategories);
 
         return book;
-    }
-
-    public List<Book> findAllBooks(Integer start, Integer end){
-        TypedQuery<Book> selectAllQuery = entityManager.createNamedQuery(Book.LIST_ALL_BOOKS, Book.class)
-                                                       .setMaxResults(end - start)
-                                                       .setFirstResult(start);
-        return selectAllQuery.getResultList();
-    }
-
-    @Override
-    public void deleteAllBooks(){
-        Query deleteAllQuery = entityManager.createNamedQuery(Book.DELETE_ALL_BOOKS);
-        deleteAllQuery.executeUpdate();
-    }
-
-    public Long countBooks(){
-        TypedQuery<Long> countQuery = entityManager.createNamedQuery(Book.COUNT_BOOKS, Long.class);
-        return countQuery.getSingleResult();
-    }
-
-    @Override
-    public Book findBookById(Integer bookId) {
-        return entityManager.find(Book.class, bookId);
     }
 }

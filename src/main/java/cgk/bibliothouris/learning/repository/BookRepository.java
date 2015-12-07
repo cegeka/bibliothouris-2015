@@ -1,5 +1,6 @@
 package cgk.bibliothouris.learning.repository;
 
+import cgk.bibliothouris.learning.application.transferobject.BookTitleTO;
 import cgk.bibliothouris.learning.service.entity.Book;
 
 import java.util.List;
@@ -15,4 +16,6 @@ public interface BookRepository {
     Long countBooks();
 
     Book findBookById(Integer bookId);
+
+    List<BookTitleTO> getAllBookTitles();
 }
