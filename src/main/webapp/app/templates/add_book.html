@@ -98,7 +98,7 @@
                     You have selected <b>{{uploadFile.name}}</b> as cover for your book!
                 </div>
                 <div class="alert alert-danger" role="alert" ng-show="vm.cover && vm.cover.size > vm.oneMB">
-                    <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
                     You must select a cover photo with a size smaller than 1 MB! The selected image has {{(vm.cover.size / 1000000).toFixed(2)}} MB.
                 </div>
             </div>

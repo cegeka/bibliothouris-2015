@@ -23,11 +23,11 @@ public class BookRepositoryJPA implements BookRepository {
     public Book createBook(Book book) {
         Book bookWithAuthors = getBookWithPersistedAuthors(book);
 
-        Book bookWithAuthorsAndCategories = getBookWithPersistedCategories(bookWithAuthors);
+//        Book bookWithAuthorsAndCategories = getBookWithPersistedCategories(bookWithAuthors);
 
-        entityManager.persist(bookWithAuthorsAndCategories);
+        entityManager.persist(bookWithAuthors);
 
-        return bookWithAuthorsAndCategories;
+        return bookWithAuthors;
     }
 
     private Book getBookWithPersistedAuthors(Book book){
