@@ -1,46 +1,63 @@
-var booksApp = angular.module("Bibliothouris");
-booksApp.controller("ListBooksCtrl", ListBooksCtrl);
-function ListBooksCtrl($scope, restService, $location){
+(function() {
+    angular
+        .module("Bibliothouris")
+        .controller("ListBooksCtrl", ListBooksCtrl);
 
-    $scope.bigTotalItems = 100;
-    $scope.start = 0;
-    $scope.end = 5;
-    $scope.noBooks = true;
+    function ListBooksCtrl(restService, $location) {
+        var vm = this;
 
-    restService.getBooks($scope.start, $scope.end).then(function(data){
-        $scope.books = data;
-        console.log($scope.books);
-        $scope.noBooks = false;
-    });
+        vm.noBooks = false;
+        vm.searchFilters = ["Title", "ISBN"];
+        vm.filter = vm.searchFilters[0];
+        vm.filterValue = "";
+        vm.maxSize = 5;
+        vm.itemsPerPage = 10;
+        vm.currentPage = 1;
 
-    $scope.showBook = function(bookId) {
-        $location.path($location.url() + "/" + bookId);
-    };
+        vm.onSelectFilter = onSelectFilter;
+        vm.showBook = showBook;
+        vm.pageChanged = pageChanged;
 
-    restService.countBooks().then(function(data){
-        $scope.totalItems = data;
-        console.log($scope.totalItems);
-        $scope.noBooks = false;
-    });
+        activate();
 
-    $scope.setPage = function (pageNo) {
-        $scope.currentPage = pageNo;
-    };
+        function activate() {
+            restService
+                .getBookTitles()
+                .then(function(data){
+                    vm.titles = data;
+                });
 
-    $scope.pageChanged = function() {
-        start2 = ($scope.bigCurrentPage - 1) * $scope.maxSize;
-        console.log(start2);
-        end2 = start2 + $scope.maxSize;
-        console.log(end2);
-        restService.getBooks(start2, end2).then(function(data){
-            $scope.books = data;
-            console.log($scope.books);
-            $scope.noBooks = false;
-        });
-    };
+            restService
+                .countBooks()
+                .then(function(data){
+                    vm.totalItems = data;
 
-    $scope.itemsPerPage = 5;
-    $scope.maxSize = 5;
-    $scope.bigCurrentPage = 1;
-}
+                    pageChanged();
+                }, function(){
+                    vm.noBooks = true;
+                });
+        }
+
+        function onSelectFilter() {
+            console.log(vm.filterValue);
+        }
+
+        function showBook(bookId) {
+            $location.path($location.url() + "/" + bookId);
+        }
+
+        function pageChanged() {
+            start = vm.itemsPerPage * (vm.currentPage - 1);
+            end = start + vm.itemsPerPage;
+
+            restService
+                .getBooks(start, end)
+                .then(function(data){
+                    vm.books = data;
+                }, function(){
+                    vm.noBooks = true;
+                });
+        }
+    }
+})();
 

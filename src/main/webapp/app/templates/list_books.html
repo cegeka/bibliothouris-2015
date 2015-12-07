@@ -1,10 +1,24 @@
 <h3 style="color: midnightblue">All books</h3>
 <hr style="border-color: midnightblue"/>
-<div class="alert alert-info text-center" role="alert" ng-show="noBooks">
+<div class="alert alert-info text-center" role="alert" ng-show="vm.noBooks">
     <p class="alert-link">There are no books to be displayed!</p>
 </div>
 
-<div class="panel panel-default" ng-hide="noBooks">
+<form class="form-inline">
+    <div class="row">
+        <div class="col-sm-offset-6 col-sm-6 text-right">
+            <label>Search by</label>
+            <select id="filter" class="form-control" ng-model="vm.filter" ng-options="filter for filter in vm.searchFilters"></select>
+            <input class="form-control" placeholder="{{vm.filter}}" ng-model="vm.filterValue"
+                   uib-typeahead="title.title for title in vm.titles | filter:$viewValue | limitTo:10"
+                   typeahead-on-select='vm.onSelectFilter()' typeahead-select-on-exact="true">
+        </div>
+    </div>
+</form>
+
+<br/>
+
+<div class="panel panel-default" ng-hide="vm.noBooks">
     <div class="panel-body">
         <div class="table-responsive">
             <table class="table table-fixed table-hover">
@@ -17,11 +31,11 @@
                 </thead>
 
                 <tbody>
-                <tr ng-repeat = "book in books" ng-click="showBook(book.id)" style="cursor: pointer;">
+                <tr ng-repeat = "book in vm.books" ng-click="vm.showBook(book.id)" style="cursor: pointer;">
                     <td class="table-column-ellipsis">{{book.title}}</td>
                     <td class="table-column-ellipsis">
                         <!--<span><a href="#" data-toggle="tooltip" title="Hooray!">Hover over me</a></span> </td>-->
-                        <span ng-repeat="author in book.authors"> {{author.firstName}} {{author.lastName}}{{$last ? '' : ', '}}</span>
+                        <span ng-repeat="author in vm.book.authors"> {{author.firstName}} {{author.lastName}}{{$last ? '' : ', '}}</span>
                     </td>
                     <td>{{book.isbn}}</td>
                 </tr>
@@ -30,6 +44,10 @@
         </div>
     </div>
     <div class="panel-footer text-center">
-        <uib-pagination boundary-links="true" items-per-page="itemsPerPage" total-items="totalItems" ng-model="bigCurrentPage" max-size="maxSize" num-pages="numPages" ng-change="pageChanged()" class="pagination paginationFooter" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
+        <uib-pagination boundary-links="true" total-items="vm.totalItems" max-size="vm.maxSize" items-per-page="vm.itemsPerPage"
+                        ng-model="vm.currentPage" ng-change="vm.pageChanged()"
+                        class="pagination paginationFooter"
+                        previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;">
+        </uib-pagination>
     </div>
 </div>

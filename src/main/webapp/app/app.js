@@ -17,7 +17,8 @@
                 })
                 .when("/books", {
                     templateUrl: "templates/list_books.html",
-                    controller: "ListBooksCtrl"
+                    controller: "ListBooksCtrl",
+                    controllerAs: "vm"
                 })
                 .when("/books/:bookId", {
                     templateUrl: "templates/list_book_details.html",

@@ -9,7 +9,8 @@
             getBooks: getBooks,
             countBooks: countBooks,
             getAuthors: getAuthors,
-            getBookDetails: getBookDetails
+            getBookDetails: getBookDetails,
+            getBookTitles: getBookTitles
         };
 
         return service;
@@ -45,6 +46,13 @@
 
         function getBookDetails(bookId) {
             return $http.get("/api/books/" + bookId)
+                .then(function(response){
+                    return response.data;
+                });
+        }
+
+        function getBookTitles() {
+            return $http.get("/api/books/titles")
                 .then(function(response){
                     return response.data;
                 });
