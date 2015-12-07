@@ -9,6 +9,8 @@ public class Status {
 
     private String upTime;
 
+    private Boolean isDatabaseConnected;
+
     public String getEnvironment() {
         return environment;
     }
@@ -25,6 +27,14 @@ public class Status {
         return upTime;
     }
 
+    public Boolean getIsDatabaseConnected() {
+        return isDatabaseConnected;
+    }
+
+    public void setIsDatabaseConnected(Boolean isDatabaseConnected) {
+        this.isDatabaseConnected = isDatabaseConnected;
+    }
+
     public static class StatusBuilder {
         private Status status;
 
@@ -39,6 +49,11 @@ public class Status {
 
         public StatusBuilder withUpTime(String upTime) {
             status.upTime = upTime;
+            return this;
+        }
+
+        public StatusBuilder withDatabaseConnectionStatus(Boolean isDatabaseConnected) {
+            status.isDatabaseConnected = isDatabaseConnected;
             return this;
         }
 

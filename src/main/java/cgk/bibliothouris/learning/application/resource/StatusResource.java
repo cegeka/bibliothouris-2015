@@ -1,10 +1,13 @@
 package cgk.bibliothouris.learning.application.resource;
 
 import cgk.bibliothouris.learning.application.transferobject.Status;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -19,13 +22,20 @@ import java.util.concurrent.TimeUnit;
 @PropertySource("classpath:properties/${spring.profiles.active:dev}.properties")
 public class StatusResource {
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Value("${env.name}")
     private String activeProfile;
 
     @GET
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_PLAIN})
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getStatus() {
-        Status status = Status.StatusBuilder.status().withEnvironment(activeProfile).withUpTime(getServerUpTime()).build();
+        Status status = Status.StatusBuilder.status()
+                                .withEnvironment(activeProfile)
+                                .withUpTime(getServerUpTime())
+                                .withDatabaseConnectionStatus(isDatabaseConnectionOn())
+                                .build();
 
         return Response.status(Response.Status.OK).entity(status).build();
     }
@@ -40,5 +50,12 @@ public class StatusResource {
         long seconds = TimeUnit.MILLISECONDS.toSeconds(upTime) - TimeUnit.DAYS.toSeconds(days) - TimeUnit.HOURS.toSeconds(hours) - TimeUnit.MINUTES.toSeconds(minutes);
 
         return String.format("%d days, %d hours, %d minutes and %d seconds", days, hours, minutes, seconds);
+    }
+
+    private Boolean isDatabaseConnectionOn() {
+        entityManager = entityManager.getEntityManagerFactory().createEntityManager();
+        Session session = (Session)entityManager.getDelegate();
+
+        return session.isConnected();
     }
 }
