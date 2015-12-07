@@ -5,6 +5,7 @@
 
     function AddBookCtrl(restService, $location) {
         var vm = this;
+        vm.oneMB = Math.pow(2, 20);
         vm.originalBook = {};
         vm.book = {};
         vm.authors = {};
@@ -50,19 +51,28 @@
             if(bookForm.$valid){
                 var reader = new FileReader();
                 reader.onload = function(){
-                    vm.book.cover = reader.result;
-
-                    restService
-                        .addBook(vm.book)
-                        .then(function(data){
-                            $location.path("/books/" + data.id);
-                            createNotification("Book <strong>" + data.title + "</strong> was added in the library!", "success")
-                        }, function(data){
-                            createNotification("Something wrong happened when you tried to add a new book!", "danger")
-                        });
+                    addBook(reader.result);
                 };
-                reader.readAsDataURL(vm.cover);
+
+                if (vm.cover) {
+                    reader.readAsDataURL(vm.cover);
+                } else {
+                    addBook();
+                }
             }
+        }
+
+        function addBook(cover) {
+            vm.book.cover = cover;
+
+            restService
+                .addBook(vm.book)
+                .then(function(data){
+                    $location.path("/books/" + data.id);
+                    createNotification("Book <strong>" + data.title + "</strong> was added in the library!", "success")
+                }, function(){
+                    createNotification("Something wrong happened when you tried to add a new book!", "danger")
+                });
         }
 
         function resetForm(bookForm) {
@@ -72,7 +82,8 @@
 
         function removeUploadCover() {
             vm.book.cover = null;
-            console.log(vm.aaa);
+            vm.cover = null;
+            console.log(vm.cover);
         }
 
         function createNotification(message, type) {

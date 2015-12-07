@@ -15,7 +15,6 @@
                 .getBookDetails($routeParams.bookId)
                 .then(function(data){
                     vm.book = data;
-
                     if (vm.book.cover == null)
                         vm.book.cover = "../icons/default_book.png";
                 });
