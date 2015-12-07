@@ -101,6 +101,10 @@
                     <span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
                     You must select a cover photo with a size smaller than 1 MB! The selected image has {{(vm.cover.size / 1000000).toFixed(2)}} MB.
                 </div>
+                <div class="alert alert-danger" role="alert" ng-show="vm.cover && vm.cover.type.indexOf('image') != 0">
+                    <span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
+                    You must select an image as your cover photo!
+                </div>
             </div>
 
             <div class="col-sm-3 text-right" style="padding-right: 0px;">

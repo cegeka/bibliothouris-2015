@@ -67,11 +67,7 @@ VALUES
   (BOOK_SEQUENCE.nextVal,
    '978-0-201-63361-0',
    'Design Patterns',
-      '\tCapturing a wealth of experience about the design of object-oriented software,
-      four top-notch designers present a catalog of simple and succinct solutions
-      to commonly occurring design problems. Previously undocumented, these 23 patterns
-      allow designers to create more flexible, elegant, and ultimately reusable designs
-      without having to rediscover the design solutions themselves.',
+      'Capturing a wealth of experience about the design of object-oriented software, four top-notch designers present a catalog of simple and succinct solutions to commonly occurring design problems. Previously undocumented, these 23 patterns allow designers to create more flexible, elegant, and ultimately reusable designs without having to rediscover the design solutions themselves.',
       395,
    '11-FEB-1977',
    'Addison-Wesley'

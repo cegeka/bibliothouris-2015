@@ -81,9 +81,8 @@
         }
 
         function removeUploadCover() {
-            vm.book.cover = null;
-            vm.cover = null;
             console.log(vm.cover);
+            vm.cover = null;
         }
 
         function createNotification(message, type) {
