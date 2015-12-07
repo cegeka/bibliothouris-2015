@@ -2,21 +2,14 @@ package cgk.bibliothouris.learning.service.entity;
 
 import cgk.bibliothouris.learning.service.dateconverter.LocalDateAdapter;
 import cgk.bibliothouris.learning.service.dateconverter.LocalDateAttributeConverter;
-import javassist.bytecode.ByteArray;
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -80,15 +73,8 @@ public class Book {
     @Size(max = 250, message = "Book publisher name is too long")
     private String publisher;
 
-//    public String getCover() {
-//        return cover;
-//    }
-//
-//    public void setCover(String cover) {
-//        this.cover = cover;
-//    }
-//
-//    private String cover;
+    @Column(name = "COVER")
+    private String cover;
 
     public String getDescription() {
         return description;
@@ -162,6 +148,14 @@ public class Book {
 
     public void setAuthors(Set<Author> listOfAuthors) {
         this.authors = listOfAuthors;
+    }
+
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
     }
 
 

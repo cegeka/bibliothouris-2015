@@ -18,7 +18,7 @@
                     <tr>
                         <th>Category</th>
                         <td>
-                                <span ng-repeat="category in vm.book.category">
+                                <span ng-repeat="category in vm.book.categories">
                                     {{category.category}}{{$last ? '' : ', '}}
                                 </span>
                         </td>
@@ -33,7 +33,7 @@
                     </tr>
                     <tr>
                         <th>Publish date</th>
-                        <td>{{vm.book.publishDate}}</td>
+                        <td>{{vm.book.date}}</td>
                     </tr>
                     <tr>
                         <th>ISBN</th>
@@ -44,7 +44,7 @@
             </div>
 
             <div class="col-md-4 hidden-sm hidden-xs media-left media-middle text-center" >
-                <img ng-src="../icons/The_Hunger_Games.jpeg" error-src="resources/icons/default_book.png" class="media-object img-thumbnail" style="height:250px"/>
+                <img ng-src="{{vm.book.cover}}" class="media-object img-thumbnail" style="height:250px"/>
             </div>
         </div>
 

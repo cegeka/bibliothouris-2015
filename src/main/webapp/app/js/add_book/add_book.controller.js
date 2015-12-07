@@ -3,7 +3,7 @@
         .module("Bibliothouris")
         .controller("AddBookCtrl", AddBookCtrl);
 
-    function AddBookCtrl(restService, $location, $uibModal) {
+    function AddBookCtrl(restService, $location) {
         var vm = this;
         vm.originalBook = {};
         vm.book = {};
@@ -47,18 +47,6 @@
         }
 
         function submitForm(bookForm) {
-            console.log(vm.book);
-            console.log(vm.cover);
-
-            var reader = new FileReader();
-            //reader.onload = function(){
-            //    vm.book.cover = "abc";
-            //};
-            reader.readAsBinaryString(vm.cover);
-            console.log(reader.result);
-
-            vm.book.cover = reader.result;
-
             if(bookForm.$valid){
                 var reader = new FileReader();
                 reader.onload = function(){
@@ -73,15 +61,8 @@
                             createNotification("Something wrong happened when you tried to add a new book!", "danger")
                         });
                 };
-                reader.readAsBinaryString(vm.cover);
-                //console.log(reader.result);
-                //
-                //vm.book.cover = reader.result;
-
-
-
+                reader.readAsDataURL(vm.cover);
             }
-
         }
 
         function resetForm(bookForm) {
