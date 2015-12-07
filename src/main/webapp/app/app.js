@@ -31,7 +31,8 @@
                 })
                 .when("/member/add", {
                     templateUrl: "templates/add_member.html",
-                    controller: "AddMemberCtrl"
+                    controller: "AddMemberCtrl",
+                    controllerAs: "vm"
                 })
                 .otherwise({redirectTo:"/status"});
 

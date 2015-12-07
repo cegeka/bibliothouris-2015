@@ -6,6 +6,7 @@
     function restService($http) {
         var service = {
             addBook: addBook,
+            addMember: addMember,
             getBooks: getBooks,
             countBooks: countBooks,
             getAuthors: getAuthors,
@@ -18,6 +19,14 @@
         function addBook(book) {
             console.log(book);
             return $http.post("/api/books", book)
+                .then(function(response){
+                    return response.data;
+                });
+        }
+
+        function addMember(member) {
+            console.log(member);
+            return $http.post("/api/member", member)
                 .then(function(response){
                     return response.data;
                 });
