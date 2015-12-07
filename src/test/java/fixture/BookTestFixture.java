@@ -66,21 +66,6 @@ public class BookTestFixture {
         return authors;
     }
 
-
-    /*public static Book createBookWithOneAuthor() {
-        return Book.BookBuilder.book().withTitle("Clean Code")
-                                        .withAuthors(createOneAuthor())
-                                        .withIsbn("978-0-13-235088-4")
-                                        .build();
-    }
-
-    public static Book createBookWithFourAuthors() {
-        return Book.BookBuilder.book().withTitle("Design Patterns")
-                .withAuthors(createFourAuthors())
-                .withIsbn("978-0-201-63361-0")
-                .build();
-    }*/
-
     public static Book createBookWithOneAuthorAndOneCategory() {
         return Book.BookBuilder.book().withTitle("Clean Code")
                 .withAuthors(createOneAuthor())
@@ -107,13 +92,13 @@ public class BookTestFixture {
 
     public static Book createBookWithoutISBN() {
         return Book.BookBuilder.book().withTitle("Clean Code")
-                                        .withAuthors(createOneAuthor())
-                                        .withDescription("Great book for learning how to write clean code")
-                                        .withCategories(createThreeCategories())
-                                        .withPages(430)
-                                        .withPublicationDate(LocalDate.of(2013, Month.MARCH, 23))
-                                        .withPublisher("Prentice Hall")
-                                        .build();
+                .withAuthors(createOneAuthor())
+                .withDescription("Great book for learning how to write clean code")
+                .withCategories(createThreeCategories())
+                .withPages(430)
+                .withPublicationDate(LocalDate.of(2013, Month.MARCH, 23))
+                .withPublisher("Prentice Hall")
+                .build();
     }
 
     public static Book createBookWithoutCategory() {
@@ -140,13 +125,13 @@ public class BookTestFixture {
 
     public static Book createBookWithoutTitle() {
         return Book.BookBuilder.book().withIsbn("978-0-201-63361-0")
-                                        .withAuthors(createOneAuthor())
-                                        .withDescription("Great book for learning how to write clean code")
-                                        .withCategories(createThreeCategories())
-                                        .withPages(430)
-                                        .withPublicationDate(LocalDate.of(2013, Month.MARCH, 23))
-                                        .withPublisher("Prentice Hall")
-                                        .build();
+                .withAuthors(createOneAuthor())
+                .withDescription("Great book for learning how to write clean code")
+                .withCategories(createThreeCategories())
+                .withPages(430)
+                .withPublicationDate(LocalDate.of(2013, Month.MARCH, 23))
+                .withPublisher("Prentice Hall")
+                .build();
     }
 
     public static Book createBookWithOneAuthorWithoutLastName() {

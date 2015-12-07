@@ -48,7 +48,7 @@ public class BookResourceTest {
 
     @Test
     public void givenAValidBook_createBook_returns200OK() {
-        Book book = BookTestFixture.createBookWithOneAuthor();
+        Book book = BookTestFixture.createBookWithOneAuthorAndOneCategory();
         Mockito.when(mockBookService.createBook(book)).thenReturn(book);
 
         Response response = bookResource.createBook(book);
@@ -58,7 +58,7 @@ public class BookResourceTest {
 
     @Test
     public void givenAValidBook_createBook_returnsCorrectBook() {
-        Book book = BookTestFixture.createBookWithOneAuthor();
+        Book book = BookTestFixture.createBookWithOneAuthorAndOneCategory();
         Mockito.when(mockBookService.createBook(book)).thenReturn(book);
 
         Response response = bookResource.createBook(book);
@@ -68,7 +68,7 @@ public class BookResourceTest {
 
     @Test
     public void givenAValidBook_createBook_returnsLinkToTheNewBook() {
-        Book book = BookTestFixture.createBookWithOneAuthor();
+        Book book = BookTestFixture.createBookWithOneAuthorAndOneCategory();
         book.setId(BOOK_ID);
         Mockito.when(mockBookService.createBook(book)).thenReturn(book);
         Mockito.when(mockUriInfo.getAbsolutePath()).thenReturn(URI.create("http://localhost:8080/webapi/books"));
