@@ -78,6 +78,7 @@
         function resetForm(bookForm) {
             bookForm.$setPristine();
             vm.book = angular.copy(vm.originalBook);
+            vm.cover = null;
         }
 
         function removeUploadCover() {
