@@ -51,7 +51,11 @@
         }
 
         function showBook(bookId) {
-            $location.path($location.url() + "/" + bookId);
+            for (var key in $location.search()) {
+                $location.search(key, null);
+            }
+
+            $location.path($location.path() + "/" + bookId);
         }
 
         function pageChanged() {
