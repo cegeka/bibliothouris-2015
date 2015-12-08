@@ -1,5 +1,6 @@
 package integration;
 
+import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
 import cgk.bibliothouris.learning.application.transferobject.BookTitleTO;
 import cgk.bibliothouris.learning.config.AppConfig;
 import cgk.bibliothouris.learning.repository.BookRepository;
@@ -60,10 +61,11 @@ public class ITBookRepository {
     public void givenOneBook_findBooks_findTheBook() {
         Book book1 = bookRepository.createBook(bookWithOneAuthorAndThreeCategories);
 
-        List<Book> foundBooks = bookRepository.findAllBooks(0,5);
+        List<BookListingTO> foundBooks = bookRepository.findAllBooks(0,5);
+        BookListingTO bookTO1 = new BookListingTO(book1.getId(), book1.getIsbn(), book1.getTitle(), book1.getAuthors());
 
         assertThat(foundBooks.size()).isEqualTo(1);
-        assertThat(foundBooks).contains(book1);
+        assertThat(foundBooks).contains(bookTO1);
     }
 
     @Test
@@ -71,11 +73,13 @@ public class ITBookRepository {
         Book book1 = bookRepository.createBook(bookWithFourAuthorsAndThreeCategories);
         Book book2 = bookRepository.createBook(bookWithOneAuthorAndOneCategory);
 
-        List<Book> foundBooks = bookRepository.findAllBooks(0,5);
+        List<BookListingTO> foundBooks = bookRepository.findAllBooks(0,5);
+        BookListingTO bookTO1 = new BookListingTO(book1.getId(), book1.getIsbn(), book1.getTitle(), book1.getAuthors());
+        BookListingTO bookTO2 = new BookListingTO(book2.getId(), book2.getIsbn(), book2.getTitle(), book2.getAuthors());
 
         assertThat(foundBooks.size()).isEqualTo(2);
-        assertThat(foundBooks).contains(book1);
-        assertThat(foundBooks).contains(book2);
+        assertThat(foundBooks).contains(bookTO1);
+        assertThat(foundBooks).contains(bookTO2);
     }
 
     @Test

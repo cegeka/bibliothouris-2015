@@ -54,6 +54,7 @@
                 .getBooks(start, end)
                 .then(function(data){
                     vm.books = data;
+                    console.log(data);
                 }, function(){
                     vm.noBooks = true;
                 });

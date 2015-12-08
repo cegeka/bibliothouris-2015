@@ -1,5 +1,6 @@
 package cgk.bibliothouris.learning.service;
 
+import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
 import cgk.bibliothouris.learning.application.transferobject.BookTitleTO;
 import cgk.bibliothouris.learning.repository.BookRepository;
 import cgk.bibliothouris.learning.service.entity.Book;
@@ -30,7 +31,7 @@ public class BookService {
     }
 
     @Transactional(readOnly = true)
-    public List<Book> findAllBooks(String start, String end) {
+    public List<BookListingTO> findAllBooks(String start, String end) {
         Integer startPosition = null;
         Integer endPosition = null;
 

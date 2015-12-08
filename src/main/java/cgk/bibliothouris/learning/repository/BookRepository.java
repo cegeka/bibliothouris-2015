@@ -1,5 +1,6 @@
 package cgk.bibliothouris.learning.repository;
 
+import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
 import cgk.bibliothouris.learning.application.transferobject.BookTitleTO;
 import cgk.bibliothouris.learning.service.entity.Book;
 
@@ -9,7 +10,7 @@ public interface BookRepository {
 
     Book createBook(Book book);
 
-    List<Book> findAllBooks(Integer start, Integer end);
+    List<BookListingTO> findAllBooks(Integer start, Integer end);
 
     void deleteAllBooks();
 

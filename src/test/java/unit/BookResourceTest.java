@@ -1,6 +1,7 @@
 package unit;
 
 import cgk.bibliothouris.learning.application.resource.BookResource;
+import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
 import cgk.bibliothouris.learning.application.transferobject.BookTitleTO;
 import cgk.bibliothouris.learning.service.BookService;
 import cgk.bibliothouris.learning.service.entity.Book;
@@ -82,8 +83,8 @@ public class BookResourceTest {
 
     @Test
     public void givenAListOfBooks_findAllBooks_return200OKResponse() {
-        List<Book> books = new ArrayList<>();
-        books.add(new Book());
+        List<BookListingTO> books = new ArrayList<>();
+        books.add(new BookListingTO());
         Mockito.when(mockBookService.findAllBooks("0","5")).thenReturn(books);
 
         Response response = bookResource.getAllBooks(Integer.toString(0),Integer.toString(5));
@@ -94,8 +95,8 @@ public class BookResourceTest {
 
     @Test
     public void givenAListOfBooks_findAllBooksWithoutParams_returnCorrectEntity() {
-        List<Book> books = new ArrayList<>();
-        books.add(new Book());
+        List<BookListingTO> books = new ArrayList<>();
+        books.add(new BookListingTO());
         Mockito.when(mockBookService.findAllBooks("","")).thenReturn(books);
 
         Response response = bookResource.getAllBooks("","");
@@ -106,7 +107,7 @@ public class BookResourceTest {
 
     @Test
     public void givenAnEmptyListOfBooks_findAllBooks_return404NotFound() {
-        List<Book> books = new ArrayList<>();
+        List<BookListingTO> books = new ArrayList<>();
         Mockito.when(mockBookService.findAllBooks("0","5")).thenReturn(books);
 
         Response response = bookResource.getAllBooks(Integer.toString(0),Integer.toString(5));

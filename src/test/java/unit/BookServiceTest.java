@@ -1,5 +1,6 @@
 package unit;
 
+import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
 import cgk.bibliothouris.learning.application.transferobject.BookTitleTO;
 import cgk.bibliothouris.learning.repository.BookRepository;
 import cgk.bibliothouris.learning.service.BookService;
@@ -75,20 +76,20 @@ public class BookServiceTest {
 
     @Test
     public void givenOneBook_findAllBooks_returnsTheBook() {
-        List<Book> listOfBooks = new ArrayList<>();
+        List<BookListingTO> listOfBooks = new ArrayList<>();
         Mockito.when(mockRepository.findAllBooks(0,5)).thenReturn(listOfBooks);
 
-        List<Book> books = service.findAllBooks("0","5");
+        List<BookListingTO> books = service.findAllBooks("0","5");
 
         assertThat(books).isEqualTo(listOfBooks);
     }
 
     @Test
     public void givenOneBook_findAllBooksWithNegativeParams_returnsListOfBooks() {
-        List<Book> listOfBooks = new ArrayList<>();
+        List<BookListingTO> listOfBooks = new ArrayList<>();
         Mockito.when(mockRepository.findAllBooks(-1,-3)).thenReturn(listOfBooks);
 
-        List<Book> books = service.findAllBooks("-1","-3");
+        List<BookListingTO> books = service.findAllBooks("-1","-3");
 
         assertThat(books).isEqualTo(listOfBooks);
     }
