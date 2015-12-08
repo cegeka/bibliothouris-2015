@@ -3,7 +3,7 @@
         .module("Bibliothouris")
         .controller("AddBookCtrl", AddBookCtrl);
 
-    function AddBookCtrl(restService, $location) {
+    function AddBookCtrl($scope, restService, $location) {
         var vm = this;
         vm.oneMB = Math.pow(2, 20);
         vm.originalBook = {};
@@ -13,19 +13,6 @@
         vm.isCoverSizeValid = isCoverSizeValid;
         vm.isCoverTypeValid = isCoverTypeValid;
         vm.isCoverValid = isCoverValid;
-
-        function isCoverSizeValid() {
-            return !(vm.cover && vm.cover.size > vm.oneMB);
-        }
-
-        function isCoverTypeValid() {
-            return !(vm.cover && vm.cover.type.indexOf('image') != 0);
-        }
-
-        function isCoverValid() {
-            return isCoverSizeValid() && isCoverTypeValid();
-        }
-
         vm.addAuthor = addAuthor;
         vm.deleteAuthor = deleteAuthor;
         vm.submitForm = submitForm;
@@ -50,8 +37,11 @@
                     vm.authors = data;
                 });
 
-            $('#input-id').on('fileclear', function(event) {
+            $('#input-id').on('filecleared', function(event) {
                 vm.cover = null;
+                if ($scope.$root.$$phase != '$apply' && $scope.$root.$$phase != '$digest') {
+                    $scope.$apply();
+                }
             });
         }
 
@@ -98,6 +88,18 @@
             bookForm.$setPristine();
             vm.book = angular.copy(vm.originalBook);
             $('#input-id').fileinput('clear');
+        }
+
+        function isCoverSizeValid() {
+            return !(vm.cover && vm.cover.size > vm.oneMB);
+        }
+
+        function isCoverTypeValid() {
+            return !(vm.cover && vm.cover.type.indexOf('image') != 0);
+        }
+
+        function isCoverValid() {
+            return isCoverSizeValid() && isCoverTypeValid();
         }
 
         function createNotification(message, type) {
