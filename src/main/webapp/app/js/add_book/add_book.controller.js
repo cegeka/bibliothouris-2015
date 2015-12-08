@@ -10,11 +10,26 @@
         vm.book = {};
         vm.authors = {};
 
+        vm.isCoverSizeValid = isCoverSizeValid;
+        vm.isCoverTypeValid = isCoverTypeValid;
+        vm.isCoverValid = isCoverValid;
+
+        function isCoverSizeValid() {
+            return !(vm.cover && vm.cover.size > vm.oneMB);
+        }
+
+        function isCoverTypeValid() {
+            return !(vm.cover && vm.cover.type.indexOf('image') != 0);
+        }
+
+        function isCoverValid() {
+            return isCoverSizeValid() && isCoverTypeValid();
+        }
+
         vm.addAuthor = addAuthor;
         vm.deleteAuthor = deleteAuthor;
         vm.submitForm = submitForm;
         vm.resetForm = resetForm;
-        vm.removeUploadCover = removeUploadCover;
 
         vm.onSelect = function (item, index) {
             vm.book.authors[index].firstName = item.firstName;
@@ -34,6 +49,10 @@
                 .then(function(data){
                     vm.authors = data;
                 });
+
+            $('#input-id').on('fileclear', function(event) {
+                vm.cover = null;
+            });
         }
 
         function addAuthor() {
@@ -48,7 +67,7 @@
         }
 
         function submitForm(bookForm) {
-            if(bookForm.$valid){
+            if(bookForm.$valid && isCoverValid()){
                 var reader = new FileReader();
                 reader.onload = function(){
                     addBook(reader.result);
@@ -78,12 +97,7 @@
         function resetForm(bookForm) {
             bookForm.$setPristine();
             vm.book = angular.copy(vm.originalBook);
-            vm.cover = null;
-        }
-
-        function removeUploadCover() {
-            console.log(vm.cover);
-            vm.cover = null;
+            $('#input-id').fileinput('clear');
         }
 
         function createNotification(message, type) {

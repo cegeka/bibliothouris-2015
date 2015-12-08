@@ -69,48 +69,19 @@
     <div class="form-group" style="display: flex; align-items: center;">
         <label class="col-sm-2 control-label">Cover photo</label>
 
-        <div class="col-sm-10 row" style="display: flex; align-items: center; padding-right: 0px;">
-            <div class="col-sm-9">
-                <div class="row">
-                    <div class="col-sm-offset-9 col-sm-3">
-                        <file-field class="btn btn-success full-width" ng-model="vm.cover" preview="previewImage">
-                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                            Select image
-                        </file-field>
-                    </div>
-                </div>
-                </br>
-                <div class="row">
-                    <div class="col-sm-offset-9 col-sm-3 ">
-                        <button type="button" id="remove" class="btn btn-danger full-width" ng-click="previewImage = ' '; vm.removeUploadCover()">
-                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                            Remove
-                        </button>
-                    </div>
-                </div>
-                </br>
-                <div class="alert alert-info" role="alert" ng-show="!vm.cover">
-                    <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-                    You have not choose any cover for your book, yet!
-                </div>
-                <div class="alert alert-success" role="alert" ng-show="vm.cover">
-                    <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-                    You have selected <b>{{uploadFile.name}}</b> as cover for your book!
-                </div>
-                <div class="alert alert-danger" role="alert" ng-show="vm.cover && vm.cover.size > vm.oneMB">
+        <div class="col-sm-10" style="display: flex; align-items: center;">
+            <div>
+                <input file-input type="file" class="file" file-model="vm.cover" id="input-id" name="fileInput">
+                <br ng-show="!vm.isCoverValid()"/>
+                <div class="alert alert-danger" role="alert" ng-show="!vm.isCoverSizeValid()">
                     <span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
-                    You must select a cover photo with a size smaller than 1 MB! The selected image has {{(vm.cover.size / 1000000).toFixed(2)}} MB.
+                    You must select a cover photo with a size <b>smaller than 1 MB</b>! The selected image has {{(vm.cover.size / 1000000).toFixed(2)}} MB.
                 </div>
-                <div class="alert alert-danger" role="alert" ng-show="vm.cover && vm.cover.type.indexOf('image') != 0">
+                <div class="alert alert-danger" role="alert" ng-show="!vm.isCoverTypeValid()">
                     <span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
-                    You must select an image as your cover photo!
+                    You must select an <b>image file</b> as your cover photo!
                 </div>
             </div>
-
-            <div class="col-sm-3 text-right" style="padding-right: 0px;">
-                <img ng-src="{{previewImage}}" class="img-thumbnail " style="height:300px; width:210px; object-fit:cover">
-            </div>
-
         </div>
     </div>
 
@@ -124,5 +95,4 @@
             </button>
         </div>
     </div>
-
 </form>

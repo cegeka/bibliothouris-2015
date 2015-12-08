@@ -2,7 +2,7 @@
     console.log("app.js");
 
     angular
-        .module("Bibliothouris", ["ngRoute", "ui.bootstrap", "bootstrap.fileField"])
+        .module("Bibliothouris", ["ngRoute", "ui.bootstrap", "file-model"])
         .config(function($routeProvider, $httpProvider){
             $routeProvider
                 .when("/status", {
