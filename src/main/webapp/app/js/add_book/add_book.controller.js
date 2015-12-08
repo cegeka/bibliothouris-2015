@@ -10,10 +10,12 @@
         vm.book = {};
         vm.authors = {};
 
+
         vm.isCoverSizeValid = isCoverSizeValid;
         vm.isCoverTypeValid = isCoverTypeValid;
         vm.isCoverValid = isCoverValid;
         vm.addAuthor = addAuthor;
+        vm.addCategory = addCategory;
         vm.deleteAuthor = deleteAuthor;
         vm.submitForm = submitForm;
         vm.resetForm = resetForm;
@@ -27,7 +29,8 @@
 
         function activate() {
             vm.originalBook = {
-                authors: [""]
+                authors: [""],
+                categories: []
             };
             vm.book = angular.copy(vm.originalBook);
 
@@ -35,6 +38,11 @@
                 .getAuthors()
                 .then(function(data){
                     vm.authors = data;
+                });
+            restService
+                .getBookCategories()
+                .then(function(data){
+                    vm.categories = data;
                 });
 
             $('#input-id').on('filecleared', function(event) {
@@ -47,6 +55,10 @@
 
         function addAuthor() {
             vm.book.authors.push("");
+        }
+
+        function addCategory() {
+            vm.book.categories.push("");
         }
 
         function deleteAuthor($index) {
@@ -129,6 +141,14 @@
 
         vm.showFeedback = function(data){
             return !data.required;
+        }
+
+        vm.addItemToModel = function(item){
+            console.log(item);
+            console.log(vm.book.categories);
+            vm.book.categories.push({
+                category: item.category
+            });
         }
 
     }

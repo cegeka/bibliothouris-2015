@@ -12,14 +12,14 @@
         </div>
     </div>
 
-    <div class="form-group has-feedback"  ng-repeat="author in vm.book.authors track by $index" ng-init="inputFieldName = $index">
+    <div class="form-group has-feedback"  ng-repeat="author in vm.book.authors track by $index">
         <label for="authors" class="col-sm-2 control-label required-mark" ng-show="$index == 0">Authors</label>
         <div class="col-sm-10" ng-class="{'col-sm-push-2':$index!=0}">
             <div class="row">
                 <div class="col-sm-11" id="authors">
                     <div class="row">
                         <div class="col-sm-6">
-                            <input name="firstName" type="text" class="form-control required-mark1" id="firstName"
+                            <input name="firstName" type="text" class="form-control" id="firstName"
                                    placeholder="First name {{$index + 1}} (optional)"
                                    ng-model="vm.book.authors[$index].firstName"
                                    uib-typeahead="author.firstName + ' ' + author.lastName for author in vm.authors | filter:$viewValue | limitTo:8"
@@ -82,6 +82,40 @@
                     You must select an <b>image file</b> as your cover photo!
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="form-group has-feedback">
+        <label for="title" class="col-sm-2 control-label">Description</label>
+        <div class="col-sm-10">
+            <textarea name="description" type="text" class="form-control" id="description" placeholder="Description" ng-model="vm.book.description"></textarea>
+        </div>
+    </div>
+
+    <div class="form-group has-feedback">
+        <label class="col-sm-2 control-label required-mark">Categories</label>
+        <div class="col-sm-10">
+            <div class="row">
+                <div class="checkbox col-sm-4" ng-repeat="cat in vm.categories track by cat.id" >
+                    <label>
+                        <input type="checkbox" ng-click="vm.addItemToModel(cat)" > {{cat.category}}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group has-feedback">
+        <label for="title" class="col-sm-2 control-label">Pages</label>
+        <div class="col-sm-10">
+            <input name="pages" type="text" class="form-control" id="pages" placeholder="Pages" ng-model="vm.book.pages">
+        </div>
+    </div>
+
+    <div class="form-group has-feedback">
+        <label for="title" class="col-sm-2 control-label">Publisher</label>
+        <div class="col-sm-10">
+            <input name="publisher" type="text" class="form-control" id="publisher" placeholder="Publisher" ng-model="vm.book.publisher">
         </div>
     </div>
 
