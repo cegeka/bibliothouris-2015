@@ -70,7 +70,7 @@
         <label class="col-sm-2 control-label">Cover photo</label>
 
         <div class="col-sm-10" style="display: flex; align-items: center;">
-            <div>
+            <div class="full-width">
                 <input file-input type="file" class="file" file-model="vm.cover" id="input-id" name="fileInput">
                 <br ng-show="!vm.isCoverValid()"/>
                 <div class="alert alert-danger" role="alert" ng-show="!vm.isCoverSizeValid()">
