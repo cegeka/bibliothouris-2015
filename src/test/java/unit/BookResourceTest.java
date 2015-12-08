@@ -2,6 +2,7 @@ package unit;
 
 import cgk.bibliothouris.learning.application.resource.BookResource;
 import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
+import cgk.bibliothouris.learning.application.transferobject.BookTO;
 import cgk.bibliothouris.learning.application.transferobject.BookTitleTO;
 import cgk.bibliothouris.learning.service.BookService;
 import cgk.bibliothouris.learning.service.entity.Book;
@@ -83,36 +84,37 @@ public class BookResourceTest {
 
     @Test
     public void givenAListOfBooks_findAllBooks_return200OKResponse() {
-        List<BookListingTO> books = new ArrayList<>();
-        books.add(new BookListingTO());
-        Mockito.when(mockBookService.findAllBooks("0","5")).thenReturn(books);
+        BookListingTO bookListingTO = new BookListingTO();
+        bookListingTO.setBooks(Arrays.asList(new BookTO()));
+        Mockito.when(mockBookService.findAllBooks("0", "5", null)).thenReturn(bookListingTO);
 
-        Response response = bookResource.getAllBooks(Integer.toString(0),Integer.toString(5));
+        Response response = bookResource.getAllBooks(Integer.toString(0), Integer.toString(5), null);
 
-        Mockito.verify(mockBookService, times(1)).findAllBooks("0","5");
+        Mockito.verify(mockBookService, times(1)).findAllBooks("0", "5", null);
         assertThat(response.getStatusInfo()).isEqualTo(Status.OK);
     }
 
     @Test
     public void givenAListOfBooks_findAllBooksWithoutParams_returnCorrectEntity() {
-        List<BookListingTO> books = new ArrayList<>();
-        books.add(new BookListingTO());
-        Mockito.when(mockBookService.findAllBooks("","")).thenReturn(books);
+        BookListingTO bookListingTO = new BookListingTO();
+        bookListingTO.setBooks(Arrays.asList(new BookTO()));
+        Mockito.when(mockBookService.findAllBooks("", "", null)).thenReturn(bookListingTO);
 
-        Response response = bookResource.getAllBooks("","");
+        Response response = bookResource.getAllBooks("", "", null);
 
-        Mockito.verify(mockBookService, times(1)).findAllBooks("","");
-        assertThat(response.getEntity()).isEqualTo(books);
+        Mockito.verify(mockBookService, times(1)).findAllBooks("", "", null);
+        assertThat(response.getEntity()).isEqualTo(bookListingTO);
     }
 
     @Test
     public void givenAnEmptyListOfBooks_findAllBooks_return404NotFound() {
-        List<BookListingTO> books = new ArrayList<>();
-        Mockito.when(mockBookService.findAllBooks("0","5")).thenReturn(books);
+        BookListingTO bookListingTO = new BookListingTO();
+        bookListingTO.setBooks(new ArrayList<>());
+        Mockito.when(mockBookService.findAllBooks("0", "5", null)).thenReturn(bookListingTO);
 
-        Response response = bookResource.getAllBooks(Integer.toString(0),Integer.toString(5));
+        Response response = bookResource.getAllBooks(Integer.toString(0),Integer.toString(5), null);
 
-        Mockito.verify(mockBookService, times(1)).findAllBooks("0","5");
+        Mockito.verify(mockBookService, times(1)).findAllBooks("0", "5", null);
         assertThat(response.getStatusInfo()).isEqualTo(Status.NOT_FOUND);
     }
 

@@ -68,7 +68,7 @@ public class BookTestFixture {
     }
 
     public static Book createBookWithOneAuthorAndOneCategory() {
-        return Book.BookBuilder.book().withTitle("Clean Code")
+        return Book.BookBuilder.book().withTitle("Clean Code - version 1")
                 .withAuthors(createOneAuthor())
                 .withIsbn("978-0-13-235088-4")
                 .withDescription("Great book for learning how to write clean code")

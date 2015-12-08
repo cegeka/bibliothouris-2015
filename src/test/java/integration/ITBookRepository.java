@@ -1,6 +1,7 @@
 package integration;
 
 import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
+import cgk.bibliothouris.learning.application.transferobject.BookTO;
 import cgk.bibliothouris.learning.application.transferobject.BookTitleTO;
 import cgk.bibliothouris.learning.config.AppConfig;
 import cgk.bibliothouris.learning.repository.BookRepository;
@@ -16,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = AppConfig.class)
@@ -60,26 +61,38 @@ public class ITBookRepository {
     @Test
     public void givenOneBook_findBooks_findTheBook() {
         Book book1 = bookRepository.createBook(bookWithOneAuthorAndThreeCategories);
+        BookTO expectedBookTO = new BookTO(book1);
 
-        List<BookListingTO> foundBooks = bookRepository.findAllBooks(0,5);
-        BookListingTO bookTO1 = new BookListingTO(book1);
+        BookListingTO foundBookListingTO = bookRepository.findAllBooks(0, 5, null);
 
-        assertThat(foundBooks.size()).isEqualTo(1);
-        assertThat(foundBooks).contains(bookTO1);
+        assertThat(foundBookListingTO.getBooksCount()).isEqualTo(1);
+        assertThat(foundBookListingTO.getBooks()).contains(expectedBookTO);
     }
 
     @Test
     public void givenTwoBooks_findBooks_findTwoBooks() {
         Book book1 = bookRepository.createBook(bookWithFourAuthorsAndThreeCategories);
         Book book2 = bookRepository.createBook(bookWithOneAuthorAndOneCategory);
+        BookTO expectedBookTO1 = new BookTO(book1);
+        BookTO expectedBookTO2 = new BookTO(book2);
 
-        List<BookListingTO> foundBooks = bookRepository.findAllBooks(0,5);
-        BookListingTO bookTO1 = new BookListingTO(book1);
-        BookListingTO bookTO2 = new BookListingTO(book2);
+        BookListingTO foundBookListingTO = bookRepository.findAllBooks(0, 5, null);
 
-        assertThat(foundBooks.size()).isEqualTo(2);
-        assertThat(foundBooks).contains(bookTO1);
-        assertThat(foundBooks).contains(bookTO2);
+        assertThat(foundBookListingTO.getBooksCount()).isEqualTo(2);
+        assertThat(foundBookListingTO.getBooks()).contains(expectedBookTO1);
+        assertThat(foundBookListingTO.getBooks()).contains(expectedBookTO2);
+    }
+
+    @Test
+    public void givenTwoBooks_findBooksFilteredByTitle_findTheCorrectBooks() {
+        Book book1 = bookRepository.createBook(bookWithFourAuthorsAndThreeCategories);
+        Book book2 = bookRepository.createBook(bookWithOneAuthorAndOneCategory);
+        BookTO expectedBookTO = new BookTO(book1);
+
+        BookListingTO foundBookListingTO = bookRepository.findAllBooks(0, 5, "Clean Code");
+
+        assertThat(foundBookListingTO.getBooksCount()).isEqualTo(1);
+        assertThat(foundBookListingTO.getBooks()).contains(expectedBookTO);
     }
 
     @Test
@@ -108,7 +121,7 @@ public class ITBookRepository {
 
         List<BookTitleTO> bookTitles = bookRepository.findAllBookTitles();
 
-        assertThat(bookTitles.size()).isEqualTo(1);
+        assertThat(bookTitles.size()).isEqualTo(2);
     }
 
 }

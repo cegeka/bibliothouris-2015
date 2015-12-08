@@ -1,6 +1,7 @@
 package cgk.bibliothouris.learning.repository;
 
 import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
+import cgk.bibliothouris.learning.application.transferobject.BookTO;
 import cgk.bibliothouris.learning.application.transferobject.BookTitleTO;
 import cgk.bibliothouris.learning.service.entity.Author;
 import cgk.bibliothouris.learning.service.entity.Book;
@@ -33,13 +34,13 @@ public class BookRepositoryJPA implements BookRepository {
     }
 
     @Override
-    public List<BookListingTO> findAllBooks(Integer start, Integer end){
-        TypedQuery<Book> selectAllQuery = entityManager.createNamedQuery(Book.LIST_ALL_BOOKS, Book.class)
-                                                       .setMaxResults(end - start)
-                                                       .setFirstResult(start);
-        List<Book> books = selectAllQuery.getResultList();
+    public BookListingTO findAllBooks(Integer start, Integer end, String title){
+        List<Book> books = findBooks(start, end, title);
+        Long booksCount = countBooks(title);
 
-        return books.stream().map(book -> new BookListingTO(book)).collect(Collectors.toList());
+        List<BookTO> bookTOS = books.stream().map(book -> new BookTO(book)).collect(Collectors.toList());
+
+        return new BookListingTO(bookTOS, booksCount);
     }
 
     @Override
@@ -105,5 +106,41 @@ public class BookRepositoryJPA implements BookRepository {
         book.setCategories(persistedCategories);
 
         return book;
+    }
+
+    private List<Book> findBooks(Integer start, Integer end, String title) {
+        String selectStatement = "SELECT b FROM Book b";
+
+        String filterClause = generateFilterQueryClause(title);
+        String sortClause = generateSortQueryClause();
+
+        TypedQuery<Book> selectAllQuery = entityManager.createQuery(selectStatement + " " + filterClause + " " + sortClause, Book.class)
+                .setMaxResults(end - start)
+                .setFirstResult(start);
+        return selectAllQuery.getResultList();
+    }
+
+    private Long countBooks(String title) {
+        String statement = "SELECT COUNT(*) FROM Book b";
+
+        String filterClause = generateFilterQueryClause(title);
+
+        TypedQuery<Long> countQuery = entityManager.createQuery(statement + " " + filterClause, Long.class);
+        return countQuery.getSingleResult();
+    }
+
+    private String generateFilterQueryClause(String title) {
+        String conditionalClause = "WHERE 1 = 1";
+
+        if (title != null)
+            conditionalClause += " AND b.title = '" + title + "'";
+
+        return conditionalClause;
+    }
+
+    private String generateSortQueryClause() {
+        String sortClause = "ORDER BY lower(b.title), b.id";
+
+        return sortClause;
     }
 }

@@ -1,6 +1,8 @@
 package integration;
 
 import cgk.bibliothouris.learning.application.resource.BookResource;
+import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
+import cgk.bibliothouris.learning.application.transferobject.BookTO;
 import cgk.bibliothouris.learning.application.transferobject.BookTitleTO;
 import cgk.bibliothouris.learning.config.JpaConfig;
 import cgk.bibliothouris.learning.service.entity.Book;
@@ -60,10 +62,11 @@ public class ITBookResource extends JerseyTest {
     @Test
     public void givenAListOfBooks_GET_returnsTheListOfBooks() {
         Book newBook = client.post(PATH, bookWithOneAuthorAndOneCategory).readEntity(Book.class);
+        BookTO expectedBookTO = new BookTO(newBook);
 
-        List<Book> returnedList = client.get(PATH).readEntity(new GenericType<List<Book>>() {});
+        BookListingTO bookListingTO = client.get(PATH).readEntity(BookListingTO.class);
 
-        assertThat(returnedList).contains(newBook);
+        assertThat(bookListingTO.getBooks()).contains(expectedBookTO);
     }
 
     @Test

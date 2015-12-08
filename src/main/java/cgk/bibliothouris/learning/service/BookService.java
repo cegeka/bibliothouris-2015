@@ -31,7 +31,7 @@ public class BookService {
     }
 
     @Transactional(readOnly = true)
-    public List<BookListingTO> findAllBooks(String start, String end) {
+    public BookListingTO findAllBooks(String start, String end, String title) {
         Integer startPosition = null;
         Integer endPosition = null;
 
@@ -45,7 +45,7 @@ public class BookService {
         } else {
             endPosition = Integer.valueOf(end);
         }
-        return bookRepository.findAllBooks(startPosition, endPosition);
+        return bookRepository.findAllBooks(startPosition, endPosition, title);
     }
 
     @Transactional(readOnly = true)

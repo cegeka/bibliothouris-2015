@@ -17,6 +17,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import static org.mockito.Mockito.times;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -76,22 +77,22 @@ public class BookServiceTest {
 
     @Test
     public void givenOneBook_findAllBooks_returnsTheBook() {
-        List<BookListingTO> listOfBooks = new ArrayList<>();
-        Mockito.when(mockRepository.findAllBooks(0,5)).thenReturn(listOfBooks);
+        BookListingTO expectedBookListingTO = new BookListingTO();
+        Mockito.when(mockRepository.findAllBooks(0, 5, null)).thenReturn(expectedBookListingTO);
 
-        List<BookListingTO> books = service.findAllBooks("0","5");
+        BookListingTO bookListingTO = service.findAllBooks("0", "5", null);
 
-        assertThat(books).isEqualTo(listOfBooks);
+        assertThat(bookListingTO).isEqualTo(expectedBookListingTO);
     }
 
     @Test
     public void givenOneBook_findAllBooksWithNegativeParams_returnsListOfBooks() {
-        List<BookListingTO> listOfBooks = new ArrayList<>();
-        Mockito.when(mockRepository.findAllBooks(-1,-3)).thenReturn(listOfBooks);
+        BookListingTO expectedBookListingTO = new BookListingTO();
+        Mockito.when(mockRepository.findAllBooks(0, 0, null)).thenReturn(expectedBookListingTO);
 
-        List<BookListingTO> books = service.findAllBooks("-1","-3");
+        BookListingTO bookListingTO = service.findAllBooks("-1", "-3", null);
 
-        assertThat(books).isEqualTo(listOfBooks);
+        assertThat(bookListingTO).isEqualTo(expectedBookListingTO);
     }
 
     @Test

@@ -10,7 +10,7 @@ public interface BookRepository {
 
     Book createBook(Book book);
 
-    List<BookListingTO> findAllBooks(Integer start, Integer end);
+    BookListingTO findAllBooks(Integer start, Integer end, String title);
 
     void deleteAllBooks();
 

@@ -27,15 +27,7 @@
                     vm.titles = data;
                 });
 
-            restService
-                .countBooks()
-                .then(function(data){
-                    vm.totalItems = data;
-
-                    pageChanged();
-                }, function(){
-                    vm.noBooks = true;
-                });
+            pageChanged();
         }
 
         function onSelectFilter() {
@@ -49,11 +41,12 @@
         function pageChanged() {
             start = vm.itemsPerPage * (vm.currentPage - 1);
             end = start + vm.itemsPerPage;
-console.log(start + " -- " + end);
+
             restService
                 .getBooks(start, end)
                 .then(function(data){
-                    vm.books = data;
+                    vm.books = data.books;
+                    vm.totalItems = data.booksCount;
                     console.log(data);
                 }, function(){
                     vm.noBooks = true;

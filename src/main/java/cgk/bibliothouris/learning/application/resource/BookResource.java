@@ -3,17 +3,15 @@ package cgk.bibliothouris.learning.application.resource;
 import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
 import cgk.bibliothouris.learning.application.transferobject.BookTitleTO;
 import cgk.bibliothouris.learning.application.transferobject.StringTO;
-import cgk.bibliothouris.learning.service.exception.ValidationException;
 import cgk.bibliothouris.learning.service.BookService;
 import cgk.bibliothouris.learning.service.entity.Book;
+import cgk.bibliothouris.learning.service.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.Status;
-import java.io.File;
-import java.io.InputStream;
 import java.net.URI;
 import java.util.List;
 
@@ -29,12 +27,12 @@ public class BookResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllBooks(@QueryParam("start") String start, @QueryParam("end") String end){
-        List<BookListingTO> books = bookService.findAllBooks(start, end);
-        if(books.size() == 0){
+    public Response getAllBooks(@QueryParam("start") String start, @QueryParam("end") String end, @QueryParam("title") String title){
+        BookListingTO bookListingTO = bookService.findAllBooks(start, end, title);
+        if(bookListingTO.getBooks().size() == 0){
             return Response.status(Status.NOT_FOUND).build();
         }
-        return Response.ok().entity(new GenericEntity<List<BookListingTO>>(books){}).build();
+        return Response.ok().entity(bookListingTO).build();
     }
 
     @GET
