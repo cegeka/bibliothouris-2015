@@ -62,7 +62,7 @@ public class ITBookRepository {
         Book book1 = bookRepository.createBook(bookWithOneAuthorAndThreeCategories);
 
         List<BookListingTO> foundBooks = bookRepository.findAllBooks(0,5);
-        BookListingTO bookTO1 = new BookListingTO(book1.getId(), book1.getIsbn(), book1.getTitle(), book1.getAuthors());
+        BookListingTO bookTO1 = new BookListingTO(book1);
 
         assertThat(foundBooks.size()).isEqualTo(1);
         assertThat(foundBooks).contains(bookTO1);
@@ -74,8 +74,8 @@ public class ITBookRepository {
         Book book2 = bookRepository.createBook(bookWithOneAuthorAndOneCategory);
 
         List<BookListingTO> foundBooks = bookRepository.findAllBooks(0,5);
-        BookListingTO bookTO1 = new BookListingTO(book1.getId(), book1.getIsbn(), book1.getTitle(), book1.getAuthors());
-        BookListingTO bookTO2 = new BookListingTO(book2.getId(), book2.getIsbn(), book2.getTitle(), book2.getAuthors());
+        BookListingTO bookTO1 = new BookListingTO(book1);
+        BookListingTO bookTO2 = new BookListingTO(book2);
 
         assertThat(foundBooks.size()).isEqualTo(2);
         assertThat(foundBooks).contains(bookTO1);

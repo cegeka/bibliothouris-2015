@@ -14,7 +14,7 @@ import java.util.Set;
 
 @Entity
 @NamedQueries({
-        @NamedQuery(name = Book.LIST_ALL_BOOKS, query = "SELECT b.id, b.isbn, b.title, a FROM Book b join b.authors a ORDER BY LOWER(b.title)"),
+        @NamedQuery(name = Book.LIST_ALL_BOOKS, query = "SELECT b FROM Book b ORDER BY LOWER(b.title)"),
         @NamedQuery(name = Book.DELETE_ALL_BOOKS, query = "DELETE FROM Book b"),
         @NamedQuery(name = Book.COUNT_BOOKS, query = "SELECT COUNT(b.id) FROM Book b"),
         @NamedQuery(name = Book.GET_BOOK_TITLES, query = "SELECT DISTINCT new cgk.bibliothouris.learning.application.transferobject.BookTitleTO(b.title) FROM Book b")

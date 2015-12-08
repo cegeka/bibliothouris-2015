@@ -1,6 +1,7 @@
 package cgk.bibliothouris.learning.application.transferobject;
 
 import cgk.bibliothouris.learning.service.entity.Author;
+import cgk.bibliothouris.learning.service.entity.Book;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Set;
@@ -18,11 +19,11 @@ public class BookListingTO {
 
     public BookListingTO() {}
 
-    public BookListingTO(Integer id, String isbn, String title, Set<Author> authors) {
-        this.id = id;
-        this.isbn = isbn;
-        this.title = title;
-        this.authors = authors;
+    public BookListingTO(Book book) {
+        this.id = book.getId();
+        this.isbn = book.getIsbn();
+        this.title = book.getTitle();
+        this.authors = book.getAuthors();
     }
 
     public Integer getId() {

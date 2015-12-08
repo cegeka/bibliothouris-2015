@@ -49,7 +49,7 @@
         function pageChanged() {
             start = vm.itemsPerPage * (vm.currentPage - 1);
             end = start + vm.itemsPerPage;
-
+console.log(start + " -- " + end);
             restService
                 .getBooks(start, end)
                 .then(function(data){

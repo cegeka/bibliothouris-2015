@@ -34,29 +34,12 @@ public class BookRepositoryJPA implements BookRepository {
 
     @Override
     public List<BookListingTO> findAllBooks(Integer start, Integer end){
-        Query selectAllQuery = entityManager.createNamedQuery(Book.LIST_ALL_BOOKS)
+        TypedQuery<Book> selectAllQuery = entityManager.createNamedQuery(Book.LIST_ALL_BOOKS, Book.class)
                                                        .setMaxResults(end - start)
                                                        .setFirstResult(start);
-        List<Object[]> books = selectAllQuery.getResultList();
+        List<Book> books = selectAllQuery.getResultList();
 
-        List<BookListingTO> bookTos = new ArrayList<>();
-        for (Object[] book : books) {
-            Integer id = (Integer) book[0];
-            String isbn = (String) book[1];
-            String title = (String) book[2];
-            Author author = (Author)book[3];
-            Set<Author> authors = new HashSet<>();
-            authors.add(author);
-
-            BookListingTO bookTO = new BookListingTO(id, isbn, title, authors);
-
-            if (bookTos.contains(bookTO))
-                bookTos.get(bookTos.indexOf(bookTO)).getAuthors().add(author);
-            else
-                bookTos.add(bookTO);
-        }
-
-        return bookTos;
+        return books.stream().map(book -> new BookListingTO(book)).collect(Collectors.toList());
     }
 
     @Override
