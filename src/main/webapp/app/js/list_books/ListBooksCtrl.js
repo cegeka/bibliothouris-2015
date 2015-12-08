@@ -27,11 +27,27 @@
                     vm.titles = data;
                 });
 
-            pageChanged();
+            restService
+                .getBooks()
+                .then(function(data){
+                    vm.books = data.books;
+                    vm.totalItems = data.booksCount;
+
+                    if (!$location.search().start)
+                        vm.currentPage = 1;
+                    else
+                        vm.currentPage = ($location.search().start / vm.itemsPerPage) + 1;
+                }, function(){
+                    vm.noBooks = true;
+                });
         }
 
         function onSelectFilter() {
-            console.log(vm.filterValue);
+            $location.search(vm.filter.toLowerCase(), vm.filterValue);
+
+            vm.currentPage = 1;
+
+            pageChanged();
         }
 
         function showBook(bookId) {
@@ -42,15 +58,8 @@
             start = vm.itemsPerPage * (vm.currentPage - 1);
             end = start + vm.itemsPerPage;
 
-            restService
-                .getBooks(start, end)
-                .then(function(data){
-                    vm.books = data.books;
-                    vm.totalItems = data.booksCount;
-                    console.log(data);
-                }, function(){
-                    vm.noBooks = true;
-                });
+            $location.search('start', start);
+            $location.search('end', end);
         }
     }
 })();

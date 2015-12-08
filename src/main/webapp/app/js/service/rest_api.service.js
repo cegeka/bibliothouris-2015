@@ -3,7 +3,7 @@
         .module("Bibliothouris")
         .factory("restService", restService);
 
-    function restService($http) {
+    function restService($http, $location) {
         var service = {
             addBook: addBook,
             addMember: addMember,
@@ -17,7 +17,6 @@
         return service;
 
         function addBook(book) {
-            console.log(book);
             return $http.post("/api/books", book)
                 .then(function(response){
                     return response.data;
@@ -25,15 +24,14 @@
         }
 
         function addMember(member) {
-            console.log(member);
             return $http.post("/api/member", member)
                 .then(function(response){
                     return response.data;
                 });
         }
 
-        function getBooks(start, end) {
-            return $http.get("/api/books?start=" + start + "&end=" + end)
+        function getBooks() {
+            return $http.get("/api" + $location.url())
                 .then(function(response){
                     return response.data;
                 });
