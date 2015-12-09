@@ -42,3 +42,13 @@ body {
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
     display: none !important;
 }
+
+.default{
+    opacity: 1;
+}
+
+.fade{
+    -webkit-transition: opacity 2s;
+    transition: opacity 2s;
+    opacity: 0;
+}

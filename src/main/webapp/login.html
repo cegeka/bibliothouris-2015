@@ -14,8 +14,7 @@
 
 
     <form class="form-signin " name='f' action="auth/login" method='POST'>
-        <div class="alert alert-info" id="logout-alert" role="alert" ng-show="logoutSuccess()" ng-cloak>You have successfully logged out.</div>
-        <div class="alert alert-danger" id="failed-login-alert" role="alert" ng-show="loginFailed()" ng-cloak>The credentials have been deemed invalid.</div>
+
         <label for="inputUsername" class="sr-only">Username</label>
         <input name="username" type="username" id="inputUsername" class="form-control" placeholder="Username"
                required="" autofocus="">
@@ -24,6 +23,8 @@
                required="">
 
         <button class="btn btn-lg btn-primary btn-block" type="submit" id="loginButton">Sign in</button>
+        <div class="alert alert-info default" ng-class="{fade: startFade}" id="logout-alert" role="alert" ng-show="logoutSuccess()" ng-cloak>You have successfully logged out.</div>
+        <div class="alert alert-danger default" ng-class="{fade: startFade}" id="failed-login-alert" role="alert" ng-show="loginFailed()" ng-cloak>The credentials have been deemed invalid.</div>
     </form>
 </div>
 <script src="components/angular/angular.js"></script>
