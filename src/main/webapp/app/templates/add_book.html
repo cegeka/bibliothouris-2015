@@ -61,7 +61,7 @@
             <input name="isbn" type="text" class="form-control" id="isbn" placeholder="ISBN" ng-model="vm.book.isbn" required>
             <span ng-show="vm.showFeedback(add.isbn.$error)" class="glyphicon glyphicon-ok form-control-feedback has-success" aria-hidden="true"></span>
             <ng-messages for="add.isbn.$error" style="color:maroon" role="alert" ng-if='add.isbn.$invalid && add.$submitted'>
-                <ng-message when="required">You did not enter an ISBN code</ng-message>
+                <ng-message when="required" id="isbnRequiredMsg">You did not enter an ISBN code</ng-message>
             </ng-messages>
         </div>
     </div>

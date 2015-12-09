@@ -31,7 +31,7 @@
                 </thead>
 
                 <tbody>
-                <tr ng-repeat = "book in vm.books" ng-click="vm.showBook(book.id)" style="cursor: pointer;">
+                <tr id="bookRow" ng-repeat = "book in vm.books" ng-click="vm.showBook(book.id)" style="cursor: pointer;">
                     <td class="table-column-ellipsis">{{book.title}}</td>
                     <td class="table-column-ellipsis">
                         <!--<span><a href="#" data-toggle="tooltip" title="Hooray!">Hover over me</a></span> </td>-->
