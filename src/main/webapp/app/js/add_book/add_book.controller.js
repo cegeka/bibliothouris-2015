@@ -69,6 +69,7 @@
         }
 
         function submitForm(bookForm) {
+            vm.book.date = moment(new Date(vm.book.date)).format("YYYY-MM-DD");
             if(bookForm.$valid && isCoverValid()){
                 var reader = new FileReader();
                 reader.onload = function(){
@@ -144,11 +145,19 @@
         }
 
         vm.addItemToModel = function(item){
-            console.log(item);
-            console.log(vm.book.categories);
-            vm.book.categories.push({
-                category: item.category
-            });
+            var index = -1;
+            for(var key in vm.book.categories) {
+                console.log(vm.book.categories[key]);
+                if(vm.book.categories[key].category == item.category) {
+                    index = key;
+                    break;
+                }
+            }
+
+            if(index == -1)
+                vm.book.categories.push({category: item.category});
+            else
+                vm.book.categories.splice(index, 1);
         }
 
     }
