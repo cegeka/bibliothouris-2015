@@ -23,13 +23,31 @@ public class ITAddBook extends BaseAcceptance {
     }
 
     @Test
+    public void givenBookWithoutTitle_ThenSubmitFormFails() {
+        addBookPage.clickOnSubmitButton();
+
+        assertThat(addBookPage.getTitleRequiredMessage()).isNotNull();
+    }
+
+    @Test
     public void givenBookWithoutISBN_ThenSubmitFormFails() {
-        String title = "CleanCode";
-        addBookPage.inputTextIntoTitleField(title);
+        addBookPage.inputTextIntoTitleField("CleanCode");
 
         addBookPage.clickOnSubmitButton();
 
         assertThat(addBookPage.getIsbnRequiredMessage()).isNotNull();
+    }
+
+    @Test
+    public void givenBookWithoutAuthors_ThenSubmitFormFails() throws InterruptedException {
+        addBookPage.inputTextIntoTitleField("CleanCode");
+        addBookPage.inputTextIntoIsbnField("111-1111-111-11");
+
+        addBookPage.clickOnSubmitButton();
+
+        Thread.sleep(1000);
+
+        assertThat(addBookPage.getLastNameRequiredMessage()).isNotNull();
     }
 
     @Test
@@ -44,14 +62,4 @@ public class ITAddBook extends BaseAcceptance {
         assertThat(driver.getCurrentUrl().contains("/app/#/books/")).isTrue();
     }
 
-//    @Test
-//    public void whenWeAddABook_ThenItIsAdded() throws InterruptedException {
-//        addBookPage.inputTextIntoTitleField("Amintiri din copilarie");
-//        addBookPage.inputTextIntoIsbnField("111-1111-111-11");
-//        addBookPage.inputTextIntoLastNameField("Creanga");
-//        addBookPage.inputTextIntoFirstNameField("Ion");
-//        addBookPage.clickOnSubmitButton();
-//        Thread.sleep(3500);
-//        assertThat(driver.getCurrentUrl().contains("/app/#/books/")).isTrue();
-//    }
 }

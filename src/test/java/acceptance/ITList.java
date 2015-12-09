@@ -1,7 +1,6 @@
 package acceptance;
 
 import acceptance.pageobject.ListPage;
-import acceptance.pageobject.LoginPage;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,6 +24,7 @@ public class ITList extends BaseAcceptance {
     public void booksAreListed() throws InterruptedException {
         listPage.clickOnListAllButton();
         Thread.sleep(1500);
+
         Assertions.assertThat(listPage.getListOfBooks()).hasSize(10);
     }
 

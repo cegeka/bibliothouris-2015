@@ -30,6 +30,11 @@ public class AddBookPage {
     @FindBy(how = How.ID, using = "isbnRequiredMsg")
     WebElement isbnRequiredMessage;
 
+    @FindBy(how = How.ID, using = "titleRequiredMsg")
+    WebElement titleRequiredMessage;
+
+    @FindBy(how = How.ID, using = "lastNameRequiredMsg")
+    WebElement lastNameRequiredMessage;
 
     @FindBy(how = How.ID, using = "addBook")
     WebElement addBookButton;
@@ -60,5 +65,13 @@ public class AddBookPage {
 
     public String getIsbnRequiredMessage(){
         return isbnRequiredMessage.getText();
+    }
+
+    public String getTitleRequiredMessage(){
+        return titleRequiredMessage.getText();
+    }
+
+    public String getLastNameRequiredMessage(){
+        return lastNameRequiredMessage.getText();
     }
 }

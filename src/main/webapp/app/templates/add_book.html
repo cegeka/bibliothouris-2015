@@ -7,7 +7,7 @@
             <input name="title" type="text" class="form-control" id="title" placeholder="Title" ng-model="vm.book.title" required>
             <span ng-show="vm.showFeedback(add.title.$error)" class="glyphicon glyphicon-ok form-control-feedback has-success" aria-hidden="true"></span>
             <ng-messages for="add.title.$error" style="color:maroon" role="alert" ng-if='add.title.$invalid && add.$submitted'>
-                <ng-message when="required">You did not enter a title</ng-message>
+                <ng-message id="titleRequiredMsg" when="required">You did not enter a title</ng-message>
             </ng-messages>
         </div>
     </div>
@@ -34,8 +34,8 @@
                                    uib-typeahead="state.lastName for state in vm.authors | filter:$viewValue | limitTo:8"
                                    typeahead-select-on-exact="true" required>
                             <span ng-show="vm.showFeedback(add.lastName.$error)" class="glyphicon glyphicon-ok form-control-feedback has-success" aria-hidden="true"></span>
-                            <ng-messages for="add.lastname.$error" style="color:maroon" role="alert" ng-if='add.lastName.$invalid && add.$submitted'>
-                                <ng-message when="required">You did not enter a last name</ng-message>
+                            <ng-messages for="add.lastName.$error" style="color:maroon" role="alert" ng-if='add.lastName.$invalid && add.$submitted'>
+                                <ng-message id="lastNameRequiredMsg" when="required">You did not enter a last name</ng-message>
                             </ng-messages>
                         </div>
                     </div>
