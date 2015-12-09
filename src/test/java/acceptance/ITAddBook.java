@@ -1,7 +1,6 @@
 package acceptance;
 
 import acceptance.pageobject.AddBookPage;
-import acceptance.pageobject.LoginPage;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
@@ -16,18 +15,11 @@ public class ITAddBook extends BaseAcceptance {
     @Before
     public void setup() {
         driver.get(baseUrl);
+
         login();
+
         addBookPage = new AddBookPage(driver);
         addBookPage.clickOnAddBookButton();
-    }
-
-    private void login() {
-        LoginPage login = new LoginPage(driver);
-        String validPassword = "admin";
-
-        login.inputTextIntoUsernameField(validPassword);
-        login.inputTextIntoPasswordField(validPassword);
-        login.clickOnLoginButton();
     }
 
     @Test
@@ -41,13 +33,25 @@ public class ITAddBook extends BaseAcceptance {
     }
 
     @Test
-    public void whenWeAddABook_ThenItIsAdded() throws InterruptedException {
+     public void whenWeAddABook_ThenItIsAdded() throws InterruptedException {
         addBookPage.inputTextIntoTitleField("Amintiri din copilarie");
         addBookPage.inputTextIntoIsbnField("111-1111-111-11");
         addBookPage.inputTextIntoLastNameField("Creanga");
         addBookPage.inputTextIntoFirstNameField("Ion");
+
         addBookPage.clickOnSubmitButton();
-        Thread.sleep(3500);
-        assertThat(driver.getCurrentUrl().contains("/app/#/status")).isTrue();
+
+        assertThat(driver.getCurrentUrl().contains("/app/#/books/")).isTrue();
     }
+
+//    @Test
+//    public void whenWeAddABook_ThenItIsAdded() throws InterruptedException {
+//        addBookPage.inputTextIntoTitleField("Amintiri din copilarie");
+//        addBookPage.inputTextIntoIsbnField("111-1111-111-11");
+//        addBookPage.inputTextIntoLastNameField("Creanga");
+//        addBookPage.inputTextIntoFirstNameField("Ion");
+//        addBookPage.clickOnSubmitButton();
+//        Thread.sleep(3500);
+//        assertThat(driver.getCurrentUrl().contains("/app/#/books/")).isTrue();
+//    }
 }

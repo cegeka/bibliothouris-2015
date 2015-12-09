@@ -14,10 +14,10 @@ public class ListPage {
         PageFactory.initElements(driver, this);
     }
 
-    @FindBy(how = How.XPATH, using = "//tr[@class='ng-scope']/td[1]")
+    @FindBy(how = How.ID, using = "bookRow")
     List<WebElement> bookList;
 
-    @FindBy(how = How.XPATH, using = "//*[@id=\"bs-example-navbar-collapse-1\"]/ul[1]/li[2]/a")
+    @FindBy(how = How.ID, using = "listBooks")
     WebElement listAllButton;
 
     public List<WebElement> getListOfBooks() {
@@ -27,6 +27,4 @@ public class ListPage {
     public void clickOnListAllButton(){
         listAllButton.click();
     }
-
-
 }

@@ -27,11 +27,11 @@ public class AddBookPage {
     @FindBy(how = How.ID, using = "submit")
     WebElement submitButton;
 
-    @FindBy(how = How.XPATH, using = "//*[@id=\"addForm\"]/div[4]/div/div/div")
+    @FindBy(how = How.ID, using = "isbnRequiredMsg")
     WebElement isbnRequiredMessage;
 
 
-    @FindBy(how = How.XPATH, using = "//*[@id=\"bs-example-navbar-collapse-1\"]/ul[1]/li[1]/a")
+    @FindBy(how = How.ID, using = "addBook")
     WebElement addBookButton;
 
     public void inputTextIntoTitleField(String title){
