@@ -15,6 +15,12 @@ public class LoginPage {
     @FindBy(how = How.ID, using = "inputUsername")
     WebElement inputUsername;
 
+    @FindBy(how = How.ID, using = "failed-login-alert")
+    WebElement failedLoginAlert;
+
+    @FindBy(how = How.ID, using = "logout-alert")
+    WebElement logoutAlert;
+
     @FindBy(how = How.ID, using = "inputPassword")
     WebElement inputPassword;
 
@@ -31,5 +37,13 @@ public class LoginPage {
 
     public void clickOnLoginButton(){
         loginButton.click();
+    }
+
+    public Boolean isFailedLoginAlertDisplayed() {
+        return failedLoginAlert.isDisplayed();
+    }
+
+    public Boolean isLogoutAlertDisplayed() {
+        return logoutAlert.isDisplayed();
     }
 }

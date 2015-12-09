@@ -4,17 +4,15 @@
         .controller("LoginCtrl", LoginCtrl);
 
     function LoginCtrl($scope, $location) {
-        var vm = this;
 
-        vm.ifLogout = false;
-        console.log("in login/logout controller");
+        $scope.loginFailed = function () {
+            if (($location.search()).error) {
+                return "has-error";
+            }
+        }
 
-        var logoutval = $location.search();
-
-        console.log(logoutval);
-
-        if(($location.search()).logout){
-            console.log("OMG LOGOUT VAL IS TRUE");
+        $scope.logoutSuccess = function () {
+            return ($location.search()).logout;
         }
     }
 })();

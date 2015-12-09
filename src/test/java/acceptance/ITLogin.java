@@ -1,6 +1,7 @@
 package acceptance;
 
 import acceptance.pageobject.LoginPage;
+import acceptance.pageobject.StatusBar;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
@@ -11,11 +12,13 @@ public class ITLogin extends BaseAcceptance{
 
     private static final WebDriver driver = getDriver();
     private LoginPage login;
+    private StatusBar statusBar;
 
     @Before
     public void setup() {
         driver.get(baseUrl);
         login = new LoginPage(driver);
+        statusBar = new StatusBar(driver);
     }
 
     @Test
@@ -37,6 +40,30 @@ public class ITLogin extends BaseAcceptance{
         login.inputTextIntoPasswordField(invalidPassword);
         login.clickOnLoginButton();
 
-        assertThat(driver.getCurrentUrl().contains("login.html?error")).isTrue();
+        assertThat(driver.getCurrentUrl().contains("login.html#?error")).isTrue();
+    }
+
+    @Test
+    public void givenBadCredentials_ThenAMessageIsDisplayed() {
+        String invalidPassword = "invalidPassword";
+
+        login.inputTextIntoUsernameField(invalidPassword);
+        login.inputTextIntoPasswordField(invalidPassword);
+        login.clickOnLoginButton();
+
+        assertThat(login.isFailedLoginAlertDisplayed()).isTrue();
+    }
+
+    @Test
+    public void givenWehaveLoggedout_ThenAMessageIsDisplayed() {
+        String validPassword = "admin";
+
+        login.inputTextIntoUsernameField(validPassword);
+        login.inputTextIntoPasswordField(validPassword);
+        login.clickOnLoginButton();
+
+        statusBar.clickLogoutButton();
+
+        assertThat(login.isLogoutAlertDisplayed()).isTrue();
     }
 }
