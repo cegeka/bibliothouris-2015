@@ -98,11 +98,11 @@
             <div class="row" name="category" id="category">
                 <div class="checkbox col-sm-4" ng-repeat="cat in vm.categories track by cat.id" ng-model="vm.book.categories" >
                     <label>
-                        <input type="checkbox" ng-click="vm.addItemToModel(cat)" ng-checked="vm.isCategorySelected(cat)"> {{cat.category}}
+                        <input type="checkbox" id="{{cat.category}}" ng-click="vm.addItemToModel(cat)" ng-checked="vm.isCategorySelected(cat)"> {{cat.category}}
                     </label>
                 </div>
             </div>
-            <ng-messages for="vm.categoriesSize()" style="color:maroon" role="alert" ng-if="vm.categoriesSize() && add.$submitted">
+            <ng-messages id="categoryRequiredMsg" for="vm.categoriesSize()" style="color:maroon" role="alert" ng-if="vm.categoriesSize() && add.$submitted">
                 <ng-message when="empty">You did not select a category</ng-message>
             </ng-messages>
 
@@ -114,8 +114,8 @@
         <div class="col-sm-10">
             <input type="number" min="0" ng-model="vm.book.pages" name="pages" class="form-control" id="pages" placeholder="Pages">
             <div ng-messages for="add.pages.$error" style="color:maroon" role="alert" ng-if='add.pages.$invalid && add.$submitted'>
-                <div ng-message when="number">You typed a text page number</ng-message></div>
-                <div ng-message when="min">You typed a negative pages number</ng-message></div>
+                <div ng-message id="pagesRequiredNumberMsg" when="number">You typed a text page number</ng-message></div>
+                <div ng-message id="pagesRequiredPositiveNumberMsg" when="min">You typed a negative pages number</ng-message></div>
             </ng-messages></div>
         </div>
     </div>

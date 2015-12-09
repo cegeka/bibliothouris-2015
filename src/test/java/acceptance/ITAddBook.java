@@ -1,8 +1,10 @@
 package acceptance;
 
 import acceptance.pageobject.AddBookPage;
+import acceptance.pageobject.BookDetailsPage;
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -11,6 +13,7 @@ public class ITAddBook extends BaseAcceptance {
 
     private static WebDriver driver = getDriver();
     private AddBookPage addBookPage;
+    private BookDetailsPage bookDetailsPage;
 
     @Before
     public void setup() {
@@ -51,15 +54,46 @@ public class ITAddBook extends BaseAcceptance {
     }
 
     @Test
+    public void givenBookWithoutCategory_ThenSubmitFormFails() {
+        String title = "CleanCode";
+        addBookPage.inputTextIntoTitleField(title);
+        String lastName = "Fowler";
+        addBookPage.inputTextIntoLastNameField(lastName);
+
+        addBookPage.clickOnSubmitButton();
+
+        assertThat(addBookPage.getCatRequiredMessage()).isEqualTo("You did not select a category");
+    }
+
+    @Test
+    public void givenBookWithNegativePagesNumber_ThenSubmitFormFails() throws InterruptedException {
+        String title = "CleanCode";
+        addBookPage.inputTextIntoTitleField(title);
+        String lastName = "Fowler";
+        addBookPage.inputTextIntoLastNameField(lastName);
+        addBookPage.clickOnDefaultCategory();
+        addBookPage.inputTextIntoPagesField("-50");
+        Thread.sleep(2000);
+        addBookPage.clickOnSubmitButton();
+
+        assertThat(addBookPage.getPagesRequiredPositiveNumberMessage()).isEqualTo("You typed a negative pages number");
+    }
+    //testul de text pages number nu va merge in chrome
+
+
+    @Test
      public void whenWeAddABook_ThenItIsAdded() throws InterruptedException {
         addBookPage.inputTextIntoTitleField("Amintiri din copilarie");
         addBookPage.inputTextIntoIsbnField("111-1111-111-11");
         addBookPage.inputTextIntoLastNameField("Creanga");
         addBookPage.inputTextIntoFirstNameField("Ion");
+        addBookPage.clickOnDefaultCategory();
+
 
         addBookPage.clickOnSubmitButton();
 
         assertThat(driver.getCurrentUrl().contains("/app/#/books/")).isTrue();
+        //assertThat(bookDetailsPage.getBookTitle()).isEqualTo("Amintiri din copilarie");
     }
 
 }
