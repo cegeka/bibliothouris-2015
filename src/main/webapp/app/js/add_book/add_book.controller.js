@@ -69,6 +69,7 @@
         }
 
         function submitForm(bookForm) {
+            console.log(vm.categoriesSize());
             vm.book.date = moment(new Date(vm.book.date)).format("YYYY-MM-DD");
             if(bookForm.$valid && isCoverValid()){
                 var reader = new FileReader();
@@ -158,6 +159,25 @@
                 vm.book.categories.push({category: item.category});
             else
                 vm.book.categories.splice(index, 1);
+        }
+
+        vm.categoriesSize = function(){
+
+            if(vm.book.categories.length==0){
+                return {
+                    empty: true
+                }
+            }
+        }
+
+        vm.isCategorySelected = function(item){
+            console.log("IN CATEGORY SELECTED");
+            for(var key in vm.book.categories) {
+                console.log(vm.book.categories[key]);
+                if(vm.book.categories[key].category == item.category) {
+                    return true;
+                }
+            } return false;
         }
 
     }
