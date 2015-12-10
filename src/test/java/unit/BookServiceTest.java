@@ -1,7 +1,7 @@
 package unit;
 
+import cgk.bibliothouris.learning.application.transferobject.BookFilterValueTO;
 import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
-import cgk.bibliothouris.learning.application.transferobject.BookTitleTO;
 import cgk.bibliothouris.learning.repository.BookRepository;
 import cgk.bibliothouris.learning.service.BookService;
 import cgk.bibliothouris.learning.service.entity.Book;
@@ -14,12 +14,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import static org.mockito.Mockito.times;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BookServiceTest {
@@ -99,9 +97,9 @@ public class BookServiceTest {
     @Test
     public void givenOneBook_findAllBooks_returnsTheBook() {
         BookListingTO expectedBookListingTO = new BookListingTO();
-        Mockito.when(mockRepository.findAllBooks(0, 5, null)).thenReturn(expectedBookListingTO);
+        Mockito.when(mockRepository.findAllBooks(0, 5, null, null)).thenReturn(expectedBookListingTO);
 
-        BookListingTO bookListingTO = service.findAllBooks("0", "5", null);
+        BookListingTO bookListingTO = service.findAllBooks("0", "5", null, null);
 
         assertThat(bookListingTO).isEqualTo(expectedBookListingTO);
     }
@@ -109,9 +107,29 @@ public class BookServiceTest {
     @Test
     public void givenOneBook_findAllBooksWithNegativeParams_returnsListOfBooks() {
         BookListingTO expectedBookListingTO = new BookListingTO();
-        Mockito.when(mockRepository.findAllBooks(0, 0, null)).thenReturn(expectedBookListingTO);
+        Mockito.when(mockRepository.findAllBooks(0, 0, null, null)).thenReturn(expectedBookListingTO);
 
-        BookListingTO bookListingTO = service.findAllBooks("-1", "-3", null);
+        BookListingTO bookListingTO = service.findAllBooks("-1", "-3", null, null);
+
+        assertThat(bookListingTO).isEqualTo(expectedBookListingTO);
+    }
+
+    @Test
+    public void givenOneBook_findAllBooksWithAGivenTitle_returnsListOfBooks() {
+        BookListingTO expectedBookListingTO = new BookListingTO();
+        Mockito.when(mockRepository.findAllBooks(0, 5, "Clean Code", null)).thenReturn(expectedBookListingTO);
+
+        BookListingTO bookListingTO = service.findAllBooks("0", "5", "Clean Code", null);
+
+        assertThat(bookListingTO).isEqualTo(expectedBookListingTO);
+    }
+
+    @Test
+    public void givenOneBook_findAllBooksWithAGivenIsbn_returnsListOfBooks() {
+        BookListingTO expectedBookListingTO = new BookListingTO();
+        Mockito.when(mockRepository.findAllBooks(0, 5, null, "978-0-13-235088-4")).thenReturn(expectedBookListingTO);
+
+        BookListingTO bookListingTO = service.findAllBooks("0", "5", null, "978-0-13-235088-4");
 
         assertThat(bookListingTO).isEqualTo(expectedBookListingTO);
     }
@@ -129,11 +147,21 @@ public class BookServiceTest {
     @Test
     public void givenOneBook_findAllBookTitles_returnsTheCorrectBookTitle() {
         Book book = BookTestFixture.createBookWithOneAuthorAndOneCategory();
-        Mockito.when(mockRepository.findAllBookTitles()).thenReturn(Arrays.asList(new BookTitleTO(book.getTitle())));
+        Mockito.when(mockRepository.findAllBookTitles()).thenReturn(Arrays.asList(new BookFilterValueTO(book.getTitle())));
 
-        List<BookTitleTO> foundBookTitles = service.findAllBookTitles();
+        List<BookFilterValueTO> foundBookTitles = service.findAllBookTitles();
 
-        assertThat(foundBookTitles.get(0).getTitle()).isEqualTo(book.getTitle());
+        assertThat(foundBookTitles.get(0).getValue()).isEqualTo(book.getTitle());
+    }
+
+    @Test
+    public void givenOneBook_findAllBookIsbnCodes_returnsTheCorrectBookIsbnCodes() {
+        Book book = BookTestFixture.createBookWithOneAuthorAndOneCategory();
+        Mockito.when(mockRepository.findAllBookIsbnCodes()).thenReturn(Arrays.asList(new BookFilterValueTO(book.getIsbn())));
+
+        List<BookFilterValueTO> foundBookIsbnCodes = service.findAllBookIsbnCodes();
+
+        assertThat(foundBookIsbnCodes.get(0).getValue()).isEqualTo(book.getIsbn());
     }
 
 }

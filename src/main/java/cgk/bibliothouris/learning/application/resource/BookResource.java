@@ -1,7 +1,7 @@
 package cgk.bibliothouris.learning.application.resource;
 
+import cgk.bibliothouris.learning.application.transferobject.BookFilterValueTO;
 import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
-import cgk.bibliothouris.learning.application.transferobject.BookTitleTO;
 import cgk.bibliothouris.learning.application.transferobject.StringTO;
 import cgk.bibliothouris.learning.service.BookService;
 import cgk.bibliothouris.learning.service.entity.Book;
@@ -27,8 +27,9 @@ public class BookResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllBooks(@QueryParam("start") String start, @QueryParam("end") String end, @QueryParam("title") String title){
-        BookListingTO bookListingTO = bookService.findAllBooks(start, end, title);
+    public Response getAllBooks(@QueryParam("start") String start, @QueryParam("end") String end,
+                                @QueryParam("title") String title, @QueryParam("isbn") String isbn){
+        BookListingTO bookListingTO = bookService.findAllBooks(start, end, title, isbn);
         if(bookListingTO.getBooks().size() == 0){
             return Response.status(Status.NOT_FOUND).build();
         }
@@ -76,12 +77,24 @@ public class BookResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/titles")
     public Response getBookTitles() {
-        List<BookTitleTO> bookTitles = bookService.findAllBookTitles();
+        List<BookFilterValueTO> bookTitles = bookService.findAllBookTitles();
 
         if(bookTitles.size() == 0)
             return Response.status(Status.NOT_FOUND).build();
 
-        return Response.ok().entity(new GenericEntity<List<BookTitleTO>>(bookTitles){}).build();
+        return Response.ok().entity(new GenericEntity<List<BookFilterValueTO>>(bookTitles){}).build();
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/isbnCodes")
+    public Response getBookIsbnCodes() {
+        List<BookFilterValueTO> bookIsbnCodes = bookService.findAllBookIsbnCodes();
+
+        if(bookIsbnCodes.size() == 0)
+            return Response.status(Status.NOT_FOUND).build();
+
+        return Response.ok().entity(new GenericEntity<List<BookFilterValueTO>>(bookIsbnCodes){}).build();
     }
 
     private Response getStringResponse(Status status, String message) {

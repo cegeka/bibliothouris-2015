@@ -1,8 +1,8 @@
 package integration;
 
+import cgk.bibliothouris.learning.application.transferobject.BookFilterValueTO;
 import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
 import cgk.bibliothouris.learning.application.transferobject.BookTO;
-import cgk.bibliothouris.learning.application.transferobject.BookTitleTO;
 import cgk.bibliothouris.learning.config.AppConfig;
 import cgk.bibliothouris.learning.repository.BookRepository;
 import cgk.bibliothouris.learning.service.entity.Book;
@@ -63,7 +63,7 @@ public class ITBookRepository {
         Book book1 = bookRepository.createBook(bookWithOneAuthorAndThreeCategories);
         BookTO expectedBookTO = new BookTO(book1);
 
-        BookListingTO foundBookListingTO = bookRepository.findAllBooks(0, 5, null);
+        BookListingTO foundBookListingTO = bookRepository.findAllBooks(0, 5, null, null);
 
         assertThat(foundBookListingTO.getBooksCount()).isEqualTo(1);
         assertThat(foundBookListingTO.getBooks()).contains(expectedBookTO);
@@ -76,7 +76,7 @@ public class ITBookRepository {
         BookTO expectedBookTO1 = new BookTO(book1);
         BookTO expectedBookTO2 = new BookTO(book2);
 
-        BookListingTO foundBookListingTO = bookRepository.findAllBooks(0, 5, null);
+        BookListingTO foundBookListingTO = bookRepository.findAllBooks(0, 5, null, null);
 
         assertThat(foundBookListingTO.getBooksCount()).isEqualTo(2);
         assertThat(foundBookListingTO.getBooks()).contains(expectedBookTO1);
@@ -89,9 +89,21 @@ public class ITBookRepository {
         Book book2 = bookRepository.createBook(bookWithOneAuthorAndOneCategory);
         BookTO expectedBookTO = new BookTO(book1);
 
-        BookListingTO foundBookListingTO = bookRepository.findAllBooks(0, 5, "Clean Code");
+        BookListingTO foundBookListingTO = bookRepository.findAllBooks(0, 5, "Clean Code", null);
 
         assertThat(foundBookListingTO.getBooksCount()).isEqualTo(1);
+        assertThat(foundBookListingTO.getBooks()).contains(expectedBookTO);
+    }
+
+    @Test
+    public void givenTwoBooks_findBooksFilteredByIsbn_findTheCorrectBooks() {
+        Book book1 = bookRepository.createBook(bookWithFourAuthorsAndThreeCategories);
+        Book book2 = bookRepository.createBook(bookWithOneAuthorAndOneCategory);
+        BookTO expectedBookTO = new BookTO(book1);
+
+        BookListingTO foundBookListingTO = bookRepository.findAllBooks(0, 5, null, book1.getIsbn());
+
+        assertThat(foundBookListingTO.getBooksCount()).isEqualTo(2);
         assertThat(foundBookListingTO.getBooks()).contains(expectedBookTO);
     }
 
@@ -115,13 +127,23 @@ public class ITBookRepository {
     }
 
     @Test
-    public void givenTwoBooks_getAllBookTtitle_returnsTheCorrectBookTitlesList() {
+    public void givenTwoBooks_getAllBookTitles_returnsTheCorrectBookTitlesList() {
         bookRepository.createBook(bookWithOneAuthorAndOneCategory);
         bookRepository.createBook(bookWithFourAuthorsAndThreeCategories);
 
-        List<BookTitleTO> bookTitles = bookRepository.findAllBookTitles();
+        List<BookFilterValueTO> bookTitles = bookRepository.findAllBookTitles();
 
         assertThat(bookTitles.size()).isEqualTo(2);
+    }
+
+    @Test
+    public void givenTwoBooks_getAllBookIsbnCodes_returnsTheCorrectBookIsbnCodesList() {
+        bookRepository.createBook(bookWithOneAuthorAndOneCategory);
+        bookRepository.createBook(bookWithFourAuthorsAndThreeCategories);
+
+        List<BookFilterValueTO> bookIsbnCodes = bookRepository.findAllBookIsbnCodes();
+
+        assertThat(bookIsbnCodes.size()).isEqualTo(1);
     }
 
 }

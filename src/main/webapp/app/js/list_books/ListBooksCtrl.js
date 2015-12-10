@@ -13,19 +13,32 @@
         vm.maxSize = 5;
         vm.itemsPerPage = 10;
         vm.currentPage = 1;
+        vm.populatedFilterValues = null;
 
         vm.onSelectFilter = onSelectFilter;
         vm.showBook = showBook;
         vm.pageChanged = pageChanged;
+        vm.populateFilterValues = populateFilterValues;
 
         activate();
 
+        function populateFilterValues() {
+            if (vm.filter == "Title")
+                restService
+                    .getBookTitles()
+                    .then(function(data){
+                        vm.populatedFilterValues = data;
+                    });
+            else if (vm.filter == "ISBN")
+                restService
+                    .getBookIsbnCodes()
+                    .then(function(data){
+                        vm.populatedFilterValues = data;
+                    });
+        }
+
         function activate() {
-            restService
-                .getBookTitles()
-                .then(function(data){
-                    vm.titles = data;
-                });
+            populateFilterValues();
 
             restService
                 .getBooks()

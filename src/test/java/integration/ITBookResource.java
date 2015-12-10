@@ -1,9 +1,9 @@
 package integration;
 
 import cgk.bibliothouris.learning.application.resource.BookResource;
+import cgk.bibliothouris.learning.application.transferobject.BookFilterValueTO;
 import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
 import cgk.bibliothouris.learning.application.transferobject.BookTO;
-import cgk.bibliothouris.learning.application.transferobject.BookTitleTO;
 import cgk.bibliothouris.learning.config.JpaConfig;
 import cgk.bibliothouris.learning.service.entity.Book;
 import fixture.BookTestFixture;
@@ -79,12 +79,22 @@ public class ITBookResource extends JerseyTest {
     }
 
     @Test
-    public void givenAListOfBookTitles_GET_returnsTheCorrectListOfBookTitles() {
+    public void givenAListOfBooks_GET_returnsTheCorrectListOfBookTitles() {
         Book book = client.post(PATH, bookWithOneAuthorAndOneCategory).readEntity(Book.class);
-        BookTitleTO expectedBookTitle = new BookTitleTO(book.getTitle());
+        BookFilterValueTO expectedBookTitle = new BookFilterValueTO(book.getTitle());
 
-        List<BookTitleTO> foundBookTitles = client.get(PATH + "/titles").readEntity(new GenericType<List<BookTitleTO>>() {});
+        List<BookFilterValueTO> foundBookTitles = client.get(PATH + "/titles").readEntity(new GenericType<List<BookFilterValueTO>>() {});
 
         assertThat(foundBookTitles).contains(expectedBookTitle);
+    }
+
+    @Test
+    public void givenAListOfBooks_GET_returnsTheCorrectListOfBookIsbnCodes() {
+        Book book = client.post(PATH, bookWithOneAuthorAndOneCategory).readEntity(Book.class);
+        BookFilterValueTO expectedBookIsbnCode = new BookFilterValueTO(book.getIsbn());
+
+        List<BookFilterValueTO> foundBookIsbnCodes = client.get(PATH + "/isbnCodes").readEntity(new GenericType<List<BookFilterValueTO>>() {});
+
+        assertThat(foundBookIsbnCodes).contains(expectedBookIsbnCode);
     }
 }

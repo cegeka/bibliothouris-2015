@@ -28,8 +28,8 @@ public class ITBookDetails extends BaseAcceptance {
         listPage.clickOnListAllButton();
         Thread.sleep(1000);
 
-        listPage.selectTitleFilter();
-        listPage.setBookTitleForFilter(bookTitle);
+        listPage.selectFilter("Title");
+        listPage.setValueForFilter(bookTitle);
         Thread.sleep(1000);
 
         listPage.clickOnTheFirstBookFromList();

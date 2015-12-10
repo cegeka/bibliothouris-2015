@@ -1,7 +1,7 @@
 package cgk.bibliothouris.learning.service;
 
+import cgk.bibliothouris.learning.application.transferobject.BookFilterValueTO;
 import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
-import cgk.bibliothouris.learning.application.transferobject.BookTitleTO;
 import cgk.bibliothouris.learning.repository.BookRepository;
 import cgk.bibliothouris.learning.service.entity.Book;
 import cgk.bibliothouris.learning.service.exception.ValidationException;
@@ -31,7 +31,7 @@ public class BookService {
     }
 
     @Transactional(readOnly = true)
-    public BookListingTO findAllBooks(String start, String end, String title) {
+    public BookListingTO findAllBooks(String start, String end, String title, String isbn) {
         Integer startPosition = null;
         Integer endPosition = null;
 
@@ -45,7 +45,7 @@ public class BookService {
         } else {
             endPosition = Integer.valueOf(end);
         }
-        return bookRepository.findAllBooks(startPosition, endPosition, title);
+        return bookRepository.findAllBooks(startPosition, endPosition, title, isbn);
     }
 
     @Transactional(readOnly = true)
@@ -59,8 +59,13 @@ public class BookService {
     }
 
     @Transactional(readOnly = true)
-    public List<BookTitleTO> findAllBookTitles() {
+    public List<BookFilterValueTO> findAllBookTitles() {
         return bookRepository.findAllBookTitles();
+    }
+
+    @Transactional(readOnly = true)
+    public List<BookFilterValueTO> findAllBookIsbnCodes() {
+        return bookRepository.findAllBookIsbnCodes();
     }
 
     public void deleteAllBooks() {

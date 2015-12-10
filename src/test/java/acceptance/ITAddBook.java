@@ -84,7 +84,7 @@ public class ITAddBook extends BaseAcceptance {
     @Test
      public void whenWeAddABook_ThenItIsAdded() throws InterruptedException {
         addBookPage.inputTextIntoTitleField("Amintiri din copilarie");
-        addBookPage.inputTextIntoIsbnField("111-1111-111-11");
+        addBookPage.inputTextIntoIsbnField("978-11-11-11111-1");
         addBookPage.inputTextIntoLastNameField("Creanga");
         addBookPage.inputTextIntoFirstNameField("Ion");
         addBookPage.clickOnDefaultCategory();

@@ -1,6 +1,4 @@
 (function() {
-    console.log("app.js");
-
     angular
         .module("Bibliothouris", ["ngRoute", "ngMessages", "ui.bootstrap", "file-model"])
         .config(function($routeProvider, $httpProvider){

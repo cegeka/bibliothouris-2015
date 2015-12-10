@@ -36,13 +36,13 @@ public class ListPage {
         listAllButton.click();
     }
 
-    public void selectTitleFilter() {
+    public void selectFilter(String filterName) {
         Select select = new Select(filterSelector);
-        select.selectByVisibleText("Title");
+        select.selectByVisibleText(filterName);
     }
 
-    public void setBookTitleForFilter(String title) {
-        filterInput.sendKeys(title);
+    public void setValueForFilter(String value) {
+        filterInput.sendKeys(value);
         filterInput.sendKeys(Keys.ENTER);
     }
 

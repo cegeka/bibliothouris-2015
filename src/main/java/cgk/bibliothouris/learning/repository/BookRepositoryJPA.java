@@ -1,8 +1,8 @@
 package cgk.bibliothouris.learning.repository;
 
+import cgk.bibliothouris.learning.application.transferobject.BookFilterValueTO;
 import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
 import cgk.bibliothouris.learning.application.transferobject.BookTO;
-import cgk.bibliothouris.learning.application.transferobject.BookTitleTO;
 import cgk.bibliothouris.learning.service.entity.Author;
 import cgk.bibliothouris.learning.service.entity.Book;
 import cgk.bibliothouris.learning.service.entity.BookCategory;
@@ -13,7 +13,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.*;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Repository
@@ -34,9 +33,9 @@ public class BookRepositoryJPA implements BookRepository {
     }
 
     @Override
-    public BookListingTO findAllBooks(Integer start, Integer end, String title){
-        List<Book> books = findBooks(start, end, title);
-        Long booksCount = countBooks(title);
+    public BookListingTO findAllBooks(Integer start, Integer end, String title, String isbn){
+        List<Book> books = findBooks(start, end, title, isbn);
+        Long booksCount = countBooks(title, isbn);
 
         List<BookTO> bookTOS = books.stream().map(book -> new BookTO(book)).collect(Collectors.toList());
 
@@ -61,8 +60,13 @@ public class BookRepositoryJPA implements BookRepository {
     }
 
     @Override
-    public List<BookTitleTO> findAllBookTitles() {
-        return entityManager.createNamedQuery(Book.GET_BOOK_TITLES, BookTitleTO.class).getResultList();
+    public List<BookFilterValueTO> findAllBookTitles() {
+        return entityManager.createNamedQuery(Book.GET_BOOK_TITLES, BookFilterValueTO.class).getResultList();
+    }
+
+    @Override
+    public List<BookFilterValueTO> findAllBookIsbnCodes() {
+        return entityManager.createNamedQuery(Book.GET_BOOK_ISBN_CODES, BookFilterValueTO.class).getResultList();
     }
 
     private Book getBookWithPersistedAuthors(Book book){
@@ -108,10 +112,10 @@ public class BookRepositoryJPA implements BookRepository {
         return book;
     }
 
-    private List<Book> findBooks(Integer start, Integer end, String title) {
+    private List<Book> findBooks(Integer start, Integer end, String title, String isbn) {
         String selectStatement = "SELECT b FROM Book b";
 
-        String filterClause = generateFilterQueryClause(title);
+        String filterClause = generateFilterQueryClause(title, isbn);
         String sortClause = generateSortQueryClause();
 
         TypedQuery<Book> selectAllQuery = entityManager.createQuery(selectStatement + " " + filterClause + " " + sortClause, Book.class)
@@ -120,20 +124,22 @@ public class BookRepositoryJPA implements BookRepository {
         return selectAllQuery.getResultList();
     }
 
-    private Long countBooks(String title) {
+    private Long countBooks(String title, String isbn) {
         String statement = "SELECT COUNT(*) FROM Book b";
 
-        String filterClause = generateFilterQueryClause(title);
+        String filterClause = generateFilterQueryClause(title, isbn);
 
         TypedQuery<Long> countQuery = entityManager.createQuery(statement + " " + filterClause, Long.class);
         return countQuery.getSingleResult();
     }
 
-    private String generateFilterQueryClause(String title) {
+    private String generateFilterQueryClause(String title, String isbn) {
         String conditionalClause = "WHERE 1 = 1";
 
         if (title != null)
             conditionalClause += " AND b.title = '" + title + "'";
+        if (isbn != null)
+            conditionalClause += " AND b.isbn = '" + isbn + "'";
 
         return conditionalClause;
     }

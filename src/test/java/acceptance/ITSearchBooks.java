@@ -21,25 +21,49 @@ public class ITSearchBooks extends BaseAcceptance {
     }
 
     @Test
-    public void whenSearchBook_TheBookListIsUpdatedWithTheCorrectResults() throws InterruptedException {
+    public void whenSearchBookByTitle_TheBookListIsUpdatedWithTheCorrectResults() throws InterruptedException {
         listPage.clickOnListAllButton();
         Thread.sleep(1000);
-        listPage.selectTitleFilter();
-        listPage.setBookTitleForFilter("The Pragmatic Programmer");
+        listPage.selectFilter("Title");
+        listPage.setValueForFilter("The Pragmatic Programmer");
         Thread.sleep(1000);
 
         Assertions.assertThat(listPage.getListOfBooks().size()).isEqualTo(1);
     }
 
     @Test
-    public void whenSearchBook_TheUrlIsUpdatedCorrectly() throws InterruptedException {
+    public void whenSearchBookByTitle_TheUrlIsUpdatedCorrectly() throws InterruptedException {
         listPage.clickOnListAllButton();
         Thread.sleep(1000);
-        listPage.selectTitleFilter();
-        listPage.setBookTitleForFilter("The Pragmatic Programmer");
+        listPage.selectFilter("Title");
+        listPage.setValueForFilter("The Pragmatic Programmer");
         Thread.sleep(1000);
 
         Assertions.assertThat(driver.getCurrentUrl()).contains("title=The%20Pragmatic%20Programmer");
+    }
+
+    @Test
+    public void whenSearchBookByIsbn_TheBookListIsUpdatedWithTheCorrectResults() throws InterruptedException {
+        listPage.clickOnListAllButton();
+        Thread.sleep(1000);
+        listPage.selectFilter("ISBN");
+        Thread.sleep(1000);
+        listPage.setValueForFilter("978-0-201-48567-7");
+        Thread.sleep(1000);
+
+        Assertions.assertThat(listPage.getListOfBooks().size()).isEqualTo(1);
+    }
+
+    @Test
+    public void whenSearchBookByIsbn_TheUrlIsUpdatedCorrectly() throws InterruptedException {
+        listPage.clickOnListAllButton();
+        Thread.sleep(1000);
+        listPage.selectFilter("ISBN");
+        Thread.sleep(1000);
+        listPage.setValueForFilter("978-0-201-48567-7");
+        Thread.sleep(1000);
+
+        Assertions.assertThat(driver.getCurrentUrl()).contains("isbn=978-0-201-48567-7");
     }
 
 }
