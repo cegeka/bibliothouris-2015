@@ -1,4 +1,4 @@
-<h3 id="title" class="applicationTitle">{{vm.book.title}}</h3>
+<h3 id="title" class="midnightblueColor">{{vm.book.title}}</h3>
 <p style="margin-top:-5px; margin-left:3em; color: midnightblue" >
     by <span id="authors" style="font-style: italic" ng-repeat="author in vm.book.authors">
                     {{author.firstName}} {{author.lastName}}{{$last ? '' : ', '}}
@@ -43,8 +43,7 @@
                 </table>
             </div>
 
-
-            <div class="col-md-4 hidden-sm hidden-xs media-left media-middle text-center" >
+            <div class="col-sm-4 hidden-xs media-left media-middle text-center" >
                 <img ng-src="{{vm.book.cover}}" class="media-object img-thumbnail" style="height:250px"/>
             </div>
         </div>
