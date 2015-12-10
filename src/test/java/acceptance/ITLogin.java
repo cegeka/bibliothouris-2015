@@ -22,7 +22,7 @@ public class ITLogin extends BaseAcceptance{
     }
 
     @Test
-    public void givenGoodCredentials_ThenloginIsSuccessful() {
+    public void givenGoodCredentials_ThenLoginIsSuccessful() {
         String validPassword = "admin";
 
         login.inputTextIntoUsernameField(validPassword);
@@ -55,7 +55,7 @@ public class ITLogin extends BaseAcceptance{
     }
 
     @Test
-    public void givenWehaveLoggedout_ThenAMessageIsDisplayed() {
+    public void givenWeHaveLoggedOut_ThenAMessageIsDisplayed() {
         String validPassword = "admin";
 
         login.inputTextIntoUsernameField(validPassword);

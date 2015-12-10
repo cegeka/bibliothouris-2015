@@ -92,7 +92,7 @@ public class ITAddBook extends BaseAcceptance {
         addBookPage.clickOnSubmitButton();
         Thread.sleep(2000);
 
-        assertThat(bookDetailsPage.getBookTitle()).isEqualTo("Amintiri din copilarie");
+        assertThat(bookDetailsPage.getTitleText()).isEqualTo("Amintiri din copilarie");
     }
 
 }

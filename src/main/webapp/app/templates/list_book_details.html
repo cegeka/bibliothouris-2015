@@ -1,6 +1,6 @@
-<h3 id="bookTitle" style="color: midnightblue">{{vm.book.title}}</h3>
+<h3 id="title" style="color: midnightblue">{{vm.book.title}}</h3>
 <p style="margin-top:-5px; margin-left:3em; color: midnightblue" >
-    by <span style="font-style: italic" ng-repeat="author in vm.book.authors">
+    by <span id="authors" style="font-style: italic" ng-repeat="author in vm.book.authors">
                     {{author.firstName}} {{author.lastName}}{{$last ? '' : ', '}}
         </span>
 </p>
@@ -17,7 +17,7 @@
                     <tbody>
                     <tr>
                         <th>Category</th>
-                        <td>
+                        <td id="categories">
                                 <span ng-repeat="category in vm.book.categories">
                                     {{category.category}}{{$last ? '' : ', '}}
                                 </span>
@@ -25,19 +25,19 @@
                     </tr>
                     <tr>
                         <th>Publisher</th>
-                        <td>{{vm.book.publisher}}</td>
+                        <td id="publisher">{{vm.book.publisher}}</td>
                     </tr>
                     <tr>
                         <th>Number of pages</th>
-                        <td>{{vm.book.pages}}</td>
+                        <td id="pages">{{vm.book.pages}}</td>
                     </tr>
                     <tr>
                         <th>Publish date</th>
-                        <td>{{vm.book.date}}</td>
+                        <td id="publishDate">{{vm.book.date}}</td>
                     </tr>
                     <tr>
                         <th>ISBN</th>
-                        <td>{{vm.book.isbn}}</td>
+                        <td id="isbn">{{vm.book.isbn}}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -50,72 +50,11 @@
 
         </br>
 
-
         <blockquote style="font-size: 14px">
-            <b >Description</b>
+            <b>Description</b>
             </br></br>
-        <div class="text-justify" style="white-space: pre-wrap;">{{vm.book.description}}</div>
-</blockquote>
+            <div id="description" class="text-justify" style="white-space: pre-wrap;">{{vm.book.description}}</div>
+        </blockquote>
 
     </div>
 </div>
-
-
-<!--<div class="well span9">
-    <div class="row" style="display: flex; align-items: center;">
-        <div class="col-md-8 col-xs-12">
-
-            <table class="table">
-                <col width="35%"/>
-                <col/>
-
-                <tbody>
-                <tr>
-                    <th>Category</th>
-                    <td>{{vm.book.categories.join(", ")}}</td>
-                </tr>
-                <tr>
-                    <th>Language</th>
-                    <td>{{vm.book.language}}</td>
-                </tr>
-                <tr>
-                    <th>Number of pages</th>
-                    <td>{{vm.book.pagesNumber}}</td>
-                </tr>
-                <tr>
-                    <th>Publish date</th>
-                    <td>{{vm.book.date}}</td>
-                </tr>
-                <tr>
-                    <th>ISBN</th>
-                    <td>{{vm.book.isbn}}</td>
-                </tr>
-                <tr class="visible-xs visible-sm">
-                    <th>Price</th>
-                    <td>{{vm.book.price | currency}}</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="col-md-4 hidden-sm hidden-xs" >
-            <div class="center-block text-center half-width">
-                <img ng-src="{{vm.book.coverUrl}}" error-src="resources/icons/default_book.png" class="img-responsive"/>
-                <h4><span class="label label-primary">{{vm.book.price | currency}}</span></h4>
-            </div>
-        </div>
-    </div>
-
-    <br/>
-
-    <uib-tabset justified="true">
-        <uib-tab heading="Description">
-            <div class="panel panel-default panel-special">
-                <div class="panel-body text-justify">
-                    {{vm.book.description}}
-                </div>
-            </div>
-        </uib-tab>
-
-    </uib-tabset>
-</div>-->
