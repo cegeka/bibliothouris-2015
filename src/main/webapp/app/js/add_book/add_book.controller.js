@@ -9,7 +9,13 @@
         vm.originalBook = {};
         vm.book = {};
         vm.authors = {};
-
+        vm.isbn = {
+            prefix: "",
+            registrationGroupElement: "",
+            registrantElement: "",
+            publicationElement: "",
+            checkDigit: ""
+        }
 
         vm.isCoverSizeValid = isCoverSizeValid;
         vm.isCoverTypeValid = isCoverTypeValid;
@@ -30,7 +36,8 @@
         function activate() {
             vm.originalBook = {
                 authors: [""],
-                categories: []
+                categories: [],
+                isbn: []
             };
             vm.book = angular.copy(vm.originalBook);
 
@@ -69,7 +76,6 @@
         }
 
         function submitForm(bookForm) {
-            console.log(vm.categoriesSize());
             vm.book.date = moment(new Date(vm.book.date)).format("YYYY-MM-DD");
             if(bookForm.$valid && isCoverValid()){
                 var reader = new FileReader();
@@ -145,6 +151,10 @@
             return !data.required;
         }
 
+        vm.showIsbnError = function(data){
+            return !data.pattern;
+        }
+
         vm.addItemToModel = function(item){
             var index = -1;
             for(var key in vm.book.categories) {
@@ -179,6 +189,11 @@
                 }
             } return false;
         }
+        vm.onchange = function(){
+            console.log("on change");
+            vm.book.isbn = vm.book.isbn1 +"-"+ vm.book.isbn2+"-"+vm.book.isbn3 +"-"+vm.book.isbn4 +"-"+vm.book.isbn5 ;
+        }
 
+        vm.isbnPattern = "(?=[0-9]{13}$|(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)97[89][- ]?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9]";
     }
 })();
