@@ -4,7 +4,6 @@ import acceptance.pageobject.AddBookPage;
 import acceptance.pageobject.BookDetailsPage;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,6 +21,7 @@ public class ITAddBook extends BaseAcceptance {
         login();
 
         addBookPage = new AddBookPage(driver);
+        bookDetailsPage = new BookDetailsPage(driver);
         addBookPage.clickOnAddBookButton();
     }
 
@@ -88,12 +88,11 @@ public class ITAddBook extends BaseAcceptance {
         addBookPage.inputTextIntoLastNameField("Creanga");
         addBookPage.inputTextIntoFirstNameField("Ion");
         addBookPage.clickOnDefaultCategory();
-
-
+        //addBookPage.inputTextIntoPublishDateField("2015-12-10");
         addBookPage.clickOnSubmitButton();
+        Thread.sleep(2000);
 
-        assertThat(driver.getCurrentUrl().contains("/app/#/books/")).isTrue();
-        //assertThat(bookDetailsPage.getBookTitle()).isEqualTo("Amintiri din copilarie");
+        assertThat(bookDetailsPage.getBookTitle()).isEqualTo("Amintiri din copilarie");
     }
 
 }
