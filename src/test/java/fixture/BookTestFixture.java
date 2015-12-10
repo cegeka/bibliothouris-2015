@@ -102,6 +102,42 @@ public class BookTestFixture {
                 .build();
     }
 
+    public static Book createBookWith10DigitsISBN() {
+        return Book.BookBuilder.book().withTitle("Clean Code")
+                .withAuthors(createOneAuthor())
+                .withIsbn("978-0-13-235-4")
+                .withDescription("Great book for learning how to write clean code")
+                .withCategories(createThreeCategories())
+                .withPages(430)
+                .withPublicationDate(LocalDate.of(2013, Month.MARCH, 23))
+                .withPublisher("Prentice Hall")
+                .build();
+    }
+
+    public static Book createBookWith976FirstDigitsISBN() {
+        return Book.BookBuilder.book().withTitle("Clean Code")
+                .withAuthors(createOneAuthor())
+                .withIsbn("976-0-13-235088-4")
+                .withDescription("Great book for learning how to write clean code")
+                .withCategories(createThreeCategories())
+                .withPages(430)
+                .withPublicationDate(LocalDate.of(2013, Month.MARCH, 23))
+                .withPublisher("Prentice Hall")
+                .build();
+    }
+
+    public static Book createBookWith5LinesISBN() {
+        return Book.BookBuilder.book().withTitle("Clean Code")
+                .withAuthors(createOneAuthor())
+                .withIsbn("978-0-13-2350-88-4")
+                .withDescription("Great book for learning how to write clean code")
+                .withCategories(createThreeCategories())
+                .withPages(430)
+                .withPublicationDate(LocalDate.of(2013, Month.MARCH, 23))
+                .withPublisher("Prentice Hall")
+                .build();
+    }
+
     public static Book createBookWithoutCategory() {
         return Book.BookBuilder.book().withTitle("Clean Code")
                 .withAuthors(createOneAuthor())

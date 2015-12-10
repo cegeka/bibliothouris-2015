@@ -6,6 +6,8 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.Valid;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -35,7 +37,7 @@ public class Book {
 
     @Column(name = "ISBN")
     @NotBlank(message = "Book ISBN is empty or is missing")
-    @Size(max = 32, message = "Book ISBN is too long")
+    @Pattern(regexp="^(?=[0-9]{13}$|(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)97[89][- ]?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9]$", message="Book ISBN is wrong")
     private String isbn;
 
     @Column(name = "TITLE")
@@ -64,7 +66,7 @@ public class Book {
 
     @Column(name = "PAGES")
     //@Range(min=1, max=99999)
-    //@Digits(integer = 5, fraction = 0)
+    @Digits(integer = 5, fraction = 0)
     private Integer pages;
 
     @Column(name = "PUBLICATION_DATE")
@@ -159,8 +161,6 @@ public class Book {
     public void setCover(String cover) {
         this.cover = cover;
     }
-
-
 
     @Override
     public boolean equals(Object o) {

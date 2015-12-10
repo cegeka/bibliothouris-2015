@@ -48,6 +48,27 @@ public class BookServiceTest {
     }
 
     @Test(expected = ValidationException.class)
+    public void givenABookWith10DigitsISBN_createBook_throwsValidationException() {
+        Book book = BookTestFixture.createBookWith10DigitsISBN();
+
+        service.createBook(book);
+    }
+
+    @Test(expected = ValidationException.class)
+    public void givenABookWith976FirstDigitsISBN_createBook_throwsValidationException() {
+        Book book = BookTestFixture.createBookWith976FirstDigitsISBN();
+
+        service.createBook(book);
+    }
+
+    @Test(expected = ValidationException.class)
+    public void givenABookWith5LinesISBN_createBook_throwsValidationException() {
+        Book book = BookTestFixture.createBookWith5LinesISBN();
+
+        service.createBook(book);
+    }
+
+    @Test(expected = ValidationException.class)
     public void givenABookWithoutTitle_createBook_throwsValidationException() {
         Book book = BookTestFixture.createBookWithoutTitle();
 
