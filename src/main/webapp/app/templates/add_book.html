@@ -1,12 +1,12 @@
-<h3 style="color: midnightblue">Add a new book </h3>
-<hr style="border-color: midnightblue"/>
+<h3 class="applicationTitle">Add a new book </h3>
+<hr class="addBorderStyle"/>
 <form class="form-horizontal" novalidate ng-submit="vm.submitForm(add)" name="add" id="addForm">
     <div class="form-group has-feedback">
         <label for="title" class="col-sm-2 control-label required-mark">Title</label>
         <div class="col-sm-10">
             <input name="title" type="text" class="form-control" id="title" placeholder="Title" ng-model="vm.book.title" required>
             <span ng-show="vm.showFeedback(add.title.$error)" class="glyphicon glyphicon-ok form-control-feedback has-success" aria-hidden="true"></span>
-            <ng-messages for="add.title.$error" style="color:maroon" role="alert" ng-if='add.title.$invalid && add.$submitted'>
+            <ng-messages for="add.title.$error" role="alert" ng-if='add.title.$invalid && add.$submitted'>
                 <ng-message id="titleRequiredMsg" when="required">You did not enter a title</ng-message>
             </ng-messages>
         </div>
@@ -34,7 +34,7 @@
                                    uib-typeahead="state.lastName for state in vm.authors | filter:$viewValue | limitTo:8"
                                    typeahead-select-on-exact="true" required>
                             <span ng-show="vm.showFeedback(add.lastName.$error)" class="glyphicon glyphicon-ok form-control-feedback has-success" aria-hidden="true"></span>
-                            <ng-messages for="add.lastName.$error" style="color:maroon" role="alert" ng-if='add.lastName.$invalid && add.$submitted'>
+                            <ng-messages for="add.lastName.$error"  role="alert" ng-if='add.lastName.$invalid && add.$submitted'>
                                 <ng-message id="lastNameRequiredMsg" when="required">You did not enter a last name</ng-message>
                             </ng-messages>
                         </div>
@@ -60,16 +60,16 @@
         <div class="col-sm-10">
             <input name="isbn" type="text" class="form-control" id="isbn" placeholder="ISBN" ng-model="vm.book.isbn" required>
             <span ng-show="vm.showFeedback(add.isbn.$error)" class="glyphicon glyphicon-ok form-control-feedback has-success" aria-hidden="true"></span>
-            <ng-messages for="add.isbn.$error" style="color:maroon" role="alert" ng-if='add.isbn.$invalid && add.$submitted'>
+            <ng-messages for="add.isbn.$error"  role="alert" ng-if='add.isbn.$invalid && add.$submitted'>
                 <ng-message when="required" id="isbnRequiredMsg">You did not enter an ISBN code</ng-message>
             </ng-messages>
         </div>
     </div>
 
-    <div class="form-group" style="display: flex; align-items: center;">
+    <div class="form-group coverPhoto">
         <label class="col-sm-2 control-label">Cover photo</label>
 
-        <div class="col-sm-10" style="display: flex; align-items: center;">
+        <div class="col-sm-10 coverPhoto" >
             <div class="full-width">
                 <input file-input type="file" class="file" file-model="vm.cover" id="input-id" name="fileInput">
                 <br ng-show="!vm.isCoverValid()"/>
@@ -102,7 +102,7 @@
                     </label>
                 </div>
             </div>
-            <ng-messages id="categoryRequiredMsg" for="vm.categoriesSize()" style="color:maroon" role="alert" ng-if="vm.categoriesSize() && add.$submitted">
+            <ng-messages id="categoryRequiredMsg" for="vm.categoriesSize()"  role="alert" ng-if="vm.categoriesSize() && add.$submitted">
                 <ng-message when="empty">You did not select a category</ng-message>
             </ng-messages>
 
@@ -113,7 +113,7 @@
         <label for="title" class="col-sm-2 control-label">Pages</label>
         <div class="col-sm-10">
             <input type="number" min="0" ng-model="vm.book.pages" name="pages" class="form-control" id="pages" placeholder="Pages">
-            <div ng-messages for="add.pages.$error" style="color:maroon" role="alert" ng-if='add.pages.$invalid && add.$submitted'>
+            <div ng-messages for="add.pages.$error"  role="alert" ng-if='add.pages.$invalid && add.$submitted'>
                 <div ng-message id="pagesRequiredNumberMsg" when="number">You typed a text page number</ng-message></div>
                 <div ng-message id="pagesRequiredPositiveNumberMsg" when="min">You typed a negative pages number</ng-message></div>
             </ng-messages></div>

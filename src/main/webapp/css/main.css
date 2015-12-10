@@ -18,3 +18,20 @@ body {
     table-layout:fixed;
     width: 100%;
 }
+
+ng-messages{
+    color:maroon;
+}
+
+.applicationTitle {
+    color: midnightblue;
+}
+
+.addBorderStyle {
+    border-color: midnightblue;
+}
+
+.coverPhoto {
+    display: flex;
+    align-items: center;
+}

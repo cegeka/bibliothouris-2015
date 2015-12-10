@@ -1,5 +1,5 @@
-<h3 style="color: midnightblue">Add a new member </h3>
-<hr style="border-color: midnightblue"/>
+<h3 class="applicationTitle">Add a new member</h3>
+<hr class="addBorderStyle"/>
 <form class="form-horizontal" novalidate ng-submit="vm.submitForm(add)" name="add" id="addForm">
     <div class="form-group has-feedback">
         <label class="col-sm-2 control-label required-mark">Names</label>
@@ -11,7 +11,7 @@
                            ng-model="vm.member.firstName" required>
                     <span ng-show="vm.showFeedback(add.firstName.$error)"
                           class="glyphicon glyphicon-ok form-control-feedback has-success" aria-hidden="true"></span>
-                    <ng-messages for="add.firstName.$error" style="color:maroon" role="alert"
+                    <ng-messages for="add.firstName.$error"  role="alert"
                                  ng-if='add.firstName.$invalid && add.$submitted'>
                         <ng-message when="required">You did not enter a firstName</ng-message>
                     </ng-messages>
@@ -22,7 +22,7 @@
                            ng-model="vm.member.lastName" required>
                     <span ng-show="vm.showFeedback(add.lastName.$error)"
                           class="glyphicon glyphicon-ok form-control-feedback has-success" aria-hidden="true"></span>
-                    <ng-messages for="add.lastName.$error" style="color:maroon" role="alert"
+                    <ng-messages for="add.lastName.$error"  role="alert"
                                  ng-if='add.lastName.$invalid && add.$submitted'>
                         <ng-message when="required">You did not enter a lastName</ng-message>
                     </ng-messages>
@@ -63,7 +63,7 @@
                    placeholder="National Number" ng-model="vm.member.nationalNumber" required>
                 <span ng-show="vm.showFeedback(add.nationalNumber.$error)"
                       class="glyphicon glyphicon-ok form-control-feedback has-success" aria-hidden="true"></span>
-            <ng-messages for="add.nationalNumber.$error" style="color:maroon" role="alert"
+            <ng-messages for="add.nationalNumber.$error"  role="alert"
                          ng-if='add.nationalNumber.$invalid && add.$submitted'>
                 <ng-message when="required">You did not enter a nationalNumber</ng-message>
             </ng-messages>
@@ -87,7 +87,7 @@
             <input name="postalCode" type="number" class="form-control" id="postalCode" placeholder="Postal Code"
                    ng-model="vm.member.postalCode">
 
-            <ng-messages for="add.postalCode.$error" style="color:maroon" role="alert"
+            <ng-messages for="add.postalCode.$error"  role="alert"
                          ng-if='add.postalCode.$invalid && add.$submitted'>
                 <ng-message when="number">The postal number must be a number. Duh.</ng-message>
             </ng-messages>
@@ -120,7 +120,7 @@
             <input name="phoneNumber" type="number" class="form-control" id="phoneNumber" placeholder="Phone Number"
                    ng-model="vm.member.phoneNumber">
 
-            <ng-messages for="add.phoneNumber.$error" style="color:maroon" role="alert"
+            <ng-messages for="add.phoneNumber.$error"  role="alert"
                          ng-if='add.phoneNumber.$invalid && add.$submitted'>
                 <ng-message when="minlength">The phone number must have at least 10 numbers</ng-message>
                 <ng-message when="number">The phone number must be a number. Duh.</ng-message>
