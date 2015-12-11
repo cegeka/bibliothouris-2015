@@ -76,7 +76,9 @@
         }
 
         function submitForm(bookForm) {
-            vm.book.date = moment(new Date(vm.book.date)).format("YYYY-MM-DD");
+            if(vm.book.date){
+                vm.book.date = moment(new Date(vm.book.date)).format("YYYY-MM-DD");
+            }
             if(bookForm.$valid && isCoverValid()){
                 var reader = new FileReader();
                 reader.onload = function(){
@@ -159,7 +161,6 @@
         vm.addItemToModel = function(item){
             var index = -1;
             for(var key in vm.book.categories) {
-                console.log(vm.book.categories[key]);
                 if(vm.book.categories[key].category == item.category) {
                     index = key;
                     break;
@@ -182,14 +183,12 @@
 
         vm.isCategorySelected = function(item){
             for(var key in vm.book.categories) {
-                console.log(vm.book.categories[key]);
                 if(vm.book.categories[key].category == item.category) {
                     return true;
                 }
             } return false;
         };
         vm.onchange = function(){
-            console.log("on change");
             vm.book.isbn = vm.isbn.prefix +"-"+ vm.isbn.registrationGroupElement+"-"+vm.isbn.registrantElement +"-"+vm.isbn.publicationElement +"-"+vm.isbn.checkDigit ;
         }
 

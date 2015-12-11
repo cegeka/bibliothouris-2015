@@ -20,7 +20,9 @@
         }
 
         vm.submitForm = function (memberForm) {
-            vm.member.birthDate = moment(new Date(vm.member.birthDate)).format("YYYY-MM-DD");
+            if(vm.member.birthDate){
+                vm.member.birthDate = moment(new Date(vm.member.birthDate)).format("YYYY-MM-DD");
+            }
             if(memberForm.$valid){
                     restService
                         .addMember(vm.member)
