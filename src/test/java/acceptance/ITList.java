@@ -25,7 +25,7 @@ public class ITList extends BaseAcceptance {
         listPage.clickOnListAllButton();
         sleepABit();
 
-        Assertions.assertThat(listPage.getListOfBooks()).hasSize(10);
+        Assertions.assertThat(listPage.getListOfBooks()).isNotEmpty();
     }
 
 }
