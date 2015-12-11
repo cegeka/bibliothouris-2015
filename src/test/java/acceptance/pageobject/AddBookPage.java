@@ -21,8 +21,20 @@ public class AddBookPage {
     @FindBy(how = How.ID, using = "lastName")
     WebElement inputLastName;
 
-    @FindBy(how = How.ID, using = "isbn")
-    WebElement inputIsbn;
+    @FindBy(how = How.ID, using = "isbnPrefix")
+    WebElement inputIsbnPrefix;
+
+    @FindBy(how = How.ID, using = "isbnRegistrationGroupElement")
+    WebElement inputIsbnRegistrationGroupElement;
+
+    @FindBy(how = How.ID, using = "isbnRegistrantElement")
+    WebElement inputIsbnRegistrantElement;
+
+    @FindBy(how = How.ID, using = "isbnPublicationElement")
+    WebElement inputIsbnPublicationElement;
+
+    @FindBy(how = How.ID, using = "isbnCheckDigit")
+    WebElement inputIsbnCheckDigit;
 
     @FindBy(how = How.ID, using = "description")
     WebElement inputDescription;
@@ -75,8 +87,24 @@ public class AddBookPage {
         inputLastName.sendKeys(lastName);
     }
 
-    public void inputTextIntoIsbnField(String isbn){
-        inputIsbn.sendKeys(isbn);
+    public void inputTextIntoIsbnPrefix(String isbnPrefix){
+        inputIsbnPrefix.sendKeys(isbnPrefix);
+    }
+
+    public void inputTextIntoIsbnRegistrationGroupElement(String isbnRegistrationGroupElement){
+        inputIsbnRegistrationGroupElement.sendKeys(isbnRegistrationGroupElement);
+    }
+
+    public void inputTextIntoIsbnRegistrantElement(String isbnRegistrantElement){
+        inputIsbnRegistrantElement.sendKeys(isbnRegistrantElement);
+    }
+
+    public void inputTextIntoIsbnPublicationElement(String isbnPublicationElement){
+        inputIsbnPublicationElement.sendKeys(isbnPublicationElement);
+    }
+
+    public void inputTextIntoIsbnCheckDigit(String isbnCheckDigit){
+        inputIsbnCheckDigit.sendKeys(isbnCheckDigit);
     }
 
     public void inputTextIntoDescriptionField(String description){

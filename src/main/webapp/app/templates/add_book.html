@@ -60,11 +60,11 @@
         <label for="ISBN-groups" class="col-sm-2 control-label required-mark">ISBN</label>
         <div class="col-sm-10">
             <div id="ISBN-groups" name="ISBN-groups">
-                <input ng-change="vm.onchange()" name="isbn1" type="text" class="form-control form-control-inline" id="isbn1" maxlength="3" minlength="1" ng-model="vm.isbn.prefix" required>
-                <input ng-change="vm.onchange()" name="isbn2" type="text" class="form-control form-control-inline" id="isbn2" maxlength="5" minlength="1" ng-model="vm.isbn.registrationGroupElement" required>
-                <input ng-change="vm.onchange()" name="isbn3" type="text" class="form-control form-control-inline" id="isbn3" maxlength="5" minlength="1" ng-model="vm.isbn.registrantElement" required>
-                <input ng-change="vm.onchange()"name="isbn4" type="text" class="form-control form-control-inline" id="isbn4" maxlength="5" minlength="1" ng-model="vm.isbn.publicationElement" required>
-                <input ng-change="vm.onchange()"name="isbn5" type="text" class="form-control form-control-inline" id="isbn5" maxlength="1" minlength="1" ng-model="vm.isbn.checkDigit" required>
+                <input ng-change="vm.onchange()" name="isbn1" type="text" class="form-control form-control-inline" id="isbnPrefix" maxlength="3" minlength="1" ng-model="vm.isbn.prefix" required>
+                <input ng-change="vm.onchange()" name="isbn2" type="text" class="form-control form-control-inline" id="isbnRegistrationGroupElement" maxlength="5" minlength="1" ng-model="vm.isbn.registrationGroupElement" required>
+                <input ng-change="vm.onchange()" name="isbn3" type="text" class="form-control form-control-inline" id="isbnRegistrantElement" maxlength="5" minlength="1" ng-model="vm.isbn.registrantElement" required>
+                <input ng-change="vm.onchange()"name="isbn4" type="text" class="form-control form-control-inline" id="isbnPublicationElement" maxlength="5" minlength="1" ng-model="vm.isbn.publicationElement" required>
+                <input ng-change="vm.onchange()"name="isbn5" type="text" class="form-control form-control-inline" id="isbnCheckDigit" maxlength="1" minlength="1" ng-model="vm.isbn.checkDigit" required>
                 <input ng-model="vm.book.isbn" name= "isbn" ng-pattern="vm.isbnPattern" required ng-hide="true">
             </div>
             <span ng-show="vm.showFeedback(add.isbn.$error) && vm.showIsbnError(add.isbn.$error)" class="glyphicon glyphicon-ok form-control-feedback has-success" aria-hidden="true"></span>

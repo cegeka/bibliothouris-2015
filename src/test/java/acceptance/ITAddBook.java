@@ -44,7 +44,11 @@ public class ITAddBook extends BaseAcceptance {
     @Test
     public void givenBookWithoutAuthors_ThenSubmitFormFails() throws InterruptedException {
         addBookPage.inputTextIntoTitleField("CleanCode");
-        addBookPage.inputTextIntoIsbnField("111-1111-111-11");
+        addBookPage.inputTextIntoIsbnPrefix("978");
+        addBookPage.inputTextIntoIsbnRegistrantElement("111");
+        addBookPage.inputTextIntoIsbnRegistrationGroupElement("111");
+        addBookPage.inputTextIntoIsbnPublicationElement("111");
+        addBookPage.inputTextIntoIsbnCheckDigit("1");
 
         addBookPage.clickOnSubmitButton();
 
@@ -78,13 +82,30 @@ public class ITAddBook extends BaseAcceptance {
 
         assertThat(addBookPage.getPagesRequiredPositiveNumberMessage()).isEqualTo("You typed a negative pages number");
     }
-    //testul de text pages number nu va merge in chrome
-
 
     @Test
-     public void whenWeAddABook_ThenItIsAdded() throws InterruptedException {
+    public void givenBookWithTextPagesNumber_ThenSubmitFormFails() throws InterruptedException {
+        String title = "CleanCode";
+        addBookPage.inputTextIntoTitleField(title);
+        String lastName = "Fowler";
+        addBookPage.inputTextIntoLastNameField(lastName);
+        addBookPage.clickOnDefaultCategory();
+        addBookPage.inputTextIntoPagesField("aaa");
+        Thread.sleep(2000);
+        addBookPage.clickOnSubmitButton();
+
+        assertThat(addBookPage.getPagesRequiredNumberMessage()).isEqualTo("You typed a text page number");
+    }
+    //testul de text pages number nu va merge in chrome
+
+    @Test
+    public void whenWeAddABook_ThenItIsAdded() throws InterruptedException {
         addBookPage.inputTextIntoTitleField("Amintiri din copilarie");
-        addBookPage.inputTextIntoIsbnField("978-11-11-11111-1");
+        addBookPage.inputTextIntoIsbnPrefix("978");
+        addBookPage.inputTextIntoIsbnRegistrantElement("111");
+        addBookPage.inputTextIntoIsbnRegistrationGroupElement("111");
+        addBookPage.inputTextIntoIsbnPublicationElement("111");
+        addBookPage.inputTextIntoIsbnCheckDigit("1");
         addBookPage.inputTextIntoLastNameField("Creanga");
         addBookPage.inputTextIntoFirstNameField("Ion");
         addBookPage.clickOnDefaultCategory();
