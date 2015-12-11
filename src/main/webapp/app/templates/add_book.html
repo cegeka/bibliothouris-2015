@@ -59,14 +59,13 @@
         <label for="ISBN-groups" class="col-sm-2 control-label required-mark">ISBN</label>
         <div class="col-sm-10">
             <div id="ISBN-groups" name="ISBN-groups">
-                <input ng-change="vm.onchange()" name="isbn1" type="text" class="col-sm-1" id="isbn1" maxlength="3" minlength="1" ng-model="vm.book.isbn1" required>
-                <input ng-change="vm.onchange()" name="isbn2" type="text" class="col-sm-1" id="isbn2" maxlength="5" minlength="1" ng-model="vm.book.isbn2" required>
-                <input ng-change="vm.onchange()" name="isbn3" type="text" class="col-sm-1" id="isbn3" maxlength="5" minlength="1" ng-model="vm.book.isbn3" required>
-                <input ng-change="vm.onchange()"name="isbn4" type="text" class="col-sm-1" id="isbn4" maxlength="5" minlength="1" ng-model="vm.book.isbn4" required>
-                <input ng-change="vm.onchange()"name="isbn5" type="text" class="col-sm-1" id="isbn5" maxlength="5" minlength="1" ng-model="vm.book.isbn5" required>
-                <input ng-model="vm.book.isbn" name= "isbn" ng-pattern="vm.isbnPattern" required ng-hide="true">
+                <input ng-change="vm.onchange()" name="isbn1" type="text" class="col-sm-1" id="isbn1" maxlength="3" minlength="1" ng-model="vm.isbn.prefix" required>
+                <input ng-change="vm.onchange()" name="isbn2" type="text" class="col-sm-1" id="isbn2" maxlength="5" minlength="1" ng-model="vm.isbn.registrationGroupElement" required>
+                <input ng-change="vm.onchange()" name="isbn3" type="text" class="col-sm-1" id="isbn3" maxlength="5" minlength="1" ng-model="vm.isbn.registrantElement" required>
+                <input ng-change="vm.onchange()"name="isbn4" type="text" class="col-sm-1" id="isbn4" maxlength="5" minlength="1" ng-model="vm.isbn.publicationElement" required>
+                <input ng-change="vm.onchange()"name="isbn5" type="text" class="col-sm-1" id="isbn5" maxlength="5" minlength="1" ng-model="vm.isbn.checkDigit" required>
+                <input ng-model="vm.book.isbn" name= "isbn" ng-pattern="vm.isbnPattern" required ng-hide="false">
             </div>
-
             <span ng-show="vm.showFeedback(add.isbn.$error) && vm.showIsbnError(add.isbn.$error)" class="glyphicon glyphicon-ok form-control-feedback has-success" aria-hidden="true"></span>
             <ng-messages for="add.isbn.$error" style="color:maroon" role="alert" ng-if='add.isbn.$invalid && add.$submitted'>
                 <ng-message when="required" id="isbnRequiredMsg">You did not enter an ISBN code</ng-message>

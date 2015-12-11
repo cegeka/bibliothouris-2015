@@ -106,6 +106,7 @@
 
         function resetForm(bookForm) {
             bookForm.$setPristine();
+            vm.isbn = null;
             vm.book = angular.copy(vm.originalBook);
             $('#input-id').fileinput('clear');
         }
@@ -191,7 +192,7 @@
         }
         vm.onchange = function(){
             console.log("on change");
-            vm.book.isbn = vm.book.isbn1 +"-"+ vm.book.isbn2+"-"+vm.book.isbn3 +"-"+vm.book.isbn4 +"-"+vm.book.isbn5 ;
+            vm.book.isbn = vm.isbn.prefix +"-"+ vm.isbn.registrationGroupElement+"-"+vm.isbn.registrantElement +"-"+vm.isbn.publicationElement +"-"+vm.isbn.checkDigit ;
         }
 
         vm.isbnPattern = "(?=[0-9]{13}$|(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)97[89][- ]?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9]";
