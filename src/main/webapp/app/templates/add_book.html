@@ -64,7 +64,7 @@
                 <input ng-change="vm.onchange()" name="isbn3" type="text" class="col-sm-1" id="isbn3" maxlength="5" minlength="1" ng-model="vm.isbn.registrantElement" required>
                 <input ng-change="vm.onchange()"name="isbn4" type="text" class="col-sm-1" id="isbn4" maxlength="5" minlength="1" ng-model="vm.isbn.publicationElement" required>
                 <input ng-change="vm.onchange()"name="isbn5" type="text" class="col-sm-1" id="isbn5" maxlength="5" minlength="1" ng-model="vm.isbn.checkDigit" required>
-                <input ng-model="vm.book.isbn" name= "isbn" ng-pattern="vm.isbnPattern" required ng-hide="false">
+                <input ng-model="vm.book.isbn" name= "isbn" ng-pattern="vm.isbnPattern" required ng-hide="true">
             </div>
             <span ng-show="vm.showFeedback(add.isbn.$error) && vm.showIsbnError(add.isbn.$error)" class="glyphicon glyphicon-ok form-control-feedback has-success" aria-hidden="true"></span>
             <ng-messages for="add.isbn.$error" style="color:maroon" role="alert" ng-if='add.isbn.$invalid && add.$submitted'>
