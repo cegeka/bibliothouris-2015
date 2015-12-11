@@ -12,7 +12,7 @@
         </div>
     </div>
 
-    <div class="form-group has-feedback"  ng-repeat="author in vm.book.authors track by $index">
+    <div class="form-group has-feedback"  ng-repeat="author in vm.book.authors track by $index" ng-init="authorLastName = $index">
         <label for="authors" class="col-sm-2 control-label required-mark" ng-show="$index == 0">Authors</label>
         <div class="col-sm-10" ng-class="{'col-sm-push-2':$index!=0}">
             <div class="row">
@@ -24,17 +24,17 @@
                                    ng-model="vm.book.authors[$index].firstName"
                                    uib-typeahead="author.firstName + ' ' + author.lastName for author in vm.authors | filter:$viewValue | limitTo:8"
                                    typeahead-on-select='vm.onSelect($item, $index)' typeahead-select-on-exact="true">
-                            <span ng-show="vm.showFeedback(add.lastName.$error)" class="glyphicon glyphicon-ok form-control-feedback has-success" aria-hidden="true"></span>
+                            <span ng-show="vm.showFeedback(add[authorLastName].$error)" class="glyphicon glyphicon-ok form-control-feedback has-success" aria-hidden="true"></span>
 
                         </div>
                         <div class="col-sm-6">
-                            <input name="lastName" type="text" class="form-control" id="lastName"
+                            <input name="{{authorLastName}}" type="text" class="form-control" id="lastName"
                                    placeholder="Last name {{$index + 1}} (required)"
                                    ng-model="vm.book.authors[$index].lastName"
                                    uib-typeahead="state.lastName for state in vm.authors | filter:$viewValue | limitTo:8"
                                    typeahead-select-on-exact="true" required>
-                            <span ng-show="vm.showFeedback(add.lastName.$error)" class="glyphicon glyphicon-ok form-control-feedback has-success" aria-hidden="true"></span>
-                            <ng-messages for="add.lastName.$error" style="color:maroon" role="alert" ng-if='add.lastName.$invalid && add.$submitted'>
+                            <span ng-show="vm.showFeedback(add[authorLastName].$error)" class="glyphicon glyphicon-ok form-control-feedback has-success" aria-hidden="true"></span>
+                            <ng-messages for="add[authorLastName].$error" style="color:maroon" role="alert" ng-if='add[authorLastName].$invalid && add.$submitted'>
                                 <ng-message id="lastNameRequiredMsg" when="required">You did not enter a last name</ng-message>
                             </ng-messages>
                         </div>
