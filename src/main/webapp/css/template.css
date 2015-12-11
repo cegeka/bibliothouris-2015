@@ -25,3 +25,9 @@
     vertical-align: middle;
     float: none;
 }
+
+.form-control.form-control-inline {
+    width: 70px;
+    padding-right: 12px;
+    display: inline;
+}

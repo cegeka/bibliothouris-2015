@@ -15,7 +15,7 @@
             registrantElement: "",
             publicationElement: "",
             checkDigit: ""
-        }
+        };
 
         vm.isCoverSizeValid = isCoverSizeValid;
         vm.isCoverTypeValid = isCoverTypeValid;
@@ -150,11 +150,11 @@
 
         vm.showFeedback = function(data){
             return !data.required;
-        }
+        };
 
         vm.showIsbnError = function(data){
             return !data.pattern;
-        }
+        };
 
         vm.addItemToModel = function(item){
             var index = -1;
@@ -170,26 +170,24 @@
                 vm.book.categories.push({category: item.category});
             else
                 vm.book.categories.splice(index, 1);
-        }
+        };
 
         vm.categoriesSize = function(){
-
             if(vm.book.categories.length==0){
                 return {
                     empty: true
                 }
             }
-        }
+        };
 
         vm.isCategorySelected = function(item){
-            console.log("IN CATEGORY SELECTED");
             for(var key in vm.book.categories) {
                 console.log(vm.book.categories[key]);
                 if(vm.book.categories[key].category == item.category) {
                     return true;
                 }
             } return false;
-        }
+        };
         vm.onchange = function(){
             console.log("on change");
             vm.book.isbn = vm.isbn.prefix +"-"+ vm.isbn.registrationGroupElement+"-"+vm.isbn.registrantElement +"-"+vm.isbn.publicationElement +"-"+vm.isbn.checkDigit ;

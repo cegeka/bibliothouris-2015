@@ -55,15 +55,16 @@
             </button>
         </div>
     </div>
+
     <div class="form-group has-feedback">
         <label for="ISBN-groups" class="col-sm-2 control-label required-mark">ISBN</label>
         <div class="col-sm-10">
             <div id="ISBN-groups" name="ISBN-groups">
-                <input ng-change="vm.onchange()" name="isbn1" type="text" class="col-sm-1" id="isbn1" maxlength="3" minlength="1" ng-model="vm.isbn.prefix" required>
-                <input ng-change="vm.onchange()" name="isbn2" type="text" class="col-sm-1" id="isbn2" maxlength="5" minlength="1" ng-model="vm.isbn.registrationGroupElement" required>
-                <input ng-change="vm.onchange()" name="isbn3" type="text" class="col-sm-1" id="isbn3" maxlength="5" minlength="1" ng-model="vm.isbn.registrantElement" required>
-                <input ng-change="vm.onchange()"name="isbn4" type="text" class="col-sm-1" id="isbn4" maxlength="5" minlength="1" ng-model="vm.isbn.publicationElement" required>
-                <input ng-change="vm.onchange()"name="isbn5" type="text" class="col-sm-1" id="isbn5" maxlength="5" minlength="1" ng-model="vm.isbn.checkDigit" required>
+                <input ng-change="vm.onchange()" name="isbn1" type="text" class="form-control form-control-inline" id="isbn1" maxlength="3" minlength="1" ng-model="vm.isbn.prefix" required>
+                <input ng-change="vm.onchange()" name="isbn2" type="text" class="form-control form-control-inline" id="isbn2" maxlength="5" minlength="1" ng-model="vm.isbn.registrationGroupElement" required>
+                <input ng-change="vm.onchange()" name="isbn3" type="text" class="form-control form-control-inline" id="isbn3" maxlength="5" minlength="1" ng-model="vm.isbn.registrantElement" required>
+                <input ng-change="vm.onchange()"name="isbn4" type="text" class="form-control form-control-inline" id="isbn4" maxlength="5" minlength="1" ng-model="vm.isbn.publicationElement" required>
+                <input ng-change="vm.onchange()"name="isbn5" type="text" class="form-control form-control-inline" id="isbn5" maxlength="1" minlength="1" ng-model="vm.isbn.checkDigit" required>
                 <input ng-model="vm.book.isbn" name= "isbn" ng-pattern="vm.isbnPattern" required ng-hide="true">
             </div>
             <span ng-show="vm.showFeedback(add.isbn.$error) && vm.showIsbnError(add.isbn.$error)" class="glyphicon glyphicon-ok form-control-feedback has-success" aria-hidden="true"></span>
@@ -71,49 +72,6 @@
                 <ng-message when="required" id="isbnRequiredMsg">You did not enter an ISBN code</ng-message>
                 <ng-message when="pattern" id="isbnInvalidMsg">You did not enter a valid ISBN code</ng-message>
             </ng-messages>
-        </div>
-    </div>
-
-    <div class="form-group coverPhoto">
-        <label class="col-sm-2 control-label">Cover photo</label>
-
-        <div class="col-sm-10 coverPhoto" >
-            <div class="full-width">
-                <input file-input type="file" class="file" file-model="vm.cover" id="input-id" name="fileInput">
-                <br ng-show="!vm.isCoverValid()"/>
-                <div class="alert alert-danger" role="alert" ng-show="!vm.isCoverSizeValid()">
-                    <span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
-                    You must select a cover photo with a size <b>smaller than 1 MB</b>! The selected image has {{(vm.cover.size / 1000000).toFixed(2)}} MB.
-                </div>
-                <div class="alert alert-danger" role="alert" ng-show="!vm.isCoverTypeValid()">
-                    <span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
-                    You must select an <b>image file</b> as your cover photo!
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="form-group has-feedback">
-        <label for="title" class="col-sm-2 control-label">Description</label>
-        <div class="col-sm-10">
-            <textarea name="description" type="text" class="form-control" id="description" placeholder="Description" ng-model="vm.book.description"></textarea>
-        </div>
-    </div>
-
-    <div class="form-group has-feedback">
-        <label class="col-sm-2 control-label required-mark">Categories</label>
-        <div class="col-sm-10">
-            <div class="row" name="category" id="category">
-                <div class="checkbox col-sm-4" ng-repeat="cat in vm.categories track by cat.id" ng-model="vm.book.categories" >
-                    <label>
-                        <input type="checkbox" id="{{cat.category}}" ng-click="vm.addItemToModel(cat)" ng-checked="vm.isCategorySelected(cat)"> {{cat.category}}
-                    </label>
-                </div>
-            </div>
-            <ng-messages id="categoryRequiredMsg" for="vm.categoriesSize()" style="color:maroon" role="alert" ng-if="vm.categoriesSize() && add.$submitted">
-                <ng-message when="empty">You did not select a category</ng-message>
-            </ng-messages>
-
         </div>
     </div>
 
@@ -154,6 +112,49 @@
         <label for="title" class="col-sm-2 control-label">Publisher</label>
         <div class="col-sm-10">
             <input name="publisher" type="text" class="form-control" id="publisher" placeholder="Publisher" ng-model="vm.book.publisher">
+        </div>
+    </div>
+
+    <div class="form-group has-feedback">
+        <label class="col-sm-2 control-label required-mark">Categories</label>
+        <div class="col-sm-10">
+            <div class="row" name="category" id="category">
+                <div class="checkbox col-sm-4" ng-repeat="cat in vm.categories track by cat.id" ng-model="vm.book.categories" >
+                    <label>
+                        <input type="checkbox" id="{{cat.category}}" ng-click="vm.addItemToModel(cat)" ng-checked="vm.isCategorySelected(cat)"> {{cat.category}}
+                    </label>
+                </div>
+            </div>
+            <ng-messages id="categoryRequiredMsg" for="vm.categoriesSize()" style="color:maroon" role="alert" ng-if="vm.categoriesSize() && add.$submitted">
+                <ng-message when="empty">You did not select a category</ng-message>
+            </ng-messages>
+
+        </div>
+    </div>
+
+    <div class="form-group coverPhoto">
+        <label class="col-sm-2 control-label">Cover photo</label>
+
+        <div class="col-sm-10 coverPhoto" >
+            <div class="full-width">
+                <input file-input type="file" class="file" file-model="vm.cover" id="input-id" name="fileInput">
+                <br ng-show="!vm.isCoverValid()"/>
+                <div class="alert alert-danger" role="alert" ng-show="!vm.isCoverSizeValid()">
+                    <span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
+                    You must select a cover photo with a size <b>smaller than 1 MB</b>! The selected image has {{(vm.cover.size / 1000000).toFixed(2)}} MB.
+                </div>
+                <div class="alert alert-danger" role="alert" ng-show="!vm.isCoverTypeValid()">
+                    <span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
+                    You must select an <b>image file</b> as your cover photo!
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group has-feedback">
+        <label for="title" class="col-sm-2 control-label">Description</label>
+        <div class="col-sm-10">
+            <textarea name="description" type="text" class="form-control" id="description" placeholder="Description" ng-model="vm.book.description"></textarea>
         </div>
     </div>
 
