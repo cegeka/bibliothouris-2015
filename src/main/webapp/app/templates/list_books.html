@@ -9,7 +9,7 @@
         <div class="col-sm-offset-6 col-sm-6 text-right">
             <label>Search by</label>
             <select id="filter" class="form-control" ng-model="vm.filter"
-                    ng-options="filter for filter in vm.searchFilters" ng-click="vm.populateFilterValues()"></select>
+                    ng-options="filter for filter in vm.searchFilters"></select>
             <input id="filterValue" class="form-control" placeholder="{{vm.filter}}" ng-model="vm.filterValue"
                    uib-typeahead="value.value for value in vm.populatedFilterValues | filter:$viewValue | limitTo:10"
                    typeahead-on-select='vm.onSelectFilter()' typeahead-select-on-exact="true">
@@ -34,9 +34,12 @@
                 <tbody>
                 <tr id="bookRow" ng-repeat = "book in vm.books" ng-click="vm.showBook(book.id)" style="cursor: pointer;">
                     <td class="table-column-ellipsis">{{book.title}}</td>
-                    <td class="table-column-ellipsis">
-                        <!--<span><a href="#" data-toggle="tooltip" title="Hooray!">Hover over me</a></span> </td>-->
-                        <span ng-repeat="author in book.authors"> {{author.firstName}} {{author.lastName}}{{$last ? '' : ', '}}</span>
+                    <td class="table-column-ellipsis" on-ellipsis="vm.enableTooltip(param, book)"
+                        uib-tooltip="{{vm.getTooltipContent(book)}}"
+                        tooltip-placement="bottom" tooltip-enable="book.tooltip" tooltip-append-to-body="true">
+                        <span ng-repeat="author in book.authors">
+                            {{author.firstName}} {{author.lastName}}{{$last ? '' : ', '}}
+                        </span>
                     </td>
                     <td>{{book.isbn}}</td>
                 </tr>

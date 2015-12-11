@@ -3,7 +3,7 @@
         .module("Bibliothouris")
         .controller("ListBooksCtrl", ListBooksCtrl);
 
-    function ListBooksCtrl(restService, $location) {
+    function ListBooksCtrl(restService, $location, $scope) {
         var vm = this;
 
         vm.noBooks = false;
@@ -19,6 +19,8 @@
         vm.showBook = showBook;
         vm.pageChanged = pageChanged;
         vm.populateFilterValues = populateFilterValues;
+        vm.enableTooltip = enableTooltip;
+        vm.getTooltipContent = getTooltipContent;
 
         activate();
 
@@ -38,7 +40,9 @@
         }
 
         function activate() {
-            populateFilterValues();
+            $scope.$watch('vm.filter', function() {
+                populateFilterValues();
+            });
 
             restService
                 .getBooks()
@@ -79,6 +83,16 @@
 
             $location.search('start', start);
             $location.search('end', end);
+        }
+
+        function enableTooltip(param, book) {
+            book.tooltip = param;
+        }
+
+        function getTooltipContent(book) {
+            return book.authors.map(function(author){
+                return author.firstName + " " + author.lastName;
+            }).join(", ");
         }
     }
 })();
