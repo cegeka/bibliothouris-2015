@@ -26,14 +26,14 @@ public class ITAddBook extends BaseAcceptance {
     }
 
     @Test
-    public void givenBookWithoutTitle_ThenSubmitFormFails() {
+    public void givenABookWithoutTitle_whenTheFormIsSubmitted_ThenSubmitFormFails() {
         addBookPage.clickOnSubmitButton();
 
         assertThat(addBookPage.getTitleRequiredMessage()).isNotNull();
     }
 
     @Test
-    public void givenBookWithoutISBN_ThenSubmitFormFails() {
+    public void givenABookWithoutISBN_whenTheFormIsSubmitted_ThenSubmitFormFails() {
         addBookPage.inputTextIntoTitleField("CleanCode");
 
         addBookPage.clickOnSubmitButton();
@@ -42,7 +42,7 @@ public class ITAddBook extends BaseAcceptance {
     }
 
     @Test
-    public void givenBookWithoutAuthors_ThenSubmitFormFails() throws InterruptedException {
+    public void givenABookWithoutAuthors_whenTheFormIsSubmitted_ThenSubmitFormFails() throws InterruptedException {
         addBookPage.inputTextIntoTitleField("CleanCode");
         addBookPage.inputTextIntoIsbnPrefix("978");
         addBookPage.inputTextIntoIsbnRegistrantElement("111");
@@ -58,7 +58,7 @@ public class ITAddBook extends BaseAcceptance {
     }
 
     @Test
-    public void givenBookWithoutCategory_ThenSubmitFormFails() {
+    public void givenABookWithoutCategory_whenTheFormIsSubmitted_ThenSubmitFormFails() {
         String title = "CleanCode";
         addBookPage.inputTextIntoTitleField(title);
         String lastName = "Fowler";
@@ -70,7 +70,7 @@ public class ITAddBook extends BaseAcceptance {
     }
 
     @Test
-    public void givenBookWithNegativePagesNumber_ThenSubmitFormFails() throws InterruptedException {
+    public void givenABookWithNegativePagesNumber_whenTheFormIsSubmitted_ThenSubmitFormFails() throws InterruptedException {
         String title = "CleanCode";
         addBookPage.inputTextIntoTitleField(title);
         String lastName = "Fowler";
@@ -84,7 +84,7 @@ public class ITAddBook extends BaseAcceptance {
     }
 
     @Test
-    public void givenBookWithTextPagesNumber_ThenSubmitFormFails() throws InterruptedException {
+    public void givenABookWithTextPagesNumber_whenTheFormIsSubmitted_ThenSubmitFormFails() throws InterruptedException {
         String title = "CleanCode";
         addBookPage.inputTextIntoTitleField(title);
         String lastName = "Fowler";
@@ -94,12 +94,12 @@ public class ITAddBook extends BaseAcceptance {
 
         addBookPage.clickOnSubmitButton();
         sleepABit();
+
         assertThat(addBookPage.getPagesRequiredNumberMessage()).isEqualTo("You typed a text page number");
     }
-    //testul de text pages number nu va merge in chrome
 
     @Test
-    public void whenWeAddABook_ThenItIsAdded() throws InterruptedException {
+    public void givenAValidBook_whenTheFormIsSubmitted_ThenItIsAdded() throws InterruptedException {
         addBookPage.inputTextIntoTitleField("Amintiri din copilarie");
         addBookPage.inputTextIntoIsbnPrefix("978");
         addBookPage.inputTextIntoIsbnRegistrantElement("111");
@@ -110,10 +110,29 @@ public class ITAddBook extends BaseAcceptance {
         addBookPage.inputTextIntoFirstNameField("Ion");
         addBookPage.clickOnDefaultCategory();
         //addBookPage.inputTextIntoPublishDateField("2015-12-10");
+
         addBookPage.clickOnSubmitButton();
         sleepABit();
 
         assertThat(bookDetailsPage.getTitleText()).isEqualTo("Amintiri din copilarie");
+    }
+
+    @Test
+    public void givenABookWithInvalidIsbn_whenTheFormIsSubmitted_ThenSubmitFormFails() throws InterruptedException {
+        addBookPage.inputTextIntoTitleField("Amintiri din copilarie");
+        addBookPage.inputTextIntoIsbnPrefix("978");
+        addBookPage.inputTextIntoIsbnRegistrantElement("111");
+        addBookPage.inputTextIntoIsbnRegistrationGroupElement("111");
+        addBookPage.inputTextIntoIsbnPublicationElement("11");
+        addBookPage.inputTextIntoIsbnCheckDigit("1");
+        addBookPage.inputTextIntoLastNameField("Creanga");
+        addBookPage.inputTextIntoFirstNameField("Ion");
+        addBookPage.clickOnDefaultCategory();
+
+        addBookPage.clickOnSubmitButton();
+        sleepABit();
+
+        assertThat(addBookPage.getIsbnInvalidMessage()).isEqualTo("You did not enter a valid ISBN code");
     }
 
 }

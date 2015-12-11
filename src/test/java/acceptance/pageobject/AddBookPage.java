@@ -57,6 +57,9 @@ public class AddBookPage {
     @FindBy(how = How.ID, using = "isbnRequiredMsg")
     WebElement isbnRequiredMessage;
 
+    @FindBy(how = How.ID, using = "isbnInvalidMsg")
+    WebElement isbnInvalidMessage;
+
     @FindBy(how = How.ID, using = "titleRequiredMsg")
     WebElement titleRequiredMessage;
 
@@ -137,6 +140,10 @@ public class AddBookPage {
 
     public String getIsbnRequiredMessage(){
         return isbnRequiredMessage.getText();
+    }
+
+    public String getIsbnInvalidMessage(){
+        return isbnInvalidMessage.getText();
     }
 
     public String getTitleRequiredMessage(){
