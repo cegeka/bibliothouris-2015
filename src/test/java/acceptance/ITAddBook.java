@@ -52,7 +52,7 @@ public class ITAddBook extends BaseAcceptance {
 
         addBookPage.clickOnSubmitButton();
 
-        Thread.sleep(1000);
+        sleepABit();
 
         assertThat(addBookPage.getLastNameRequiredMessage()).isNotNull();
     }
@@ -77,7 +77,7 @@ public class ITAddBook extends BaseAcceptance {
         addBookPage.inputTextIntoLastNameField(lastName);
         addBookPage.clickOnDefaultCategory();
         addBookPage.inputTextIntoPagesField("-50");
-        Thread.sleep(2000);
+        sleepABit();
         addBookPage.clickOnSubmitButton();
 
         assertThat(addBookPage.getPagesRequiredPositiveNumberMessage()).isEqualTo("You typed a negative pages number");
@@ -91,9 +91,9 @@ public class ITAddBook extends BaseAcceptance {
         addBookPage.inputTextIntoLastNameField(lastName);
         addBookPage.clickOnDefaultCategory();
         addBookPage.inputTextIntoPagesField("aaa");
-        Thread.sleep(2000);
-        addBookPage.clickOnSubmitButton();
 
+        addBookPage.clickOnSubmitButton();
+        sleepABit();
         assertThat(addBookPage.getPagesRequiredNumberMessage()).isEqualTo("You typed a text page number");
     }
     //testul de text pages number nu va merge in chrome
@@ -111,7 +111,7 @@ public class ITAddBook extends BaseAcceptance {
         addBookPage.clickOnDefaultCategory();
         //addBookPage.inputTextIntoPublishDateField("2015-12-10");
         addBookPage.clickOnSubmitButton();
-        Thread.sleep(2000);
+        sleepABit();
 
         assertThat(bookDetailsPage.getTitleText()).isEqualTo("Amintiri din copilarie");
     }

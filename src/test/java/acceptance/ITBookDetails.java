@@ -26,14 +26,14 @@ public class ITBookDetails extends BaseAcceptance {
 
     private void navigateToBook(String bookTitle) throws InterruptedException {
         listPage.clickOnListAllButton();
-        Thread.sleep(1000);
+        sleepABit();
 
         listPage.selectFilter("Title");
         listPage.setValueForFilter(bookTitle);
-        Thread.sleep(1000);
+        sleepABit();
 
         listPage.clickOnTheFirstBookFromList();
-        Thread.sleep(1000);
+        sleepABit();
     }
 
     @Test

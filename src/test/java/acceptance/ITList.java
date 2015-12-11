@@ -23,7 +23,7 @@ public class ITList extends BaseAcceptance {
     @Test
     public void booksAreListed() throws InterruptedException {
         listPage.clickOnListAllButton();
-        Thread.sleep(1500);
+        sleepABit();
 
         Assertions.assertThat(listPage.getListOfBooks()).hasSize(10);
     }

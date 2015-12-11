@@ -23,10 +23,10 @@ public class ITSearchBooks extends BaseAcceptance {
     @Test
     public void whenSearchBookByTitle_TheBookListIsUpdatedWithTheCorrectResults() throws InterruptedException {
         listPage.clickOnListAllButton();
-        Thread.sleep(1000);
+
         listPage.selectFilter("Title");
         listPage.setValueForFilter("The Pragmatic Programmer");
-        Thread.sleep(1000);
+        sleepABit();
 
         Assertions.assertThat(listPage.getListOfBooks().size()).isEqualTo(1);
     }
@@ -34,10 +34,10 @@ public class ITSearchBooks extends BaseAcceptance {
     @Test
     public void whenSearchBookByTitle_TheUrlIsUpdatedCorrectly() throws InterruptedException {
         listPage.clickOnListAllButton();
-        Thread.sleep(1000);
+        sleepABit();
         listPage.selectFilter("Title");
         listPage.setValueForFilter("The Pragmatic Programmer");
-        Thread.sleep(1000);
+        sleepABit();
 
         Assertions.assertThat(driver.getCurrentUrl()).contains("title=The%20Pragmatic%20Programmer");
     }
@@ -45,11 +45,11 @@ public class ITSearchBooks extends BaseAcceptance {
     @Test
     public void whenSearchBookByIsbn_TheBookListIsUpdatedWithTheCorrectResults() throws InterruptedException {
         listPage.clickOnListAllButton();
-        Thread.sleep(1000);
+        sleepABit();
         listPage.selectFilter("ISBN");
-        Thread.sleep(1000);
+        sleepABit();
         listPage.setValueForFilter("978-0-201-48567-7");
-        Thread.sleep(1000);
+        sleepABit();
 
         Assertions.assertThat(listPage.getListOfBooks().size()).isEqualTo(1);
     }
@@ -57,11 +57,11 @@ public class ITSearchBooks extends BaseAcceptance {
     @Test
     public void whenSearchBookByIsbn_TheUrlIsUpdatedCorrectly() throws InterruptedException {
         listPage.clickOnListAllButton();
-        Thread.sleep(1000);
+        sleepABit();
         listPage.selectFilter("ISBN");
-        Thread.sleep(1000);
+        sleepABit();
         listPage.setValueForFilter("978-0-201-48567-7");
-        Thread.sleep(1000);
+        sleepABit();
 
         Assertions.assertThat(driver.getCurrentUrl()).contains("isbn=978-0-201-48567-7");
     }

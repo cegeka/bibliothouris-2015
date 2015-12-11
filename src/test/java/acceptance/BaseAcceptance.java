@@ -13,6 +13,14 @@ public class BaseAcceptance {
         return driver;
     }
 
+    public void sleepABit(){
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     protected void login() {
         LoginPage login = new LoginPage(driver);
 
