@@ -1,7 +1,9 @@
 (function() {
     angular
-        .module("Bibliothouris", ["ngRoute", "ngMessages", "ui.bootstrap", "file-model"])
-        .config(function($routeProvider, $httpProvider){
+        .module("Bibliothouris", ["ngRoute", "ngMessages", "ui.bootstrap", "file-model", "angular-loading-bar"])
+        .config(function($routeProvider, $httpProvider, cfpLoadingBarProvider){
+            cfpLoadingBarProvider.includeSpinner = false;
+
             $routeProvider
                 .when("/status", {
                     templateUrl: "templates/application_status.html",
