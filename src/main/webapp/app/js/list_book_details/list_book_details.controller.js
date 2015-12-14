@@ -7,6 +7,7 @@
         var vm = this;
 
         vm.book = {};
+        vm.noBook = false;
 
         activate();
 
@@ -17,6 +18,8 @@
                     vm.book = data;
                     if (vm.book.cover == null)
                         vm.book.cover = "../icons/default_book.png";
+                }, function(){
+                    vm.noBook = true;
                 });
         }
     }

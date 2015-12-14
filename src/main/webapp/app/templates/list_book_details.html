@@ -1,12 +1,16 @@
-<h3 id="title" class="midnightblueColor">{{vm.book.title}}</h3>
-<p style="margin-top:-5px; margin-left:3em; color: midnightblue" >
+<div class="alert alert-info text-center" role="alert" ng-show="vm.noBook">
+    <p class="alert-link">There is no book wth this identifier in the database!</p>
+</div>
+
+<h3 id="title" class="midnightblueColor" ng-hide="vm.noBook">{{vm.book.title}}</h3>
+<p style="margin-top:-5px; margin-left:3em; color: midnightblue" ng-hide="vm.noBook">
     by <span id="authors" style="font-style: italic" ng-repeat="author in vm.book.authors">
                     {{author.firstName}} {{author.lastName}}{{$last ? '' : ', '}}
         </span>
 </p>
-<hr style="border-color: midnightblue; margin-top: -5px"/>
+<hr style="border-color: midnightblue; margin-top: -5px" ng-hide="vm.noBook"/>
 
-<div class="panel panel-default">
+<div class="panel panel-default" ng-hide="vm.noBook">
     <div class="panel-body" style="margin-left: 1em; margin-right: 1em">
         <div class="row media" style="display: flex; align-items: center;">
             <div class="col-sm-8 col-xs-12 media-body">
