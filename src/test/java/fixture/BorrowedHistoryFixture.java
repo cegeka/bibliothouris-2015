@@ -1,18 +1,22 @@
 package fixture;
 
-import cgk.bibliothouris.learning.service.entity.BorrowedHistory;
-import cgk.bibliothouris.learning.service.entity.Member;
-import org.apache.commons.lang3.RandomStringUtils;
+import cgk.bibliothouris.learning.service.entity.BorrowHistoryItem;
 
 import java.time.LocalDate;
-import java.util.UUID;
+import java.time.Month;
 
 public class BorrowedHistoryFixture {
 
-    public static BorrowedHistory createHistoryItem() {
-        LocalDate date = LocalDate.of(2015,4,4);
-        return BorrowedHistory.BorrowedHistoryBuilder.borrowedHistory()
-                .withStartDate(date)
+    public static BorrowHistoryItem createHistoryItem() {
+        return BorrowHistoryItem.BorrowedHistoryBuilder.borrowedHistory()
+                .withStartDate(LocalDate.of(2015, Month.DECEMBER, 4))
+                .build();
+    }
+
+    public static BorrowHistoryItem createHistoryItemWithEndDateBeforeThanStartDate() {
+        return BorrowHistoryItem.BorrowedHistoryBuilder.borrowedHistory()
+                .withStartDate(LocalDate.of(2015, Month.DECEMBER, 4))
+                .withEndDate(LocalDate.of(2015, Month.JANUARY, 5))
                 .build();
     }
 }

@@ -2,10 +2,10 @@ package integration;
 
 import cgk.bibliothouris.learning.config.AppConfig;
 import cgk.bibliothouris.learning.repository.BookRepository;
-import cgk.bibliothouris.learning.repository.BorrowedHistoryRepository;
+import cgk.bibliothouris.learning.repository.BorrowHistoryRepository;
 import cgk.bibliothouris.learning.repository.MemberRepository;
 import cgk.bibliothouris.learning.service.entity.Book;
-import cgk.bibliothouris.learning.service.entity.BorrowedHistory;
+import cgk.bibliothouris.learning.service.entity.BorrowHistoryItem;
 import cgk.bibliothouris.learning.service.entity.Member;
 import fixture.BookTestFixture;
 import fixture.BorrowedHistoryFixture;
@@ -32,17 +32,17 @@ public class ITBorrowedHistoryRepository {
     private BookRepository bookRepository;
 
     @Autowired
-    private BorrowedHistoryRepository borrowedHistoryRepository;
+    private BorrowHistoryRepository borrowHistoryRepository;
 
     private Book bookWithOneAuthorAndOneCategory;
     private Member member;
-    private BorrowedHistory borrowedHistoryItem;
+    private BorrowHistoryItem borrowHistoryItemItem;
 
     @Before
     public void setUp() {
         bookWithOneAuthorAndOneCategory = BookTestFixture.createBookWithOneAuthorAndOneCategory();
         member = MemberTestFixture.createMember();
-        borrowedHistoryItem = BorrowedHistoryFixture.createHistoryItem();
+        borrowHistoryItemItem = BorrowedHistoryFixture.createHistoryItem();
     }
 
 
@@ -51,7 +51,7 @@ public class ITBorrowedHistoryRepository {
         Member newMember = memberRepository.createMember(member);
         Book newBook = bookRepository.createBook(bookWithOneAuthorAndOneCategory);
 
-        BorrowedHistory persistedHistoryItem = borrowedHistoryRepository.addBorrowedBook(newBook, newMember, borrowedHistoryItem);
+        BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(newBook, newMember, borrowHistoryItemItem);
 
         assertThat(persistedHistoryItem.getId()).isNotNull();
     }
@@ -61,7 +61,7 @@ public class ITBorrowedHistoryRepository {
         Member newMember = memberRepository.createMember(member);
         Book newBook = bookRepository.createBook(bookWithOneAuthorAndOneCategory);
 
-        BorrowedHistory persistedHistoryItem = borrowedHistoryRepository.addBorrowedBook(newBook, newMember, borrowedHistoryItem);
+        BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(newBook, newMember, borrowHistoryItemItem);
 
         Member memberWithBorrowedBook = memberRepository.getMember(newMember.getUUID());
         assertThat(memberWithBorrowedBook.getHistory()).contains(persistedHistoryItem);

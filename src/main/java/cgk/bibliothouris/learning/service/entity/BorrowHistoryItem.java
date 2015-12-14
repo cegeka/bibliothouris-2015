@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Entity
 @XmlRootElement
 @Table(name = "BORROWED_HISTORY")
-public class BorrowedHistory {
+public class BorrowHistoryItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "borrowed_history_sequence")
@@ -79,40 +79,40 @@ public class BorrowedHistory {
 
     public static class BorrowedHistoryBuilder
     {
-        private BorrowedHistory borrowedHistory;
+        private BorrowHistoryItem borrowHistoryItem;
 
         private BorrowedHistoryBuilder()
         {
-            borrowedHistory = new BorrowedHistory();
+            borrowHistoryItem = new BorrowHistoryItem();
         }
 
         public BorrowedHistoryBuilder withId(Integer id)
         {
-            borrowedHistory.id = id;
+            borrowHistoryItem.id = id;
             return this;
         }
 
         public BorrowedHistoryBuilder withStartDate(LocalDate startDate)
         {
-            borrowedHistory.startDate = startDate;
+            borrowHistoryItem.startDate = startDate;
             return this;
         }
 
         public BorrowedHistoryBuilder withEndDate(LocalDate endDate)
         {
-            borrowedHistory.endDate = endDate;
+            borrowHistoryItem.endDate = endDate;
             return this;
         }
 
         public BorrowedHistoryBuilder withBook(Book book)
         {
-            borrowedHistory.book = book;
+            borrowHistoryItem.book = book;
             return this;
         }
 
         public BorrowedHistoryBuilder withMember(Member member)
         {
-            borrowedHistory.member = member;
+            borrowHistoryItem.member = member;
             return this;
         }
 
@@ -121,9 +121,9 @@ public class BorrowedHistory {
             return new BorrowedHistoryBuilder();
         }
 
-        public BorrowedHistory build()
+        public BorrowHistoryItem build()
         {
-            return borrowedHistory;
+            return borrowHistoryItem;
         }
     }
 }

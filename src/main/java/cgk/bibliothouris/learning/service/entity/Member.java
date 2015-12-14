@@ -61,13 +61,13 @@ public class Member {
     private Integer phoneNumber;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<BorrowedHistory> history = Lists.newArrayList();
+    private List<BorrowHistoryItem> history = Lists.newArrayList();
 
-    public List<BorrowedHistory> getHistory() {
+    public List<BorrowHistoryItem> getHistory() {
         return history;
     }
 
-    public void setHistory(List<BorrowedHistory> history) {
+    public void setHistory(List<BorrowHistoryItem> history) {
         this.history = history;
     }
 
