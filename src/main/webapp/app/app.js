@@ -34,6 +34,11 @@
                     controller: "AddMemberCtrl",
                     controllerAs: "vm"
                 })
+                .when("/member/:memberId", {
+                    templateUrl: "templates/member_detail.html",
+                    controller: "MemberDetailCtrl",
+                    controllerAs: "vm"
+                })
                 .otherwise({redirectTo:"/books"});
 
             $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
