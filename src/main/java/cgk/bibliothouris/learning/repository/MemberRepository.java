@@ -32,4 +32,8 @@ public class MemberRepository {
         entityManager.persist(history);
         return history;
     }
+
+    public Member getMember(String uuid) {
+        return entityManager.find(Member.class, uuid);
+    }
 }
