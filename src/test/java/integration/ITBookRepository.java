@@ -34,7 +34,7 @@ public class ITBookRepository {
         bookWithOneAuthorAndOneCategory = BookTestFixture.createBookWithOneAuthorAndOneCategory();
         bookWithOneAuthorAndThreeCategories = BookTestFixture.createBookWithOneAuthorAndThreeCategories();
         bookWithFourAuthorsAndThreeCategories = BookTestFixture.createBookWithFourAuthorsAndThreeCategories();
-        bookRepository.deleteAllBooks();
+        //bookRepository.deleteAllBooks();
     }
 
     @Test

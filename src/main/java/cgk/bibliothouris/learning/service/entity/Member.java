@@ -2,6 +2,7 @@ package cgk.bibliothouris.learning.service.entity;
 
 import cgk.bibliothouris.learning.service.dateconverter.LocalDateAdapter;
 import cgk.bibliothouris.learning.service.dateconverter.LocalDateAttributeConverter;
+import com.google.common.collect.Lists;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @XmlRootElement
@@ -57,6 +59,17 @@ public class Member {
 
     @Column(name = "PHONE_NUMBER")
     private Integer phoneNumber;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<BorrowedHistory> history = Lists.newArrayList();
+
+    public List<BorrowedHistory> getHistory() {
+        return history;
+    }
+
+    public void setHistory(List<BorrowedHistory> history) {
+        this.history = history;
+    }
 
     public String getUUID() {
         return UUID;
