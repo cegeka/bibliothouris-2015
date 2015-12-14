@@ -1,13 +1,13 @@
 package cgk.bibliothouris.learning.application.resource;
 
 import cgk.bibliothouris.learning.application.transferobject.Status;
+import cgk.bibliothouris.learning.service.entity.Book;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.*;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -53,9 +53,13 @@ public class StatusResource {
     }
 
     private Boolean isDatabaseConnectionOn() {
-        entityManager = entityManager.getEntityManagerFactory().createEntityManager();
-        Session session = (Session)entityManager.getDelegate();
+        TypedQuery<Long> query = entityManager.createNamedQuery(Book.COUNT_BOOKS, Long.class);
 
-        return session.isConnected();
+        try {
+            query.getSingleResult();
+            return true;
+        } catch (QueryTimeoutException e) {
+            return false;
+        }
     }
 }
