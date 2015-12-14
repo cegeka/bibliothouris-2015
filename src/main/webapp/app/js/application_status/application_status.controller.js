@@ -3,18 +3,32 @@
         .module("Bibliothouris")
         .controller("ApplicationStatusCtrl", ApplicationStatusCtrl);
 
-    function ApplicationStatusCtrl(applicationStatusService) {
+    function ApplicationStatusCtrl(applicationStatusService, $timeout, $scope) {
         var vm = this;
 
-        vm.status = {};
+        var onTimeout = function() {
+            getAppStatus();
+            timer = $timeout(onTimeout, 1000);
+        };
 
-        activate();
+        var timer = $timeout(onTimeout, 1000);
 
-        function activate() {
+        getAppStatus();
+
+        $scope.$on("$destroy", function() {
+            if (timer) {
+                $timeout.cancel(timer);
+            }
+        });
+
+        function getAppStatus() {
             applicationStatusService
                 .getStatus()
                 .then(function(data){
                     vm.status = data;
+                }, function() {
+                    vm.status.upTime = "Server is down!";
+                    vm.status.isDatabaseConnected = false;
                 });
         }
     }
