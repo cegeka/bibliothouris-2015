@@ -62,6 +62,10 @@
         }
 
         function onSelectFilter() {
+            for (var key in $location.search()) {
+                if (key != "start" && key != "end")
+                    $location.search(key, null);
+            }
             $location.search(vm.filter.toLowerCase(), vm.filterValue);
 
             vm.currentPage = 1;
