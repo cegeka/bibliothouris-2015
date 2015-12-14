@@ -34,7 +34,7 @@
                     controller: "AddMemberCtrl",
                     controllerAs: "vm"
                 })
-                .otherwise({redirectTo:"/status"});
+                .otherwise({redirectTo:"/books"});
 
             $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
         });
