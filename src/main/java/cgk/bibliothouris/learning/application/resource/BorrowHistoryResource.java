@@ -1,7 +1,6 @@
 package cgk.bibliothouris.learning.application.resource;
 
-import cgk.bibliothouris.learning.application.transferobject.BorrowHistoryItemTO;
-import cgk.bibliothouris.learning.application.transferobject.StringTO;
+import cgk.bibliothouris.learning.application.transferobject.*;
 import cgk.bibliothouris.learning.service.BorrowHistoryService;
 import cgk.bibliothouris.learning.service.MemberService;
 import cgk.bibliothouris.learning.service.entity.Book;
@@ -11,15 +10,10 @@ import cgk.bibliothouris.learning.service.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
 import java.net.URI;
+import java.util.List;
 
 @Path("/borrowedBooks")
 @Component
@@ -44,6 +38,28 @@ public class BorrowHistoryResource {
         } catch (ValidationException e) {
             return getStringResponse(Response.Status.BAD_REQUEST, e.getMessage());
         }
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("{memberUuid}")
+    public Response getBorrowHistoryItemsByMember(@PathParam("memberUuid") String memberUuid,
+                                                  @QueryParam("start") String start, @QueryParam("end") String end) {
+        List<MemberBorrowHistoryTO> borrowedHistoryItems = service.findBorrowedBooksByMember(memberUuid, start, end);
+
+        if(borrowedHistoryItems.size() == 0)
+            return Response.status(Response.Status.NOT_FOUND).build();
+
+        return Response.ok().entity(new GenericEntity<List<MemberBorrowHistoryTO>>(borrowedHistoryItems){}).build();
+    }
+
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("{memberUuid}/size")
+    public Response getBorrowHistoryItemsByMemberCount(@PathParam("memberUuid") String memberUuid) {
+        Long count = service.countBorrowedBooksByMember(memberUuid);
+
+        return Response.ok().entity(count).build();
     }
 
     private Response getStringResponse(Response.Status status, String message) {
