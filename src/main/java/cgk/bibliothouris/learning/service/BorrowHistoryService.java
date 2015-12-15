@@ -1,8 +1,8 @@
 package cgk.bibliothouris.learning.service;
 
 import cgk.bibliothouris.learning.application.transferobject.BorrowHistoryItemTO;
+import cgk.bibliothouris.learning.application.transferobject.MemberBorrowHistoryTO;
 import cgk.bibliothouris.learning.repository.BookRepository;
-import cgk.bibliothouris.learning.repository.BookRepositoryJPA;
 import cgk.bibliothouris.learning.repository.BorrowHistoryRepository;
 import cgk.bibliothouris.learning.repository.MemberRepository;
 import cgk.bibliothouris.learning.service.entity.Book;
@@ -12,6 +12,8 @@ import cgk.bibliothouris.learning.service.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -40,8 +42,40 @@ public class BorrowHistoryService {
         return borrowHistoryRepository.addBorrowedBook(borrowHistoryItem);
     }
 
+    @Transactional(readOnly = true)
+    public List<MemberBorrowHistoryTO> findBorrowedBooksByMember(String memberUuid, String start, String end) {
+        Integer startPosition, endPosition;
+
+        if (start == null || isNegative(start)) {
+            startPosition = 0;
+        } else {
+            startPosition = Integer.valueOf(start);
+        }
+        if (end == null || isNegative(end)) {
+            endPosition = Integer.valueOf(countBorrowedBooksByMember(memberUuid).intValue());
+        } else {
+            endPosition = Integer.valueOf(end);
+        }
+
+        return borrowHistoryRepository.findBorrowedBooksByMember(memberUuid, startPosition, endPosition);
+    }
+
+    @Transactional(readOnly = true)
+    public Long countBorrowedBooksByMember(String memberUuid) {
+        return borrowHistoryRepository.countBorrowedBooksByMember(memberUuid);
+    }
+
     private void validateBorrowHistoryItem(BorrowHistoryItemTO borrowHistoryItemTO) {
         if (borrowHistoryItemTO.getEndDate() != null && borrowHistoryItemTO.getEndDate().isBefore(borrowHistoryItemTO.getStartDate()))
             throw new ValidationException("End date is before start date!");
+    }
+
+    private boolean isNegative(String number) {
+        try {
+            if (Integer.parseInt(number) < 0)
+                return true;
+        } catch (NumberFormatException e) {
+        }
+        return false;
     }
 }

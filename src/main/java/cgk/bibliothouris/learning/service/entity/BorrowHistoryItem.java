@@ -13,7 +13,16 @@ import java.time.LocalDate;
 @Entity
 @XmlRootElement
 @Table(name = "BORROWED_HISTORY")
+@NamedQueries({
+        @NamedQuery(name = BorrowHistoryItem.LIST_ALL_MEMBER_BORROWED_BOOKS,
+                    query = "SELECT b FROM BorrowHistoryItem b WHERE b.member.UUID = :uuid ORDER BY b.endDate DESC"),
+        @NamedQuery(name = BorrowHistoryItem.COUNT_ALL_MEMBER_BORROWED_BOOKS,
+                query = "SELECT COUNT(b.id) FROM BorrowHistoryItem b WHERE b.member.UUID = :uuid")
+})
 public class BorrowHistoryItem {
+
+    public static final String LIST_ALL_MEMBER_BORROWED_BOOKS = "LIST_ALL_MEMBER_BORROWED_BOOKS";
+    public static final String COUNT_ALL_MEMBER_BORROWED_BOOKS = "COUNT_ALL_MEMBER_BORROWED_BOOKS";
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "borrowed_history_sequence")

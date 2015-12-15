@@ -1,5 +1,6 @@
 package integration;
 
+import cgk.bibliothouris.learning.application.transferobject.MemberBorrowHistoryTO;
 import cgk.bibliothouris.learning.config.AppConfig;
 import cgk.bibliothouris.learning.repository.BookRepository;
 import cgk.bibliothouris.learning.repository.BorrowHistoryRepository;
@@ -18,6 +19,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -34,21 +37,10 @@ public class ITBorrowedHistoryRepository {
     @Autowired
     private BookRepository bookRepository;
 
-    private BorrowHistoryItem borrowHistoryItem;
-
-    @Before
-    public void setUp() {
-        Book book = bookRepository.createBook(BookTestFixture.createBookWithOneAuthorAndOneCategory());
-        Member member = memberRepository.createMember(MemberTestFixture.createMember());
-
-        borrowHistoryItem = BorrowedHistoryFixture.createHistoryItem();
-        borrowHistoryItem.setBook(book);
-        borrowHistoryItem.setMember(member);
-    }
-
-
     @Test
     public void givenABookAMemberAndBorrowDetails_addBorrowedBook_returnsNewBorrowedHistoryItem(){
+        BorrowHistoryItem borrowHistoryItem = buildBorrowHistoryIem();
+
         BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(borrowHistoryItem);
 
         assertThat(persistedHistoryItem.getId()).isNotNull();
@@ -56,10 +48,41 @@ public class ITBorrowedHistoryRepository {
 
     @Test
     public void givenABookAMemberAndBorrowDetails_addBorrowedBook_persistBorrowDataIntoMemberDetails(){
+        BorrowHistoryItem borrowHistoryItem = buildBorrowHistoryIem();
+
         BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(borrowHistoryItem);
 
         Member memberWithBorrowedBook = memberRepository.getMember(persistedHistoryItem.getMember().getUUID());
         assertThat(memberWithBorrowedBook.getHistory()).contains(persistedHistoryItem);
+    }
+
+    @Test
+    public void givenAMemberId_countBorrowedBooks_returnsTheCorrectListOfBorrowedBookTOs(){
+        BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(buildBorrowHistoryIem());
+
+        Long memberBorrowHistoryTOsSize = borrowHistoryRepository.countBorrowedBooksByMember(persistedHistoryItem.getMember().getUUID());
+
+        assertThat(memberBorrowHistoryTOsSize).isEqualTo(1);
+    }
+
+    @Test
+    public void givenAMemberId_findBorrowedBooks_returnsTheCorrectListOfBorrowedBookTOs(){
+        BorrowHistoryItem persistedHistoryItem1 = borrowHistoryRepository.addBorrowedBook(buildBorrowHistoryIem());
+
+        List<MemberBorrowHistoryTO> memberBorrowHistoryTOs = borrowHistoryRepository.findBorrowedBooksByMember(persistedHistoryItem1.getMember().getUUID(), 0, 10);
+
+        assertThat(memberBorrowHistoryTOs.size()).isEqualTo(1);
+    }
+
+    private BorrowHistoryItem buildBorrowHistoryIem() {
+        Book book = bookRepository.createBook(BookTestFixture.createBookWithOneAuthorAndOneCategory());
+        Member member = memberRepository.createMember(MemberTestFixture.createMember());
+
+        BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createHistoryItem();
+        borrowHistoryItem.setBook(book);
+        borrowHistoryItem.setMember(member);
+
+        return borrowHistoryItem;
     }
 
 }
