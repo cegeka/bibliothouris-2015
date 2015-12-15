@@ -33,7 +33,7 @@ public class ITBorrowHistoryResource extends JerseyTest{
     private TestIntegrationClient client;
     private Book bookWithOneAuthorAndOneCategory;
     private Member member;
-    private static String PATH = "/borrowedBooks";
+    private static String PATH = "/borrow";
 
 
     @Override

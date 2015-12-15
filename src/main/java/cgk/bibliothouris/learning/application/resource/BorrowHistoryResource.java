@@ -15,7 +15,7 @@ import javax.ws.rs.core.*;
 import java.net.URI;
 import java.util.List;
 
-@Path("/borrowedBooks")
+@Path("/borrow")
 @Component
 public class BorrowHistoryResource {
 
