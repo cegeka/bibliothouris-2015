@@ -1,17 +1,15 @@
 package unit;
 
+import cgk.bibliothouris.learning.application.transferobject.BorrowHistoryItemTO;
+import cgk.bibliothouris.learning.repository.BookRepository;
 import cgk.bibliothouris.learning.repository.BorrowHistoryRepository;
 import cgk.bibliothouris.learning.repository.MemberRepository;
 import cgk.bibliothouris.learning.service.BorrowHistoryService;
-import cgk.bibliothouris.learning.service.MemberService;
-import cgk.bibliothouris.learning.service.entity.Book;
 import cgk.bibliothouris.learning.service.entity.BorrowHistoryItem;
-import cgk.bibliothouris.learning.service.entity.Member;
 import cgk.bibliothouris.learning.service.exception.ValidationException;
-import fixture.BookTestFixture;
 import fixture.BorrowedHistoryFixture;
-import fixture.MemberTestFixture;
 import org.assertj.core.api.Assertions;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -26,26 +24,37 @@ public class BorrowHistoryServiceTest {
     private BorrowHistoryService service;
 
     @Mock
-    private BorrowHistoryRepository mockRepository;
+    private BorrowHistoryRepository borrowHistoryRepository;
 
+    @Mock
+    private BookRepository bookRepository;
+
+    @Mock
+    private MemberRepository memberRepository;
+
+    private BorrowHistoryItemTO invalidBorrowHistoryItemTO;
+
+    @Before
+    public void setUp() {
+        invalidBorrowHistoryItemTO = BorrowedHistoryFixture.createHistoryItemTOWithEndDateBeforeThanStartDate();
+    }
 
     @Test(expected = ValidationException.class)
-    public void givenABorrowHistoryItemWithEndDateBeforeThanStartDate_whenValidated_shouldThrowException() {
-        BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createHistoryItemWithEndDateBeforeThanStartDate();
-
-        service.createBorrowHistoryItem(new Book(), new Member(), borrowHistoryItem);
+    public void givenABorrowHistoryItemTOWithEndDateBeforeThanStartDate_whenValidated_shouldThrowException() {
+        service.createBorrowHistoryItem(invalidBorrowHistoryItemTO);
     }
 
     @Test
-    public void givenValidBorrowHistoryItem_whenValidated_shouldReturnNewBorrowHistoryItem() {
+    public void givenValidBorrowHistoryItemTO_whenValidated_shouldReturnNewBorrowHistoryItem() {
         BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createHistoryItem();
-        Book book = BookTestFixture.createBookWithOneAuthorAndOneCategory();
-        Member member = MemberTestFixture.createMember();
+        BorrowHistoryItemTO borrowHistoryItemTO = BorrowedHistoryFixture.createHistoryItemTO();
+        Mockito.when(bookRepository.findBookById(borrowHistoryItemTO.getBookId())).thenReturn(borrowHistoryItem.getBook());
+        Mockito.when(memberRepository.getMember(borrowHistoryItemTO.getMemberUuid())).thenReturn(borrowHistoryItem.getMember());
+        Mockito.when(borrowHistoryRepository.addBorrowedBook(borrowHistoryItem)).thenReturn(borrowHistoryItem);
 
-        Mockito.when(mockRepository.addBorrowedBook(book, member, borrowHistoryItem)).thenReturn(borrowHistoryItem);
+        BorrowHistoryItem newBorrowHistoryItem = service.createBorrowHistoryItem(borrowHistoryItemTO);
 
-        BorrowHistoryItem newBorrowHistoryItem = service.createBorrowHistoryItem(book, member, borrowHistoryItem);
-
+        Mockito.verify(borrowHistoryRepository, Mockito.times(1)).addBorrowedBook(borrowHistoryItem);
         Assertions.assertThat(newBorrowHistoryItem).isEqualTo(borrowHistoryItem);
     }
 

@@ -1,8 +1,6 @@
 package cgk.bibliothouris.learning.repository;
 
-import cgk.bibliothouris.learning.service.entity.Book;
 import cgk.bibliothouris.learning.service.entity.BorrowHistoryItem;
-import cgk.bibliothouris.learning.service.entity.Member;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -14,10 +12,8 @@ public class BorrowHistoryRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public BorrowHistoryItem addBorrowedBook(Book book, Member member, BorrowHistoryItem historyItem){
-        historyItem.setBook(book);
-        historyItem.setMember(member);
-        member.getHistory().add(historyItem);
+    public BorrowHistoryItem addBorrowedBook(BorrowHistoryItem historyItem){
+        historyItem.getMember().getHistory().add(historyItem);
 
         entityManager.persist(historyItem);
 

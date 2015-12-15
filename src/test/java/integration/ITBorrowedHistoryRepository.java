@@ -29,41 +29,36 @@ public class ITBorrowedHistoryRepository {
     private MemberRepository memberRepository;
 
     @Autowired
-    private BookRepository bookRepository;
-
-    @Autowired
     private BorrowHistoryRepository borrowHistoryRepository;
 
-    private Book bookWithOneAuthorAndOneCategory;
-    private Member member;
-    private BorrowHistoryItem borrowHistoryItemItem;
+    @Autowired
+    private BookRepository bookRepository;
+
+    private BorrowHistoryItem borrowHistoryItem;
 
     @Before
     public void setUp() {
-        bookWithOneAuthorAndOneCategory = BookTestFixture.createBookWithOneAuthorAndOneCategory();
-        member = MemberTestFixture.createMember();
-        borrowHistoryItemItem = BorrowedHistoryFixture.createHistoryItem();
+        Book book = bookRepository.createBook(BookTestFixture.createBookWithOneAuthorAndOneCategory());
+        Member member = memberRepository.createMember(MemberTestFixture.createMember());
+
+        borrowHistoryItem = BorrowedHistoryFixture.createHistoryItem();
+        borrowHistoryItem.setBook(book);
+        borrowHistoryItem.setMember(member);
     }
 
 
     @Test
     public void givenABookAMemberAndBorrowDetails_addBorrowedBook_returnsNewBorrowedHistoryItem(){
-        Member newMember = memberRepository.createMember(member);
-        Book newBook = bookRepository.createBook(bookWithOneAuthorAndOneCategory);
-
-        BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(newBook, newMember, borrowHistoryItemItem);
+        BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(borrowHistoryItem);
 
         assertThat(persistedHistoryItem.getId()).isNotNull();
     }
 
     @Test
     public void givenABookAMemberAndBorrowDetails_addBorrowedBook_persistBorrowDataIntoMemberDetails(){
-        Member newMember = memberRepository.createMember(member);
-        Book newBook = bookRepository.createBook(bookWithOneAuthorAndOneCategory);
+        BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(borrowHistoryItem);
 
-        BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(newBook, newMember, borrowHistoryItemItem);
-
-        Member memberWithBorrowedBook = memberRepository.getMember(newMember.getUUID());
+        Member memberWithBorrowedBook = memberRepository.getMember(persistedHistoryItem.getMember().getUUID());
         assertThat(memberWithBorrowedBook.getHistory()).contains(persistedHistoryItem);
     }
 

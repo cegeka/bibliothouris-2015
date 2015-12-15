@@ -1,6 +1,10 @@
 package cgk.bibliothouris.learning.service;
 
+import cgk.bibliothouris.learning.application.transferobject.BorrowHistoryItemTO;
+import cgk.bibliothouris.learning.repository.BookRepository;
+import cgk.bibliothouris.learning.repository.BookRepositoryJPA;
 import cgk.bibliothouris.learning.repository.BorrowHistoryRepository;
+import cgk.bibliothouris.learning.repository.MemberRepository;
 import cgk.bibliothouris.learning.service.entity.Book;
 import cgk.bibliothouris.learning.service.entity.BorrowHistoryItem;
 import cgk.bibliothouris.learning.service.entity.Member;
@@ -14,16 +18,30 @@ import org.springframework.transaction.annotation.Transactional;
 public class BorrowHistoryService {
 
     @Autowired
-    private BorrowHistoryRepository repository;
+    private BorrowHistoryRepository borrowHistoryRepository;
 
-    public BorrowHistoryItem createBorrowHistoryItem(Book book, Member member, BorrowHistoryItem borrowHistoryItem) {
-        validateBorrowHistoryItem(borrowHistoryItem);
+    @Autowired
+    private BookRepository bookRepository;
 
-        return repository.addBorrowedBook(book, member, borrowHistoryItem);
+    @Autowired
+    private MemberRepository memberRepository;
+
+    public BorrowHistoryItem createBorrowHistoryItem(BorrowHistoryItemTO borrowHistoryItemTO) {
+        validateBorrowHistoryItem(borrowHistoryItemTO);
+
+        Book book = bookRepository.findBookById(borrowHistoryItemTO.getBookId());
+        Member member = memberRepository.getMember(borrowHistoryItemTO.getMemberUuid());
+        BorrowHistoryItem borrowHistoryItem = BorrowHistoryItem.BorrowedHistoryBuilder.borrowedHistory()
+                                                                .withBook(book)
+                                                                .withMember(member)
+                                                                .withStartDate(borrowHistoryItemTO.getStartDate())
+                                                                .withEndDate(borrowHistoryItemTO.getEndDate()).build();
+
+        return borrowHistoryRepository.addBorrowedBook(borrowHistoryItem);
     }
 
-    private void validateBorrowHistoryItem(BorrowHistoryItem borrowHistoryItem) {
-        if (borrowHistoryItem.getEndDate() != null && borrowHistoryItem.getEndDate().isBefore(borrowHistoryItem.getStartDate()))
+    private void validateBorrowHistoryItem(BorrowHistoryItemTO borrowHistoryItemTO) {
+        if (borrowHistoryItemTO.getEndDate() != null && borrowHistoryItemTO.getEndDate().isBefore(borrowHistoryItemTO.getStartDate()))
             throw new ValidationException("End date is before start date!");
     }
 }

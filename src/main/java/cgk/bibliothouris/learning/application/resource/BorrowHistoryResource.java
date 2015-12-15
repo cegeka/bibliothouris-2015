@@ -1,5 +1,6 @@
 package cgk.bibliothouris.learning.application.resource;
 
+import cgk.bibliothouris.learning.application.transferobject.BorrowHistoryItemTO;
 import cgk.bibliothouris.learning.application.transferobject.StringTO;
 import cgk.bibliothouris.learning.service.BorrowHistoryService;
 import cgk.bibliothouris.learning.service.MemberService;
@@ -20,7 +21,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 
-@Path("/borrowed_books")
+@Path("/borrowedBooks")
 @Component
 public class BorrowHistoryResource {
 
@@ -33,12 +34,12 @@ public class BorrowHistoryResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response borrowBook(Book book, Member member, BorrowHistoryItem borrowHistoryItem) {
+    public Response borrowBook(BorrowHistoryItemTO borrowHistoryItemTO) {
         try {
-            BorrowHistoryItem persistedBorrowHistoryItem = service.createBorrowHistoryItem(book, member, borrowHistoryItem);
+            BorrowHistoryItem persistedBorrowHistoryItem = service.createBorrowHistoryItem(borrowHistoryItemTO);
             String uri = uriInfo.getAbsolutePath() + "/" + persistedBorrowHistoryItem.getId();
 
-            return Response.ok().entity(persistedBorrowHistoryItem).location(URI.create(uri)).build();
+            return Response.ok().location(URI.create(uri)).build();
 
         } catch (ValidationException e) {
             return getStringResponse(Response.Status.BAD_REQUEST, e.getMessage());

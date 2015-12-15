@@ -2,6 +2,7 @@ package unit;
 
 import cgk.bibliothouris.learning.application.resource.BorrowHistoryResource;
 import cgk.bibliothouris.learning.application.resource.MemberResource;
+import cgk.bibliothouris.learning.application.transferobject.BorrowHistoryItemTO;
 import cgk.bibliothouris.learning.service.BorrowHistoryService;
 import cgk.bibliothouris.learning.service.MemberService;
 import cgk.bibliothouris.learning.service.entity.Book;
@@ -38,52 +39,35 @@ public class BorrowHistoryResourceTest {
     private UriInfo uriInfo;
 
     @Test
-    public void givenAValidBorrowHistoryItem_createANewBorrowItem_returnsTheNewItem() {
-        BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createHistoryItemWithEndDateBeforeThanStartDate();
-        Book book = BookTestFixture.createBookWithOneAuthorAndOneCategory();
-        Member member = MemberTestFixture.createMember();
-
-        Mockito.when(service.createBorrowHistoryItem(book, member, borrowHistoryItem)).thenReturn(borrowHistoryItem);
-
-        Response response = resource.borrowBook(book, member, borrowHistoryItem);
-
-        Assertions.assertThat(response.getEntity()).isEqualTo(borrowHistoryItem);
-    }
-
-    @Test
     public void givenAValidBorrowHistoryItem_createANewBorrowItem_returns200OK() {
-        BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createHistoryItemWithEndDateBeforeThanStartDate();
-        Book book = BookTestFixture.createBookWithOneAuthorAndOneCategory();
-        Member member = MemberTestFixture.createMember();
-        Mockito.when(service.createBorrowHistoryItem(book, member, borrowHistoryItem)).thenReturn(borrowHistoryItem);
+        BorrowHistoryItemTO borrowHistoryItemTO = BorrowedHistoryFixture.createHistoryItemTO();
+        BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createHistoryItem();
+        Mockito.when(service.createBorrowHistoryItem(borrowHistoryItemTO)).thenReturn(borrowHistoryItem);
 
-        Response response = resource.borrowBook(book, member, borrowHistoryItem);
+        Response response = resource.borrowBook(borrowHistoryItemTO);
 
         Assertions.assertThat(response.getStatus()).isEqualTo(Response.Status.OK.getStatusCode());
     }
 
     @Test
     public void givenAValidBorrowHistoryItem_createANewBorrowItem_returnsLinkToTheNewItem() {
-        BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createHistoryItemWithEndDateBeforeThanStartDate();
+        BorrowHistoryItemTO borrowHistoryItemTO = BorrowedHistoryFixture.createHistoryItemTO();
+        BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createHistoryItem();
         borrowHistoryItem.setId(1);
-        Book book = BookTestFixture.createBookWithOneAuthorAndOneCategory();
-        Member member = MemberTestFixture.createMember();
-        Mockito.when(service.createBorrowHistoryItem(book, member, borrowHistoryItem)).thenReturn(borrowHistoryItem);
+        Mockito.when(service.createBorrowHistoryItem(borrowHistoryItemTO)).thenReturn(borrowHistoryItem);
         Mockito.when(uriInfo.getAbsolutePath()).thenReturn(URI.create("http://localhost:8080/webapi/borrowed_books"));
 
-        Response response = resource.borrowBook(book, member, borrowHistoryItem);
+        Response response = resource.borrowBook(borrowHistoryItemTO);
 
         assertThat(response.getLocation()).isEqualTo(URI.create("http://localhost:8080/webapi/borrowed_books/1"));
     }
 
     @Test
     public void givenAnInvalidBorrowHistoryItem_createANewBorrowItem_returns400BADREQUEST() {
-        BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createHistoryItemWithEndDateBeforeThanStartDate();
-        Book book = BookTestFixture.createBookWithOneAuthorAndOneCategory();
-        Member member = MemberTestFixture.createMember();
-        Mockito.when(service.createBorrowHistoryItem(book, member, borrowHistoryItem)).thenThrow(ValidationException.class);
+        BorrowHistoryItemTO borrowHistoryItemTO = BorrowedHistoryFixture.createHistoryItemTOWithEndDateBeforeThanStartDate();
+        Mockito.when(service.createBorrowHistoryItem(borrowHistoryItemTO)).thenThrow(ValidationException.class);
 
-        Response response = resource.borrowBook(book, member, borrowHistoryItem);
+        Response response = resource.borrowBook(borrowHistoryItemTO);
 
         Assertions.assertThat(response.getStatus()).isEqualTo(Response.Status.BAD_REQUEST.getStatusCode());
     }
