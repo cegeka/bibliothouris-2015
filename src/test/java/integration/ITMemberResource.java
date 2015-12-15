@@ -56,4 +56,40 @@ public class ITMemberResource extends JerseyTest {
 
         assertThat(actualMember.getUUID()).isNotNull();
     }
+
+    @Test
+    public void givenAMember_get_returnsTheMember() {
+        Member member = MemberTestFixture.createMember();
+        Member actualMember = client.post(PATH, member).readEntity(Member.class);
+
+        Member readEntity = client.get(PATH + "/" + actualMember.getUUID()).readEntity(Member.class);
+        assertThat(readEntity).isEqualTo(actualMember);
+    }
+
+    @Test
+    public void givenAMember_get_returns200OK() {
+        Member member = MemberTestFixture.createMember();
+        Member actualMember = client.post(PATH, member).readEntity(Member.class);
+
+        Response response = client.get(PATH + "/" + actualMember.getUUID());
+        assertThat(response.getStatus()).isEqualTo(Response.Status.OK.getStatusCode());
+    }
+
+    @Test
+    public void givenAMember_getOnNonExistentMember_returnsTheMember() {
+        Member member = MemberTestFixture.createMember();
+        Member actualMember = client.post(PATH, member).readEntity(Member.class);
+
+        Member readEntity = client.get(PATH + "/" + "randomNameHere").readEntity(Member.class);
+        assertThat(readEntity).isNotEqualTo(actualMember);
+    }
+
+    @Test
+    public void givenAMember_getOnNonExistentMember_returns404() {
+        Member member = MemberTestFixture.createMember();
+        Member actualMember = client.post(PATH, member).readEntity(Member.class);
+
+        Response response = client.get(PATH + "/" + "randomNameHere");
+        assertThat(response.getStatus()).isEqualTo(Response.Status.NOT_FOUND.getStatusCode());
+    }
 }

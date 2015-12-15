@@ -2,6 +2,7 @@ package integration;
 
 import cgk.bibliothouris.learning.config.AppConfig;
 import cgk.bibliothouris.learning.repository.BookRepository;
+import cgk.bibliothouris.learning.repository.BorrowHistoryRepository;
 import cgk.bibliothouris.learning.repository.MemberRepository;
 import cgk.bibliothouris.learning.service.entity.Member;
 import fixture.MemberTestFixture;
@@ -23,6 +24,9 @@ public class ITMemberRepository {
     private MemberRepository memberRepository;
 
     @Autowired
+    private BorrowHistoryRepository borrowedHistoryRepository;
+
+    @Autowired
     private BookRepository bookRepository;
 
     @Test
@@ -33,4 +37,23 @@ public class ITMemberRepository {
 
         assertThat(actualMember.getUUID()).isNotNull();
     }
+
+    @Test
+    public void givenAMember_WhenWePersist_weCanRetrieveThatUser() {
+        Member memberWithNoUUID = MemberTestFixture.createMemberWithNoUUID();
+
+        Member createdMember = memberRepository.createMember(memberWithNoUUID);
+
+        Member retrievedMember = memberRepository.getMember(createdMember.getUUID());
+
+        assertThat(retrievedMember).isEqualTo(createdMember);
+    }
+
+    @Test
+    public void givenNoMember_WhenWeRetrieve_WeGetNull() {
+        Member retrievedMember = memberRepository.getMember("randomString");
+
+        assertThat(retrievedMember).isEqualTo(null);
+    }
+
 }

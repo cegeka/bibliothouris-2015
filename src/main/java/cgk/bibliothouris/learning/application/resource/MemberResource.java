@@ -7,10 +7,7 @@ import cgk.bibliothouris.learning.service.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -47,5 +44,18 @@ public class MemberResource {
         stringTO.setMessage(message);
 
         return Response.status(status).entity(stringTO).build();
+    }
+
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("{memberId}")
+    public Response getMember(@PathParam("memberId") String memberId) {
+        Member foundMember = service.findMember(memberId);
+
+        if (foundMember == null)
+            return Response.status(Response.Status.NOT_FOUND).build();
+
+        return Response.ok().entity(foundMember).build();
     }
 }

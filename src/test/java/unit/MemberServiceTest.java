@@ -48,7 +48,7 @@ public class MemberServiceTest {
     public void givenEmptyNationalNumber_whenValidated_shouldThrowException() {
         Member member = MemberTestFixture.createInvalidMemberWithNoNationalNumber();
 
-         service.createMember(member);
+        service.createMember(member);
     }
 
     @Test
@@ -60,4 +60,25 @@ public class MemberServiceTest {
 
         Assertions.assertThat(member).isEqualTo(createdMember);
     }
+
+    @Test
+    public void givenAValidMember_afterGet_shouldReturnThatMember() {
+        Member member = MemberTestFixture.createMember();
+        Mockito.when(mockRepository.getMember(member.getUUID())).thenReturn(member);
+
+        Member returnedMember = service.findMember(member.getUUID());
+
+        Assertions.assertThat(returnedMember).isEqualTo(member);
+    }
+
+    @Test
+    public void givenANonExistentUser_afterGet_shouldReturnNull() {
+        Mockito.when(mockRepository.getMember("inexistentUUID")).thenReturn(null);
+
+        Member returnedMember = service.findMember("inexistentUUID");
+
+        Assertions.assertThat(returnedMember).isEqualTo(null);
+    }
+
+
 }

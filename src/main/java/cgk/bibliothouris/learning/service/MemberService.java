@@ -32,4 +32,9 @@ public class MemberService {
         if (!bookConstraintViolations.isEmpty())
             throw new ValidationException(bookConstraintViolations.iterator().next().getMessage());
     }
+
+    @Transactional(readOnly = true)
+    public Member findMember(String uuid) {
+        return repository.getMember(uuid);
+    }
 }

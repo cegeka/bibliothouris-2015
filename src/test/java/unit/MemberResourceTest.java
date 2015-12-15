@@ -5,7 +5,6 @@ import cgk.bibliothouris.learning.service.MemberService;
 import cgk.bibliothouris.learning.service.entity.Member;
 import cgk.bibliothouris.learning.service.exception.ValidationException;
 import fixture.MemberTestFixture;
-import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -16,6 +15,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
+
+import static org.assertj.core.api.Assertions.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MemberResourceTest {
@@ -37,7 +38,7 @@ public class MemberResourceTest {
 
         Response response = resource.addMember(expectedMember);
 
-        Assertions.assertThat(response.getEntity()).isEqualTo(expectedMember);
+        assertThat(response.getEntity()).isEqualTo(expectedMember);
     }
 
     @Test
@@ -48,7 +49,7 @@ public class MemberResourceTest {
 
         Response response = resource.addMember(expectedMember);
 
-        Assertions.assertThat(response.getStatus()).isEqualTo(Response.Status.OK.getStatusCode());
+        assertThat(response.getStatus()).isEqualTo(Response.Status.OK.getStatusCode());
     }
 
     @Test
@@ -61,7 +62,7 @@ public class MemberResourceTest {
 
         Response response = resource.addMember(expectedMember);
 
-        Assertions.assertThat(response.getLocation()).isEqualTo(expectedLocation);
+        assertThat(response.getLocation()).isEqualTo(expectedLocation);
     }
 
     @Test
@@ -72,7 +73,40 @@ public class MemberResourceTest {
 
         Response response = resource.addMember(expectedMember);
 
-        Assertions.assertThat(response.getStatus()).isEqualTo(Response.Status.BAD_REQUEST.getStatusCode());
+        assertThat(response.getStatus()).isEqualTo(Response.Status.BAD_REQUEST.getStatusCode());
+    }
+
+    @Test
+    public void whenWeGetOnAValidMember_WeGetThatMember(){
+        Member expectedMember = MemberTestFixture.createMember();
+
+        Mockito.when(service.findMember(expectedMember.getUUID())).thenReturn(expectedMember);
+
+        Response actualMember = resource.getMember(expectedMember.getUUID());
+
+        assertThat(actualMember.getEntity()).isEqualTo(expectedMember);
+    }
+
+    @Test
+     public void whenWeGetOnAValidMember_WeGet200OK(){
+        Member expectedMember = MemberTestFixture.createMember();
+
+        Mockito.when(service.findMember(expectedMember.getUUID())).thenReturn(expectedMember);
+
+        Response actualMember = resource.getMember(expectedMember.getUUID());
+
+        assertThat(actualMember.getStatus()).isEqualTo(Response.Status.OK.getStatusCode());
+    }
+
+    @Test
+    public void whenWeGetOnANonExistentMember_WeGet404NotFound(){
+        Member expectedMember = MemberTestFixture.createMember();
+
+        Mockito.when(service.findMember(expectedMember.getUUID())).thenReturn(null);
+
+        Response actualMember = resource.getMember(expectedMember.getUUID());
+
+        assertThat(actualMember.getStatus()).isEqualTo(Response.Status.NOT_FOUND.getStatusCode());
     }
 
 }
