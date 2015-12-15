@@ -86,9 +86,6 @@ public class ITMemberResource extends JerseyTest {
 
     @Test
     public void givenAMember_getOnNonExistentMember_returns404() {
-        Member member = MemberTestFixture.createMember();
-        Member actualMember = client.post(PATH, member).readEntity(Member.class);
-
         Response response = client.get(PATH + "/" + "randomNameHere");
         assertThat(response.getStatus()).isEqualTo(Response.Status.NOT_FOUND.getStatusCode());
     }

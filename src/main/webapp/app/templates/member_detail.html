@@ -1,9 +1,14 @@
-<h3 id="title" class="midnightblueColor">{{vm.member.firstName}} {{vm.member.lastName}}</h3>
-<p style="margin-top:-5px; margin-left:3em; color: midnightblue" >
-</p>
-<hr style="border-color: midnightblue; margin-top: -5px"/>
+<div class="alert alert-info text-center" role="alert" ng-show="vm.noMember">
+    <p class="alert-link">There is no user wth this identifier in the database!</p>
+</div>
 
-<div class="panel panel-default">
+<h3 id="title" class="midnightblueColor" ng-hide="vm.noMember">{{vm.member.firstName}} {{vm.member.lastName}}</h3>
+<p style="margin-top:-5px; color: midnightblue" ng-hide="vm.noMember">
+[{{vm.member.UUID}}]
+</p>
+<hr style="border-color: midnightblue; margin-top: -5px" ng-hide="vm.noMember"/>
+
+<div class="panel panel-default" ng-hide="vm.noMember">
     <div class="panel-body" style="margin-left: 1em; margin-right: 1em">
         <div class="row media" style="display: flex; align-items: center;">
             <div class="col-sm-12 col-xs-12 media-body">
@@ -18,7 +23,7 @@
                     </tr>
                     <tr>
                         <th>Address</th>
-                        <td id="address">{{vm.member.address}}</td>
+                        <td id="address">{{vm.member.address}}, {{vm.member.city}}</td>
                     </tr>
                     <tr>
                         <th>Postal Code</th>
@@ -26,11 +31,11 @@
                     </tr>
                     <tr>
                         <th>Birthdate</th>
-                        <td id="birthdate">{{vm.member.birthdate}}</td>
+                        <td id="birthdate">{{vm.member.birthDate}}</td>
                     </tr>
                     <tr>
                         <th>Phone</th>
-                        <td id="phone">{{vm.member.phone}}</td>
+                        <td id="phone">{{vm.member.phoneNumber}}</td>
                     </tr>
                     <tr>
                         <th>Email</th>

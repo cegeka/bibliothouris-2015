@@ -68,6 +68,19 @@ public class Member {
     @XmlInverseReference(mappedBy="member")
     private Set<BorrowHistoryItem> history = new HashSet<>();
 
+    @Column(name = "MEMBER_SINCE")
+    @Convert(converter = LocalDateAttributeConverter.class)
+    private LocalDate memberSince;
+
+    public LocalDate getMemberSince() {
+        return memberSince;
+    }
+
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    public void setMemberSince(LocalDate memberSince) {
+        this.memberSince = memberSince;
+    }
+
     public Set<BorrowHistoryItem> getHistory() {
         return history;
     }
@@ -114,14 +127,6 @@ public class Member {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getAdress() {
-        return address;
-    }
-
-    public void setAdress(String adress) {
-        this.address = adress;
     }
 
     public Integer getPostalCode() {

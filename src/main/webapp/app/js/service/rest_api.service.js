@@ -13,7 +13,8 @@
             getBookCategories: getBookCategories,
             getBookDetails: getBookDetails,
             getBookTitles: getBookTitles,
-            getBookIsbnCodes: getBookIsbnCodes
+            getBookIsbnCodes: getBookIsbnCodes,
+            getMemberDetail: getMemberDetail
         };
 
         return service;
@@ -77,6 +78,14 @@
         function getBookIsbnCodes() {
             return $http.get("/api/books/isbnCodes")
                 .then(function(response){
+                    return response.data;
+                });
+        }
+
+        function getMemberDetail(memberId) {
+            return $http.get("/api/member/" + memberId)
+                .then(function(response){
+                    console.log(response.data);
                     return response.data;
                 });
         }

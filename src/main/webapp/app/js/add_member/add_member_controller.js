@@ -23,12 +23,13 @@
             if(vm.member.birthDate){
                 vm.member.birthDate = moment(new Date(vm.member.birthDate)).format("YYYY-MM-DD");
             }
+            vm.member.memberSince = moment(new Date()).format("YYYY-MM-DD");
             if(memberForm.$valid){
                     restService
                         .addMember(vm.member)
                         .then(function(data){
                             console.log(data);
-                            $location.path("/member/" + data.uuid);
+                            $location.path("/member/" + data.UUID);
                             createNotification("Member <strong>" + data.firstName + " " + data.lastName + "</strong> was added!", "success")
                         }, function(data){
                             createNotification("Something wrong happened when you tried to add a new member!", "danger")

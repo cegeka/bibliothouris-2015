@@ -7,14 +7,17 @@
         var vm = this;
 
         vm.member = {};
+        vm.noMember = false;
 
         activate();
 
         function activate() {
             restService
-                .getMemberDetails($routeParams.memberId)
+                .getMemberDetail($routeParams.memberId)
                 .then(function(data){
                     vm.member = data;
+                }, function(){
+                    vm.noMember = true;
                 });
         }
     }
