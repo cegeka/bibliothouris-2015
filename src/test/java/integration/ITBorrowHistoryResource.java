@@ -4,12 +4,11 @@ import cgk.bibliothouris.learning.application.resource.BookResource;
 import cgk.bibliothouris.learning.application.resource.BorrowHistoryResource;
 import cgk.bibliothouris.learning.application.resource.MemberResource;
 import cgk.bibliothouris.learning.application.transferobject.BorrowHistoryItemTO;
+import cgk.bibliothouris.learning.application.transferobject.MemberBorrowHistoryTO;
 import cgk.bibliothouris.learning.config.JpaConfig;
 import cgk.bibliothouris.learning.service.entity.Book;
-import cgk.bibliothouris.learning.service.entity.BorrowHistoryItem;
 import cgk.bibliothouris.learning.service.entity.Member;
 import fixture.BookTestFixture;
-import fixture.BorrowedHistoryFixture;
 import fixture.MemberTestFixture;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.spring.SpringLifecycleListener;
@@ -22,17 +21,18 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.web.filter.RequestContextFilter;
 
 import javax.ws.rs.core.Application;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ITBorrowHistoryResource extends JerseyTest{
 
     private TestIntegrationClient client;
-    private Book bookWithOneAuthorAndOneCategory;
-    private Member member;
+    private BorrowHistoryItemTO borrowHistoryItemTO;
     private static String PATH = "/borrow";
 
 
@@ -52,8 +52,12 @@ public class ITBorrowHistoryResource extends JerseyTest{
     public void setUpTests() {
         client = new TestIntegrationClient(target());
 
-        bookWithOneAuthorAndOneCategory =  BookTestFixture.createBookWithOneAuthorAndOneCategory();
-        member = MemberTestFixture.createMember();
+        Book newBook = client.post("/books", BookTestFixture.createBookWithOneAuthorAndOneCategory()).readEntity(Book.class);
+        Member newMember = client.post("/member", MemberTestFixture.createMember()).readEntity(Member.class);
+        borrowHistoryItemTO = BorrowHistoryItemTO.BorrowHistoryItemTOBuilder.borrowHistoryItemTO()
+                .withBookId(newBook.getId())
+                .withMemberUuid(newMember.getUUID())
+                .withStartDate(LocalDate.of(2015, Month.DECEMBER, 3)).build();
     }
 
     @After
@@ -63,16 +67,28 @@ public class ITBorrowHistoryResource extends JerseyTest{
 
     @Test
     public void givenABorrowHistoryItemTO_POST_createsANewBorrowHistoryItem() {
-        Book newBook = client.post("/books", bookWithOneAuthorAndOneCategory).readEntity(Book.class);
-        Member newMember = client.post("/member", member).readEntity(Member.class);
-        BorrowHistoryItemTO borrowHistoryItemTO = BorrowHistoryItemTO.BorrowHistoryItemTOBuilder.borrowHistoryItemTO()
-                                                                    .withBookId(newBook.getId())
-                                                                    .withMemberUuid(newMember.getUUID())
-                                                                    .withStartDate(LocalDate.of(2015, Month.DECEMBER, 3)).build();
-
         Response response = client.post(PATH, borrowHistoryItemTO);
 
         assertThat(response.getStatus()).isEqualTo(Response.Status.OK.getStatusCode());
+    }
+
+    @Test
+    public void givenAMemberId_GET_returnsTheListOfBorrowedHistoryItems() {
+        client.post(PATH, borrowHistoryItemTO);
+
+        List<MemberBorrowHistoryTO> memberBorrowHistoryTOs = client.get(PATH + "/" + borrowHistoryItemTO.getMemberUuid()).readEntity(new GenericType<List<MemberBorrowHistoryTO>>() {});
+
+        assertThat(memberBorrowHistoryTOs.size()).isEqualTo(1);
+    }
+
+    @Test
+    public void givenAMemberId_COUNT_returnsTheNumberOfBorrowedHistoryItems() {
+        client.post(PATH, borrowHistoryItemTO);
+
+        Long count = client.getText(PATH + "/" + borrowHistoryItemTO.getMemberUuid() + "/size").readEntity(new GenericType<Long>() {
+        });
+
+        assertThat(count).isEqualTo(1);
     }
 
 }

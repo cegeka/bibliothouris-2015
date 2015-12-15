@@ -24,4 +24,10 @@ public class TestIntegrationClient {
                      .get(Response.class);
     }
 
+    public Response getText(String path) {
+        return target.path(path)
+                .request(MediaType.TEXT_PLAIN)
+                .get(Response.class);
+    }
+
 }

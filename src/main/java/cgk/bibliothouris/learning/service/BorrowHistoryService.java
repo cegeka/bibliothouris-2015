@@ -46,16 +46,15 @@ public class BorrowHistoryService {
     public List<MemberBorrowHistoryTO> findBorrowedBooksByMember(String memberUuid, String start, String end) {
         Integer startPosition, endPosition;
 
-        if (start == null || isNegative(start)) {
+        if (start == null || isNegative(start))
             startPosition = 0;
-        } else {
+        else
             startPosition = Integer.valueOf(start);
-        }
-        if (end == null || isNegative(end)) {
+
+        if (end == null || isNegative(end))
             endPosition = Integer.valueOf(countBorrowedBooksByMember(memberUuid).intValue());
-        } else {
+        else
             endPosition = Integer.valueOf(end);
-        }
 
         return borrowHistoryRepository.findBorrowedBooksByMember(memberUuid, startPosition, endPosition);
     }

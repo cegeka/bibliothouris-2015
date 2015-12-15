@@ -3,9 +3,11 @@ package cgk.bibliothouris.learning.application.transferobject;
 import cgk.bibliothouris.learning.service.entity.Author;
 import cgk.bibliothouris.learning.service.entity.BorrowHistoryItem;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.time.LocalDate;
 import java.util.Set;
 
+@XmlRootElement
 public class MemberBorrowHistoryTO {
 
     private String isbn;

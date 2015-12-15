@@ -65,7 +65,6 @@ public class Member {
     private Integer phoneNumber;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @XmlInverseReference(mappedBy="member")
     private Set<BorrowHistoryItem> history = new HashSet<>();
 
     @Column(name = "MEMBER_SINCE")
