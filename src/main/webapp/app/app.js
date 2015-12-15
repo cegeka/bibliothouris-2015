@@ -39,6 +39,11 @@
                     controller: "MemberDetailCtrl",
                     controllerAs: "vm"
                 })
+                .when("/borrow", {
+                    templateUrl: "templates/borrowed_books.html",
+                    controller: "BorrowedBooksCtrl",
+                    controllerAs: "vm"
+                })
                 .otherwise({redirectTo:"/books"});
 
             $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
