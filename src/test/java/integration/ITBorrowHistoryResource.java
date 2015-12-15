@@ -55,9 +55,9 @@ public class ITBorrowHistoryResource extends JerseyTest{
         Book newBook = client.post("/books", BookTestFixture.createBookWithOneAuthorAndOneCategory()).readEntity(Book.class);
         Member newMember = client.post("/member", MemberTestFixture.createMember()).readEntity(Member.class);
         borrowHistoryItemTO = BorrowHistoryItemTO.BorrowHistoryItemTOBuilder.borrowHistoryItemTO()
-                .withBookId(newBook.getId())
-                .withMemberUuid(newMember.getUUID())
-                .withStartDate(LocalDate.of(2015, Month.DECEMBER, 3)).build();
+                                                                            .withBookId(newBook.getId())
+                                                                            .withMemberUuid(newMember.getUUID())
+                                                                            .withStartDate(LocalDate.of(2015, Month.DECEMBER, 3)).build();
     }
 
     @After

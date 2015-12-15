@@ -72,7 +72,7 @@ public class BorrowHistoryService {
         }
         Boolean isBookInvalid = (book == null);
         Boolean isMemberInvalid = (member== null);
-        if (isDateInvalid || isBookInvalid || isMemberInvalid)
+        if (isEndDateAfterStartDate || isBookInvalid || isMemberInvalid)
             throw new ValidationException("The borrow history item is invalid!");
     }
 
