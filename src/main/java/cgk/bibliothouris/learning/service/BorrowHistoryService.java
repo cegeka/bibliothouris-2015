@@ -29,10 +29,10 @@ public class BorrowHistoryService {
     private MemberRepository memberRepository;
 
     public BorrowHistoryItem createBorrowHistoryItem(BorrowHistoryItemTO borrowHistoryItemTO) {
-        validateBorrowHistoryItem(borrowHistoryItemTO);
 
         Book book = bookRepository.findBookById(borrowHistoryItemTO.getBookId());
         Member member = memberRepository.getMember(borrowHistoryItemTO.getMemberUuid());
+        validateBorrowHistoryItem(borrowHistoryItemTO, book, member);
         BorrowHistoryItem borrowHistoryItem = BorrowHistoryItem.BorrowedHistoryBuilder.borrowedHistory()
                                                                 .withBook(book)
                                                                 .withMember(member)
@@ -65,9 +65,16 @@ public class BorrowHistoryService {
         return borrowHistoryRepository.countBorrowedBooksByMember(memberUuid);
     }
 
-    private void validateBorrowHistoryItem(BorrowHistoryItemTO borrowHistoryItemTO) {
-        if (borrowHistoryItemTO.getEndDate() != null && borrowHistoryItemTO.getEndDate().isBefore(borrowHistoryItemTO.getStartDate()))
-            throw new ValidationException("End date is before start date!");
+    private void validateBorrowHistoryItem(BorrowHistoryItemTO borrowHistoryItemTO, Book book, Member member) {
+        Boolean isEndDateAfterStartDate = false;
+        Boolean isDateInvalid = borrowHistoryItemTO.getEndDate() == null;
+        if(!isDateInvalid){
+            isEndDateAfterStartDate = borrowHistoryItemTO.getEndDate().isBefore(borrowHistoryItemTO.getStartDate());
+        }
+        Boolean isBookInvalid = (book == null);
+        Boolean isMemberInvalid = (member== null);
+        if (isDateInvalid || isBookInvalid || isMemberInvalid)
+            throw new ValidationException("The borrow history item is invalid!");
     }
 
     private boolean isNegative(String number) {
