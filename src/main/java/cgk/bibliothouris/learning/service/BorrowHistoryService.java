@@ -67,10 +67,10 @@ public class BorrowHistoryService {
     }
 
     private void validateBorrowHistoryItem(BorrowHistoryItemTO borrowHistoryItemTO, Book book, Member member) {
-        Boolean isDateInvalid = false;
-        Boolean isEndDateAfterStartDate = borrowHistoryItemTO.getEndDate() == null;
-        if(!isEndDateAfterStartDate){
-            isDateInvalid = borrowHistoryItemTO.getEndDate().isBefore(borrowHistoryItemTO.getStartDate());
+        Boolean isEndDateAfterStartDate = false;
+        Boolean isDateInvalid = borrowHistoryItemTO.getEndDate() == null;
+        if(!isDateInvalid){
+            isEndDateAfterStartDate = borrowHistoryItemTO.getEndDate().isBefore(borrowHistoryItemTO.getStartDate());
         }
         Boolean isBookInvalid = (book == null);
         Boolean isMemberInvalid = (member== null);
