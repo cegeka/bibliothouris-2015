@@ -8,13 +8,14 @@
             addBook: addBook,
             addMember: addMember,
             getBooks: getBooks,
-            countBooks: countBooks,
+            countBorrowedHistoryItems: countBorrowedHistoryItems,
             getAuthors: getAuthors,
             getBookCategories: getBookCategories,
             getBookDetails: getBookDetails,
             getBookTitles: getBookTitles,
             getBookIsbnCodes: getBookIsbnCodes,
-            getMemberDetail: getMemberDetail
+            getMemberDetail: getMemberDetail,
+            getMemberBorrowedHistory: getMemberBorrowedHistory
         };
 
         return service;
@@ -40,13 +41,6 @@
                 });
         }
 
-        function countBooks() {
-            return $http.get("/api/books/size")
-                .then(function(response){
-                    return response.data;
-                });
-        }
-        
         function getAuthors() {
             return $http.get("/api/authors")
                 .then(function(response){
@@ -85,7 +79,21 @@
         function getMemberDetail(memberId) {
             return $http.get("/api/member/" + memberId)
                 .then(function(response){
-                    console.log(response.data);
+                    return response.data;
+                });
+        }
+
+        function getMemberBorrowedHistory(memberId) {
+            var searchUrl = "?start=" + $location.search().start + "&" + "end=" + $location.search().end;
+            return $http.get("/api/borrow/" + memberId + searchUrl)
+                .then(function(response){
+                    return response.data;
+                });
+        }
+
+        function countBorrowedHistoryItems(memberId) {
+            return $http.get("/api/borrow/" + memberId + "/size")
+                .then(function(response){
                     return response.data;
                 });
         }

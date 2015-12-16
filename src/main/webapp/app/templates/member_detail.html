@@ -45,6 +45,54 @@
                 </table>
             </div>
         </div>
-        INSERT SEARCH HERE
+
+        <h4 class="midnightblueColor">Borrowed Books</h4>
+        <hr style="border-color: midnightblue; margin-top: -5px"/>
+
+        <div class="alert alert-info text-center" role="alert" ng-show="vm.noBorrowedBooks">
+            <p class="alert-link">There are no books to be displayed!</p>
+        </div>
+
+        <div class="panel panel-default" ng-hide="vm.noBorrowedBooks">
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-fixed">
+                        <thead>
+                        <tr>
+                            <th width=30%>Title</th>
+                            <th width=30% class="hidden-xs hidden-sm">Authors</th>
+                            <th width=20% class="hidden-xs hidden-sm hidden-md">ISBN</th>
+                            <th width=10% class="text-center">Lend date</th>
+                            <th width=10% class="text-center">Return date</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr id="bookRow" ng-repeat = "book in vm.borrowedBooks"
+                            ng-class='{borrowedBooksRowColor : vm.borrowedAndNotReturnedBooks.indexOf(book) != -1}'>
+                            <td class="table-column-ellipsis">{{book.title}}</td>
+                            <td class="table-column-ellipsis hidden-xs hidden-sm" on-ellipsis="vm.enableTooltip(param, book)"
+                                uib-tooltip="{{vm.getTooltipContent(book)}}"
+                                tooltip-placement="bottom" tooltip-enable="book.tooltip" tooltip-append-to-body="true">
+                                <span ng-repeat="author in book.authors">
+                                    {{author.firstName}} {{author.lastName}}{{$last ? '' : ', '}}
+                                </span>
+                            </td>
+                            <td class="hidden-xs hidden-sm hidden-md">{{book.isbn}}</td>
+                            <td class="text-center">{{book.startLendDate}}</td>
+                            <td class="text-center">{{book.endLendDate || "-"}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="panel-footer text-center">
+                <uib-pagination boundary-links="true" total-items="vm.totalItems" max-size="vm.maxSize" items-per-page="vm.itemsPerPage"
+                                ng-model="vm.currentPage" ng-change="vm.pageChanged()"
+                                class="pagination paginationFooter"
+                                previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;">
+                </uib-pagination>
+            </div>
+        </div>
     </div>
 </div>

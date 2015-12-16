@@ -27,6 +27,10 @@ ng-messages{
     color: midnightblue;
 }
 
+.borrowedBooksRowColor {
+    background-color: darkseagreen;
+}
+
 .addBorderStyle {
     border-color: midnightblue;
 }
