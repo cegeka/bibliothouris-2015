@@ -8,6 +8,7 @@
 
         vm.book = {};
         vm.noBook = false;
+        vm.isBookBorrowedborrowerDetails = {};
 
         activate();
 
@@ -20,6 +21,13 @@
                         vm.book.cover = "../icons/default_book.png";
                 }, function(){
                     vm.noBook = true;
+                });
+
+            restService
+                .getBookBorrowerDetails($routeParams.bookId)
+                .then(function(data){
+                    vm.borrowerDetails = data;
+                    console.log(data);
                 });
         }
     }

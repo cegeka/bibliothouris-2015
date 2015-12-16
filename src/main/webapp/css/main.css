@@ -31,6 +31,14 @@ ng-messages{
     background-color: darkseagreen;
 }
 
+.greenColor {
+    color: green;
+}
+
+.darkRedColor {
+    color: darkred;
+}
+
 .addBorderStyle {
     border-color: midnightblue;
 }
@@ -38,4 +46,14 @@ ng-messages{
 .coverPhoto {
     display: flex;
     align-items: center;
+}
+
+.anch {
+    color: darkred;
+    text-decoration: none;
+}
+
+.anch:hover, .anch:focus {
+    color: darkred;
+    text-decoration: underline;
 }

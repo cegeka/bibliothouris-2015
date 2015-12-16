@@ -15,7 +15,8 @@
             getBookTitles: getBookTitles,
             getBookIsbnCodes: getBookIsbnCodes,
             getMemberDetail: getMemberDetail,
-            getMemberBorrowedHistory: getMemberBorrowedHistory
+            getMemberBorrowedHistory: getMemberBorrowedHistory,
+            getBookBorrowerDetails: getBookBorrowerDetails
         };
 
         return service;
@@ -93,6 +94,13 @@
 
         function countBorrowedHistoryItems(memberId) {
             return $http.get("/api/borrow/" + memberId + "/size")
+                .then(function(response){
+                    return response.data;
+                });
+        }
+
+        function getBookBorrowerDetails(bookId) {
+            return $http.get("/api/books/" + bookId + "/borrowedBy")
                 .then(function(response){
                     return response.data;
                 });

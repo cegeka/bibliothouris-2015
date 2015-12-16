@@ -43,6 +43,13 @@
                         <th>ISBN</th>
                         <td id="isbn">{{vm.book.isbn}}</td>
                     </tr>
+                    <tr>
+                        <th>Current status</th>
+                        <td id="status" ng-class="{false:'greenColor', true:'darkRedColor'}[vm.borrowerDetails.isBorrowed]">
+                            {{vm.borrowerDetails.isBorrowed ? "BORROWED" : "AVAILABLE"}}
+                            <a class="anch" ng-href="#/member/{{vm.borrowerDetails.uuid}}">{{vm.borrowerDetails.isBorrowed ? "by " + vm.borrowerDetails.firstName + " " + vm.borrowerDetails.lastName : ""}}</a>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </div>

@@ -24,8 +24,6 @@ public class BookBorrowerTO {
         this.isBorrowed = true;
     }
 
-
-
     public String getUuid() {
         return uuid;
     }
