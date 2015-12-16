@@ -45,16 +45,10 @@
             });
 
             restService
-                .getBooks()
+                .getBooks(vm.itemsPerPage)
                 .then(function(data){
                     vm.books = data.books;
                     vm.totalItems = data.booksCount;
-
-                    if (!$location.search().start) {
-                        $location.search('start', 0);
-                        $location.search('end', vm.itemsPerPage);
-                    }
-
                     vm.currentPage = ($location.search().start / vm.itemsPerPage) + 1;
                 }, function(){
                     vm.noBooks = true;

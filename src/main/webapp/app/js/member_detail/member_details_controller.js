@@ -18,11 +18,6 @@
         activate();
 
         function activate() {
-            if (!($location.search().start) && !($location.search().end)) {
-                $location.search('start', 0);
-                $location.search('end', vm.itemsPerPage);
-            }
-
             restService
                 .getMemberDetail($routeParams.memberId)
                 .then(function(data){
@@ -58,8 +53,10 @@
             start = vm.itemsPerPage * (vm.currentPage - 1);
             end = start + vm.itemsPerPage;
 
-            $location.search('start', start);
-            $location.search('end', end);
+            if (start != $location.search.start && end != $location.search.end) {
+                $location.search('start', start);
+                $location.search('end', end);
+            }
         }
     }
 })();

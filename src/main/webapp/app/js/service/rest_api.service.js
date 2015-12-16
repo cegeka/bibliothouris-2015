@@ -35,8 +35,18 @@
                 });
         }
 
-        function getBooks() {
-            return $http.get("/api" + $location.url())
+        function getBooks(itemsPerPage) {
+            var searchUrl = "";
+
+            if (!$location.search().start && !$location.search().end) {
+                if (angular.equals($location.search(), {}))
+                    searchUrl +="?";
+                else
+                    searchUrl += "&";
+                searchUrl += "start=0&end=" + itemsPerPage;
+            }
+
+            return $http.get("/api" + $location.url() + searchUrl)
                 .then(function(response){
                     return response.data;
                 });
@@ -85,7 +95,9 @@
         }
 
         function getMemberBorrowedHistory(memberId) {
-            var searchUrl = "?start=" + $location.search().start + "&" + "end=" + $location.search().end;
+            var searchUrl = "?start=0&end=1";
+            if ($location.search().start && $location.search().end)
+                searchUrl = "?start=" + $location.search().start + "&" + "end=" + $location.search().end;
             return $http.get("/api/borrow/" + memberId + searchUrl)
                 .then(function(response){
                     return response.data;
