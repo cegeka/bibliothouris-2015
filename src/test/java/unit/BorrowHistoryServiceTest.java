@@ -2,6 +2,7 @@ package unit;
 
 import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
 import cgk.bibliothouris.learning.application.transferobject.BorrowHistoryItemTO;
+import cgk.bibliothouris.learning.application.transferobject.GlobalBorrowHistoryTO;
 import cgk.bibliothouris.learning.application.transferobject.MemberBorrowHistoryTO;
 import cgk.bibliothouris.learning.repository.BookRepository;
 import cgk.bibliothouris.learning.repository.BorrowHistoryRepository;
@@ -12,6 +13,7 @@ import cgk.bibliothouris.learning.service.entity.Member;
 import cgk.bibliothouris.learning.service.exception.ValidationException;
 import fixture.BorrowedHistoryFixture;
 import org.assertj.core.api.Assertions;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -95,4 +97,16 @@ public class BorrowHistoryServiceTest {
 
         Assertions.assertThat(foundBorrowedHistoryItems).isEqualTo(expectedBorrowedHistoryItems);
     }
+
+    @Test
+    public void givenAPopulatedHistoryFor_whenWeRetrieveIt_WeGetThatHistory(){
+        List<GlobalBorrowHistoryTO> borrowHistoryList= BorrowedHistoryFixture.createGlobalBorrowHistoryTOList();
+        Mockito.when(borrowHistoryRepository.getBorrowedBooks()).thenReturn(borrowHistoryList);
+
+        List<GlobalBorrowHistoryTO> foundGlobalBorrowedHistoryItems = service.getGlobalBorrowHistory();
+
+        Assertions.assertThat(foundGlobalBorrowedHistoryItems).isEqualTo(borrowHistoryList);
+    }
+
+
 }

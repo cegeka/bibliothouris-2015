@@ -45,16 +45,17 @@ public class BorrowedHistoryFixture {
 
     public static List<GlobalBorrowHistoryTO> createGlobalBorrowHistoryTOList() {
         List<GlobalBorrowHistoryTO> list = new ArrayList<>();
+        BorrowHistoryItem historyItem = createHistoryItem();
         GlobalBorrowHistoryTO gbh = GlobalBorrowHistoryTO
                 .GlobalBorrowHistoryTOBuilder
                 .globalBorrowHistoryTO()
-                .withAuthors(createHistoryItem().getBook().getAuthors())
-                .withIsbn(createHistoryItem().getBook().getIsbn())
-                .withTitle(createHistoryItem().getBook().getTitle())
+                .withAuthors(historyItem.getBook().getAuthors())
+                .withIsbn(historyItem.getBook().getIsbn())
+                .withTitle(historyItem.getBook().getTitle())
                 .withStartLendDate(LocalDate.of(2015, Month.DECEMBER, 4))
-                .withBorrowerFirstName(MemberTestFixture.createMember().getFirstName())
-                .withBorrowerLastName(MemberTestFixture.createMember().getLastName())
-                .withBorrowerUUID(MemberTestFixture.createMember().getUUID())
+                .withBorrowerFirstName(historyItem.getMember().getFirstName())
+                .withBorrowerLastName(historyItem.getMember().getLastName())
+                .withBorrowerUUID(historyItem.getMember().getUUID())
                 .build();
 
         list.add(gbh);

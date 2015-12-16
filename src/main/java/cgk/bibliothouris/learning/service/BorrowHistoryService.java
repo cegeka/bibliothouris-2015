@@ -10,7 +10,6 @@ import cgk.bibliothouris.learning.service.entity.Book;
 import cgk.bibliothouris.learning.service.entity.BorrowHistoryItem;
 import cgk.bibliothouris.learning.service.entity.Member;
 import cgk.bibliothouris.learning.service.exception.ValidationException;
-import jdk.nashorn.internal.objects.Global;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,10 +35,10 @@ public class BorrowHistoryService {
         Member member = memberRepository.getMember(borrowHistoryItemTO.getMemberUuid());
         validateBorrowHistoryItem(borrowHistoryItemTO, book, member);
         BorrowHistoryItem borrowHistoryItem = BorrowHistoryItem.BorrowedHistoryBuilder.borrowedHistory()
-                                                                .withBook(book)
-                                                                .withMember(member)
-                                                                .withStartDate(borrowHistoryItemTO.getStartDate())
-                                                                .withEndDate(borrowHistoryItemTO.getEndDate()).build();
+                .withBook(book)
+                .withMember(member)
+                .withStartDate(borrowHistoryItemTO.getStartDate())
+                .withEndDate(borrowHistoryItemTO.getEndDate()).build();
 
         return borrowHistoryRepository.addBorrowedBook(borrowHistoryItem);
     }
@@ -69,11 +68,11 @@ public class BorrowHistoryService {
     private void validateBorrowHistoryItem(BorrowHistoryItemTO borrowHistoryItemTO, Book book, Member member) {
         Boolean isEndDateAfterStartDate = false;
         Boolean isDateInvalid = borrowHistoryItemTO.getEndDate() == null;
-        if(!isDateInvalid){
+        if (!isDateInvalid) {
             isEndDateAfterStartDate = borrowHistoryItemTO.getEndDate().isBefore(borrowHistoryItemTO.getStartDate());
         }
         Boolean isBookInvalid = (book == null);
-        Boolean isMemberInvalid = (member== null);
+        Boolean isMemberInvalid = (member == null);
         if (isEndDateAfterStartDate || isBookInvalid || isMemberInvalid)
             throw new ValidationException("The borrow history item is invalid!");
     }
@@ -88,6 +87,6 @@ public class BorrowHistoryService {
     }
 
     public List<GlobalBorrowHistoryTO> getGlobalBorrowHistory() {
-        return null;
+        return borrowHistoryRepository.getBorrowedBooks();
     }
 }

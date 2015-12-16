@@ -1,5 +1,6 @@
 package cgk.bibliothouris.learning.repository;
 
+import cgk.bibliothouris.learning.application.transferobject.GlobalBorrowHistoryTO;
 import cgk.bibliothouris.learning.application.transferobject.MemberBorrowHistoryTO;
 import cgk.bibliothouris.learning.service.entity.BorrowHistoryItem;
 import org.springframework.stereotype.Repository;
@@ -41,4 +42,10 @@ public class BorrowHistoryRepository {
     }
 
 
+    public List<GlobalBorrowHistoryTO> getBorrowedBooks() {
+        TypedQuery<BorrowHistoryItem> query = entityManager.createNamedQuery(BorrowHistoryItem.LIST_ALL_BORROWED_BOOKS, BorrowHistoryItem.class);
+
+        List<BorrowHistoryItem> borrowHistoryItems = query.getResultList();
+        return borrowHistoryItems.stream().map(borrowHistoryItem -> new GlobalBorrowHistoryTO(borrowHistoryItem)).collect(Collectors.toList());
+    }
 }

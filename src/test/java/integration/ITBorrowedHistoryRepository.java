@@ -1,5 +1,6 @@
 package integration;
 
+import cgk.bibliothouris.learning.application.transferobject.GlobalBorrowHistoryTO;
 import cgk.bibliothouris.learning.application.transferobject.MemberBorrowHistoryTO;
 import cgk.bibliothouris.learning.config.AppConfig;
 import cgk.bibliothouris.learning.repository.BookRepository;
@@ -72,6 +73,15 @@ public class ITBorrowedHistoryRepository {
         List<MemberBorrowHistoryTO> memberBorrowHistoryTOs = borrowHistoryRepository.findBorrowedBooksByMember(persistedHistoryItem1.getMember().getUUID(), 0, 10);
 
         assertThat(memberBorrowHistoryTOs.size()).isEqualTo(1);
+    }
+
+    @Test
+    public void givenAPopulatedBorrowHistory_whenWeRetrieveIt_WeGetThatHistory(){
+        BorrowHistoryItem persistedHistoryItem1 = borrowHistoryRepository.addBorrowedBook(buildBorrowHistoryIem());
+        GlobalBorrowHistoryTO transformedPersistedItem = new GlobalBorrowHistoryTO(persistedHistoryItem1);
+
+        List<GlobalBorrowHistoryTO> borrowedBooks = borrowHistoryRepository.getBorrowedBooks();
+        assertThat(borrowedBooks.get(borrowedBooks.size()-1)).isEqualTo(transformedPersistedItem);
     }
 
     private BorrowHistoryItem buildBorrowHistoryIem() {
