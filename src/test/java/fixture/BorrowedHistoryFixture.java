@@ -11,11 +11,20 @@ import java.util.List;
 
 public class BorrowedHistoryFixture {
 
-    public static BorrowHistoryItem createHistoryItem() {
+    public static BorrowHistoryItem createAvailableHistoryItem() {
         return BorrowHistoryItem.BorrowedHistoryBuilder.borrowedHistory()
                 .withBook(BookTestFixture.createBookWithOneAuthorAndOneCategory())
                 .withMember(MemberTestFixture.createMember())
                 .withStartDate(LocalDate.of(2015, Month.DECEMBER, 4))
+                .build();
+    }
+
+    public static BorrowHistoryItem createBorrowedHistoryItem() {
+        return BorrowHistoryItem.BorrowedHistoryBuilder.borrowedHistory()
+                .withBook(BookTestFixture.createBookWithOneAuthorAndOneCategory())
+                .withMember(MemberTestFixture.createMember())
+                .withStartDate(LocalDate.of(2015, Month.DECEMBER, 4))
+                .withEndDate(LocalDate.of(2015, Month.DECEMBER, 5))
                 .build();
     }
 
@@ -45,7 +54,7 @@ public class BorrowedHistoryFixture {
 
     public static List<GlobalBorrowHistoryTO> createGlobalBorrowHistoryTOList() {
         List<GlobalBorrowHistoryTO> list = new ArrayList<>();
-        BorrowHistoryItem historyItem = createHistoryItem();
+        BorrowHistoryItem historyItem = createAvailableHistoryItem();
         GlobalBorrowHistoryTO gbh = GlobalBorrowHistoryTO
                 .GlobalBorrowHistoryTOBuilder
                 .globalBorrowHistoryTO()

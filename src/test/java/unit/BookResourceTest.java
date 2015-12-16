@@ -1,10 +1,12 @@
 package unit;
 
 import cgk.bibliothouris.learning.application.resource.BookResource;
+import cgk.bibliothouris.learning.application.transferobject.BookBorrowerTO;
 import cgk.bibliothouris.learning.application.transferobject.BookFilterValueTO;
 import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
 import cgk.bibliothouris.learning.application.transferobject.BookTO;
 import cgk.bibliothouris.learning.service.BookService;
+import cgk.bibliothouris.learning.service.BorrowHistoryService;
 import cgk.bibliothouris.learning.service.entity.Book;
 import cgk.bibliothouris.learning.service.exception.ValidationException;
 import fixture.BookTestFixture;
@@ -36,6 +38,9 @@ public class BookResourceTest {
 
     @Mock
     private BookService mockBookService;
+
+    @Mock
+    private BorrowHistoryService mockBorrowHistoryService;
 
     @Mock
     private UriInfo mockUriInfo;
@@ -205,5 +210,25 @@ public class BookResourceTest {
         Response response = bookResource.getBookIsbnCodes();
 
         assertThat(response.getEntity()).isEqualTo(bookIsbnCodes);
+    }
+
+    @Test
+    public void givenABookId_getBookBorrowerDetails_returns200OK() {
+        BookBorrowerTO bookBorrowerTO = new BookBorrowerTO();
+        Mockito.when(mockBorrowHistoryService.findBookBorrowerDetails(1)).thenReturn(bookBorrowerTO);
+
+        Response response = bookResource.getBorrowerDetails(1);
+
+        assertThat(response.getStatusInfo()).isEqualTo(Status.OK);
+    }
+
+    @Test
+    public void givenABookId_getBookBorrowerDetails_returnsTheCorrectBorrowerDetails() {
+        BookBorrowerTO bookBorrowerTO = new BookBorrowerTO();
+        Mockito.when(mockBorrowHistoryService.findBookBorrowerDetails(1)).thenReturn(bookBorrowerTO);
+
+        Response response = bookResource.getBorrowerDetails(1);
+
+        assertThat(response.getEntity()).isEqualTo(bookBorrowerTO);
     }
 }

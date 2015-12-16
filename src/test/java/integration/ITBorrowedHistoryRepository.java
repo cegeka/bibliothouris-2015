@@ -1,5 +1,6 @@
 package integration;
 
+import cgk.bibliothouris.learning.application.transferobject.BookBorrowerTO;
 import cgk.bibliothouris.learning.application.transferobject.GlobalBorrowHistoryTO;
 import cgk.bibliothouris.learning.application.transferobject.MemberBorrowHistoryTO;
 import cgk.bibliothouris.learning.config.AppConfig;
@@ -12,7 +13,6 @@ import cgk.bibliothouris.learning.service.entity.Member;
 import fixture.BookTestFixture;
 import fixture.BorrowedHistoryFixture;
 import fixture.MemberTestFixture;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,27 +68,47 @@ public class ITBorrowedHistoryRepository {
 
     @Test
     public void givenAMemberId_findBorrowedBooks_returnsTheCorrectListOfBorrowedBookTOs(){
-        BorrowHistoryItem persistedHistoryItem1 = borrowHistoryRepository.addBorrowedBook(buildBorrowHistoryIem());
+        BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(buildBorrowHistoryIem());
 
-        List<MemberBorrowHistoryTO> memberBorrowHistoryTOs = borrowHistoryRepository.findBorrowedBooksByMember(persistedHistoryItem1.getMember().getUUID(), 0, 10);
+        List<MemberBorrowHistoryTO> memberBorrowHistoryTOs = borrowHistoryRepository.findBorrowedBooksByMember(persistedHistoryItem.getMember().getUUID(), 0, 10);
 
         assertThat(memberBorrowHistoryTOs.size()).isEqualTo(1);
     }
 
     @Test
     public void givenAPopulatedBorrowHistory_whenWeRetrieveIt_WeGetThatHistory(){
-        BorrowHistoryItem persistedHistoryItem1 = borrowHistoryRepository.addBorrowedBook(buildBorrowHistoryIem());
-        GlobalBorrowHistoryTO transformedPersistedItem = new GlobalBorrowHistoryTO(persistedHistoryItem1);
+        BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(buildBorrowHistoryIem());
+        GlobalBorrowHistoryTO transformedPersistedItem = new GlobalBorrowHistoryTO(persistedHistoryItem);
 
         List<GlobalBorrowHistoryTO> borrowedBooks = borrowHistoryRepository.getBorrowedBooks();
-        assertThat(borrowedBooks.get(borrowedBooks.size()-1)).isEqualTo(transformedPersistedItem);
+
+        assertThat(borrowedBooks).contains(transformedPersistedItem);
+    }
+
+    @Test
+    public void givenABookId_whenWeRetrieveBorrowerDetails_WeGetTheCorrectDetails(){
+        BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(buildBorrowHistoryIem());
+
+        BookBorrowerTO bookBorrowerTO = borrowHistoryRepository.findBookBorrowerDetails(persistedHistoryItem.getBook().getId());
+
+        assertThat(bookBorrowerTO.getIsBorrowed()).isTrue();
+        assertThat(bookBorrowerTO.getUuid()).isEqualTo(persistedHistoryItem.getMember().getUUID());
+    }
+
+    @Test
+    public void givenABookId_whenWeRetrieveBorrowerDetails_WeFindOutThatTheBookIsAvailable(){
+        Book book = bookRepository.createBook(BookTestFixture.createBookWithOneAuthorAndOneCategory());
+
+        BookBorrowerTO bookBorrowerTO = borrowHistoryRepository.findBookBorrowerDetails(book.getId());
+
+        assertThat(bookBorrowerTO.getIsBorrowed()).isFalse();
     }
 
     private BorrowHistoryItem buildBorrowHistoryIem() {
         Book book = bookRepository.createBook(BookTestFixture.createBookWithOneAuthorAndOneCategory());
         Member member = memberRepository.createMember(MemberTestFixture.createMember());
 
-        BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createHistoryItem();
+        BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createAvailableHistoryItem();
         borrowHistoryItem.setBook(book);
         borrowHistoryItem.setMember(member);
 

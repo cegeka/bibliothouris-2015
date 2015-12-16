@@ -85,8 +85,7 @@ public class ITBorrowHistoryResource extends JerseyTest{
     public void givenAMemberId_COUNT_returnsTheNumberOfBorrowedHistoryItems() {
         client.post(PATH, borrowHistoryItemTO);
 
-        Long count = client.getText(PATH + "/" + borrowHistoryItemTO.getMemberUuid() + "/size").readEntity(new GenericType<Long>() {
-        });
+        Long count = client.getText(PATH + "/" + borrowHistoryItemTO.getMemberUuid() + "/size").readEntity(new GenericType<Long>() {});
 
         assertThat(count).isEqualTo(1);
     }

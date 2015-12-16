@@ -1,21 +1,13 @@
 package unit;
 
 import cgk.bibliothouris.learning.application.resource.BorrowHistoryResource;
-import cgk.bibliothouris.learning.application.resource.MemberResource;
-import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
-import cgk.bibliothouris.learning.application.transferobject.BookTO;
 import cgk.bibliothouris.learning.application.transferobject.BorrowHistoryItemTO;
 import cgk.bibliothouris.learning.application.transferobject.GlobalBorrowHistoryTO;
 import cgk.bibliothouris.learning.application.transferobject.MemberBorrowHistoryTO;
 import cgk.bibliothouris.learning.service.BorrowHistoryService;
-import cgk.bibliothouris.learning.service.MemberService;
-import cgk.bibliothouris.learning.service.entity.Book;
 import cgk.bibliothouris.learning.service.entity.BorrowHistoryItem;
-import cgk.bibliothouris.learning.service.entity.Member;
 import cgk.bibliothouris.learning.service.exception.ValidationException;
-import fixture.BookTestFixture;
 import fixture.BorrowedHistoryFixture;
-import fixture.MemberTestFixture;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +16,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
@@ -33,7 +24,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.times;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BorrowHistoryResourceTest {
@@ -50,7 +40,7 @@ public class BorrowHistoryResourceTest {
     @Test
     public void givenAValidBorrowHistoryItem_createANewBorrowItem_returns200OK() {
         BorrowHistoryItemTO borrowHistoryItemTO = BorrowedHistoryFixture.createHistoryItemTO();
-        BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createHistoryItem();
+        BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createAvailableHistoryItem();
         Mockito.when(service.createBorrowHistoryItem(borrowHistoryItemTO)).thenReturn(borrowHistoryItem);
 
         Response response = resource.borrowBook(borrowHistoryItemTO);
@@ -61,7 +51,7 @@ public class BorrowHistoryResourceTest {
     @Test
     public void givenAValidBorrowHistoryItem_createANewBorrowItem_returnsLinkToTheNewItem() {
         BorrowHistoryItemTO borrowHistoryItemTO = BorrowedHistoryFixture.createHistoryItemTO();
-        BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createHistoryItem();
+        BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createAvailableHistoryItem();
         borrowHistoryItem.setId(1);
         Mockito.when(service.createBorrowHistoryItem(borrowHistoryItemTO)).thenReturn(borrowHistoryItem);
         Mockito.when(uriInfo.getAbsolutePath()).thenReturn(URI.create("http://localhost:8080/webapi/borrowed_books"));

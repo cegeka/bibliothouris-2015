@@ -1,10 +1,13 @@
 package cgk.bibliothouris.learning.application.resource;
 
+import cgk.bibliothouris.learning.application.transferobject.BookBorrowerTO;
 import cgk.bibliothouris.learning.application.transferobject.BookFilterValueTO;
 import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
 import cgk.bibliothouris.learning.application.transferobject.StringTO;
 import cgk.bibliothouris.learning.service.BookService;
+import cgk.bibliothouris.learning.service.BorrowHistoryService;
 import cgk.bibliothouris.learning.service.entity.Book;
+import cgk.bibliothouris.learning.service.entity.BorrowHistoryItem;
 import cgk.bibliothouris.learning.service.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,6 +24,9 @@ public class BookResource {
 
     @Autowired
     private BookService bookService;
+
+    @Autowired
+    private BorrowHistoryService borrowHistoryService;
 
     @Context
     private UriInfo uriInfo;
@@ -95,6 +101,15 @@ public class BookResource {
             return Response.status(Status.NOT_FOUND).build();
 
         return Response.ok().entity(new GenericEntity<List<BookFilterValueTO>>(bookIsbnCodes){}).build();
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("{bookId}/borrowedBy")
+    public Response getBorrowerDetails(@PathParam("bookId") Integer bookId) {
+        BookBorrowerTO bookBorrowerTO = borrowHistoryService.findBookBorrowerDetails(bookId);
+
+        return Response.ok().entity(bookBorrowerTO).build();
     }
 
     private Response getStringResponse(Status status, String message) {

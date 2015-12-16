@@ -1,5 +1,6 @@
 package cgk.bibliothouris.learning.repository;
 
+import cgk.bibliothouris.learning.application.transferobject.BookBorrowerTO;
 import cgk.bibliothouris.learning.application.transferobject.GlobalBorrowHistoryTO;
 import cgk.bibliothouris.learning.application.transferobject.MemberBorrowHistoryTO;
 import cgk.bibliothouris.learning.service.entity.BorrowHistoryItem;
@@ -41,11 +42,22 @@ public class BorrowHistoryRepository {
         return query.getSingleResult();
     }
 
-
     public List<GlobalBorrowHistoryTO> getBorrowedBooks() {
         TypedQuery<BorrowHistoryItem> query = entityManager.createNamedQuery(BorrowHistoryItem.LIST_ALL_BORROWED_BOOKS, BorrowHistoryItem.class);
 
         List<BorrowHistoryItem> borrowHistoryItems = query.getResultList();
         return borrowHistoryItems.stream().map(borrowHistoryItem -> new GlobalBorrowHistoryTO(borrowHistoryItem)).collect(Collectors.toList());
+    }
+
+    public BookBorrowerTO findBookBorrowerDetails(Integer bookId) {
+        TypedQuery<BookBorrowerTO> query = entityManager.createNamedQuery(BorrowHistoryItem.GET_CURRENT_BORROWER_DETAILS_FOR_BOOK, BookBorrowerTO.class);
+        query.setParameter("bookId", bookId);
+
+        List<BookBorrowerTO> bookBorrowerTOs = query.getResultList();
+
+        if (bookBorrowerTOs.isEmpty())
+            return new BookBorrowerTO();
+        else
+            return bookBorrowerTOs.get(0);
     }
 }
