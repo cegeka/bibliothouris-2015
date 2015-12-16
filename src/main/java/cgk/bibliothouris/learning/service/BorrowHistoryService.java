@@ -1,6 +1,7 @@
 package cgk.bibliothouris.learning.service;
 
 import cgk.bibliothouris.learning.application.transferobject.BorrowHistoryItemTO;
+import cgk.bibliothouris.learning.application.transferobject.GlobalBorrowHistoryTO;
 import cgk.bibliothouris.learning.application.transferobject.MemberBorrowHistoryTO;
 import cgk.bibliothouris.learning.repository.BookRepository;
 import cgk.bibliothouris.learning.repository.BorrowHistoryRepository;
@@ -9,6 +10,7 @@ import cgk.bibliothouris.learning.service.entity.Book;
 import cgk.bibliothouris.learning.service.entity.BorrowHistoryItem;
 import cgk.bibliothouris.learning.service.entity.Member;
 import cgk.bibliothouris.learning.service.exception.ValidationException;
+import jdk.nashorn.internal.objects.Global;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,10 +67,10 @@ public class BorrowHistoryService {
     }
 
     private void validateBorrowHistoryItem(BorrowHistoryItemTO borrowHistoryItemTO, Book book, Member member) {
-        Boolean isEndDateAfterStartDate = false;
-        Boolean isDateInvalid = borrowHistoryItemTO.getEndDate() == null;
-        if(!isDateInvalid){
-            isEndDateAfterStartDate = borrowHistoryItemTO.getEndDate().isBefore(borrowHistoryItemTO.getStartDate());
+        Boolean isDateInvalid = false;
+        Boolean isEndDateAfterStartDate = borrowHistoryItemTO.getEndDate() == null;
+        if(!isEndDateAfterStartDate){
+            isDateInvalid = borrowHistoryItemTO.getEndDate().isBefore(borrowHistoryItemTO.getStartDate());
         }
         Boolean isBookInvalid = (book == null);
         Boolean isMemberInvalid = (member== null);
@@ -83,5 +85,9 @@ public class BorrowHistoryService {
         } catch (NumberFormatException e) {
         }
         return false;
+    }
+
+    public List<GlobalBorrowHistoryTO> getGlobalBorrowHistory() {
+        return null;
     }
 }

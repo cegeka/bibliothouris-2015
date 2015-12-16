@@ -68,4 +68,16 @@ public class BorrowHistoryResource {
 
         return Response.status(status).entity(stringTO).build();
     }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllHistoryItems(){
+        List<GlobalBorrowHistoryTO> globalBorrowedHistoryItems
+                = service.getGlobalBorrowHistory();
+
+        if(globalBorrowedHistoryItems.size() == 0)
+            return Response.status(Response.Status.NOT_FOUND).build();
+        return Response.ok().entity(new GenericEntity<List<GlobalBorrowHistoryTO>>(globalBorrowedHistoryItems) {
+        }).build();
+    }
 }

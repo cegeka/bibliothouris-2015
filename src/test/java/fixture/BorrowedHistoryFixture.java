@@ -1,10 +1,13 @@
 package fixture;
 
 import cgk.bibliothouris.learning.application.transferobject.BorrowHistoryItemTO;
+import cgk.bibliothouris.learning.application.transferobject.GlobalBorrowHistoryTO;
 import cgk.bibliothouris.learning.service.entity.BorrowHistoryItem;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BorrowedHistoryFixture {
 
@@ -38,5 +41,29 @@ public class BorrowedHistoryFixture {
                 .withMemberUuid("uuid")
                 .withStartDate(LocalDate.of(2015, Month.DECEMBER, 4))
                 .build();
+    }
+
+    public static List<GlobalBorrowHistoryTO> createGlobalBorrowHistoryTOList() {
+        List<GlobalBorrowHistoryTO> list = new ArrayList<>();
+        GlobalBorrowHistoryTO gbh = GlobalBorrowHistoryTO
+                .GlobalBorrowHistoryTOBuilder
+                .globalBorrowHistoryTO()
+                .withAuthors(createHistoryItem().getBook().getAuthors())
+                .withIsbn(createHistoryItem().getBook().getIsbn())
+                .withTitle(createHistoryItem().getBook().getTitle())
+                .withStartLendDate(LocalDate.of(2015, Month.DECEMBER, 4))
+                .withBorrowerFirstName(MemberTestFixture.createMember().getFirstName())
+                .withBorrowerLastName(MemberTestFixture.createMember().getLastName())
+                .withBorrowerUUID(MemberTestFixture.createMember().getUUID())
+                .build();
+
+        list.add(gbh);
+        return list;
+    }
+
+    public static List<GlobalBorrowHistoryTO> createEmptyGlobalBorrowHistoryTOList() {
+        List<GlobalBorrowHistoryTO> list = new ArrayList<>();
+
+        return list;
     }
 }
