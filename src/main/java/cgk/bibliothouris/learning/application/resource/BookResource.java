@@ -45,7 +45,7 @@ public class BookResource {
         if(bookListingTO.getBooks().size() == 0){
             return Response.status(Status.NOT_FOUND).build();
         }
-        return Response.ok().entity(bookListingTO).build();
+        return Response.ok().entity(new GenericEntity<BookListingTO<BookTO>>(bookListingTO){}).build();
     }
 
     @GET

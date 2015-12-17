@@ -118,4 +118,5 @@ public class BookService {
     public Long countAvailableBooks() {
         return bookRepository.countAvailableBooks();
     }
+
 }

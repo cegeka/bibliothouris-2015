@@ -79,12 +79,12 @@ public class BookRepositoryJPA implements BookRepository {
     }
 
     private List<Book> findAvailableBooks(Integer start, Integer end, String title, String isbn) {
-        String selectAvailableStatement = "SELECT b FROM Book b WHERE b.id NOT IN (SELECT bHist.book.id FROM BorrowHistoryItem bHist)";
+        String selectAvailableStatement = "SELECT b FROM Book b WHERE b.id NOT IN (SELECT bHist.book.id FROM BorrowHistoryItem bHist WHERE bHist.endDate IS NULL)";
 
-        //String filterClause = generateFilterQueryClause(title, isbn);
-        //String sortClause = generateSortQueryClause();
+        String filterClause = generateFilterQueryClause(title, isbn);
+        String sortClause = generateSortQueryClause();
 
-        TypedQuery<Book> selectAllQuery = entityManager.createQuery(selectAvailableStatement, Book.class)
+        TypedQuery<Book> selectAllQuery = entityManager.createQuery(selectAvailableStatement + " AND" + filterClause + " " + sortClause, Book.class)
                 .setMaxResults(end - start)
                 .setFirstResult(start);
         return selectAllQuery.getResultList();
@@ -148,6 +148,8 @@ public class BookRepositoryJPA implements BookRepository {
         return book;
     }
 
+
+
     private String generateFilterQueryClause(String title, String isbn) {
         String conditionalClause = " 1 = 1";
 
@@ -193,7 +195,7 @@ public class BookRepositoryJPA implements BookRepository {
     }
 
     private Long countAvailableBooks(String title, String isbn) {
-        String statement = "SELECT COUNT(b.id) FROM Book b WHERE b.id NOT IN (SELECT bHist.book.id FROM BorrowHistoryItem bHist)";
+        String statement = "SELECT COUNT(b.id) FROM Book b WHERE b.id NOT IN (SELECT bHist.book.id FROM BorrowHistoryItem bHist WHERE bHist.endDate IS NULL )";
 
         String filterClause = generateFilterQueryClause(title, isbn);
 
@@ -201,29 +203,11 @@ public class BookRepositoryJPA implements BookRepository {
         return countQuery.getSingleResult();
     }
 
-//    private String generateSortQueryClause(String sortCriteria, String sortOrder) {
-//        String sortClause = "ORDER BY ";
-//
-//        if (sortCriteria == null)
-//            return sortClause + "lower(b.title)";
-//
-//        List<String> s = new ArrayList<>();
-//        String[] sortOrders = sortOrder.split(",");
-//        for (String criteria : sortClause.split(",")) {
-//            if (criteria.equals("title"))
-//                s.add("lower(b.title)");
-//            if (criteria.equals("isbn"))
-//                s.add("b.isbn");
-//        }
-//
-//        for (int i = 0; i < s.size(); i++) {
-//            if (i == 0)
-//                sortClause += s.get(i);
-//            else
-//                sortClause += ", " + s.get(i);
-//            sortClause += " " + sortOrders[i];
-//        }
-//
-//        return sortClause;
-//    }
+    @Override
+    public Long countCurrentlyBorrowedBooksByMember(String memberId) {
+        TypedQuery<Long> countQuery = entityManager.createNamedQuery(Book.COUNT_ALL_CURRENTLY_BORROWED_BOOKS, Long.class);
+        countQuery.setParameter("memberId", memberId);
+
+        return countQuery.getSingleResult();
+    }
 }

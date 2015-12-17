@@ -28,4 +28,6 @@ public interface BookRepository {
     Long countAvailableBooks();
 
     BookBorrowerTO findBookBorrowerDetails(Integer bookId);
+
+    Long countCurrentlyBorrowedBooksByMember(String memberId);
 }

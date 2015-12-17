@@ -6,6 +6,7 @@
     function restService($http, $location) {
         var service = {
             addBook: addBook,
+            borrowBook: borrowBook,
             addMember: addMember,
             getBooks: getBooks,
             countBorrowedHistoryItems: countBorrowedHistoryItems,
@@ -16,6 +17,8 @@
             getBookIsbnCodes: getBookIsbnCodes,
             getMemberDetail: getMemberDetail,
             getMemberBorrowedHistory: getMemberBorrowedHistory,
+            getBookBorrowerDetails: getBookBorrowerDetails,
+            getAvailableBooks: getAvailableBooks
             getGlobalBorrowedBooks: getGlobalBorrowedBooks,
             countBorrowedBooks : countBorrowedBooks,
             getBookBorrowerDetails: getBookBorrowerDetails
@@ -25,6 +28,13 @@
 
         function addBook(book) {
             return $http.post("/api/books", book)
+                .then(function(response){
+                    return response.data;
+                });
+        }
+
+        function borrowBook(book) {
+            return $http.post("/api/borrow", book)
                 .then(function(response){
                     return response.data;
                 });
@@ -84,6 +94,31 @@
 
         function getBookIsbnCodes() {
             return $http.get("/api/books/isbnCodes")
+                .then(function(response){
+                    return response.data;
+                });
+        }
+
+        function getAvailableBooks(itemsPerPage) {
+
+            var searchUrl = "?";
+
+            if (!$location.search().aStart && !$location.search().aEnd) {
+                searchUrl += "start=0&end=" + itemsPerPage;
+            } else {
+                searchUrl += "start=" + $location.search().aStart + "&end=" + $location.search().aEnd;
+            }
+
+            if ($location.search().title) {
+                searchUrl += "&title=" + $location.search().title;
+            }
+
+            if ($location.search().isbn) {
+                searchUrl += "&isbn=" + $location.search().isbn;
+            }
+            console.log(searchUrl);
+
+            return $http.get("/api/books/available" + searchUrl)
                 .then(function(response){
                     return response.data;
                 });

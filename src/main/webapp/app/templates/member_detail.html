@@ -86,12 +86,84 @@
                     </table>
                 </div>
             </div>
+
+
             <div class="panel-footer text-center">
                 <uib-pagination boundary-links="true" total-items="vm.totalItems" max-size="vm.maxSize" items-per-page="vm.itemsPerPage"
                                 ng-model="vm.currentPage" ng-change="vm.pageChanged()"
                                 class="pagination paginationFooter"
                                 previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;">
                 </uib-pagination>
+            </div>
+        </div>
+
+        <h4 class="midnightblueColor">Borrow</h4>
+        <hr style="border-color: midnightblue; margin-top: -5px"/>
+
+        <div class="alert alert-danger text-center" role="alert" ng-show="vm.tooManyBorrowedBooks">
+            <p class="alert-link">Too many borrowed books!</p>
+        </div>
+
+        <form class="form-inline">
+            <div class="row">
+                <div class="col-sm-offset-6 col-sm-6 text-right">
+                    <label>Search by</label>
+                    <select id="filter" class="form-control" ng-model="vm.filter"
+                            ng-options="filter for filter in vm.searchFilters"></select>
+                    <input id="filterValue" class="form-control" placeholder="{{vm.filter}}" ng-model="vm.filterValue"
+                           uib-typeahead="value.value for value in vm.populatedFilterValues | filter:$viewValue | limitTo:10"
+                           typeahead-on-select='vm.onSelectFilter()' typeahead-select-on-exact="true">
+                </div>
+            </div>
+        </form>
+
+        <br/>
+
+        <div class="alert alert-info text-center" role="alert" ng-show="vm.noAvailableBooks">
+            <p class="alert-link">There are no books to be displayed!</p>
+        </div>
+
+        <div class="panel panel-default" ng-hide="vm.noAvailableBooks">
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-fixed">
+                        <thead>
+                        <tr>
+                            <th width=30%>Title</th>
+                            <th width=30%>Authors</th>
+                            <th width=20%>ISBN</th>
+                            <th width=20%>Borrow</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr id="bookAvailableRow" ng-repeat = "book in vm.availableBooks">
+                            <td class="table-column-ellipsis">{{book.title}}</td>
+                            <td class="table-column-ellipsis" on-ellipsis="vm.enableTooltip(param, book)"
+                                uib-tooltip="{{vm.getTooltipContent(book)}}"
+                                tooltip-placement="bottom" tooltip-enable="book.tooltip" tooltip-append-to-body="true">
+                        <span ng-repeat="author in book.authors">
+                            {{author.firstName}} {{author.lastName}}{{$last ? '' : ', '}}
+                        </span>
+                            </td>
+                            <td>{{book.isbn}}</td>
+                            <td >
+                                <button type="button" class="btn btn-default" ng-click="vm.borrowBook(book.id)">
+                                    <i class="glyphicon glyphicon-plus"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="panel-footer text-center">
+                <uib-pagination boundary-links="true" total-items="vm.totalAvailableItems" max-size="vm.maxSize" items-per-page="vm.availableItemsPerPage"
+                                ng-model="vm.currentAvailablePage" ng-change="vm.availableBooksPageChanged()"
+                                class="pagination paginationFooter"
+                                previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;">
+                </uib-pagination>
+            </div>
             </div>
         </div>
     </div>

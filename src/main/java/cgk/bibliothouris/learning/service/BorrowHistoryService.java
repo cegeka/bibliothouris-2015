@@ -71,6 +71,9 @@ public class BorrowHistoryService {
     }
 
     private void validateBorrowHistoryItem(BorrowHistoryItemTO borrowHistoryItemTO, Book book, Member member) {
+        Long countCurrentlyBorrowedBooksByMember = bookRepository.countCurrentlyBorrowedBooksByMember(member.getUUID());
+        if(countCurrentlyBorrowedBooksByMember > 3)
+            throw new ValidationException("Too many borrowed books!");
         Boolean isEndDateAfterStartDate = false;
         Boolean isDateInvalid = borrowHistoryItemTO.getEndDate() == null;
         if (!isDateInvalid) {
