@@ -46,125 +46,143 @@
             </div>
         </div>
 
-        <h4 class="midnightblueColor">Borrowed Books</h4>
-        <hr style="border-color: midnightblue; margin-top: -5px"/>
 
-        <div class="alert alert-info text-center" role="alert" ng-show="vm.noBorrowedBooks">
-            <p class="alert-link">There are no books to be displayed!</p>
+        <div class="row">
+            <div class="col-sm-6 text-left h4 midnightblueColor">Borrowed Books</div>
+            <div class="col-sm-6 text-right h4 midnightblueColor">
+                <i class="glyphicon glyphicon-plus" ng-click="vm.isCollapsed = !vm.isCollapsed" ng-show="vm.isCollapsed"></i>
+                <i class="glyphicon glyphicon-minus" ng-click="vm.isCollapsed = !vm.isCollapsed" ng-show="!vm.isCollapsed"></i>
+            </div>
         </div>
+        <hr style="border-color: midnightblue; margin-top:0px"/>
 
-        <div class="panel panel-default" ng-hide="vm.noBorrowedBooks">
-            <div class="panel-body">
-                <div class="table-responsive">
-                    <table class="table table-fixed">
-                        <thead>
-                        <tr>
-                            <th width=30%>Title</th>
-                            <th width=30% class="hidden-xs hidden-sm">Authors</th>
-                            <th width=20% class="hidden-xs hidden-sm hidden-md">ISBN</th>
-                            <th width=10% class="text-center">Lend date</th>
-                            <th width=10% class="text-center">Return date</th>
-                        </tr>
-                        </thead>
+        <div uib-collapse="vm.isCollapsed">
+            <div class="alert alert-info text-center" role="alert" ng-show="vm.noBorrowedBooks">
+                <p class="alert-link">There are no books to be displayed!</p>
+            </div>
 
-                        <tbody>
-                        <tr id="bookRow" ng-repeat = "book in vm.borrowedBooks"
-                            ng-class='{borrowedBooksRowColor : vm.borrowedAndNotReturnedBooks.indexOf(book) != -1}'>
-                            <td class="table-column-ellipsis">{{book.title}}</td>
-                            <td class="table-column-ellipsis hidden-xs hidden-sm" on-ellipsis="vm.enableTooltip(param, book)"
-                                uib-tooltip="{{vm.getTooltipContent(book)}}"
-                                tooltip-placement="bottom" tooltip-enable="book.tooltip" tooltip-append-to-body="true">
-                                <span ng-repeat="author in book.authors">
-                                    {{author.firstName}} {{author.lastName}}{{$last ? '' : ', '}}
-                                </span>
-                            </td>
-                            <td class="hidden-xs hidden-sm hidden-md">{{book.isbn}}</td>
-                            <td class="text-center">{{book.startLendDate}}</td>
-                            <td class="text-center">{{book.endLendDate || "-"}}</td>
-                        </tr>
-                        </tbody>
-                    </table>
+            <div class="panel panel-default" ng-hide="vm.noBorrowedBooks">
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-fixed">
+                            <thead>
+                            <tr>
+                                <th width=30%>Title</th>
+                                <th width=30% class="hidden-xs hidden-sm">Authors</th>
+                                <th width=20% class="hidden-xs hidden-sm hidden-md">ISBN</th>
+                                <th width=10% class="text-center">Lend date</th>
+                                <th width=10% class="text-center">Return date</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr id="bookRow" ng-repeat = "book in vm.borrowedBooks"
+                                ng-class='{borrowedBooksRowColor : vm.borrowedAndNotReturnedBooks.indexOf(book) != -1}'>
+                                <td class="table-column-ellipsis">{{book.title}}</td>
+                                <td class="table-column-ellipsis hidden-xs hidden-sm" on-ellipsis="vm.enableTooltip(param, book)"
+                                    uib-tooltip="{{vm.getTooltipContent(book)}}"
+                                    tooltip-placement="bottom" tooltip-enable="book.tooltip" tooltip-append-to-body="true">
+                                    <span ng-repeat="author in book.authors">
+                                        {{author.firstName}} {{author.lastName}}{{$last ? '' : ', '}}
+                                    </span>
+                                </td>
+                                <td class="hidden-xs hidden-sm hidden-md">{{book.isbn}}</td>
+                                <td class="text-center">{{book.startLendDate}}</td>
+                                <td class="text-center">{{book.endLendDate || "-"}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="panel-footer text-center">
+                    <uib-pagination boundary-links="true" total-items="vm.totalItems" max-size="vm.maxSize" items-per-page="vm.itemsPerPage"
+                                    ng-model="vm.currentPage" ng-change="vm.pageChanged()"
+                                    class="pagination paginationFooter"
+                                    previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;">
+                    </uib-pagination>
                 </div>
             </div>
+        </div>
 
 
-            <div class="panel-footer text-center">
-                <uib-pagination boundary-links="true" total-items="vm.totalItems" max-size="vm.maxSize" items-per-page="vm.itemsPerPage"
-                                ng-model="vm.currentPage" ng-change="vm.pageChanged()"
-                                class="pagination paginationFooter"
-                                previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;">
-                </uib-pagination>
+        <div class="row">
+            <div class="col-sm-6 text-left h4 midnightblueColor">Borrow</div>
+            <div class="col-sm-6 text-right h4 midnightblueColor">
+                <i class="glyphicon glyphicon-plus" ng-click="vm.isBorrowCollapsed = !vm.isBorrowCollapsed" ng-show="vm.isBorrowCollapsed"></i>
+                <i class="glyphicon glyphicon-minus" ng-click="vm.isBorrowCollapsed = !vm.isBorrowCollapsed" ng-show="!vm.isBorrowCollapsed"></i>
             </div>
         </div>
+        <hr style="border-color: midnightblue; margin-top:0px"/>
 
-        <h4 class="midnightblueColor">Borrow</h4>
-        <hr style="border-color: midnightblue; margin-top: -5px"/>
+        <div uib-collapse="vm.isBorrowCollapsed">
+            <div class="alert alert-danger text-center" role="alert" ng-show="vm.tooManyBorrowedBooks">
+                <p class="alert-link">Too many borrowed books!</p>
+            </div>
 
-        <div class="alert alert-danger text-center" role="alert" ng-show="vm.tooManyBorrowedBooks">
-            <p class="alert-link">Too many borrowed books!</p>
-        </div>
+            <form class="form-inline">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label>Search by</label>
+                        <select id="filter" class="form-control" ng-model="vm.filter"
+                                ng-options="filter for filter in vm.searchFilters"></select>
+                        <input id="filterValue" class="form-control" placeholder="{{vm.filter}}" ng-model="vm.filterValue"
+                               >
+                    </div>
+                </div>
+            </form>
 
-        <form class="form-inline">
-            <div class="row">
-                <div class="col-sm-6">
-                    <label>Search by</label>
-                    <select id="filter" class="form-control" ng-model="vm.filter"
-                            ng-options="filter for filter in vm.searchFilters"></select>
-                    <input id="filterValue" class="form-control" placeholder="{{vm.filter}}" ng-model="vm.filterValue"
-                           uib-typeahead="value.value for value in vm.populatedFilterValues | filter:$viewValue | limitTo:10"
-                           typeahead-on-select='vm.onSelectFilter()' typeahead-select-on-exact="true">
+            <br/>
+
+            <div class="alert alert-info text-center" role="alert" ng-show="vm.noAvailableBooks">
+                <p class="alert-link">There are no available books withe the given search criteria!</p>
+            </div>
+
+            <div class="panel panel-default" ng-hide="vm.noAvailableBooks">
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-fixed">
+                            <thead>
+                            <tr>
+                                <th width=30%>Title</th>
+                                <th width=30%>Authors</th>
+                                <th width=20%>ISBN</th>
+                                <th width=20%>Borrow</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr id="bookAvailableRow" ng-repeat = "book in vm.availableBooks">
+                                <td class="table-column-ellipsis">{{book.title}}</td>
+                                <td class="table-column-ellipsis" on-ellipsis="vm.enableTooltip(param, book)"
+                                    uib-tooltip="{{vm.getTooltipContent(book)}}"
+                                    tooltip-placement="bottom" tooltip-enable="book.tooltip" tooltip-append-to-body="true">
+                            <span ng-repeat="author in book.authors">
+                                {{author.firstName}} {{author.lastName}}{{$last ? '' : ', '}}
+                            </span>
+                                </td>
+                                <td>{{book.isbn}}</td>
+                                <td >
+                                    <button type="button" class="btn btn-default" ng-click="vm.borrowBook(book.id)">
+                                        <i class="glyphicon glyphicon-plus"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="panel-footer text-center">
+                    <uib-pagination boundary-links="true" total-items="vm.totalAvailableItems" max-size="vm.maxSize" items-per-page="vm.availableItemsPerPage"
+                                    ng-model="vm.currentAvailablePage" ng-change="vm.availableBooksPageChanged()"
+                                    class="pagination paginationFooter"
+                                    previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;">
+                    </uib-pagination>
+                </div>
                 </div>
             </div>
-        </form>
-
-        <br/>
-
-        <div class="alert alert-info text-center" role="alert" ng-show="vm.noAvailableBooks">
-            <p class="alert-link">There are no available books withe the given search criteria!</p>
         </div>
 
-        <div class="panel panel-default" ng-hide="vm.noAvailableBooks">
-            <div class="panel-body">
-                <div class="table-responsive">
-                    <table class="table table-fixed">
-                        <thead>
-                        <tr>
-                            <th width=30%>Title</th>
-                            <th width=30%>Authors</th>
-                            <th width=20%>ISBN</th>
-                            <th width=20%>Borrow</th>
-                        </tr>
-                        </thead>
 
-                        <tbody>
-                        <tr id="bookAvailableRow" ng-repeat = "book in vm.availableBooks">
-                            <td class="table-column-ellipsis">{{book.title}}</td>
-                            <td class="table-column-ellipsis" on-ellipsis="vm.enableTooltip(param, book)"
-                                uib-tooltip="{{vm.getTooltipContent(book)}}"
-                                tooltip-placement="bottom" tooltip-enable="book.tooltip" tooltip-append-to-body="true">
-                        <span ng-repeat="author in book.authors">
-                            {{author.firstName}} {{author.lastName}}{{$last ? '' : ', '}}
-                        </span>
-                            </td>
-                            <td>{{book.isbn}}</td>
-                            <td >
-                                <button type="button" class="btn btn-default" ng-click="vm.borrowBook(book.id)">
-                                    <i class="glyphicon glyphicon-plus"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="panel-footer text-center">
-                <uib-pagination boundary-links="true" total-items="vm.totalAvailableItems" max-size="vm.maxSize" items-per-page="vm.availableItemsPerPage"
-                                ng-model="vm.currentAvailablePage" ng-change="vm.availableBooksPageChanged()"
-                                class="pagination paginationFooter"
-                                previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;">
-                </uib-pagination>
-            </div>
-            </div>
-        </div>
     </div>
 </div>

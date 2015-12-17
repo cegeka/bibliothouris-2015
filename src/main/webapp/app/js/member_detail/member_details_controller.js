@@ -19,6 +19,8 @@
         vm.filterValue = "";
         vm.populatedFilterValues = null;
         vm.baseMemberBorrowUrl = $location.url();
+        vm.isCollapsed = false;
+        vm.isBorrowCollapsed = false;
 
 
         vm.pageChanged = pageChanged;

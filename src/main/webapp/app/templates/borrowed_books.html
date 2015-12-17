@@ -11,10 +11,22 @@
             <table class="table table-fixed">
                 <thead>
                 <tr>
-                    <th width=20% ng-click="vm.addTitleToSort('title')">Title</th>
+                    <th width=20% ng-click="vm.addFieldToSort('title')">
+                        Title
+                        <i ng-show="vm.orderString == 'asc' || vm.sortString != 'title'" ng-class="{grayColor: vm.sortString != 'title'}" class="glyphicon glyphicon-sort-by-attributes" ng-click="vm.addFieldToSort('title')"></i>
+                        <i ng-show="vm.orderString == 'desc' && vm.sortString == 'title'" ng-class="{grayColor: vm.sortString != 'title'}" class="glyphicon glyphicon-sort-by-attributes-alt" ng-click="vm.addFieldToSort('title')"></i>
+                    </th>
                     <th width=15% class="hidden-xs hidden-sm">Authors</th>
-                    <th width=15% class="hidden-xs hidden-sm hidden-md" ng-click="vm.addTitleToSort('isbn')">ISBN</th>
-                    <th width=10% class="text-center" ng-click="vm.addTitleToSort('date')">Lend date</th>
+                    <th width=15% class="hidden-xs hidden-sm hidden-md">
+                        ISBN
+                        <i ng-show="vm.orderString == 'asc' || vm.sortString != 'isbn'" ng-class="{grayColor: vm.sortString != 'isbn'}" class="glyphicon glyphicon-sort-by-attributes" ng-click="vm.addFieldToSort('isbn')"></i>
+                        <i ng-show="vm.orderString == 'desc' && vm.sortString == 'isbn'" ng-class="{grayColor: vm.sortString != 'isbn'}" class="glyphicon glyphicon-sort-by-attributes-alt" ng-click="vm.addFieldToSort('isbn')"></i>
+                    </th>
+                    <th width=10% class="text-center" ng-click="vm.addFieldToSort('date')">
+                        Lend date
+                        <i ng-show="vm.orderString == 'asc' || vm.sortString != 'date'" ng-class="{grayColor: vm.sortString != 'date'}" class="glyphicon glyphicon-sort-by-attributes" ng-click="vm.addFieldToSort('date')"></i>
+                        <i ng-show="vm.orderString == 'desc' && vm.sortString == 'date'" ng-class="{grayColor: vm.sortString != 'date'}" class="glyphicon glyphicon-sort-by-attributes-alt" ng-click="vm.addFieldToSort('date')"></i>
+                    </th>
                     <th width=10% class="text-center">Borrower</th>
                 </tr>
                 </thead>
