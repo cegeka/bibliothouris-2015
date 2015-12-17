@@ -106,7 +106,7 @@
 
         <form class="form-inline">
             <div class="row">
-                <div class="col-sm-offset-6 col-sm-6 text-right">
+                <div class="col-sm-6">
                     <label>Search by</label>
                     <select id="filter" class="form-control" ng-model="vm.filter"
                             ng-options="filter for filter in vm.searchFilters"></select>
@@ -120,7 +120,7 @@
         <br/>
 
         <div class="alert alert-info text-center" role="alert" ng-show="vm.noAvailableBooks">
-            <p class="alert-link">There are no books to be displayed!</p>
+            <p class="alert-link">There are no available books withe the given search criteria!</p>
         </div>
 
         <div class="panel panel-default" ng-hide="vm.noAvailableBooks">

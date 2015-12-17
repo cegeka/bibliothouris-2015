@@ -92,7 +92,6 @@
         }
 
         function onSelectFilter() {
-            console.log(vm.searchFilters);
             vm.searchFilters.forEach(function(key) {
                 $location.search(key.toLowerCase(), null);
             });
@@ -133,20 +132,15 @@
             restService
                 .borrowBook(vm.historyItem)
                 .then(function(data){
-                    if(data.status == 400) {
-                        vm.tooManyBorrowedBooks = true;
-                        console.log(data.status);
-                    }
-
                     if(angular.equals($location.search(), {})) {
                         $route.reload();
                     } else {
                         $location.url("/member/" + vm.member.UUID);
                     }
-
                 }, function(data){
-                    console.log(data);
-
+                    if(data.status == 400) {
+                        vm.tooManyBorrowedBooks = true;
+                    }
                 });
         }
     }

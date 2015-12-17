@@ -116,7 +116,6 @@
             if ($location.search().isbn) {
                 searchUrl += "&isbn=" + $location.search().isbn;
             }
-            console.log(searchUrl);
 
             return $http.get("/api/books/available" + searchUrl)
                 .then(function(response){
