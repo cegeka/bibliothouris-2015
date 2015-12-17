@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.Set;
 
 @XmlRootElement
-public class GlobalBorrowHistoryTO {
+public class DetailedBorrowHistoryTO {
 
     private String isbn;
 
@@ -28,10 +28,10 @@ public class GlobalBorrowHistoryTO {
 
     private LocalDate endLendDate;
 
-    public GlobalBorrowHistoryTO() {
+    public DetailedBorrowHistoryTO() {
     }
 
-    public GlobalBorrowHistoryTO(BorrowHistoryItem borrowHistoryItem) {
+    public DetailedBorrowHistoryTO(BorrowHistoryItem borrowHistoryItem) {
         this.isbn = borrowHistoryItem.getBook().getIsbn();
         this.title = borrowHistoryItem.getBook().getTitle();
         this.authors = borrowHistoryItem.getBook().getAuthors();
@@ -103,64 +103,65 @@ public class GlobalBorrowHistoryTO {
         this.borrowerUUID = borrowerUUID;
     }
 
+
     @XmlJavaTypeAdapter(LocalDateAdapter.class)
     public void setEndLendDate(LocalDate endLendDate) {
         this.endLendDate = endLendDate;
     }
 
-    public static class GlobalBorrowHistoryTOBuilder {
-        private GlobalBorrowHistoryTO globalBorrowHistoryTO;
+    public static class DetailedBorrowHistoryTOBuilder {
+        private DetailedBorrowHistoryTO detailedBorrowHistoryTO;
 
-        private GlobalBorrowHistoryTOBuilder() {
-            globalBorrowHistoryTO = new GlobalBorrowHistoryTO();
+        private DetailedBorrowHistoryTOBuilder() {
+            detailedBorrowHistoryTO = new DetailedBorrowHistoryTO();
         }
 
-        public GlobalBorrowHistoryTOBuilder withIsbn(String isbn) {
-            globalBorrowHistoryTO.isbn = isbn;
+        public DetailedBorrowHistoryTOBuilder withIsbn(String isbn) {
+            detailedBorrowHistoryTO.isbn = isbn;
             return this;
         }
 
-        public GlobalBorrowHistoryTOBuilder withTitle(String title) {
-            globalBorrowHistoryTO.title = title;
+        public DetailedBorrowHistoryTOBuilder withTitle(String title) {
+            detailedBorrowHistoryTO.title = title;
             return this;
         }
 
-        public GlobalBorrowHistoryTOBuilder withBorrowerFirstName(String borrowerFirstName) {
-            globalBorrowHistoryTO.borrowerFirstName = borrowerFirstName;
+        public DetailedBorrowHistoryTOBuilder withBorrowerFirstName(String borrowerFirstName) {
+            detailedBorrowHistoryTO.borrowerFirstName = borrowerFirstName;
             return this;
         }
 
-        public GlobalBorrowHistoryTOBuilder withBorrowerLastName(String borrowerLastName) {
-            globalBorrowHistoryTO.borrowerLastName = borrowerLastName;
+        public DetailedBorrowHistoryTOBuilder withBorrowerLastName(String borrowerLastName) {
+            detailedBorrowHistoryTO.borrowerLastName = borrowerLastName;
             return this;
         }
 
-        public GlobalBorrowHistoryTOBuilder withBorrowerUUID(String borrowerUUID) {
-            globalBorrowHistoryTO.borrowerUUID = borrowerUUID;
+        public DetailedBorrowHistoryTOBuilder withBorrowerUUID(String borrowerUUID) {
+            detailedBorrowHistoryTO.borrowerUUID = borrowerUUID;
             return this;
         }
 
-        public GlobalBorrowHistoryTOBuilder withAuthors(Set<Author> authors) {
-            globalBorrowHistoryTO.authors = authors;
+        public DetailedBorrowHistoryTOBuilder withAuthors(Set<Author> authors) {
+            detailedBorrowHistoryTO.authors = authors;
             return this;
         }
 
-        public GlobalBorrowHistoryTOBuilder withStartLendDate(LocalDate startLendDate) {
-            globalBorrowHistoryTO.startLendDate = startLendDate;
+        public DetailedBorrowHistoryTOBuilder withStartLendDate(LocalDate startLendDate) {
+            detailedBorrowHistoryTO.startLendDate = startLendDate;
             return this;
         }
 
-        public GlobalBorrowHistoryTOBuilder withEndLendDate(LocalDate endLendDate) {
-            globalBorrowHistoryTO.endLendDate = endLendDate;
+        public DetailedBorrowHistoryTOBuilder withEndLendDate(LocalDate endLendDate) {
+            detailedBorrowHistoryTO.endLendDate = endLendDate;
             return this;
         }
 
-        public static GlobalBorrowHistoryTOBuilder globalBorrowHistoryTO() {
-            return new GlobalBorrowHistoryTOBuilder();
+        public static DetailedBorrowHistoryTOBuilder detailedBorrowHistoryTO() {
+            return new DetailedBorrowHistoryTOBuilder();
         }
 
-        public GlobalBorrowHistoryTO build() {
-            return globalBorrowHistoryTO;
+        public DetailedBorrowHistoryTO build() {
+            return detailedBorrowHistoryTO;
         }
     }
 
@@ -169,7 +170,7 @@ public class GlobalBorrowHistoryTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        GlobalBorrowHistoryTO that = (GlobalBorrowHistoryTO) o;
+        DetailedBorrowHistoryTO that = (DetailedBorrowHistoryTO) o;
 
         if (authors != null ? !authors.equals(that.authors) : that.authors != null) return false;
         if (borrowerFirstName != null ? !borrowerFirstName.equals(that.borrowerFirstName) : that.borrowerFirstName != null)

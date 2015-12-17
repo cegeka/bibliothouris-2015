@@ -70,6 +70,14 @@
                             <goal>migrate</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>cleanAndUpdate</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>clean</goal>
+                            <goal>migrate</goal>
+                        </goals>
+                    </execution>
                 </executions>
             </plugin>
             <plugin>

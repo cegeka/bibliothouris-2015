@@ -2,10 +2,8 @@ package cgk.bibliothouris.learning.service.entity;
 
 import cgk.bibliothouris.learning.service.dateconverter.LocalDateAdapter;
 import cgk.bibliothouris.learning.service.dateconverter.LocalDateAttributeConverter;
-import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
@@ -17,15 +15,17 @@ import java.time.LocalDate;
         @NamedQuery(name = BorrowHistoryItem.LIST_ALL_MEMBER_BORROWED_BOOKS,
                     query = "SELECT b FROM BorrowHistoryItem b WHERE b.member.UUID = :uuid ORDER BY b.endDate DESC"),
         @NamedQuery(name = BorrowHistoryItem.COUNT_ALL_MEMBER_BORROWED_BOOKS,
-                    query = "SELECT COUNT(b.id) FROM BorrowHistoryItem b WHERE b.member.UUID = :uuid"),
-        @NamedQuery(name=BorrowHistoryItem.LIST_ALL_BORROWED_BOOKS, query="SELECT b from BorrowHistoryItem b"),
+                query = "SELECT COUNT(b.id) FROM BorrowHistoryItem b WHERE b.member.UUID = :uuid"),
+        @NamedQuery(name=BorrowHistoryItem.LIST_ALL_BORROWED_BOOKS, query="SELECT b from BorrowHistoryItem b where (b.endDate IS NULL)"),
+        @NamedQuery(name=BorrowHistoryItem.COUNT_ALL_BORROWED_BOOKS, query="SELECT COUNT(b.id) from BorrowHistoryItem b where (b.endDate IS NULL)"),
         @NamedQuery(name=BorrowHistoryItem.GET_CURRENT_BORROWER_DETAILS_FOR_BOOK,
-                    query="SELECT NEW cgk.bibliothouris.learning.application.transferobject.BookBorrowerTO(b.member.UUID, b.member.firstName, b.member.lastName) from BorrowHistoryItem b WHERE b.book.id = :bookId AND b.endDate is NULL ")
+                    query="SELECT NEW cgk.bibliothouris.learning.application.transferobject.BookBorrowerTO(b.member.UUID, b.member.firstName, b.member.lastName) from BorrowHistoryItem b WHERE b.book.id = :bookId AND b.endDate is NULL "),
 })
 public class BorrowHistoryItem {
 
     public static final String LIST_ALL_MEMBER_BORROWED_BOOKS = "LIST_ALL_MEMBER_BORROWED_BOOKS";
     public static final String COUNT_ALL_MEMBER_BORROWED_BOOKS = "COUNT_ALL_MEMBER_BORROWED_BOOKS";
+    public static final String COUNT_ALL_BORROWED_BOOKS = "COUNT_ALL_BORROWED_BOOKS";
     public static final String LIST_ALL_BORROWED_BOOKS = "LIST_ALL_BORROWED_BOOKS";
     public static final String GET_CURRENT_BORROWER_DETAILS_FOR_BOOK = "GET_CURRENT_BORROWER_DETAILS_FOR_BOOK";
 
@@ -43,11 +43,11 @@ public class BorrowHistoryItem {
     @Convert(converter = LocalDateAttributeConverter.class)
     private LocalDate endDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="BOOK_ID", referencedColumnName="BOOK_ID")
     private Book book;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="MEMBER_ID", referencedColumnName="U_ID")
     private Member member;
 

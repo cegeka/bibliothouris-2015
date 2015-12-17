@@ -1,7 +1,7 @@
 package fixture;
 
 import cgk.bibliothouris.learning.application.transferobject.BorrowHistoryItemTO;
-import cgk.bibliothouris.learning.application.transferobject.GlobalBorrowHistoryTO;
+import cgk.bibliothouris.learning.application.transferobject.DetailedBorrowHistoryTO;
 import cgk.bibliothouris.learning.service.entity.BorrowHistoryItem;
 
 import java.time.LocalDate;
@@ -52,12 +52,11 @@ public class BorrowedHistoryFixture {
                 .build();
     }
 
-    public static List<GlobalBorrowHistoryTO> createGlobalBorrowHistoryTOList() {
-        List<GlobalBorrowHistoryTO> list = new ArrayList<>();
+    public static List<DetailedBorrowHistoryTO> createDetailedBorrowHistoryTOList() {
+        List<DetailedBorrowHistoryTO> list = new ArrayList<>();
         BorrowHistoryItem historyItem = createAvailableHistoryItem();
-        GlobalBorrowHistoryTO gbh = GlobalBorrowHistoryTO
-                .GlobalBorrowHistoryTOBuilder
-                .globalBorrowHistoryTO()
+        DetailedBorrowHistoryTO gbh = DetailedBorrowHistoryTO.DetailedBorrowHistoryTOBuilder
+                .detailedBorrowHistoryTO()
                 .withAuthors(historyItem.getBook().getAuthors())
                 .withIsbn(historyItem.getBook().getIsbn())
                 .withTitle(historyItem.getBook().getTitle())
@@ -71,8 +70,8 @@ public class BorrowedHistoryFixture {
         return list;
     }
 
-    public static List<GlobalBorrowHistoryTO> createEmptyGlobalBorrowHistoryTOList() {
-        List<GlobalBorrowHistoryTO> list = new ArrayList<>();
+    public static List<DetailedBorrowHistoryTO> createEmptyDetailedBorrowHistoryTOList() {
+        List<DetailedBorrowHistoryTO> list = new ArrayList<>();
 
         return list;
     }

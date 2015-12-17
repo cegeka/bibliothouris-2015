@@ -2,10 +2,7 @@ package cgk.bibliothouris.learning.application.resource;
 
 import cgk.bibliothouris.learning.application.transferobject.*;
 import cgk.bibliothouris.learning.service.BorrowHistoryService;
-import cgk.bibliothouris.learning.service.MemberService;
-import cgk.bibliothouris.learning.service.entity.Book;
 import cgk.bibliothouris.learning.service.entity.BorrowHistoryItem;
-import cgk.bibliothouris.learning.service.entity.Member;
 import cgk.bibliothouris.learning.service.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -71,13 +68,22 @@ public class BorrowHistoryResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllHistoryItems(){
-        List<GlobalBorrowHistoryTO> globalBorrowedHistoryItems
-                = service.getGlobalBorrowHistory();
+    public Response getAllHistoryItems(@QueryParam("start") String start, @QueryParam("end") String end){
+        List<DetailedBorrowHistoryTO> detailedBorrowedHistoryItems
+                = service.getActiveBorrowedBooks(start, end);
 
-        if(globalBorrowedHistoryItems.size() == 0)
+        if(detailedBorrowedHistoryItems.size() == 0)
             return Response.status(Response.Status.NOT_FOUND).build();
-        return Response.ok().entity(new GenericEntity<List<GlobalBorrowHistoryTO>>(globalBorrowedHistoryItems) {
+        return Response.ok().entity(new GenericEntity<List<DetailedBorrowHistoryTO>>(detailedBorrowedHistoryItems) {
         }).build();
+    }
+
+    @GET
+    @Path("/size")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response getGlobalHistorySize(){
+        Long borrowedCount = service.countBorrowedBooks();
+
+        return Response.ok().entity(borrowedCount).build();
     }
 }

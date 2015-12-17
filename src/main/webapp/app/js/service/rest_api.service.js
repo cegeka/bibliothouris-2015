@@ -16,6 +16,8 @@
             getBookIsbnCodes: getBookIsbnCodes,
             getMemberDetail: getMemberDetail,
             getMemberBorrowedHistory: getMemberBorrowedHistory,
+            getGlobalBorrowedBooks: getGlobalBorrowedBooks,
+            countBorrowedBooks : countBorrowedBooks,
             getBookBorrowerDetails: getBookBorrowerDetails
         };
 
@@ -106,6 +108,20 @@
 
         function countBorrowedHistoryItems(memberId) {
             return $http.get("/api/borrow/" + memberId + "/size")
+                .then(function(response){
+                    return response.data;
+                });
+        }
+
+        function countBorrowedBooks() {
+            return $http.get("/api/borrow/size")
+                .then(function(response){
+                    return response.data;
+                });
+        }
+
+        function getGlobalBorrowedBooks(searchUrl) {
+            return $http.get("/api/borrow/" + searchUrl)
                 .then(function(response){
                     return response.data;
                 });

@@ -2,7 +2,7 @@ package unit;
 
 import cgk.bibliothouris.learning.application.resource.BorrowHistoryResource;
 import cgk.bibliothouris.learning.application.transferobject.BorrowHistoryItemTO;
-import cgk.bibliothouris.learning.application.transferobject.GlobalBorrowHistoryTO;
+import cgk.bibliothouris.learning.application.transferobject.DetailedBorrowHistoryTO;
 import cgk.bibliothouris.learning.application.transferobject.MemberBorrowHistoryTO;
 import cgk.bibliothouris.learning.service.BorrowHistoryService;
 import cgk.bibliothouris.learning.service.entity.BorrowHistoryItem;
@@ -121,33 +121,33 @@ public class BorrowHistoryResourceTest {
 
     @Test
     public void givenValidBorrowHistoryItems_whenWeRetrieveThemAll_thenWeGet200OK(){
-        List<GlobalBorrowHistoryTO> borrowHistoryList= BorrowedHistoryFixture.createGlobalBorrowHistoryTOList();
+        List<DetailedBorrowHistoryTO> borrowHistoryList= BorrowedHistoryFixture.createDetailedBorrowHistoryTOList();
 
-        Mockito.when(service.getGlobalBorrowHistory()).thenReturn(borrowHistoryList);
+        Mockito.when(service.getActiveBorrowedBooks("1", "10")).thenReturn(borrowHistoryList);
 
-        Response response = resource.getAllHistoryItems();
+        Response response = resource.getAllHistoryItems("1", "10");
 
         Assertions.assertThat(response.getStatus()).isEqualTo(Response.Status.OK.getStatusCode());
     }
 
     @Test
     public void givenValidBorrowHistoryItems_whenWeRetrieveThemAll_thenWeGetThemALl(){
-        List<GlobalBorrowHistoryTO> borrowHistoryList= BorrowedHistoryFixture.createGlobalBorrowHistoryTOList();
+        List<DetailedBorrowHistoryTO> borrowHistoryList= BorrowedHistoryFixture.createDetailedBorrowHistoryTOList();
 
-        Mockito.when(service.getGlobalBorrowHistory()).thenReturn(borrowHistoryList);
+        Mockito.when(service.getActiveBorrowedBooks("1", "10")).thenReturn(borrowHistoryList);
 
-        Response response = resource.getAllHistoryItems();
+        Response response = resource.getAllHistoryItems("1", "10");
 
         Assertions.assertThat(response.getEntity()).isEqualTo(borrowHistoryList);
     }
 
     @Test
     public void givenEmBorrowHistoryItems_whenWeRetrieveThemAll_thenWeGet404NotFound(){
-        List<GlobalBorrowHistoryTO> borrowHistoryList= BorrowedHistoryFixture.createEmptyGlobalBorrowHistoryTOList();
+        List<DetailedBorrowHistoryTO> borrowHistoryList= BorrowedHistoryFixture.createEmptyDetailedBorrowHistoryTOList();
 
-        Mockito.when(service.getGlobalBorrowHistory()).thenReturn(borrowHistoryList);
+        Mockito.when(service.getActiveBorrowedBooks("1", "10")).thenReturn(borrowHistoryList);
 
-        Response response = resource.getAllHistoryItems();
+        Response response = resource.getAllHistoryItems("1", "10");
 
         Assertions.assertThat(response.getStatus()).isEqualTo(Response.Status.NOT_FOUND.getStatusCode());
     }

@@ -1,7 +1,7 @@
 package integration;
 
 import cgk.bibliothouris.learning.application.transferobject.BookBorrowerTO;
-import cgk.bibliothouris.learning.application.transferobject.GlobalBorrowHistoryTO;
+import cgk.bibliothouris.learning.application.transferobject.DetailedBorrowHistoryTO;
 import cgk.bibliothouris.learning.application.transferobject.MemberBorrowHistoryTO;
 import cgk.bibliothouris.learning.config.AppConfig;
 import cgk.bibliothouris.learning.repository.BookRepository;
@@ -78,9 +78,9 @@ public class ITBorrowedHistoryRepository {
     @Test
     public void givenAPopulatedBorrowHistory_whenWeRetrieveIt_WeGetThatHistory(){
         BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(buildBorrowHistoryIem());
-        GlobalBorrowHistoryTO transformedPersistedItem = new GlobalBorrowHistoryTO(persistedHistoryItem);
+        DetailedBorrowHistoryTO transformedPersistedItem = new DetailedBorrowHistoryTO(persistedHistoryItem);
 
-        List<GlobalBorrowHistoryTO> borrowedBooks = borrowHistoryRepository.getBorrowedBooks();
+        List<DetailedBorrowHistoryTO> borrowedBooks = borrowHistoryRepository.getBorrowedBooks(1,1000);
 
         assertThat(borrowedBooks).contains(transformedPersistedItem);
     }
@@ -113,6 +113,15 @@ public class ITBorrowedHistoryRepository {
         borrowHistoryItem.setMember(member);
 
         return borrowHistoryItem;
+    }
+
+    @Test
+    public void givenBorrowedBooks_countBorrowedBooks_returnsTheCorrectListOfBorrowedBookTOs(){
+        BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(buildBorrowHistoryIem());
+
+        Long memberBorrowHistoryTOsSize = borrowHistoryRepository.countBorrowedBooks();
+
+        assertThat(memberBorrowHistoryTOsSize).isGreaterThan(1);
     }
 
 }

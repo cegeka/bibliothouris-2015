@@ -1,7 +1,7 @@
 package unit;
 
 import cgk.bibliothouris.learning.application.transferobject.BorrowHistoryItemTO;
-import cgk.bibliothouris.learning.application.transferobject.GlobalBorrowHistoryTO;
+import cgk.bibliothouris.learning.application.transferobject.DetailedBorrowHistoryTO;
 import cgk.bibliothouris.learning.application.transferobject.MemberBorrowHistoryTO;
 import cgk.bibliothouris.learning.repository.BookRepository;
 import cgk.bibliothouris.learning.repository.BorrowHistoryRepository;
@@ -95,10 +95,10 @@ public class BorrowHistoryServiceTest {
 
     @Test
     public void givenAPopulatedHistoryFor_whenWeRetrieveIt_weGetThatHistory(){
-        List<GlobalBorrowHistoryTO> borrowHistoryList= BorrowedHistoryFixture.createGlobalBorrowHistoryTOList();
-        Mockito.when(borrowHistoryRepository.getBorrowedBooks()).thenReturn(borrowHistoryList);
+        List<DetailedBorrowHistoryTO> borrowHistoryList= BorrowedHistoryFixture.createDetailedBorrowHistoryTOList();
+        Mockito.when(borrowHistoryRepository.getBorrowedBooks(1, 10)).thenReturn(borrowHistoryList);
 
-        List<GlobalBorrowHistoryTO> foundGlobalBorrowedHistoryItems = service.getGlobalBorrowHistory();
+        List<DetailedBorrowHistoryTO> foundGlobalBorrowedHistoryItems = service.getActiveBorrowedBooks("1", "10");
 
         Assertions.assertThat(foundGlobalBorrowedHistoryItems).isEqualTo(borrowHistoryList);
     }

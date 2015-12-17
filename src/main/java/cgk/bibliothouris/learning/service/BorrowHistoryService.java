@@ -1,7 +1,7 @@
 package cgk.bibliothouris.learning.service;
 
 import cgk.bibliothouris.learning.application.transferobject.BorrowHistoryItemTO;
-import cgk.bibliothouris.learning.application.transferobject.GlobalBorrowHistoryTO;
+import cgk.bibliothouris.learning.application.transferobject.DetailedBorrowHistoryTO;
 import cgk.bibliothouris.learning.application.transferobject.MemberBorrowHistoryTO;
 import cgk.bibliothouris.learning.repository.BookRepository;
 import cgk.bibliothouris.learning.repository.BorrowHistoryRepository;
@@ -65,6 +65,11 @@ public class BorrowHistoryService {
         return borrowHistoryRepository.countBorrowedBooksByMember(memberUuid);
     }
 
+    @Transactional(readOnly = true)
+    public Long countBorrowedBooks(){
+        return borrowHistoryRepository.countBorrowedBooks();
+    }
+
     private void validateBorrowHistoryItem(BorrowHistoryItemTO borrowHistoryItemTO, Book book, Member member) {
         Boolean isEndDateAfterStartDate = false;
         Boolean isDateInvalid = borrowHistoryItemTO.getEndDate() == null;
@@ -86,7 +91,19 @@ public class BorrowHistoryService {
         return false;
     }
 
-    public List<GlobalBorrowHistoryTO> getGlobalBorrowHistory() {
-        return borrowHistoryRepository.getBorrowedBooks();
+    public List<DetailedBorrowHistoryTO> getActiveBorrowedBooks(String start, String end) {
+        Integer startPosition, endPosition;
+
+        if (start == null || isNegative(start))
+            startPosition = 0;
+        else
+            startPosition = Integer.valueOf(start);
+
+        if (end == null || isNegative(end))
+            endPosition = Integer.valueOf(countBorrowedBooks().intValue());
+        else
+            endPosition = Integer.valueOf(end);
+
+        return borrowHistoryRepository.getBorrowedBooks(startPosition, endPosition);
     }
 }
