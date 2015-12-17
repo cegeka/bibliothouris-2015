@@ -6,15 +6,14 @@
     function BorrowedBooksCtrl(restService, $location) {
         var vm = this;
 
-        vm.maxSize = 1000;
-        vm.itemsPerPage = 1000;
+        vm.maxSize = 5;
+        vm.itemsPerPage = 10;
 
         vm.borrowedBooks = {};
         vm.noBorrows = false;
         vm.pageChanged = pageChanged;
         vm.addTitleToSort = addTitleToSort;
         vm.enableTooltip = enableTooltip;
-        vm.sort = ['title','isbn','date'];
 
         activate();
 
@@ -22,8 +21,8 @@
             if (!($location.search().start) && !($location.search().end)) {
                 $location.search('start', 0);
                 $location.search('end', vm.itemsPerPage);
-                $location.search('sort', vm.sort.join(","));
-                $location.search('order', ['asc','asc','desc'].join(","));
+                $location.search('sort', 'title');
+                $location.search('order', "asc");
             }
 
             var searchUrl = "?start=" + $location.search().start +
@@ -56,20 +55,14 @@
         }
 
         function addTitleToSort(field) {
-            var orderString = $location.search().order.split(",");
-            var sortString = $location.search().sort.split(",");
-            if(orderString[vm.sort.indexOf(field)]=="asc"){
-                orderString[vm.sort.indexOf(field)]="desc";
+            var orderString = $location.search().order;
+            if(orderString=="asc"){
+                orderString="desc";
             } else {
-                orderString[vm.sort.indexOf(field)]="asc";
+                orderString="asc";
             }
-            $location.search("order", orderString.join(","));
-        }
-
-        function moveInArray(array, fromIndex) {
-            var element = array[fromIndex];
-            array.splice(fromIndex, 1);
-            array.splice(0, 0, element);
+            $location.search("order", orderString);
+            $location.search("sort", field);
         }
 
         function enableTooltip(member) {

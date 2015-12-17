@@ -18,7 +18,7 @@
             getMemberDetail: getMemberDetail,
             getMemberBorrowedHistory: getMemberBorrowedHistory,
             getBookBorrowerDetails: getBookBorrowerDetails,
-            getAvailableBooks: getAvailableBooks
+            getAvailableBooks: getAvailableBooks,
             getGlobalBorrowedBooks: getGlobalBorrowedBooks,
             countBorrowedBooks : countBorrowedBooks,
             getBookBorrowerDetails: getBookBorrowerDetails
@@ -108,7 +108,7 @@
             } else {
                 searchUrl += "start=" + $location.search().aStart + "&end=" + $location.search().aEnd;
             }
-
+['title','isbn','date']
             if ($location.search().title) {
                 searchUrl += "&title=" + $location.search().title;
             }

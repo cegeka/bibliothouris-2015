@@ -45,7 +45,7 @@ public class BorrowHistoryRepository {
 
     public List<DetailedBorrowHistoryTO> getBorrowedBooks(Integer start, Integer end, String sort, String order) {
         TypedQuery<BorrowHistoryItem> query = entityManager.createQuery("SELECT b from BorrowHistoryItem b where (b.endDate IS NULL)" + generateSortQueryClause(sort, order), BorrowHistoryItem.class);
-        //query.setMaxResults(end - start).setFirstResult(start);
+        query.setMaxResults(end - start).setFirstResult(start);
 
         List<BorrowHistoryItem> borrowHistoryItems = query.getResultList();
         return borrowHistoryItems.stream().map(DetailedBorrowHistoryTO::new).collect(Collectors.toList());
