@@ -23,5 +23,9 @@ public interface BookRepository {
 
     List<BookFilterValueTO> findAllBookIsbnCodes();
 
+    BookListingTO findAllAvailableBooks(Integer start, Integer end, String title, String isbn);
+
+    Long countAvailableBooks();
+
     BookBorrowerTO findBookBorrowerDetails(Integer bookId);
 }

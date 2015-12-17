@@ -37,11 +37,34 @@ public class BookResource {
     }
 
     @GET
+    @Path("/available")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllAvailableBooks(@QueryParam("start") String start, @QueryParam("end") String end,
+                                @QueryParam("title") String title, @QueryParam("isbn") String isbn){
+        BookListingTO bookListingTO = bookService.findAllAvailableBooks(start, end, title, isbn);
+        if(bookListingTO.getBooks().size() == 0){
+            return Response.status(Status.NOT_FOUND).build();
+        }
+        return Response.ok().entity(bookListingTO).build();
+    }
+
+    @GET
     @Path("/size")
     @Produces("text/plain")
     public Response getBooksNumber(){
         Long count = bookService.countBooks();
         System.out.println(count);
+        if(count == 0){
+            return Response.status(Status.NOT_FOUND).build();
+        }
+        return Response.ok().entity(count).build();
+    }
+
+    @GET
+    @Path("/available/size")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response getAvailableBooksNumber(){
+        Long count = bookService.countAvailableBooks();
         if(count == 0){
             return Response.status(Status.NOT_FOUND).build();
         }

@@ -33,8 +33,8 @@ public class BookService {
 
     @Transactional(readOnly = true)
     public BookListingTO findAllBooks(String start, String end, String title, String isbn) {
-        Integer startPosition = null;
-        Integer endPosition = null;
+        Integer startPosition;
+        Integer endPosition;
 
         if (start == null || isNegative(start)) {
             startPosition = 0;
@@ -94,5 +94,28 @@ public class BookService {
         Set<ConstraintViolation<Book>> bookConstraintViolations = validator.validate(book);
         if (!bookConstraintViolations.isEmpty())
             throw new ValidationException(bookConstraintViolations.iterator().next().getMessage());
+    }
+
+    @Transactional(readOnly = true)
+    public BookListingTO findAllAvailableBooks(String start, String end, String title, String isbn) {
+        Integer startPosition;
+        Integer endPosition;
+
+        if (start == null || isNegative(start)) {
+            startPosition = 0;
+        } else {
+            startPosition = Integer.valueOf(start);
+        }
+        if (end == null || isNegative(end)) {
+            endPosition = Integer.valueOf(countBooks().intValue());
+        } else {
+            endPosition = Integer.valueOf(end);
+        }
+        return bookRepository.findAllAvailableBooks(startPosition, endPosition, title, isbn);
+    }
+
+    @Transactional(readOnly = true)
+    public Long countAvailableBooks() {
+        return bookRepository.countAvailableBooks();
     }
 }

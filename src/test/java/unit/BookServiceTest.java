@@ -107,6 +107,26 @@ public class BookServiceTest {
     }
 
     @Test
+    public void givenOneAvailableBook_findAllAvailableBooks_returnsTheAvailableBook() {
+        BookListingTO expectedBookListingTO = new BookListingTO();
+        Mockito.when(mockRepository.findAllAvailableBooks(0, 5, null, null)).thenReturn(expectedBookListingTO);
+
+        BookListingTO bookListingTO = service.findAllAvailableBooks("0", "5", null, null);
+
+        assertThat(bookListingTO).isEqualTo(expectedBookListingTO);
+    }
+
+    @Test
+    public void givenOneAvailableBook_findAllBooksWithNegativeParams_returnsListOfBooks() {
+        BookListingTO expectedBookListingTO = new BookListingTO();
+        Mockito.when(mockRepository.findAllAvailableBooks(0, 0, null, null)).thenReturn(expectedBookListingTO);
+
+        BookListingTO bookListingTO = service.findAllAvailableBooks("-1", "-3", null, null);
+
+        assertThat(bookListingTO).isEqualTo(expectedBookListingTO);
+    }
+
+    @Test
     public void givenOneBook_findAllBooksWithNegativeParams_returnsListOfBooks() {
         BookListingTO expectedBookListingTO = new BookListingTO();
         Mockito.when(mockRepository.findAllBooks(0, 0, null, null)).thenReturn(expectedBookListingTO);

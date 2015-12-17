@@ -11,7 +11,7 @@ import java.util.List;
 
 public class BorrowedHistoryFixture {
 
-    public static BorrowHistoryItem createAvailableHistoryItem() {
+    public static BorrowHistoryItem createBorrowedHistoryItem() {
         return BorrowHistoryItem.BorrowedHistoryBuilder.borrowedHistory()
                 .withBook(BookTestFixture.createBookWithOneAuthorAndOneCategory())
                 .withMember(MemberTestFixture.createMember())
@@ -19,7 +19,7 @@ public class BorrowedHistoryFixture {
                 .build();
     }
 
-    public static BorrowHistoryItem createBorrowedHistoryItem() {
+    public static BorrowHistoryItem createAvailableHistoryItem() {
         return BorrowHistoryItem.BorrowedHistoryBuilder.borrowedHistory()
                 .withBook(BookTestFixture.createBookWithOneAuthorAndOneCategory())
                 .withMember(MemberTestFixture.createMember())

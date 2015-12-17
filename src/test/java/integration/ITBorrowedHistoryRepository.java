@@ -108,7 +108,7 @@ public class ITBorrowedHistoryRepository {
         Book book = bookRepository.createBook(BookTestFixture.createBookWithOneAuthorAndOneCategory());
         Member member = memberRepository.createMember(MemberTestFixture.createMember());
 
-        BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createAvailableHistoryItem();
+        BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createBorrowedHistoryItem();
         borrowHistoryItem.setBook(book);
         borrowHistoryItem.setMember(member);
 

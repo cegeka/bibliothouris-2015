@@ -17,8 +17,10 @@ import java.util.Set;
 @Entity
 @NamedQueries({
         @NamedQuery(name = Book.LIST_ALL_BOOKS, query = "SELECT b FROM Book b ORDER BY LOWER(b.title)"),
+        @NamedQuery(name = Book.LIST_ALL_AVAILABLE_BOOKS, query = "SELECT b FROM Book b WHERE b.id NOT IN (SELECT bHist.book.id FROM BorrowHistoryItem bHist WHERE bHist.endDate IS NULL)"),
         @NamedQuery(name = Book.DELETE_ALL_BOOKS, query = "DELETE FROM Book b"),
         @NamedQuery(name = Book.COUNT_BOOKS, query = "SELECT COUNT(b.id) FROM Book b"),
+        @NamedQuery(name = Book.COUNT_AVAILABLE_BOOKS, query = "SELECT COUNT(b.id) FROM Book b WHERE b.id NOT IN (SELECT bHist.book.id FROM BorrowHistoryItem bHist)"),
         @NamedQuery(name = Book.GET_BOOK_TITLES, query = "SELECT DISTINCT new cgk.bibliothouris.learning.application.transferobject.BookFilterValueTO(b.title) FROM Book b"),
         @NamedQuery(name = Book.GET_BOOK_ISBN_CODES, query = "SELECT DISTINCT new cgk.bibliothouris.learning.application.transferobject.BookFilterValueTO(b.isbn) FROM Book b")
 })
@@ -26,8 +28,10 @@ import java.util.Set;
 public class Book {
 
     public static final String LIST_ALL_BOOKS = "LIST_ALL_BOOKS";
+    public static final String LIST_ALL_AVAILABLE_BOOKS = "LIST_ALL_AVAILABLE_BOOKS";
     public static final String DELETE_ALL_BOOKS = "DELETE_ALL_BOOKS";
     public static final String COUNT_BOOKS = "COUNT_BOOKS";
+    public static final String COUNT_AVAILABLE_BOOKS = "COUNT_AVAILABLE_BOOKS";
     public static final String GET_BOOK_TITLES = "GET_BOOK_TITLES";
     public static final String GET_BOOK_ISBN_CODES = "GET_BOOK_ISBN_CODES";
 

@@ -6,8 +6,14 @@ import cgk.bibliothouris.learning.application.transferobject.BookTO;
 import cgk.bibliothouris.learning.application.transferobject.BookWithStatusTO;
 import cgk.bibliothouris.learning.config.AppConfig;
 import cgk.bibliothouris.learning.repository.BookRepository;
+import cgk.bibliothouris.learning.repository.BorrowHistoryRepository;
+import cgk.bibliothouris.learning.repository.MemberRepository;
 import cgk.bibliothouris.learning.service.entity.Book;
+import cgk.bibliothouris.learning.service.entity.BorrowHistoryItem;
+import cgk.bibliothouris.learning.service.entity.Member;
 import fixture.BookTestFixture;
+import fixture.BorrowedHistoryFixture;
+import fixture.MemberTestFixture;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,8 +33,16 @@ public class ITBookRepository {
 
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private BorrowHistoryRepository borrowRepository;
+
+    @Autowired
+    private MemberRepository memberRepository;
+
     private Book bookWithOneAuthorAndOneCategory,
                  bookWithOneAuthorAndThreeCategories, bookWithFourAuthorsAndThreeCategories;
+
 
     @Before
     public void setUp() {
@@ -68,6 +82,40 @@ public class ITBookRepository {
 
         assertThat(foundBookListingTO.getBooksCount()).isEqualTo(1);
         assertThat(foundBookListingTO.getBooks()).contains(expectedBookTO);
+    }
+
+    @Test
+    public void givenOneAvailableBookAndOneBorrowed_findAvailableBooks_findTheBook() {
+        Member member = memberRepository.createMember(MemberTestFixture.createMember());
+        Book book = bookRepository.createBook(bookWithOneAuthorAndThreeCategories);
+        BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createBorrowedHistoryItem();
+        borrowHistoryItem.setBook(book);
+        borrowHistoryItem.setMember(member);
+        Book availableBook = bookRepository.createBook(bookWithFourAuthorsAndThreeCategories);
+        BorrowHistoryItem borrowedHistory = borrowRepository.addBorrowedBook(borrowHistoryItem);
+        BookTO expectedBookTO = new BookTO(availableBook);
+
+        BookListingTO foundBookListingTO = bookRepository.findAllAvailableBooks(0, 5, null, null);
+
+        assertThat(foundBookListingTO.getBooksCount()).isEqualTo(1);
+        assertThat(foundBookListingTO.getBooks()).contains(expectedBookTO);
+    }
+
+    @Test
+    public void givenTwoAvailableBooksAndOneBorrowedBook_countAvailableBooks_returnAvailableBooksNumber() {
+        Book book1 = bookRepository.createBook(bookWithOneAuthorAndOneCategory);
+        Book book2 = bookRepository.createBook(bookWithFourAuthorsAndThreeCategories);
+        Member member = memberRepository.createMember(MemberTestFixture.createMember());
+        Book book = bookRepository.createBook(bookWithOneAuthorAndThreeCategories);
+        BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createBorrowedHistoryItem();
+        borrowHistoryItem.setBook(book);
+        borrowHistoryItem.setMember(member);
+        Book availableBook = bookRepository.createBook(bookWithFourAuthorsAndThreeCategories);
+        BorrowHistoryItem borrowedHistory = borrowRepository.addBorrowedBook(borrowHistoryItem);
+
+        Long count = bookRepository.countAvailableBooks();
+
+        assertThat(count).isEqualTo(2);
     }
 
     @Test

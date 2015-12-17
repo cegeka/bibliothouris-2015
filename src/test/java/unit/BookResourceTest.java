@@ -97,6 +97,18 @@ public class BookResourceTest {
     }
 
     @Test
+    public void givenAListOfBooks_findAllAvailableBooks_return200OKResponse() {
+        BookListingTO bookListingTO = new BookListingTO();
+        bookListingTO.setBooks(Arrays.asList(new BookTO()));
+        Mockito.when(mockBookService.findAllAvailableBooks("0", "5", null, null)).thenReturn(bookListingTO);
+
+        Response response = bookResource.getAllAvailableBooks(Integer.toString(0), Integer.toString(5), null, null);
+
+        Mockito.verify(mockBookService, times(1)).findAllAvailableBooks("0", "5", null, null);
+        assertThat(response.getStatusInfo()).isEqualTo(Status.OK);
+    }
+
+    @Test
     public void givenAListOfBooks_findAllBooksWithoutParams_returnCorrectEntity() {
         BookListingTO bookListingTO = new BookListingTO();
         bookListingTO.setBooks(Arrays.asList(new BookTO()));
@@ -109,6 +121,18 @@ public class BookResourceTest {
     }
 
     @Test
+    public void givenAListOfBooks_findAllAvailableBooksWithoutParams_returnCorrectEntity() {
+        BookListingTO bookListingTO = new BookListingTO();
+        bookListingTO.setBooks(Arrays.asList(new BookTO()));
+        Mockito.when(mockBookService.findAllAvailableBooks("", "", null, null)).thenReturn(bookListingTO);
+
+        Response response = bookResource.getAllAvailableBooks("", "", null, null);
+
+        Mockito.verify(mockBookService, times(1)).findAllAvailableBooks("", "", null, null);
+        assertThat(response.getEntity()).isEqualTo(bookListingTO);
+    }
+
+    @Test
     public void givenAnEmptyListOfBooks_findAllBooks_return404NotFound() {
         BookListingTO bookListingTO = new BookListingTO();
         bookListingTO.setBooks(new ArrayList<>());
@@ -117,6 +141,18 @@ public class BookResourceTest {
         Response response = bookResource.getAllBooks(Integer.toString(0),Integer.toString(5), null, null);
 
         Mockito.verify(mockBookService, times(1)).findAllBooks("0", "5", null, null);
+        assertThat(response.getStatusInfo()).isEqualTo(Status.NOT_FOUND);
+    }
+
+    @Test
+    public void givenAnEmptyListOfBooks_findAllAvailableBooks_return404NotFound() {
+        BookListingTO bookListingTO = new BookListingTO();
+        bookListingTO.setBooks(new ArrayList<>());
+        Mockito.when(mockBookService.findAllAvailableBooks("0", "5", null, null)).thenReturn(bookListingTO);
+
+        Response response = bookResource.getAllAvailableBooks(Integer.toString(0),Integer.toString(5), null, null);
+
+        Mockito.verify(mockBookService, times(1)).findAllAvailableBooks("0", "5", null, null);
         assertThat(response.getStatusInfo()).isEqualTo(Status.NOT_FOUND);
     }
 
