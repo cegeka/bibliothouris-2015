@@ -80,7 +80,7 @@ public class ITBorrowedHistoryRepository {
         BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(buildBorrowHistoryIem());
         DetailedBorrowHistoryTO transformedPersistedItem = new DetailedBorrowHistoryTO(persistedHistoryItem);
 
-        List<DetailedBorrowHistoryTO> borrowedBooks = borrowHistoryRepository.getBorrowedBooks(1,1000);
+        List<DetailedBorrowHistoryTO> borrowedBooks = borrowHistoryRepository.getBorrowedBooks(1,1000, "title,isbn,date","asc,asc,desc");
 
         assertThat(borrowedBooks).contains(transformedPersistedItem);
     }

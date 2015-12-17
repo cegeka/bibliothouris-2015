@@ -123,9 +123,9 @@ public class BorrowHistoryResourceTest {
     public void givenValidBorrowHistoryItems_whenWeRetrieveThemAll_thenWeGet200OK(){
         List<DetailedBorrowHistoryTO> borrowHistoryList= BorrowedHistoryFixture.createDetailedBorrowHistoryTOList();
 
-        Mockito.when(service.getActiveBorrowedBooks("1", "10")).thenReturn(borrowHistoryList);
+        Mockito.when(service.getActiveBorrowedBooks("1", "10", "title,isbn,date","asc,asc,desc")).thenReturn(borrowHistoryList);
 
-        Response response = resource.getAllHistoryItems("1", "10");
+        Response response = resource.getAllHistoryItems("1", "10", "title,isbn,date","asc,asc,desc");
 
         Assertions.assertThat(response.getStatus()).isEqualTo(Response.Status.OK.getStatusCode());
     }
@@ -134,9 +134,9 @@ public class BorrowHistoryResourceTest {
     public void givenValidBorrowHistoryItems_whenWeRetrieveThemAll_thenWeGetThemALl(){
         List<DetailedBorrowHistoryTO> borrowHistoryList= BorrowedHistoryFixture.createDetailedBorrowHistoryTOList();
 
-        Mockito.when(service.getActiveBorrowedBooks("1", "10")).thenReturn(borrowHistoryList);
+        Mockito.when(service.getActiveBorrowedBooks("1", "10", "title,isbn,date","asc,asc,desc")).thenReturn(borrowHistoryList);
 
-        Response response = resource.getAllHistoryItems("1", "10");
+        Response response = resource.getAllHistoryItems("1", "10", "title,isbn,date","asc,asc,desc");
 
         Assertions.assertThat(response.getEntity()).isEqualTo(borrowHistoryList);
     }
@@ -145,9 +145,9 @@ public class BorrowHistoryResourceTest {
     public void givenEmBorrowHistoryItems_whenWeRetrieveThemAll_thenWeGet404NotFound(){
         List<DetailedBorrowHistoryTO> borrowHistoryList= BorrowedHistoryFixture.createEmptyDetailedBorrowHistoryTOList();
 
-        Mockito.when(service.getActiveBorrowedBooks("1", "10")).thenReturn(borrowHistoryList);
+        Mockito.when(service.getActiveBorrowedBooks("1", "10","","")).thenReturn(borrowHistoryList);
 
-        Response response = resource.getAllHistoryItems("1", "10");
+        Response response = resource.getAllHistoryItems("1", "10","","");
 
         Assertions.assertThat(response.getStatus()).isEqualTo(Response.Status.NOT_FOUND.getStatusCode());
     }

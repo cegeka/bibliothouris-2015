@@ -11,11 +11,10 @@
             <table class="table table-fixed">
                 <thead>
                 <tr>
-                    <th width=20%>Title</th>
+                    <th width=20% ng-click="vm.addTitleToSort('title')">Title</th>
                     <th width=15% class="hidden-xs hidden-sm">Authors</th>
-                    <th width=15% class="hidden-xs hidden-sm hidden-md">ISBN</th>
-                    <th width=10% class="text-center">Lend date</th>
-                    <th width=10% class="text-center">Return date</th>
+                    <th width=15% class="hidden-xs hidden-sm hidden-md" ng-click="vm.addTitleToSort('isbn')">ISBN</th>
+                    <th width=10% class="text-center" ng-click="vm.addTitleToSort('date')">Lend date</th>
                     <th width=10% class="text-center">Borrower</th>
                 </tr>
                 </thead>
@@ -32,8 +31,7 @@
                     </td>
                     <td class="hidden-xs hidden-sm hidden-md">{{book.isbn}}</td>
                     <td class="text-center">{{book.startLendDate}}</td>
-                    <td class="text-center">{{book.endLendDate || "-"}}</td>
-                    <td class="text-center">{{book.borrowerFirstName}} {{book.borrowerLastName}}</td>
+                    <td class="text-center" tooltip-placement="bottom" ng-mouseover="vm.enableTooltip(book.borrowerUUID)" uib-tooltip="{{vm.getTooltipContent(book)}}" tooltip-enable="vm.tooltip" tooltip-append-to-body="true">{{book.borrowerFirstName}} {{book.borrowerLastName}}</td>
                 </tr>
                 </tbody>
             </table>

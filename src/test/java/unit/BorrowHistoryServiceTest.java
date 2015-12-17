@@ -96,9 +96,9 @@ public class BorrowHistoryServiceTest {
     @Test
     public void givenAPopulatedHistoryFor_whenWeRetrieveIt_weGetThatHistory(){
         List<DetailedBorrowHistoryTO> borrowHistoryList= BorrowedHistoryFixture.createDetailedBorrowHistoryTOList();
-        Mockito.when(borrowHistoryRepository.getBorrowedBooks(1, 10)).thenReturn(borrowHistoryList);
+        Mockito.when(borrowHistoryRepository.getBorrowedBooks(1, 10, "title,isbn,date","asc,asc,desc")).thenReturn(borrowHistoryList);
 
-        List<DetailedBorrowHistoryTO> foundGlobalBorrowedHistoryItems = service.getActiveBorrowedBooks("1", "10");
+        List<DetailedBorrowHistoryTO> foundGlobalBorrowedHistoryItems = service.getActiveBorrowedBooks("1", "10", "title,isbn,date","asc,asc,desc");
 
         Assertions.assertThat(foundGlobalBorrowedHistoryItems).isEqualTo(borrowHistoryList);
     }

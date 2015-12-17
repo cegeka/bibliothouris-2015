@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,7 +19,7 @@ public class BorrowHistoryRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public BorrowHistoryItem addBorrowedBook(BorrowHistoryItem historyItem){
+    public BorrowHistoryItem addBorrowedBook(BorrowHistoryItem historyItem) {
         historyItem.getMember().getHistory().add(historyItem);
 
         entityManager.persist(historyItem);
@@ -42,9 +43,9 @@ public class BorrowHistoryRepository {
         return query.getSingleResult();
     }
 
-public List<DetailedBorrowHistoryTO> getBorrowedBooks(Integer start, Integer end) {
-        TypedQuery<BorrowHistoryItem> query = entityManager.createNamedQuery(BorrowHistoryItem.LIST_ALL_BORROWED_BOOKS, BorrowHistoryItem.class);
-        query.setMaxResults(end-start).setFirstResult(start);
+    public List<DetailedBorrowHistoryTO> getBorrowedBooks(Integer start, Integer end, String sort, String order) {
+        TypedQuery<BorrowHistoryItem> query = entityManager.createQuery("SELECT b from BorrowHistoryItem b where (b.endDate IS NULL)" + generateSortQueryClause(sort, order), BorrowHistoryItem.class);
+        //query.setMaxResults(end - start).setFirstResult(start);
 
         List<BorrowHistoryItem> borrowHistoryItems = query.getResultList();
         return borrowHistoryItems.stream().map(DetailedBorrowHistoryTO::new).collect(Collectors.toList());
@@ -67,5 +68,33 @@ public List<DetailedBorrowHistoryTO> getBorrowedBooks(Integer start, Integer end
 
         return query.getSingleResult();
 
+    }
+
+    private String generateSortQueryClause(String sortCriteria, String sortOrder) {
+        String sortClause = "ORDER BY ";
+
+        if (sortCriteria == null)
+            return sortClause + "lower(b.book.title)";
+
+        List<String> s = new ArrayList<>();
+        String[] sortOrders = sortOrder.split(",");
+        for (String criteria : sortCriteria.split(",")) {
+            if (criteria.equals("title"))
+                s.add("lower(b.book.title)");
+            if (criteria.equals("isbn"))
+                s.add("b.book.isbn");
+            if (criteria.equals("date"))
+                s.add("b.startDate");
+        }
+
+        for (int i = 0; i < s.size(); i++) {
+            if (i == 0)
+                sortClause += s.get(i);
+            else
+                sortClause += ", " + s.get(i);
+            sortClause += " " + sortOrders[i];
+        }
+
+        return sortClause;
     }
 }

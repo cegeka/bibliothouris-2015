@@ -68,9 +68,10 @@ public class BorrowHistoryResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllHistoryItems(@QueryParam("start") String start, @QueryParam("end") String end){
+    public Response getAllHistoryItems(@QueryParam("start") String start, @QueryParam("end") String end, @QueryParam("sort") String sort, @QueryParam("order") String order){
+
         List<DetailedBorrowHistoryTO> detailedBorrowedHistoryItems
-                = service.getActiveBorrowedBooks(start, end);
+                = service.getActiveBorrowedBooks(start, end, sort, order);
 
         if(detailedBorrowedHistoryItems.size() == 0)
             return Response.status(Response.Status.NOT_FOUND).build();

@@ -94,7 +94,7 @@ public class BorrowHistoryService {
         return false;
     }
 
-    public List<DetailedBorrowHistoryTO> getActiveBorrowedBooks(String start, String end) {
+    public List<DetailedBorrowHistoryTO> getActiveBorrowedBooks(String start, String end, String sort, String order) {
         Integer startPosition, endPosition;
 
         if (start == null || isNegative(start))
@@ -107,6 +107,6 @@ public class BorrowHistoryService {
         else
             endPosition = Integer.valueOf(end);
 
-        return borrowHistoryRepository.getBorrowedBooks(startPosition, endPosition);
+        return borrowHistoryRepository.getBorrowedBooks(startPosition, endPosition, sort, order);
     }
 }
