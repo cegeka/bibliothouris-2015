@@ -2,7 +2,6 @@ package cgk.bibliothouris.learning.application.resource;
 
 import cgk.bibliothouris.learning.application.transferobject.Status;
 import cgk.bibliothouris.learning.service.entity.Book;
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;

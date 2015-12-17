@@ -239,8 +239,8 @@ public class Member {
             return this;
         }
 
-        public MemberBuilder withAdress(String adress) {
-            member.address = adress;
+        public MemberBuilder withAddress(String address) {
+            member.address = address;
             return this;
         }
 

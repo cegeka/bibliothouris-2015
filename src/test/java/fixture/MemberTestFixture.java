@@ -12,7 +12,7 @@ public class MemberTestFixture {
     public static Member createMember() {
         LocalDate date = LocalDate.of(2015,4,4);
         return Member.MemberBuilder.member()
-                .withAdress("DefaultAdress")
+                .withAddress("DefaultAdress")
                 .withCity("DefaultCity")
                 .withEmail("DefaultEmail")
                 .withFirstName("Stumpy")
@@ -27,7 +27,7 @@ public class MemberTestFixture {
 
     public static Member createMemberWithNoUUID() {
         return Member.MemberBuilder.member()
-                .withAdress("DefaultAdress")
+                .withAddress("DefaultAdress")
                 .withCity("DefaultCity")
                 .withEmail("DefaultEmail")
                 .withFirstName("Stumpy")
@@ -40,7 +40,7 @@ public class MemberTestFixture {
 
     public static Member createInvalidMemberWithNoLastName() {
         return Member.MemberBuilder.member()
-                .withAdress("DefaultAdress")
+                .withAddress("DefaultAdress")
                 .withCity("DefaultCity")
                 .withEmail("DefaultEmail")
                 .withFirstName("Stumpy")
@@ -53,7 +53,7 @@ public class MemberTestFixture {
 
     public static Member createInvalidMemberWithNoFirstName() {
         return Member.MemberBuilder.member()
-                .withAdress("DefaultAdress")
+                .withAddress("DefaultAdress")
                 .withCity("DefaultCity")
                 .withEmail("DefaultEmail")
                 .withLastName("Lumpy")
@@ -66,7 +66,7 @@ public class MemberTestFixture {
 
     public static Member createInvalidMemberWithNoBirthDate() {
         return Member.MemberBuilder.member()
-                .withAdress("DefaultAdress")
+                .withAddress("DefaultAdress")
                 .withCity("DefaultCity")
                 .withEmail("DefaultEmail")
                 .withFirstName("Stumpy")
@@ -79,7 +79,7 @@ public class MemberTestFixture {
 
     public static Member createInvalidMemberWithNoNationalNumber() {
         return Member.MemberBuilder.member()
-                .withAdress("DefaultAdress")
+                .withAddress("DefaultAdress")
                 .withCity("DefaultCity")
                 .withEmail("DefaultEmail")
                 .withFirstName("Stumpy")
