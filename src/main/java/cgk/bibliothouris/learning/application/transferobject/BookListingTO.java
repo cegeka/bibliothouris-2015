@@ -1,27 +1,28 @@
 package cgk.bibliothouris.learning.application.transferobject;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
 import java.util.List;
 
 @XmlRootElement
-public class BookListingTO {
+public class BookListingTO<T> {
 
-    private List<BookTO> books;
+    private List<T> books = new ArrayList<>();
 
     private Long booksCount;
 
     public BookListingTO() {}
 
-    public BookListingTO(List<BookTO> books, Long booksCount) {
+    public BookListingTO(List<T> books, Long booksCount) {
         this.books = books;
         this.booksCount = booksCount;
     }
 
-    public List<BookTO> getBooks() {
+    public List<T> getBooks() {
         return books;
     }
 
-    public void setBooks(List<BookTO> books) {
+    public void setBooks(List<T> books) {
         this.books = books;
     }
 

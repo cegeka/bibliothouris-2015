@@ -1,6 +1,5 @@
 package unit;
 
-import cgk.bibliothouris.learning.application.transferobject.BookBorrowerTO;
 import cgk.bibliothouris.learning.application.transferobject.BorrowHistoryItemTO;
 import cgk.bibliothouris.learning.application.transferobject.GlobalBorrowHistoryTO;
 import cgk.bibliothouris.learning.application.transferobject.MemberBorrowHistoryTO;
@@ -8,7 +7,6 @@ import cgk.bibliothouris.learning.repository.BookRepository;
 import cgk.bibliothouris.learning.repository.BorrowHistoryRepository;
 import cgk.bibliothouris.learning.repository.MemberRepository;
 import cgk.bibliothouris.learning.service.BorrowHistoryService;
-import cgk.bibliothouris.learning.service.entity.Book;
 import cgk.bibliothouris.learning.service.entity.BorrowHistoryItem;
 import cgk.bibliothouris.learning.service.exception.ValidationException;
 import fixture.BorrowedHistoryFixture;
@@ -23,8 +21,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BorrowHistoryServiceTest {
@@ -107,19 +103,4 @@ public class BorrowHistoryServiceTest {
         Assertions.assertThat(foundGlobalBorrowedHistoryItems).isEqualTo(borrowHistoryList);
     }
 
-    @Test(expected = ValidationException.class)
-    public void givenAnInvalidBookId_whenRetrieveBorrowerDetails_throwsValidationException() {
-        service.findBookBorrowerDetails(-1);
-    }
-
-    @Test
-    public void givenABookId_whenRetrieveBorrowerDetails_returnsTheCorrectDetails() {
-        BookBorrowerTO expectedBookBorrowerTO = new BookBorrowerTO();
-        Mockito.when(bookRepository.findBookById(1)).thenReturn(new Book());
-        Mockito.when(borrowHistoryRepository.findBookBorrowerDetails(1)).thenReturn(expectedBookBorrowerTO);
-
-        BookBorrowerTO foundBookBorrowerTO = service.findBookBorrowerDetails(1);
-
-        Assertions.assertThat(foundBookBorrowerTO).isEqualTo(expectedBookBorrowerTO);
-    }
 }

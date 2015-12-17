@@ -94,8 +94,8 @@
                 });
         }
 
-        function getMemberBorrowedHistory(memberId) {
-            var searchUrl = "?start=0&end=1";
+        function getMemberBorrowedHistory(memberId, itemsPerPage) {
+            var searchUrl = "?start=0&end=" + itemsPerPage;
             if ($location.search().start && $location.search().end)
                 searchUrl = "?start=" + $location.search().start + "&" + "end=" + $location.search().end;
             return $http.get("/api/borrow/" + memberId + searchUrl)

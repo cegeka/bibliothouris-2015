@@ -89,7 +89,7 @@ public class ITBorrowedHistoryRepository {
     public void givenABookId_whenWeRetrieveBorrowerDetails_WeGetTheCorrectDetails(){
         BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(buildBorrowHistoryIem());
 
-        BookBorrowerTO bookBorrowerTO = borrowHistoryRepository.findBookBorrowerDetails(persistedHistoryItem.getBook().getId());
+        BookBorrowerTO bookBorrowerTO = bookRepository.findBookBorrowerDetails(persistedHistoryItem.getBook().getId());
 
         assertThat(bookBorrowerTO.getIsBorrowed()).isTrue();
         assertThat(bookBorrowerTO.getUuid()).isEqualTo(persistedHistoryItem.getMember().getUUID());
@@ -99,7 +99,7 @@ public class ITBorrowedHistoryRepository {
     public void givenABookId_whenWeRetrieveBorrowerDetails_WeFindOutThatTheBookIsAvailable(){
         Book book = bookRepository.createBook(BookTestFixture.createBookWithOneAuthorAndOneCategory());
 
-        BookBorrowerTO bookBorrowerTO = borrowHistoryRepository.findBookBorrowerDetails(book.getId());
+        BookBorrowerTO bookBorrowerTO = bookRepository.findBookBorrowerDetails(book.getId());
 
         assertThat(bookBorrowerTO.getIsBorrowed()).isFalse();
     }

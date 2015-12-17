@@ -3,6 +3,7 @@ package integration;
 import cgk.bibliothouris.learning.application.transferobject.BookFilterValueTO;
 import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
 import cgk.bibliothouris.learning.application.transferobject.BookTO;
+import cgk.bibliothouris.learning.application.transferobject.BookWithStatusTO;
 import cgk.bibliothouris.learning.config.AppConfig;
 import cgk.bibliothouris.learning.repository.BookRepository;
 import cgk.bibliothouris.learning.service.entity.Book;
@@ -61,7 +62,7 @@ public class ITBookRepository {
     @Test
     public void givenOneBook_findBooks_findTheBook() {
         Book book1 = bookRepository.createBook(bookWithOneAuthorAndThreeCategories);
-        BookTO expectedBookTO = new BookTO(book1);
+        BookWithStatusTO expectedBookTO = new BookWithStatusTO(book1);
 
         BookListingTO foundBookListingTO = bookRepository.findAllBooks(0, 5, null, null);
 
@@ -73,8 +74,8 @@ public class ITBookRepository {
     public void givenTwoBooks_findBooks_findTwoBooks() {
         Book book1 = bookRepository.createBook(bookWithFourAuthorsAndThreeCategories);
         Book book2 = bookRepository.createBook(bookWithOneAuthorAndOneCategory);
-        BookTO expectedBookTO1 = new BookTO(book1);
-        BookTO expectedBookTO2 = new BookTO(book2);
+        BookWithStatusTO expectedBookTO1 = new BookWithStatusTO(book1);
+        BookWithStatusTO expectedBookTO2 = new BookWithStatusTO(book2);
 
         BookListingTO foundBookListingTO = bookRepository.findAllBooks(0, 5, null, null);
 
@@ -87,7 +88,7 @@ public class ITBookRepository {
     public void givenTwoBooks_findBooksFilteredByTitle_findTheCorrectBooks() {
         Book book1 = bookRepository.createBook(bookWithFourAuthorsAndThreeCategories);
         Book book2 = bookRepository.createBook(bookWithOneAuthorAndOneCategory);
-        BookTO expectedBookTO = new BookTO(book1);
+        BookWithStatusTO expectedBookTO = new BookWithStatusTO(book1);
 
         BookListingTO foundBookListingTO = bookRepository.findAllBooks(0, 5, "Clean Code", null);
 
@@ -99,7 +100,7 @@ public class ITBookRepository {
     public void givenTwoBooks_findBooksFilteredByIsbn_findTheCorrectBooks() {
         Book book1 = bookRepository.createBook(bookWithFourAuthorsAndThreeCategories);
         Book book2 = bookRepository.createBook(bookWithOneAuthorAndOneCategory);
-        BookTO expectedBookTO = new BookTO(book1);
+        BookWithStatusTO expectedBookTO = new BookWithStatusTO(book1);
 
         BookListingTO foundBookListingTO = bookRepository.findAllBooks(0, 5, null, book1.getIsbn());
 

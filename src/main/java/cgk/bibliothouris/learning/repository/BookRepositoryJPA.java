@@ -1,11 +1,10 @@
 package cgk.bibliothouris.learning.repository;
 
-import cgk.bibliothouris.learning.application.transferobject.BookFilterValueTO;
-import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
-import cgk.bibliothouris.learning.application.transferobject.BookTO;
+import cgk.bibliothouris.learning.application.transferobject.*;
 import cgk.bibliothouris.learning.service.entity.Author;
 import cgk.bibliothouris.learning.service.entity.Book;
 import cgk.bibliothouris.learning.service.entity.BookCategory;
+import cgk.bibliothouris.learning.service.entity.BorrowHistoryItem;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -37,9 +36,24 @@ public class BookRepositoryJPA implements BookRepository {
         List<Book> books = findBooks(start, end, title, isbn);
         Long booksCount = countBooks(title, isbn);
 
-        List<BookTO> bookTOS = books.stream().map(book -> new BookTO(book)).collect(Collectors.toList());
+        List<BookWithStatusTO> bookTOS = books.stream().map(BookWithStatusTO::new).collect(Collectors.toList());
+        for (BookWithStatusTO bookTO : bookTOS)
+            bookTO.setIsAvailable(!findBookBorrowerDetails(bookTO.getId()).getIsBorrowed());
 
         return new BookListingTO(bookTOS, booksCount);
+    }
+
+    @Override
+    public BookBorrowerTO findBookBorrowerDetails(Integer bookId) {
+        TypedQuery<BookBorrowerTO> query = entityManager.createNamedQuery(BorrowHistoryItem.GET_CURRENT_BORROWER_DETAILS_FOR_BOOK, BookBorrowerTO.class);
+        query.setParameter("bookId", bookId);
+
+        List<BookBorrowerTO> bookBorrowerTOs = query.getResultList();
+
+        if (bookBorrowerTOs.isEmpty())
+            return new BookBorrowerTO();
+        else
+            return bookBorrowerTOs.get(0);
     }
 
     @Override

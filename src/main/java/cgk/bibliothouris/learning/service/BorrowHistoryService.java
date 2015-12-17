@@ -1,6 +1,5 @@
 package cgk.bibliothouris.learning.service;
 
-import cgk.bibliothouris.learning.application.transferobject.BookBorrowerTO;
 import cgk.bibliothouris.learning.application.transferobject.BorrowHistoryItemTO;
 import cgk.bibliothouris.learning.application.transferobject.GlobalBorrowHistoryTO;
 import cgk.bibliothouris.learning.application.transferobject.MemberBorrowHistoryTO;
@@ -54,7 +53,7 @@ public class BorrowHistoryService {
             startPosition = Integer.valueOf(start);
 
         if (end == null || isNegative(end))
-            endPosition = Integer.valueOf(countBorrowedBooksByMember(memberUuid).intValue());
+            endPosition = countBorrowedBooksByMember(memberUuid).intValue();
         else
             endPosition = Integer.valueOf(end);
 
@@ -64,14 +63,6 @@ public class BorrowHistoryService {
     @Transactional(readOnly = true)
     public Long countBorrowedBooksByMember(String memberUuid) {
         return borrowHistoryRepository.countBorrowedBooksByMember(memberUuid);
-    }
-
-    @Transactional(readOnly = true)
-    public BookBorrowerTO findBookBorrowerDetails(Integer bookId) {
-        if (bookRepository.findBookById(bookId) == null)
-            throw new ValidationException("The book was not found in the library!");
-
-        return borrowHistoryRepository.findBookBorrowerDetails(bookId);
     }
 
     private void validateBorrowHistoryItem(BorrowHistoryItemTO borrowHistoryItemTO, Book book, Member member) {

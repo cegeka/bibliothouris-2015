@@ -1,5 +1,6 @@
 package cgk.bibliothouris.learning.service;
 
+import cgk.bibliothouris.learning.application.transferobject.BookBorrowerTO;
 import cgk.bibliothouris.learning.application.transferobject.BookFilterValueTO;
 import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
 import cgk.bibliothouris.learning.repository.BookRepository;
@@ -41,7 +42,7 @@ public class BookService {
             startPosition = Integer.valueOf(start);
         }
         if (end == null || isNegative(end)) {
-            endPosition = Integer.valueOf(countBooks().intValue());
+            endPosition = countBooks().intValue();
         } else {
             endPosition = Integer.valueOf(end);
         }
@@ -66,6 +67,14 @@ public class BookService {
     @Transactional(readOnly = true)
     public List<BookFilterValueTO> findAllBookIsbnCodes() {
         return bookRepository.findAllBookIsbnCodes();
+    }
+
+    @Transactional(readOnly = true)
+    public BookBorrowerTO findBookBorrowerDetails(Integer bookId) {
+        if (bookRepository.findBookById(bookId) == null)
+            throw new ValidationException("The book was not found in the library!");
+
+        return bookRepository.findBookBorrowerDetails(bookId);
     }
 
     public void deleteAllBooks() {

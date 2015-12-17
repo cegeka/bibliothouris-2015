@@ -40,9 +40,6 @@ public class BookResourceTest {
     private BookService mockBookService;
 
     @Mock
-    private BorrowHistoryService mockBorrowHistoryService;
-
-    @Mock
     private UriInfo mockUriInfo;
 
     @Test
@@ -215,7 +212,7 @@ public class BookResourceTest {
     @Test
     public void givenABookId_getBookBorrowerDetails_returns200OK() {
         BookBorrowerTO bookBorrowerTO = new BookBorrowerTO();
-        Mockito.when(mockBorrowHistoryService.findBookBorrowerDetails(1)).thenReturn(bookBorrowerTO);
+        Mockito.when(mockBookService.findBookBorrowerDetails(1)).thenReturn(bookBorrowerTO);
 
         Response response = bookResource.getBorrowerDetails(1);
 
@@ -225,7 +222,7 @@ public class BookResourceTest {
     @Test
     public void givenABookId_getBookBorrowerDetails_returnsTheCorrectBorrowerDetails() {
         BookBorrowerTO bookBorrowerTO = new BookBorrowerTO();
-        Mockito.when(mockBorrowHistoryService.findBookBorrowerDetails(1)).thenReturn(bookBorrowerTO);
+        Mockito.when(mockBookService.findBookBorrowerDetails(1)).thenReturn(bookBorrowerTO);
 
         Response response = bookResource.getBorrowerDetails(1);
 

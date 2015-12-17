@@ -68,9 +68,9 @@ public class ITBookResource extends JerseyTest {
     @Test
     public void givenAListOfBooks_GET_returnsTheListOfBooks() {
         Book newBook = client.post(PATH, bookWithOneAuthorAndOneCategory).readEntity(Book.class);
-        BookTO expectedBookTO = new BookTO(newBook);
+        BookWithStatusTO expectedBookTO = new BookWithStatusTO(newBook);
 
-        BookListingTO bookListingTO = client.get(PATH).readEntity(BookListingTO.class);
+        BookListingTO<BookWithStatusTO> bookListingTO = client.get(PATH).readEntity(new GenericType<BookListingTO<BookWithStatusTO>>() {});
 
         assertThat(bookListingTO.getBooks()).contains(expectedBookTO);
     }

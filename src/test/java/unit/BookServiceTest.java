@@ -1,5 +1,6 @@
 package unit;
 
+import cgk.bibliothouris.learning.application.transferobject.BookBorrowerTO;
 import cgk.bibliothouris.learning.application.transferobject.BookFilterValueTO;
 import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
 import cgk.bibliothouris.learning.repository.BookRepository;
@@ -7,6 +8,7 @@ import cgk.bibliothouris.learning.service.BookService;
 import cgk.bibliothouris.learning.service.entity.Book;
 import cgk.bibliothouris.learning.service.exception.ValidationException;
 import fixture.BookTestFixture;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -162,6 +164,22 @@ public class BookServiceTest {
         List<BookFilterValueTO> foundBookIsbnCodes = service.findAllBookIsbnCodes();
 
         assertThat(foundBookIsbnCodes.get(0).getValue()).isEqualTo(book.getIsbn());
+    }
+
+    @Test(expected = ValidationException.class)
+    public void givenAnInvalidBookId_whenRetrieveBorrowerDetails_throwsValidationException() {
+        service.findBookBorrowerDetails(-1);
+    }
+
+    @Test
+    public void givenABookId_whenRetrieveBorrowerDetails_returnsTheCorrectDetails() {
+        BookBorrowerTO expectedBookBorrowerTO = new BookBorrowerTO();
+        Mockito.when(mockRepository.findBookById(1)).thenReturn(new Book());
+        Mockito.when(mockRepository.findBookBorrowerDetails(1)).thenReturn(expectedBookBorrowerTO);
+
+        BookBorrowerTO foundBookBorrowerTO = service.findBookBorrowerDetails(1);
+
+        Assertions.assertThat(foundBookBorrowerTO).isEqualTo(expectedBookBorrowerTO);
     }
 
 }

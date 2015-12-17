@@ -1,5 +1,6 @@
 package cgk.bibliothouris.learning.repository;
 
+import cgk.bibliothouris.learning.application.transferobject.BookBorrowerTO;
 import cgk.bibliothouris.learning.application.transferobject.BookFilterValueTO;
 import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
 import cgk.bibliothouris.learning.service.entity.Book;
@@ -21,4 +22,6 @@ public interface BookRepository {
     List<BookFilterValueTO> findAllBookTitles();
 
     List<BookFilterValueTO> findAllBookIsbnCodes();
+
+    BookBorrowerTO findBookBorrowerDetails(Integer bookId);
 }

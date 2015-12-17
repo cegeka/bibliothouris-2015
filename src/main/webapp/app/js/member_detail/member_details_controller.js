@@ -27,7 +27,7 @@
                 });
 
             restService
-                .getMemberBorrowedHistory($routeParams.memberId)
+                .getMemberBorrowedHistory($routeParams.memberId, vm.itemsPerPage)
                 .then(function(data){
                     vm.borrowedBooks = data;
 
@@ -53,7 +53,7 @@
             start = vm.itemsPerPage * (vm.currentPage - 1);
             end = start + vm.itemsPerPage;
 
-            if (start != $location.search.start && end != $location.search.end) {
+            if (start != $location.search().start && end != $location.search().end) {
                 $location.search('start', start);
                 $location.search('end', end);
             }

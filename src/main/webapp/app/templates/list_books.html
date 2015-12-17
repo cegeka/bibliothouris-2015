@@ -26,9 +26,10 @@
             <table class="table table-fixed table-hover">
                 <thead>
                 <tr>
-                    <th width=40%>Title</th>
-                    <th width=40%>Authors</th>
+                    <th width=30%>Title</th>
+                    <th width=30%>Authors</th>
                     <th width=20%>ISBN</th>
+                    <th width=20%>Status</th>
                 </tr>
                 </thead>
 
@@ -43,6 +44,9 @@
                         </span>
                     </td>
                     <td>{{book.isbn}}</td>
+                    <td ng-class="{true:'greenColor', false:'darkRedColor'}[book.isAvailable]">
+                        {{book.isAvailable ? "AVAILABLE" : "LOANED"}}
+                    </td>
                 </tr>
                 </tbody>
             </table>
