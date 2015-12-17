@@ -29,7 +29,7 @@ public class ITLogin extends BaseAcceptance{
         login.inputTextIntoPasswordField(validPassword);
         login.clickOnLoginButton();
 
-        assertThat(driver.getCurrentUrl().contains("/#/status")).isTrue();
+        assertThat(driver.getCurrentUrl().contains("/#/books")).isTrue();
     }
 
     @Test
