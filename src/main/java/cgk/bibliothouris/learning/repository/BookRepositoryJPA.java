@@ -200,4 +200,30 @@ public class BookRepositoryJPA implements BookRepository {
         TypedQuery<Long> countQuery = entityManager.createQuery(statement + "AND" + filterClause, Long.class);
         return countQuery.getSingleResult();
     }
+
+//    private String generateSortQueryClause(String sortCriteria, String sortOrder) {
+//        String sortClause = "ORDER BY ";
+//
+//        if (sortCriteria == null)
+//            return sortClause + "lower(b.title)";
+//
+//        List<String> s = new ArrayList<>();
+//        String[] sortOrders = sortOrder.split(",");
+//        for (String criteria : sortClause.split(",")) {
+//            if (criteria.equals("title"))
+//                s.add("lower(b.title)");
+//            if (criteria.equals("isbn"))
+//                s.add("b.isbn");
+//        }
+//
+//        for (int i = 0; i < s.size(); i++) {
+//            if (i == 0)
+//                sortClause += s.get(i);
+//            else
+//                sortClause += ", " + s.get(i);
+//            sortClause += " " + sortOrders[i];
+//        }
+//
+//        return sortClause;
+//    }
 }
