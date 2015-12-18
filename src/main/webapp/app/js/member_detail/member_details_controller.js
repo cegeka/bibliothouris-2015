@@ -22,7 +22,6 @@
         vm.isCollapsed = false;
         vm.isBorrowCollapsed = false;
 
-
         vm.pageChanged = pageChanged;
         vm.borrowBook = borrowBook;
         vm.availableBooksPageChanged = availableBooksPageChanged;
@@ -128,7 +127,7 @@
             vm.historyItem = {
                 bookId: bookId,
                 memberUuid: vm.member.UUID,
-                startDate: moment(Date.now()).format("YYYY-MM-DD")
+                date: moment(Date.now()).format("YYYY-MM-DD")
             };
 
             restService

@@ -124,7 +124,9 @@
                 <label>Search by</label>
                 <select id="filter" class="form-control" ng-model="vm.filter"
                         ng-options="filter for filter in vm.searchFilters"></select>
-                <input id="filterValue" class="form-control" placeholder="{{vm.filter}}" ng-model="vm.filterValue">
+                <input id="filterValue" class="form-control" placeholder="{{vm.filter}}" ng-model="vm.filterValue"
+                       uib-typeahead="value.value for value in vm.populatedFilterValues | filter:$viewValue | limitTo:10"
+                       typeahead-on-select='vm.onSelectFilter()' typeahead-select-on-exact="true">
             </form>
 
             <br/>
