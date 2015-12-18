@@ -22,12 +22,16 @@
                         <i ng-show="vm.orderString == 'asc' || vm.sortString != 'isbn'" ng-class="{grayColor: vm.sortString != 'isbn'}" class="glyphicon glyphicon-sort-by-attributes" ng-click="vm.addFieldToSort('isbn')"></i>
                         <i ng-show="vm.orderString == 'desc' && vm.sortString == 'isbn'" ng-class="{grayColor: vm.sortString != 'isbn'}" class="glyphicon glyphicon-sort-by-attributes-alt" ng-click="vm.addFieldToSort('isbn')"></i>
                     </th>
+                    <th width=25%>
+                        Borrowed by
+                        <i ng-show="vm.orderString == 'asc' || vm.sortString != 'borrower'" ng-class="{grayColor: vm.sortString != 'borrower'}" class="glyphicon glyphicon-sort-by-attributes" ng-click="vm.addFieldToSort('borrower')"></i>
+                        <i ng-show="vm.orderString == 'desc' && vm.sortString == 'borrower'" ng-class="{grayColor: vm.sortString != 'borrower'}" class="glyphicon glyphicon-sort-by-attributes-alt" ng-click="vm.addFieldToSort('borrower')"></i>
+                    </th>
                     <th width=15% class="text-center" ng-click="vm.addFieldToSort('date')">
                         Lend date
                         <i ng-show="vm.orderString == 'asc' || vm.sortString != 'date'" ng-class="{grayColor: vm.sortString != 'date'}" class="glyphicon glyphicon-sort-by-attributes" ng-click="vm.addFieldToSort('date')"></i>
                         <i ng-show="vm.orderString == 'desc' && vm.sortString == 'date'" ng-class="{grayColor: vm.sortString != 'date'}" class="glyphicon glyphicon-sort-by-attributes-alt" ng-click="vm.addFieldToSort('date')"></i>
                     </th>
-                    <th width=25%>Borrower</th>
                 </tr>
                 </thead>
 
@@ -42,13 +46,13 @@
                                 </span>
                     </td>
                     <td class="hidden-xs hidden-sm hidden-md">{{book.isbn}}</td>
-                    <td class="text-center">{{book.startLendDate}}</td>
                     <td>
-                        {{book.borrowerFirstName}} {{book.borrowerLastName}}
+                        <a class="blackAnch" ng-href="#/member/{{book.borrowerUUID}}">{{book.borrowerFirstName}} {{book.borrowerLastName}}</a>
                         <span tooltip-placement="bottom" uib-tooltip="{{book.borrowerUUID}}" tooltip-append-to-body="true">
                             [{{book.borrowerUUID.substring(0,2) + ".." + book.borrowerUUID.substring(book.borrowerUUID.length - 3,book.borrowerUUID.length - 1)}}]
                         </span>
                     </td>
+                    <td class="text-center">{{book.startLendDate}}</td>
                 </tr>
                 </tbody>
             </table>

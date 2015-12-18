@@ -1,6 +1,5 @@
 package cgk.bibliothouris.learning.repository;
 
-import cgk.bibliothouris.learning.application.transferobject.BookBorrowerTO;
 import cgk.bibliothouris.learning.application.transferobject.DetailedBorrowHistoryTO;
 import cgk.bibliothouris.learning.application.transferobject.MemberBorrowHistoryTO;
 import cgk.bibliothouris.learning.service.entity.BorrowHistoryItem;
@@ -51,18 +50,6 @@ public class BorrowHistoryRepository {
         return borrowHistoryItems.stream().map(DetailedBorrowHistoryTO::new).collect(Collectors.toList());
     }
 
-    public BookBorrowerTO findBookBorrowerDetails(Integer bookId) {
-        TypedQuery<BookBorrowerTO> query = entityManager.createNamedQuery(BorrowHistoryItem.GET_CURRENT_BORROWER_DETAILS_FOR_BOOK, BookBorrowerTO.class);
-        query.setParameter("bookId", bookId);
-
-        List<BookBorrowerTO> bookBorrowerTOs = query.getResultList();
-
-        if (bookBorrowerTOs.isEmpty())
-            return new BookBorrowerTO();
-        else
-            return bookBorrowerTOs.get(0);
-    }
-
     public Long countBorrowedBooks() {
         TypedQuery<Long> query = entityManager.createNamedQuery(BorrowHistoryItem.COUNT_ALL_BORROWED_BOOKS, Long.class);
 
@@ -73,28 +60,17 @@ public class BorrowHistoryRepository {
     private String generateSortQueryClause(String sortCriteria, String sortOrder) {
         String sortClause = "ORDER BY ";
 
-        if (sortCriteria == null)
-            return sortClause + "lower(b.book.title)";
-
-        List<String> s = new ArrayList<>();
-        String[] sortOrders = sortOrder.split(",");
-        for (String criteria : sortCriteria.split(",")) {
-            if (criteria.equals("title"))
-                s.add("lower(b.book.title)");
-            if (criteria.equals("isbn"))
-                s.add("b.book.isbn");
-            if (criteria.equals("date"))
-                s.add("b.startDate");
+        switch (sortCriteria) {
+            case "borrower":
+                return sortClause + "lower(b.member.firstName)" + " " + sortOrder + ", lower(b.member.lastName)" + " " + sortOrder;
+            case "title":
+                return sortClause + "lower(b.book.title)" + " " + sortOrder;
+            case "isbn":
+                return sortClause + "b.book.isbn" + " " + sortOrder;
+            case "date":
+                return sortClause + "b.startDate" + " " + sortOrder;
+            default:
+                return sortClause + "lower(b.book.title)";
         }
-
-        for (int i = 0; i < s.size(); i++) {
-            if (i == 0)
-                sortClause += s.get(i);
-            else
-                sortClause += ", " + s.get(i);
-            sortClause += " " + sortOrders[i];
-        }
-
-        return sortClause;
     }
 }

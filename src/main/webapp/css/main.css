@@ -52,12 +52,22 @@ ng-messages{
     align-items: center;
 }
 
-.anch {
+.redAnch {
     color: darkred;
     text-decoration: none;
 }
 
-.anch:hover, .anch:focus {
+.redAnch:hover, .redAnch:focus {
     color: darkred;
+    text-decoration: underline;
+}
+
+.blackAnch {
+    color: #000000;
+    text-decoration: none;
+}
+
+.blackAnch:hover, .blackAnch:focus {
+    color: #000000;
     text-decoration: underline;
 }

@@ -46,8 +46,8 @@
                     <tr>
                         <th>Current status</th>
                         <td id="status" ng-class="{false:'greenColor', true:'darkRedColor'}[vm.borrowerDetails.isBorrowed]">
-                            {{vm.borrowerDetails.isBorrowed ? "BORROWED" : "AVAILABLE"}}
-                            <a class="anch" ng-href="#/member/{{vm.borrowerDetails.uuid}}">{{vm.borrowerDetails.isBorrowed ? "by " + vm.borrowerDetails.firstName + " " + vm.borrowerDetails.lastName : ""}}</a>
+                            {{vm.borrowerDetails.isBorrowed ? "BORROWED by" : "AVAILABLE"}}
+                            <a class="redAnch" ng-href="#/member/{{vm.borrowerDetails.uuid}}">{{vm.borrowerDetails.isBorrowed ? " " + vm.borrowerDetails.firstName + " " + vm.borrowerDetails.lastName : ""}}</a>
                         </td>
                     </tr>
                     </tbody>
