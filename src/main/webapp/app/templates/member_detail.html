@@ -121,15 +121,10 @@
             </div>
 
             <form class="form-inline">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <label>Search by</label>
-                        <select id="filter" class="form-control" ng-model="vm.filter"
-                                ng-options="filter for filter in vm.searchFilters"></select>
-                        <input id="filterValue" class="form-control" placeholder="{{vm.filter}}" ng-model="vm.filterValue"
-                               >
-                    </div>
-                </div>
+                <label>Search by</label>
+                <select id="filter" class="form-control" ng-model="vm.filter"
+                        ng-options="filter for filter in vm.searchFilters"></select>
+                <input id="filterValue" class="form-control" placeholder="{{vm.filter}}" ng-model="vm.filterValue">
             </form>
 
             <br/>
@@ -145,24 +140,24 @@
                             <thead>
                             <tr>
                                 <th width=30%>Title</th>
-                                <th width=30%>Authors</th>
-                                <th width=20%>ISBN</th>
-                                <th width=20%>Borrow</th>
+                                <th width=30% class="hidden-xs hidden-sm">Authors</th>
+                                <th width=20% class="hidden-xs hidden-sm hidden-md">ISBN</th>
+                                <th width=20% class="text-center">Borrow</th>
                             </tr>
                             </thead>
 
                             <tbody>
                             <tr id="bookAvailableRow" ng-repeat = "book in vm.availableBooks">
                                 <td class="table-column-ellipsis">{{book.title}}</td>
-                                <td class="table-column-ellipsis" on-ellipsis="vm.enableTooltip(param, book)"
+                                <td class="table-column-ellipsis hidden-xs hidden-sm" on-ellipsis="vm.enableTooltip(param, book)"
                                     uib-tooltip="{{vm.getTooltipContent(book)}}"
                                     tooltip-placement="bottom" tooltip-enable="book.tooltip" tooltip-append-to-body="true">
-                            <span ng-repeat="author in book.authors">
-                                {{author.firstName}} {{author.lastName}}{{$last ? '' : ', '}}
-                            </span>
+                                    <span ng-repeat="author in book.authors">
+                                        {{author.firstName}} {{author.lastName}}{{$last ? '' : ', '}}
+                                    </span>
                                 </td>
-                                <td>{{book.isbn}}</td>
-                                <td >
+                                <td class="hidden-xs hidden-sm hidden-md">{{book.isbn}}</td>
+                                <td class="text-center">
                                     <button type="button" class="btn btn-default" ng-click="vm.borrowBook(book.id)">
                                         <i class="glyphicon glyphicon-plus"></i>
                                     </button>

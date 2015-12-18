@@ -13,7 +13,6 @@
         vm.noBorrows = false;
         vm.pageChanged = pageChanged;
         vm.addFieldToSort = addFieldToSort;
-        vm.enableTooltip = enableTooltip;
 
         activate();
 
@@ -50,7 +49,6 @@
         function pageChanged() {
             start = vm.itemsPerPage * (vm.currentPage - 1);
             end = start + vm.itemsPerPage;
-            console.log (start + " - " + end);
 
             $location.search('start', start);
             $location.search('end', end);
@@ -73,10 +71,6 @@
 
             vm.currentPage = 1;
             pageChanged();
-        }
-
-        function enableTooltip(member) {
-            vm.tooltip = member;
         }
     }
 })();

@@ -11,23 +11,23 @@
             <table class="table table-fixed">
                 <thead>
                 <tr>
-                    <th width=20% ng-click="vm.addFieldToSort('title')">
+                    <th width=25% ng-click="vm.addFieldToSort('title')">
                         Title
                         <i ng-show="vm.orderString == 'asc' || vm.sortString != 'title'" ng-class="{grayColor: vm.sortString != 'title'}" class="glyphicon glyphicon-sort-by-attributes" ng-click="vm.addFieldToSort('title')"></i>
                         <i ng-show="vm.orderString == 'desc' && vm.sortString == 'title'" ng-class="{grayColor: vm.sortString != 'title'}" class="glyphicon glyphicon-sort-by-attributes-alt" ng-click="vm.addFieldToSort('title')"></i>
                     </th>
-                    <th width=15% class="hidden-xs hidden-sm">Authors</th>
+                    <th width=20% class="hidden-xs hidden-sm">Authors</th>
                     <th width=15% class="hidden-xs hidden-sm hidden-md">
                         ISBN
                         <i ng-show="vm.orderString == 'asc' || vm.sortString != 'isbn'" ng-class="{grayColor: vm.sortString != 'isbn'}" class="glyphicon glyphicon-sort-by-attributes" ng-click="vm.addFieldToSort('isbn')"></i>
                         <i ng-show="vm.orderString == 'desc' && vm.sortString == 'isbn'" ng-class="{grayColor: vm.sortString != 'isbn'}" class="glyphicon glyphicon-sort-by-attributes-alt" ng-click="vm.addFieldToSort('isbn')"></i>
                     </th>
-                    <th width=10% class="text-center" ng-click="vm.addFieldToSort('date')">
+                    <th width=15% class="text-center" ng-click="vm.addFieldToSort('date')">
                         Lend date
                         <i ng-show="vm.orderString == 'asc' || vm.sortString != 'date'" ng-class="{grayColor: vm.sortString != 'date'}" class="glyphicon glyphicon-sort-by-attributes" ng-click="vm.addFieldToSort('date')"></i>
                         <i ng-show="vm.orderString == 'desc' && vm.sortString == 'date'" ng-class="{grayColor: vm.sortString != 'date'}" class="glyphicon glyphicon-sort-by-attributes-alt" ng-click="vm.addFieldToSort('date')"></i>
                     </th>
-                    <th width=10% class="text-center">Borrower</th>
+                    <th width=25%>Borrower</th>
                 </tr>
                 </thead>
 
@@ -43,7 +43,12 @@
                     </td>
                     <td class="hidden-xs hidden-sm hidden-md">{{book.isbn}}</td>
                     <td class="text-center">{{book.startLendDate}}</td>
-                    <td class="text-center" tooltip-placement="bottom" ng-mouseover="vm.enableTooltip(book.borrowerUUID)" uib-tooltip="{{vm.getTooltipContent(book)}}" tooltip-enable="vm.tooltip" tooltip-append-to-body="true">{{book.borrowerFirstName}} {{book.borrowerLastName}}</td>
+                    <td>
+                        {{book.borrowerFirstName}} {{book.borrowerLastName}}
+                        <span tooltip-placement="bottom" uib-tooltip="{{book.borrowerUUID}}" tooltip-append-to-body="true">
+                            [{{book.borrowerUUID.substring(0,2) + ".." + book.borrowerUUID.substring(book.borrowerUUID.length - 3,book.borrowerUUID.length - 1)}}]
+                        </span>
+                    </td>
                 </tr>
                 </tbody>
             </table>
