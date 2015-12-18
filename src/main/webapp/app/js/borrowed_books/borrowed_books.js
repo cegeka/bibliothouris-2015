@@ -8,6 +8,8 @@
 
         vm.maxSize = 5;
         vm.itemsPerPage = 10;
+        vm.viewFilters = ["All borrowed books", "Only overdue books"];
+        vm.filter = vm.viewFilters[0];
 
         vm.borrowedBooks = {};
         vm.noBorrows = false;

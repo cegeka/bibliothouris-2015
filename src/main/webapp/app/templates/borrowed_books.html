@@ -1,6 +1,40 @@
 <h3 id="title" class="midnightblueColor" >Borrowed books</h3>
 <hr style="border-color: midnightblue; margin-top: -5px"/>
 
+<!--<div class="row">
+    <div class="col-sm-offset-6 col-sm-6 right">
+        <div class="media-left media-middle">
+            <b>View</b>
+        </div>
+        <div class="media-body">
+            <div class="radio">
+                <label>
+                    <input type="radio" checked>
+                    All borrowed books
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    <input type="radio">
+                    Only overdue books
+                </label>
+            </div>
+        </div>
+    </div>
+</div>-->
+
+<form class="form-inline">
+    <div class="row">
+        <div class="col-sm-offset-6 col-sm-6 text-right">
+            <label>View</label>
+            <select id="filter" class="form-control" ng-model="vm.filter"
+                    ng-options="filter for filter in vm.viewFilters"></select>
+        </div>
+    </div>
+</form>
+
+<br/>
+
 <div class="alert alert-info text-center" role="alert" ng-show="vm.noBorrowedBooks">
     <p class="alert-link">There are no borrowed books to be displayed!</p>
 </div>
