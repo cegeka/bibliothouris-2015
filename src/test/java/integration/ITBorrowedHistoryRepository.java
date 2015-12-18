@@ -1,6 +1,7 @@
 package integration;
 
 import cgk.bibliothouris.learning.application.transferobject.BookBorrowerTO;
+import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
 import cgk.bibliothouris.learning.application.transferobject.DetailedBorrowHistoryTO;
 import cgk.bibliothouris.learning.application.transferobject.MemberBorrowHistoryTO;
 import cgk.bibliothouris.learning.config.AppConfig;
@@ -40,7 +41,8 @@ public class ITBorrowedHistoryRepository {
 
     @Test
     public void givenABookAMemberAndBorrowDetails_addBorrowedBook_returnsNewBorrowedHistoryItem(){
-        BorrowHistoryItem borrowHistoryItem = buildBorrowHistoryIem();
+        BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createBorrowedHistoryItem();
+        borrowHistoryItem = buildBorrowHistoryIem(borrowHistoryItem);
 
         BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(borrowHistoryItem);
 
@@ -49,7 +51,8 @@ public class ITBorrowedHistoryRepository {
 
     @Test
     public void givenABookAMemberAndBorrowDetails_addBorrowedBook_persistBorrowDataIntoMemberDetails(){
-        BorrowHistoryItem borrowHistoryItem = buildBorrowHistoryIem();
+        BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createBorrowedHistoryItem();
+        borrowHistoryItem = buildBorrowHistoryIem(borrowHistoryItem);
 
         BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(borrowHistoryItem);
 
@@ -59,7 +62,8 @@ public class ITBorrowedHistoryRepository {
 
     @Test
     public void givenAMemberId_countBorrowedBooks_returnsTheCorrectListOfBorrowedBookTOs(){
-        BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(buildBorrowHistoryIem());
+        BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createBorrowedHistoryItem();
+        BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(buildBorrowHistoryIem(borrowHistoryItem));
 
         Long memberBorrowHistoryTOsSize = borrowHistoryRepository.countBorrowedBooksByMember(persistedHistoryItem.getMember().getUUID());
 
@@ -68,26 +72,30 @@ public class ITBorrowedHistoryRepository {
 
     @Test
     public void givenAMemberId_findBorrowedBooks_returnsTheCorrectListOfBorrowedBookTOs(){
-        BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(buildBorrowHistoryIem());
+        BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createBorrowedHistoryItem();
+        BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(buildBorrowHistoryIem(borrowHistoryItem));
+        MemberBorrowHistoryTO memberBorrowHistoryTO = new MemberBorrowHistoryTO(persistedHistoryItem);
 
         List<MemberBorrowHistoryTO> memberBorrowHistoryTOs = borrowHistoryRepository.findBorrowedBooksByMember(persistedHistoryItem.getMember().getUUID(), 0, 10);
 
-        assertThat(memberBorrowHistoryTOs.size()).isEqualTo(1);
+        assertThat(memberBorrowHistoryTOs).contains(memberBorrowHistoryTO);
     }
 
     @Test
     public void givenAPopulatedBorrowHistory_whenWeRetrieveIt_WeGetThatHistory(){
-        BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(buildBorrowHistoryIem());
+        BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createBorrowedHistoryItem();
+        BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(buildBorrowHistoryIem(borrowHistoryItem));
         DetailedBorrowHistoryTO transformedPersistedItem = new DetailedBorrowHistoryTO(persistedHistoryItem);
 
-        List<DetailedBorrowHistoryTO> borrowedBooks = borrowHistoryRepository.getBorrowedBooks(1,1000, "title","asc");
+        List<DetailedBorrowHistoryTO> borrowedBooks = borrowHistoryRepository.getBorrowedBooks(0, 1000, "title", "asc");
 
         assertThat(borrowedBooks).contains(transformedPersistedItem);
     }
 
     @Test
     public void givenABookId_whenWeRetrieveBorrowerDetails_WeGetTheCorrectDetails(){
-        BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(buildBorrowHistoryIem());
+        BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createBorrowedHistoryItem();
+        BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(buildBorrowHistoryIem(borrowHistoryItem));
 
         BookBorrowerTO bookBorrowerTO = bookRepository.findBookBorrowerDetails(persistedHistoryItem.getBook().getId());
 
@@ -104,24 +112,44 @@ public class ITBorrowedHistoryRepository {
         assertThat(bookBorrowerTO.getIsBorrowed()).isFalse();
     }
 
-    private BorrowHistoryItem buildBorrowHistoryIem() {
-        Book book = bookRepository.createBook(BookTestFixture.createBookWithOneAuthorAndOneCategory());
-        Member member = memberRepository.createMember(MemberTestFixture.createMember());
-
-        BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createBorrowedHistoryItem();
-        borrowHistoryItem.setBook(book);
-        borrowHistoryItem.setMember(member);
-
-        return borrowHistoryItem;
-    }
-
     @Test
-    public void givenBorrowedBooks_countBorrowedBooks_returnsTheCorrectListOfBorrowedBookTOs(){
-        BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(buildBorrowHistoryIem());
+    public void givenBorrowedBooks_countBorrowedBooks_returnsTheCorrectNumberOfBorrowedBooks(){
+        BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createBorrowedHistoryItem();
+        BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(buildBorrowHistoryIem(borrowHistoryItem));
 
         Long memberBorrowHistoryTOsSize = borrowHistoryRepository.countBorrowedBooks();
 
         assertThat(memberBorrowHistoryTOsSize).isGreaterThan(1);
     }
 
+    @Test
+    public void givenOverdueBooks_findOverdueBooks_returnsTheCorrectListOfOverdueBooks(){
+        BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createOverdueHistoryItem();
+        BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(buildBorrowHistoryIem(borrowHistoryItem));
+        DetailedBorrowHistoryTO detailedBorrowHistoryTO = new DetailedBorrowHistoryTO(persistedHistoryItem);
+
+        BookListingTO<DetailedBorrowHistoryTO> overdueBooks = borrowHistoryRepository.getOverdueBooks(0, 1000, "title", "asc");
+
+        assertThat(overdueBooks.getBooks()).contains(detailedBorrowHistoryTO);
+    }
+
+    @Test
+    public void givenOverdueBooks_countOverdueBooks_returnsTheCorrectNumberOfOverdueBooks(){
+        BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createOverdueHistoryItem();
+        BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(buildBorrowHistoryIem(borrowHistoryItem));
+
+        Long memberBorrowHistoryTOsSize = borrowHistoryRepository.countOverdueBooks();
+
+        assertThat(memberBorrowHistoryTOsSize).isGreaterThan(1);
+    }
+
+    private BorrowHistoryItem buildBorrowHistoryIem(BorrowHistoryItem borrowHistoryItem) {
+        Book book = bookRepository.createBook(BookTestFixture.createBookWithOneAuthorAndOneCategory());
+        Member member = memberRepository.createMember(MemberTestFixture.createMember());
+
+        borrowHistoryItem.setBook(book);
+        borrowHistoryItem.setMember(member);
+
+        return borrowHistoryItem;
+    }
 }

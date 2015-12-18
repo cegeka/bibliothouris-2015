@@ -7,7 +7,7 @@
         var vm = this;
 
         vm.maxSize = 5;
-        vm.itemsPerPage = 20;
+        vm.itemsPerPage = 10;
 
         vm.borrowedBooks = {};
         vm.noBorrows = false;

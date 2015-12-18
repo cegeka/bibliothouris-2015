@@ -19,6 +19,14 @@ public class BorrowedHistoryFixture {
                 .build();
     }
 
+    public static BorrowHistoryItem createOverdueHistoryItem() {
+        return BorrowHistoryItem.BorrowedHistoryBuilder.borrowedHistory()
+                .withBook(BookTestFixture.createBookWithOneAuthorAndOneCategory())
+                .withMember(MemberTestFixture.createMember())
+                .withStartDate(LocalDate.of(2015, Month.NOVEMBER, 4))
+                .build();
+    }
+
     public static BorrowHistoryItem createAvailableHistoryItem() {
         return BorrowHistoryItem.BorrowedHistoryBuilder.borrowedHistory()
                 .withBook(BookTestFixture.createBookWithOneAuthorAndOneCategory())

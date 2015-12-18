@@ -3,8 +3,7 @@ package integration;
 import cgk.bibliothouris.learning.application.resource.BookResource;
 import cgk.bibliothouris.learning.application.resource.BorrowHistoryResource;
 import cgk.bibliothouris.learning.application.resource.MemberResource;
-import cgk.bibliothouris.learning.application.transferobject.BorrowHistoryItemTO;
-import cgk.bibliothouris.learning.application.transferobject.MemberBorrowHistoryTO;
+import cgk.bibliothouris.learning.application.transferobject.*;
 import cgk.bibliothouris.learning.config.JpaConfig;
 import cgk.bibliothouris.learning.service.entity.Book;
 import cgk.bibliothouris.learning.service.entity.Member;
@@ -58,6 +57,10 @@ public class ITBorrowHistoryResource extends JerseyTest{
                                                                             .withBookId(newBook.getId())
                                                                             .withMemberUuid(newMember.getUUID())
                                                                             .withStartDate(LocalDate.of(2015, Month.DECEMBER, 3)).build();
+        borrowHistoryItemTO = BorrowHistoryItemTO.BorrowHistoryItemTOBuilder.borrowHistoryItemTO()
+                .withBookId(newBook.getId())
+                .withMemberUuid(newMember.getUUID())
+                .withStartDate(LocalDate.of(2015, Month.DECEMBER, 3)).build();
     }
 
     @After
@@ -90,4 +93,12 @@ public class ITBorrowHistoryResource extends JerseyTest{
         assertThat(count).isEqualTo(1);
     }
 
+    @Test
+    public void givenAListOfOverdueBooks_GET_returnsTheListOfOverdueBooks() {
+        client.post(PATH, borrowHistoryItemTO);
+
+        BookListingTO<DetailedBorrowHistoryTO> overdueBooks = client.get(PATH + "/overdue").readEntity(new GenericType<BookListingTO<DetailedBorrowHistoryTO>>() {});
+
+        assertThat(overdueBooks.getBooks().size()).isEqualTo(1);
+    }
 }

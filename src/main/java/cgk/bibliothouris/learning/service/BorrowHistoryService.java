@@ -1,5 +1,6 @@
 package cgk.bibliothouris.learning.service;
 
+import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
 import cgk.bibliothouris.learning.application.transferobject.BorrowHistoryItemTO;
 import cgk.bibliothouris.learning.application.transferobject.DetailedBorrowHistoryTO;
 import cgk.bibliothouris.learning.application.transferobject.MemberBorrowHistoryTO;
@@ -73,5 +74,12 @@ public class BorrowHistoryService extends BiblioService{
         Pair<Integer, Integer> paginationParams = findPaginationParameters(start, end, () -> countBorrowedBooks());
 
         return borrowHistoryRepository.getBorrowedBooks(paginationParams.getFirst(), paginationParams.getSecond(), sort, order);
+    }
+
+    @Transactional
+    public BookListingTO<DetailedBorrowHistoryTO> getOverdueBooks(String start, String end, String sort, String order) {
+        Pair<Integer, Integer> paginationParams = findPaginationParameters(start, end, () -> countBorrowedBooks());
+
+        return borrowHistoryRepository.getOverdueBooks(paginationParams.getFirst(), paginationParams.getSecond(), sort, order);
     }
 }

@@ -1,12 +1,12 @@
 package unit;
 
 import cgk.bibliothouris.learning.application.resource.BorrowHistoryResource;
+import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
 import cgk.bibliothouris.learning.application.transferobject.BorrowHistoryItemTO;
 import cgk.bibliothouris.learning.application.transferobject.DetailedBorrowHistoryTO;
 import cgk.bibliothouris.learning.application.transferobject.MemberBorrowHistoryTO;
 import cgk.bibliothouris.learning.service.BorrowHistoryService;
 import cgk.bibliothouris.learning.service.entity.BorrowHistoryItem;
-import cgk.bibliothouris.learning.service.exception.ValidationException;
 import fixture.BorrowedHistoryFixture;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -17,6 +17,7 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 import java.util.ArrayList;
@@ -111,8 +112,7 @@ public class BorrowHistoryResourceTest {
 
     @Test
     public void givenValidBorrowHistoryItems_whenWeRetrieveThemAll_thenWeGet200OK(){
-        List<DetailedBorrowHistoryTO> borrowHistoryList= BorrowedHistoryFixture.createDetailedBorrowHistoryTOList();
-
+        List<DetailedBorrowHistoryTO> borrowHistoryList = BorrowedHistoryFixture.createDetailedBorrowHistoryTOList();
         Mockito.when(service.getActiveBorrowedBooks("1", "10", "title,isbn,date","asc,asc,desc")).thenReturn(borrowHistoryList);
 
         Response response = resource.getAllHistoryItems("1", "10", "title,isbn,date","asc,asc,desc");
@@ -122,8 +122,7 @@ public class BorrowHistoryResourceTest {
 
     @Test
     public void givenValidBorrowHistoryItems_whenWeRetrieveThemAll_thenWeGetThemALl(){
-        List<DetailedBorrowHistoryTO> borrowHistoryList= BorrowedHistoryFixture.createDetailedBorrowHistoryTOList();
-
+        List<DetailedBorrowHistoryTO> borrowHistoryList = BorrowedHistoryFixture.createDetailedBorrowHistoryTOList();
         Mockito.when(service.getActiveBorrowedBooks("1", "10", "title,isbn,date","asc,asc,desc")).thenReturn(borrowHistoryList);
 
         Response response = resource.getAllHistoryItems("1", "10", "title,isbn,date","asc,asc,desc");
@@ -132,9 +131,8 @@ public class BorrowHistoryResourceTest {
     }
 
     @Test
-    public void givenEmBorrowHistoryItems_whenWeRetrieveThemAll_thenWeGet404NotFound(){
-        List<DetailedBorrowHistoryTO> borrowHistoryList= BorrowedHistoryFixture.createEmptyDetailedBorrowHistoryTOList();
-
+    public void givenNoBorrowHistoryItems_whenWeRetrieveThemAll_thenWeGet404NotFound(){
+        List<DetailedBorrowHistoryTO> borrowHistoryList = BorrowedHistoryFixture.createEmptyDetailedBorrowHistoryTOList();
         Mockito.when(service.getActiveBorrowedBooks("1", "10","","")).thenReturn(borrowHistoryList);
 
         Response response = resource.getAllHistoryItems("1", "10","","");
@@ -142,6 +140,36 @@ public class BorrowHistoryResourceTest {
         Assertions.assertThat(response.getStatus()).isEqualTo(Response.Status.NOT_FOUND.getStatusCode());
     }
 
+    @Test
+    public void givenListOfOverdueBooks_getOverdueBooks_returns200OK(){
+        BookListingTO<DetailedBorrowHistoryTO> overdueBooks = new BookListingTO<>();
+        overdueBooks.setBooks(Arrays.asList(new DetailedBorrowHistoryTO()));
+        Mockito.when(service.getOverdueBooks("0", "10", "title", "asc")).thenReturn(overdueBooks);
 
+        Response response = resource.getOverdueBooks("0", "10", "title", "asc");
+
+        Assertions.assertThat(response.getStatusInfo()).isEqualTo(Status.OK);
+    }
+
+    @Test
+    public void givenListOfOverdueBooks_getOverdueBooks_returnsTheListOfOverdueBooks(){
+        BookListingTO<DetailedBorrowHistoryTO> overdueBooks = new BookListingTO<>();
+        overdueBooks.setBooks(Arrays.asList(new DetailedBorrowHistoryTO()));
+        Mockito.when(service.getOverdueBooks("0", "10", "title", "asc")).thenReturn(overdueBooks);
+
+        Response response = resource.getOverdueBooks("0", "10", "title", "asc");
+
+        Assertions.assertThat(response.getEntity()).isEqualTo(overdueBooks);
+    }
+
+    @Test
+    public void givenNoOverdueBooks_getOverdueBooks_returns404NotFound(){
+        BookListingTO<DetailedBorrowHistoryTO> overdueBooks = new BookListingTO<>();
+        Mockito.when(service.getOverdueBooks("0", "10", "", "")).thenReturn(overdueBooks);
+
+        Response response = resource.getOverdueBooks("0", "10", "", "");
+
+        Assertions.assertThat(response.getStatusInfo()).isEqualTo(Status.NOT_FOUND);
+    }
 
 }

@@ -1,5 +1,6 @@
 package unit;
 
+import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
 import cgk.bibliothouris.learning.application.transferobject.BorrowHistoryItemTO;
 import cgk.bibliothouris.learning.application.transferobject.DetailedBorrowHistoryTO;
 import cgk.bibliothouris.learning.application.transferobject.MemberBorrowHistoryTO;
@@ -82,8 +83,8 @@ public class BorrowHistoryServiceTest {
     }
 
     @Test
-    public void givenAPopulatedHistoryFor_whenWeRetrieveIt_weGetThatHistory(){
-        List<DetailedBorrowHistoryTO> borrowHistoryList= BorrowedHistoryFixture.createDetailedBorrowHistoryTOList();
+    public void givenAPopulatedHistory_whenWeRetrieveIt_weGetThatHistory(){
+        List<DetailedBorrowHistoryTO> borrowHistoryList = BorrowedHistoryFixture.createDetailedBorrowHistoryTOList();
         Mockito.when(borrowHistoryRepository.getBorrowedBooks(1, 10, "title,isbn,date","asc,asc,desc")).thenReturn(borrowHistoryList);
 
         List<DetailedBorrowHistoryTO> foundGlobalBorrowedHistoryItems = service.getActiveBorrowedBooks("1", "10", "title,isbn,date","asc,asc,desc");
@@ -91,4 +92,13 @@ public class BorrowHistoryServiceTest {
         Assertions.assertThat(foundGlobalBorrowedHistoryItems).isEqualTo(borrowHistoryList);
     }
 
+    @Test
+    public void givenAPopulatedHistory_whenWeRetrieveOverdueBooks_shouldReturnTheOverdueBooks(){
+        BookListingTO<DetailedBorrowHistoryTO> overdueBooks = new BookListingTO<>();
+        Mockito.when(borrowHistoryRepository.getOverdueBooks(1, 10, "title", "asc")).thenReturn(overdueBooks);
+
+        BookListingTO<DetailedBorrowHistoryTO> foundOverdueBooks = service.getOverdueBooks("1", "10", "title", "asc");
+
+        Assertions.assertThat(foundOverdueBooks).isEqualTo(overdueBooks);
+    }
 }

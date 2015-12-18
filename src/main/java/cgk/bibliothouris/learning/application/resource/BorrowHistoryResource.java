@@ -68,15 +68,13 @@ public class BorrowHistoryResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllHistoryItems(@QueryParam("start") String start, @QueryParam("end") String end, @QueryParam("sort") String sort, @QueryParam("order") String order){
+    public Response getAllHistoryItems(@QueryParam("start") String start, @QueryParam("end") String end,
+                                       @QueryParam("sort") String sort, @QueryParam("order") String order){
+        List<DetailedBorrowHistoryTO> borrowedBooks = service.getActiveBorrowedBooks(start, end, sort, order);
 
-        List<DetailedBorrowHistoryTO> detailedBorrowedHistoryItems
-                = service.getActiveBorrowedBooks(start, end, sort, order);
-
-        if(detailedBorrowedHistoryItems.size() == 0)
+        if(borrowedBooks.size() == 0)
             return Response.status(Response.Status.NOT_FOUND).build();
-        return Response.ok().entity(new GenericEntity<List<DetailedBorrowHistoryTO>>(detailedBorrowedHistoryItems) {
-        }).build();
+        return Response.ok().entity(new GenericEntity<List<DetailedBorrowHistoryTO>>(borrowedBooks) {}).build();
     }
 
     @GET
@@ -86,5 +84,17 @@ public class BorrowHistoryResource {
         Long borrowedCount = service.countBorrowedBooks();
 
         return Response.ok().entity(borrowedCount).build();
+    }
+
+    @GET
+    @Path("/overdue")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOverdueBooks(@QueryParam("start") String start, @QueryParam("end") String end,
+                                    @QueryParam("sort") String sort, @QueryParam("order") String order){
+        BookListingTO<DetailedBorrowHistoryTO> overdueBooks = service.getOverdueBooks(start, end, sort, order);
+
+        if(overdueBooks.getBooks().size() == 0)
+            return Response.status(Response.Status.NOT_FOUND).build();
+        return Response.ok().entity(new GenericEntity<BookListingTO<DetailedBorrowHistoryTO>>(overdueBooks) {}).build();
     }
 }
