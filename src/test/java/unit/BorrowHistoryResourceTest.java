@@ -62,16 +62,6 @@ public class BorrowHistoryResourceTest {
     }
 
     @Test
-    public void givenAnInvalidBorrowHistoryItem_createANewBorrowItem_returns400BADREQUEST() {
-        BorrowHistoryItemTO borrowHistoryItemTO = BorrowedHistoryFixture.createHistoryItemTOWithEndDateBeforeThanStartDate();
-        Mockito.when(service.createBorrowHistoryItem(borrowHistoryItemTO)).thenThrow(ValidationException.class);
-
-        Response response = resource.borrowBook(borrowHistoryItemTO);
-
-        assertThat(response.getStatusInfo()).isEqualTo(Response.Status.BAD_REQUEST);
-    }
-
-    @Test
     public void givenAMemberUuid_countBorrowedHistoryItems_returns200OK() {
         Mockito.when(service.countBorrowedBooksByMember("uuid")).thenReturn(1L);
 

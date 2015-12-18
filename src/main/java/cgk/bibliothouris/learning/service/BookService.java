@@ -6,6 +6,7 @@ import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
 import cgk.bibliothouris.learning.repository.BookRepository;
 import cgk.bibliothouris.learning.service.entity.Book;
 import cgk.bibliothouris.learning.service.exception.ValidationException;
+import org.glassfish.grizzly.utils.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +19,7 @@ import java.util.Set;
 
 @Service
 @Transactional
-public class BookService {
+public class BookService extends BiblioService{
 
     @Autowired
     private BookRepository bookRepository;
@@ -33,20 +34,9 @@ public class BookService {
 
     @Transactional(readOnly = true)
     public BookListingTO findAllBooks(String start, String end, String title, String isbn) {
-        Integer startPosition;
-        Integer endPosition;
+        Pair<Integer, Integer> paginationParams = findPaginationParameters(start, end, () -> countBooks());
 
-        if (start == null || isNegative(start)) {
-            startPosition = 0;
-        } else {
-            startPosition = Integer.valueOf(start);
-        }
-        if (end == null || isNegative(end)) {
-            endPosition = countBooks().intValue();
-        } else {
-            endPosition = Integer.valueOf(end);
-        }
-        return bookRepository.findAllBooks(startPosition, endPosition, title, isbn);
+        return bookRepository.findAllBooks(paginationParams.getFirst(), paginationParams.getSecond(), title, isbn);
     }
 
     @Transactional(readOnly = true)
@@ -81,15 +71,6 @@ public class BookService {
         bookRepository.deleteAllBooks();
     }
 
-    private boolean isNegative(String number) {
-        try {
-            if (Integer.parseInt(number) < 0)
-                return true;
-        } catch (NumberFormatException e) {
-        }
-        return false;
-    }
-
     private void validateBook(Book book) {
         Set<ConstraintViolation<Book>> bookConstraintViolations = validator.validate(book);
         if (!bookConstraintViolations.isEmpty())
@@ -98,20 +79,9 @@ public class BookService {
 
     @Transactional(readOnly = true)
     public BookListingTO findAllAvailableBooks(String start, String end, String title, String isbn) {
-        Integer startPosition;
-        Integer endPosition;
+        Pair<Integer, Integer> paginationParams = findPaginationParameters(start, end, () -> countAvailableBooks());
 
-        if (start == null || isNegative(start)) {
-            startPosition = 0;
-        } else {
-            startPosition = Integer.valueOf(start);
-        }
-        if (end == null || isNegative(end)) {
-            endPosition = Integer.valueOf(countBooks().intValue());
-        } else {
-            endPosition = Integer.valueOf(end);
-        }
-        return bookRepository.findAllAvailableBooks(startPosition, endPosition, title, isbn);
+        return bookRepository.findAllAvailableBooks(paginationParams.getFirst(), paginationParams.getSecond(), title, isbn);
     }
 
     @Transactional(readOnly = true)

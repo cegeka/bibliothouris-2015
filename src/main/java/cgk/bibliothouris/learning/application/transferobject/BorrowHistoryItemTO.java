@@ -13,9 +13,7 @@ public class BorrowHistoryItemTO {
 
     private String memberUuid;
 
-    private LocalDate startDate;
-
-    private LocalDate endDate;
+    private LocalDate date;
 
     public Integer getBookId() {
         return bookId;
@@ -33,64 +31,42 @@ public class BorrowHistoryItemTO {
         this.memberUuid = memberUuid;
     }
 
-    public LocalDate getStartDate() {
-        return startDate;
+    public LocalDate getDate() {
+        return date;
     }
 
     @XmlJavaTypeAdapter(LocalDateAdapter.class)
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    @XmlJavaTypeAdapter(LocalDateAdapter.class)
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
-    public static class BorrowHistoryItemTOBuilder
-    {
+    public static class BorrowHistoryItemTOBuilder {
         private BorrowHistoryItemTO borrowHistoryItemTO;
 
-        private BorrowHistoryItemTOBuilder()
-        {
+        private BorrowHistoryItemTOBuilder() {
             borrowHistoryItemTO = new BorrowHistoryItemTO();
         }
 
-        public BorrowHistoryItemTOBuilder withBookId(Integer bookId)
-        {
+        public BorrowHistoryItemTOBuilder withBookId(Integer bookId) {
             borrowHistoryItemTO.bookId = bookId;
             return this;
         }
 
-        public BorrowHistoryItemTOBuilder withMemberUuid(String memberUuid)
-        {
+        public BorrowHistoryItemTOBuilder withMemberUuid(String memberUuid) {
             borrowHistoryItemTO.memberUuid = memberUuid;
             return this;
         }
 
-        public BorrowHistoryItemTOBuilder withStartDate(LocalDate startDate)
-        {
-            borrowHistoryItemTO.startDate = startDate;
+        public BorrowHistoryItemTOBuilder withStartDate(LocalDate startDate) {
+            borrowHistoryItemTO.date = startDate;
             return this;
         }
 
-        public BorrowHistoryItemTOBuilder withEndDate(LocalDate endDate)
-        {
-            borrowHistoryItemTO.endDate = endDate;
-            return this;
-        }
-
-        public static BorrowHistoryItemTOBuilder borrowHistoryItemTO()
-        {
+        public static BorrowHistoryItemTOBuilder borrowHistoryItemTO() {
             return new BorrowHistoryItemTOBuilder();
         }
 
-        public BorrowHistoryItemTO build()
-        {
+        public BorrowHistoryItemTO build() {
             return borrowHistoryItemTO;
         }
     }

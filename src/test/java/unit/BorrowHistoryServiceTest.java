@@ -37,18 +37,6 @@ public class BorrowHistoryServiceTest {
     @Mock
     private MemberRepository memberRepository;
 
-    private BorrowHistoryItemTO invalidBorrowHistoryItemTO;
-
-    @Before
-    public void setUp() {
-        invalidBorrowHistoryItemTO = BorrowedHistoryFixture.createHistoryItemTOWithEndDateBeforeThanStartDate();
-    }
-
-    @Test(expected = ValidationException.class)
-    public void givenABorrowHistoryItemTOWithEndDateBeforeThanStartDate_whenValidated_shouldThrowException() {
-        service.createBorrowHistoryItem(invalidBorrowHistoryItemTO);
-    }
-
     @Test
     public void givenValidBorrowHistoryItemTO_whenValidated_shouldReturnNewBorrowHistoryItem() {
         BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createBorrowedHistoryItem();
