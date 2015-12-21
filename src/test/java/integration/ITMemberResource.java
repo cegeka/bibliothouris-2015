@@ -89,4 +89,14 @@ public class ITMemberResource extends JerseyTest {
         Response response = client.get(PATH + "/" + "randomNameHere");
         assertThat(response.getStatus()).isEqualTo(Response.Status.NOT_FOUND.getStatusCode());
     }
+
+    //TODO make integration test for resource work
+   /* @Test
+    public void givenAListOfMembers_GET_returnsTheListOfBooks() {
+        Member member = MemberTestFixture.createMember();
+        Member actualMember = client.post(PATH, member).readEntity(Member.class);
+
+        Member readEntity = client.get(PATH).readEntity(Member.class);
+        assertThat(readEntity).isEqualTo(actualMember);
+    }*/
 }

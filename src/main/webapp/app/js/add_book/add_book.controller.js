@@ -174,7 +174,7 @@
         };
 
         vm.categoriesSize = function(){
-            if(vm.book.categories.length==0){
+            if(vm.book.categories.length == 0){
                 return {
                     empty: true
                 }

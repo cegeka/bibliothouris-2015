@@ -30,7 +30,9 @@ public class BorrowHistoryRepository {
 
     public List<MemberBorrowHistoryTO> findBorrowedBooksByMember(String memberUID, Integer start, Integer end) {
         TypedQuery<BorrowHistoryItem> query = entityManager.createNamedQuery(BorrowHistoryItem.LIST_ALL_MEMBER_BORROWED_BOOKS, BorrowHistoryItem.class);
-        query.setParameter("uuid", memberUID).setMaxResults(end - start).setFirstResult(start);
+        query.setParameter("uuid", memberUID)
+             .setMaxResults(end - start)
+             .setFirstResult(start);
 
         List<BorrowHistoryItem> borrowHistoryItems = query.getResultList();
 
@@ -49,6 +51,7 @@ public class BorrowHistoryRepository {
         query.setMaxResults(end - start).setFirstResult(start);
 
         List<BorrowHistoryItem> borrowHistoryItems = query.getResultList();
+
         return borrowHistoryItems.stream().map(DetailedBorrowHistoryTO::new).collect(Collectors.toList());
     }
 
@@ -56,7 +59,6 @@ public class BorrowHistoryRepository {
         TypedQuery<Long> query = entityManager.createNamedQuery(BorrowHistoryItem.COUNT_ALL_BORROWED_BOOKS, Long.class);
 
         return query.getSingleResult();
-
     }
 
     public BookListingTO<DetailedBorrowHistoryTO> getOverdueBooks(Integer start, Integer end, String sort, String order) {

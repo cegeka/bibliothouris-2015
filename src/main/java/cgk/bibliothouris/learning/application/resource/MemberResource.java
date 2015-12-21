@@ -1,5 +1,7 @@
 package cgk.bibliothouris.learning.application.resource;
 
+import cgk.bibliothouris.learning.application.transferobject.MemberListingTO;
+import cgk.bibliothouris.learning.application.transferobject.MemberTO;
 import cgk.bibliothouris.learning.application.transferobject.StringTO;
 import cgk.bibliothouris.learning.service.MemberService;
 import cgk.bibliothouris.learning.service.entity.Member;
@@ -8,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
 import java.net.URI;
 
 @Path("/member")
@@ -57,5 +56,16 @@ public class MemberResource {
             return Response.status(Response.Status.NOT_FOUND).build();
 
         return Response.ok().entity(foundMember).build();
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllMembers(@QueryParam("start") String start, @QueryParam("end") String end) {
+        MemberListingTO foundMembers = service.findAllMembers(start, end);
+
+        if (foundMembers.getMembers().isEmpty())
+            return Response.status(Response.Status.NOT_FOUND).build();
+
+        return Response.ok().entity(new GenericEntity<MemberListingTO<MemberTO>>(foundMembers) {}).build();
     }
 }

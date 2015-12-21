@@ -1,11 +1,14 @@
 package unit;
 
+import cgk.bibliothouris.learning.application.transferobject.MemberListingTO;
 import cgk.bibliothouris.learning.repository.MemberRepository;
+import cgk.bibliothouris.learning.service.BiblioService;
 import cgk.bibliothouris.learning.service.MemberService;
 import cgk.bibliothouris.learning.service.entity.Member;
 import cgk.bibliothouris.learning.service.exception.ValidationException;
 import fixture.MemberTestFixture;
 import org.assertj.core.api.Assertions;
+import org.glassfish.grizzly.utils.Pair;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -78,6 +81,37 @@ public class MemberServiceTest {
         Member returnedMember = service.findMember("inexistentUUID");
 
         Assertions.assertThat(returnedMember).isEqualTo(null);
+    }
+
+    @Test
+    public void givenOneMember_findAllMembers_returnsTheMember() {
+        MemberListingTO expectedMemberListingTO = new MemberListingTO();
+        Mockito.when(mockRepository.findAllMembers(0,100)).thenReturn(expectedMemberListingTO);
+
+        MemberListingTO memberListingTO = service.findAllMembers("0","100");
+
+        Assertions.assertThat(memberListingTO).isEqualTo(expectedMemberListingTO);
+    }
+
+    @Test
+    public void givenOneMember_findAllMembersWithNegativeParams_returnsListOfMembers() {
+        MemberListingTO expectedMemberListingTO = new MemberListingTO();
+        Mockito.when(mockRepository.findAllMembers(0,0)).thenReturn(expectedMemberListingTO);
+
+        MemberListingTO memberListingTO = service.findAllMembers("-1", "-5");
+
+        Assertions.assertThat(memberListingTO).isEqualTo(expectedMemberListingTO);
+    }
+
+    //TODO verify that the method findPaginationParams(...) returns the correct Params-for negative & positive params
+    @Test
+    public void givenTwoNegativeParameters_findPaginationParameters_returnCorrectParameters() {
+
+    }
+
+    @Test
+    public void givenTwoParameters_findPaginationParameters_returnCorrectParameters() {
+
     }
 
 

@@ -1,8 +1,11 @@
 package cgk.bibliothouris.learning.service;
 
+import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
+import cgk.bibliothouris.learning.application.transferobject.MemberListingTO;
 import cgk.bibliothouris.learning.repository.MemberRepository;
 import cgk.bibliothouris.learning.service.entity.Member;
 import cgk.bibliothouris.learning.service.exception.ValidationException;
+import org.glassfish.grizzly.utils.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +17,7 @@ import java.util.Set;
 
 @Service
 @Transactional
-public class MemberService {
+public class MemberService extends BiblioService{
 
     private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
@@ -36,5 +39,17 @@ public class MemberService {
     @Transactional(readOnly = true)
     public Member findMember(String uuid) {
         return repository.getMember(uuid);
+    }
+
+    @Transactional(readOnly = true)
+    public MemberListingTO findAllMembers(String start, String end) {
+        Pair<Integer, Integer> paginationParams = findPaginationParameters(start, end, () -> countMembers());
+
+        return repository.findAllMembers(paginationParams.getFirst(), paginationParams.getSecond());
+    }
+
+    @Transactional(readOnly = true)
+    public Long countMembers() {
+        return repository.countMembers();
     }
 }

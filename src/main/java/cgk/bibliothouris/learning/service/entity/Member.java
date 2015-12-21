@@ -20,7 +20,14 @@ import java.util.Set;
 @Entity
 @XmlRootElement
 @Table(name = "LIBRARY_MEMBER")
+@NamedQueries({
+        @NamedQuery(name = Member.COUNT_MEMBERS, query = "SELECT COUNT(m.UUID) FROM Member m"),
+        @NamedQuery(name = Member.DELETE_ALL_MEMBERS, query = "DELETE FROM Member m")
+})
 public class Member {
+
+    public static final String COUNT_MEMBERS = "COUNT_MEMBERS";
+    public static final String DELETE_ALL_MEMBERS = "DELETE_ALL_MEMBERS";
 
     @Id
     @Column(name = "U_ID")
