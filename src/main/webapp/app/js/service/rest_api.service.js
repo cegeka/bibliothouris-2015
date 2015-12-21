@@ -16,6 +16,7 @@
             getBookTitles: getBookTitles,
             getBookIsbnCodes: getBookIsbnCodes,
             getMemberDetail: getMemberDetail,
+            getMembers: getMembers,
             getMemberBorrowedHistory: getMemberBorrowedHistory,
             getBookBorrowerDetails: getBookBorrowerDetails,
             getAvailableBooks: getAvailableBooks,
@@ -125,6 +126,22 @@
 
         function getMemberDetail(memberId) {
             return $http.get("/api/member/" + memberId)
+                .then(function(response){
+                    return response.data;
+                });
+        }
+
+        function getMembers(itemsPerPage) {
+            var searchUrl = "";
+            console.log('lalal');
+            if (!$location.search().start && !$location.search().end) {
+                if (angular.equals($location.search(), {}))
+                    searchUrl +="?";
+                else
+                    searchUrl += "&";
+                searchUrl += "start=0&end=" + itemsPerPage;
+            }
+            return $http.get("/api" + $location.url() + searchUrl)
                 .then(function(response){
                     return response.data;
                 });

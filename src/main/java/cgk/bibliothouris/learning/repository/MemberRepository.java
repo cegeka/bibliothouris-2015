@@ -51,8 +51,9 @@ public class MemberRepository {
         return selectAllQuery.getResultList();
     }
 
+    //TODO extract in a query in Member
     private String generateSortQueryClause() {
-        String sortClause = " ORDER BY lower(m.firstName), lower(m.lastName), lower(m.address), lower(m.city)";
+        String sortClause = " ORDER BY m.memberSince";
 
         return sortClause;
     }

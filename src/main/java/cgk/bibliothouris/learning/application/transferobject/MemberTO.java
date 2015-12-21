@@ -18,6 +18,8 @@ public class MemberTO {
 
     private String city;
 
+    private LocalDate memberSince;
+
     public MemberTO() {}
 
     public MemberTO(Member member) {
@@ -27,6 +29,7 @@ public class MemberTO {
         this.lastName = member.getLastName();
         this.address = member.getAddress();
         this.city = member.getCity();
+        this.memberSince = member.getMemberSince();
     }
 
     public String getUUID() {
@@ -75,6 +78,14 @@ public class MemberTO {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public LocalDate getMemberSince() {
+        return memberSince;
+    }
+
+    public void setMemberSince(LocalDate memberSince) {
+        this.memberSince = memberSince;
     }
 
     @Override

@@ -1,0 +1,54 @@
+<h3 class="midnightblueColor">All members</h3>
+<hr class="addBorderStyle"/>
+
+<div class="alert alert-info text-center" role="alert" ng-show="vm.noMembers">
+    <p class="alert-link">There are no members to be displayed!</p>
+</div>
+
+<div class="panel panel-default" ng-hide="vm.noMembers">
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-fixed table-hover">
+                <thead>
+                <tr>
+                    <th width=15%>UUID</th>
+                    <th width=10%>Birth Date</th>
+                    <th width=20%>First Name</th>
+                    <th width=20%>Last Name</th>
+                    <th width=10%>Address</th>
+                    <th width=15%>City</th>
+                    <th width=10%>Member since...</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {{vm.members[0].UUID}}
+                <tr id="bookRow" ng-repeat = "member in vm.members" ng-click="vm.showMember(member.UUID)" style="cursor: pointer;">
+                    <td class="table-column-ellipsis">{{vm.members[$index].UUID}}</td>
+                    <td class="table-column-ellipsis">{{vm.members[$index].birthDate}}</td>
+                    <td class="table-column-ellipsis">{{vm.members[$index].firstName}}</td>
+                    <td class="table-column-ellipsis">{{vm.members[$index].lastName}}</td>
+                    <td class="table-column-ellipsis">{{vm.members[$index].address}}</td>
+                    <td class="table-column-ellipsis">{{vm.members[$index].city}}</td>
+                    <td class="table-column-ellipsis">{{vm.members[$index].memberSince}}</td>
+                   <!-- <td class="table-column-ellipsis" on-ellipsis="vm.enableTooltip(param, book)"
+                        uib-tooltip="{{vm.getTooltipContent(book)}}"
+                        tooltip-placement="bottom" tooltip-enable="book.tooltip" tooltip-append-to-body="true">
+                        <span ng-repeat="author in book.authors">
+                            {{author.firstName}} {{author.lastName}}{{$last ? '' : ', '}}
+                        </span>
+                    </td>
+                    <td>{{book.isbn}}</td>-->
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="panel-footer text-center">
+        <uib-pagination boundary-links="true" total-items="vm.totalItems" max-size="vm.maxSize" items-per-page="vm.itemsPerPage"
+                        ng-model="vm.currentPage" ng-change="vm.pageChanged()"
+                        class="pagination paginationFooter"
+                        previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;">
+        </uib-pagination>
+    </div>
+</div>
