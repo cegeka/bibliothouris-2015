@@ -79,9 +79,9 @@
                             <tr id="bookRow" ng-repeat = "book in vm.borrowedBooks"
                                 ng-class='{borrowedBooksRowColor : vm.borrowedAndNotReturnedBooks.indexOf(book) != -1}'>
                                 <td class="table-column-ellipsis">{{book.title}}</td>
-                                <td class="table-column-ellipsis hidden-xs hidden-sm" on-ellipsis="vm.enableTooltip(param, book)"
-                                    uib-tooltip="{{vm.getTooltipContent(book)}}"
-                                    tooltip-placement="bottom" tooltip-enable="book.tooltip" tooltip-append-to-body="true">
+                                <td class="table-column-ellipsis hidden-xs hidden-sm" on-ellipsis="vm.enableAuthorTooltip(param, book)"
+                                    uib-tooltip="{{vm.getAuthorTooltipContent(book)}}"
+                                    tooltip-placement="bottom" tooltip-enable="book.authorTooltip" tooltip-append-to-body="true">
                                     <span ng-repeat="author in book.authors">
                                         {{author.firstName}} {{author.lastName}}{{$last ? '' : ', '}}
                                     </span>
@@ -151,9 +151,7 @@
                             <tbody>
                             <tr id="bookAvailableRow" ng-repeat = "book in vm.availableBooks">
                                 <td class="table-column-ellipsis">{{book.title}}</td>
-                                <td class="table-column-ellipsis hidden-xs hidden-sm" on-ellipsis="vm.enableTooltip(param, book)"
-                                    uib-tooltip="{{vm.getTooltipContent(book)}}"
-                                    tooltip-placement="bottom" tooltip-enable="book.tooltip" tooltip-append-to-body="true">
+                                <td class="table-column-ellipsis hidden-xs hidden-sm">
                                     <span ng-repeat="author in book.authors">
                                         {{author.firstName}} {{author.lastName}}{{$last ? '' : ', '}}
                                     </span>

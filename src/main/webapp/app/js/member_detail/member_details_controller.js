@@ -27,6 +27,8 @@
         vm.availableBooksPageChanged = availableBooksPageChanged;
         vm.populateFilterValues = populateFilterValues;
         vm.onSelectFilter = onSelectFilter;
+        vm.enableAuthorTooltip = enableAuthorTooltip;
+        vm.getAuthorTooltipContent = getAuthorTooltipContent;
 
         activate();
 
@@ -169,6 +171,16 @@
                 searchUrlForAvailableBooks += "&isbn=" + $location.search().isbn;
 
             return searchUrlForAvailableBooks;
+        }
+
+        function enableAuthorTooltip(param, book) {
+            book.authorTooltip = param;
+        }
+
+        function getAuthorTooltipContent(book) {
+            return book.authors.map(function(author){
+                return author.firstName + " " + author.lastName;
+            }).join(", ");
         }
     }
 })();

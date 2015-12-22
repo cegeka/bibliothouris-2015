@@ -15,6 +15,8 @@
         vm.pageChanged = pageChanged;
         vm.addFieldToSort = addFieldToSort;
         vm.changeViewData = changeViewData;
+        vm.enableAuthorTooltip = enableAuthorTooltip;
+        vm.getAuthorTooltipContent = getAuthorTooltipContent;
 
         activate();
 
@@ -111,6 +113,16 @@
                 vm.sortString = $location.search().sort;
                 return $location.url().substr($location.path().length);
             }
+        }
+
+        function enableAuthorTooltip(param, book) {
+            book.authorTooltip = param;
+        }
+
+        function getAuthorTooltipContent(book) {
+            return book.authors.map(function(author){
+                return author.firstName + " " + author.lastName;
+            }).join(", ");
         }
     }
 })();
