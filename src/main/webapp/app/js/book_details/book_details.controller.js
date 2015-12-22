@@ -3,7 +3,7 @@
         .module("Bibliothouris")
         .controller("ListBookDetailsCtrl", ListBookDetailsCtrl);
 
-    function ListBookDetailsCtrl(restService, $routeParams) {
+    function ListBookDetailsCtrl(bookService, borrowService, $routeParams) {
         var vm = this;
 
         vm.book = {};
@@ -13,7 +13,7 @@
         activate();
 
         function activate() {
-            restService
+            bookService
                 .getBookDetails($routeParams.bookId)
                 .then(function(data){
                     vm.book = data;
@@ -23,7 +23,7 @@
                     vm.noBook = true;
                 });
 
-            restService
+            borrowService
                 .getBookBorrowerDetails($routeParams.bookId)
                 .then(function(data){
                     vm.borrowerDetails = data;

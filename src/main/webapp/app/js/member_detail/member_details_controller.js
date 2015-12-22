@@ -3,14 +3,14 @@
         .module("Bibliothouris")
         .controller("MemberDetailCtrl", MemberDetailCtrl);
 
-    function MemberDetailCtrl(restService, $routeParams, $location, $scope, $route) {
+    function MemberDetailCtrl(bookService, memberService, borrowService, $routeParams, $location, $scope, $route) {
         var vm = this;
 
         vm.member = {};
         vm.noMember = false;
         vm.noBorrowedBooks = false;
         vm.maxSize = 5;
-        vm.itemsPerPage = 5;
+        vm.itemsPerPage = 4;
         vm.availableItemsPerPage = 10;
         vm.borrowedAndNotReturnedBooks = [];
         vm.noAvailableBooks = false;
@@ -31,7 +31,10 @@
         activate();
 
         function activate() {
-            restService
+            var searchUrlForBorrowedBooks = createSearchUrlForBorrowedBooks();
+            var searchUrlForAvailableBooks = createSearchUrlForAvailableBooks();
+
+            memberService
                 .getMemberDetail($routeParams.memberId)
                 .then(function(data){
                     vm.member = data;
@@ -39,8 +42,8 @@
                     vm.noMember = true;
                 });
 
-            restService
-                .getMemberBorrowedHistory($routeParams.memberId, vm.itemsPerPage)
+            memberService
+                .getMemberBorrowedHistory($routeParams.memberId, searchUrlForBorrowedBooks)
                 .then(function(data){
                     vm.borrowedBooks = data;
 
@@ -52,7 +55,7 @@
                     vm.noBorrowedBooks = true;
                 });
 
-            restService
+            memberService
                 .countBorrowedHistoryItems($routeParams.memberId)
                 .then(function(data){
                     vm.totalItems = data;
@@ -61,8 +64,8 @@
                     vm.noBorrowedBooks = true;
                 });
 
-            restService
-                .getAvailableBooks(vm.availableItemsPerPage)
+            borrowService
+                .getAvailableBooks(searchUrlForAvailableBooks)
                 .then(function(data){
                     vm.availableBooks = data.books;
                     vm.totalAvailableItems = data.booksCount;
@@ -79,13 +82,13 @@
 
         function populateFilterValues() {
             if (vm.filter == "Title")
-                restService
+                bookService
                     .getBookTitles()
                     .then(function(data){
                         vm.populatedFilterValues = data;
                     });
             else if (vm.filter == "ISBN")
-                restService
+                bookService
                     .getBookIsbnCodes()
                     .then(function(data){
                         vm.populatedFilterValues = data;
@@ -130,7 +133,7 @@
                 date: moment(Date.now()).format("YYYY-MM-DD")
             };
 
-            restService
+            borrowService
                 .borrowBook(vm.historyItem)
                 .then(function(data){
                     if(angular.equals($location.search(), {})) {
@@ -143,6 +146,29 @@
                         vm.tooManyBorrowedBooks = true;
                     }
                 });
+        }
+
+        function createSearchUrlForBorrowedBooks() {
+            if (!$location.search().start && !$location.search().end)
+                return "?start=0&end=" + vm.itemsPerPage;
+            else
+                return "?start=" + $location.search().start + "&" + "end=" + $location.search().end;
+        }
+
+        function createSearchUrlForAvailableBooks() {
+            var searchUrlForAvailableBooks = "?";
+
+            if (!$location.search().aStart && !$location.search().aEnd)
+                searchUrlForAvailableBooks += "start=0&end=" + vm.availableItemsPerPage;
+            else
+                searchUrlForAvailableBooks += "start=" + $location.search().aStart + "&end=" + $location.search().aEnd;
+
+            if ($location.search().title)
+                searchUrlForAvailableBooks += "&title=" + $location.search().title;
+            else if ($location.search().isbn)
+                searchUrlForAvailableBooks += "&isbn=" + $location.search().isbn;
+
+            return searchUrlForAvailableBooks;
         }
     }
 })();

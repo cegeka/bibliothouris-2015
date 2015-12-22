@@ -3,7 +3,7 @@
         .module("Bibliothouris")
         .controller("ListMembersCtrl", ListMembersCtrl);
 
-    function ListMembersCtrl(restService, $location) {
+    function ListMembersCtrl(memberService, $location) {
         var vm = this;
 
         vm.itemsPerPage = 10;
@@ -17,7 +17,7 @@
         activate();
 
         function activate() {
-            restService
+            memberService
                 .getMembers(vm.itemsPerPage)
                 .then(function(data) {
                     vm.members = data.members;
