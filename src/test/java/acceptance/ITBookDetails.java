@@ -1,7 +1,7 @@
 package acceptance;
 
 import acceptance.pageobject.BookDetailsPage;
-import acceptance.pageobject.ListPage;
+import acceptance.pageobject.ListBookPage;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,7 +9,7 @@ import org.openqa.selenium.WebDriver;
 
 public class ITBookDetails extends BaseAcceptance {
 
-    private ListPage listPage;
+    private ListBookPage listBookPage;
     private BookDetailsPage bookDetailsPage;
     private static WebDriver driver = getDriver();
 
@@ -17,7 +17,7 @@ public class ITBookDetails extends BaseAcceptance {
     public void setup() throws InterruptedException {
         driver.get(baseUrl);
 
-        listPage = new ListPage(driver);
+        listBookPage = new ListBookPage(driver);
         bookDetailsPage = new BookDetailsPage(driver);
 
         login();
@@ -25,14 +25,14 @@ public class ITBookDetails extends BaseAcceptance {
     }
 
     private void navigateToBook(String bookTitle) throws InterruptedException {
-        listPage.clickOnListAllButton();
+        listBookPage.clickOnListAllButton();
         sleepABit();
 
-        listPage.selectFilter("Title");
-        listPage.setValueForFilter(bookTitle);
+        listBookPage.selectFilter("Title");
+        listBookPage.setValueForFilter(bookTitle);
         sleepABit();
 
-        listPage.clickOnTheFirstBookFromList();
+        listBookPage.clickOnTheFirstBookFromList();
         sleepABit();
     }
 

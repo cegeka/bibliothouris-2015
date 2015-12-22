@@ -10,9 +10,9 @@ import org.openqa.selenium.support.ui.Select;
 
 import java.util.List;
 
-public class ListPage {
+public class ListBookPage {
 
-    public ListPage(WebDriver driver) {
+    public ListBookPage(WebDriver driver) {
         PageFactory.initElements(driver, this);
     }
 

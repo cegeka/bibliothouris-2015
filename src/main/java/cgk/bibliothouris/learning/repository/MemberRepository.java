@@ -31,8 +31,8 @@ public class MemberRepository {
         return entityManager.find(Member.class, uuid);
     }
 
-    public MemberListingTO findAllMembers(Integer start, Integer end){
-        List<Member> members = findMembers(start, end);
+    public MemberListingTO findAllMembers(Integer start, Integer end, String sort, String order){
+        List<Member> members = findMembers(start, end, sort, order);
         Long membersCount = countMembers();
 
         List<MemberTO> memberTOS = members.stream().map(MemberTO::new).collect(Collectors.toList());
@@ -40,22 +40,33 @@ public class MemberRepository {
         return new MemberListingTO(memberTOS, membersCount);
     }
 
-    private List<Member> findMembers(Integer start, Integer end) {
-        String selectStatement = "SELECT m FROM Member m";
+    private List<Member> findMembers(Integer start, Integer end, String sort, String order) {
+        String selectStatement = "SELECT m FROM Member m" + generateSortQueryClause(sort, order);
 
-        String sortClause = generateSortQueryClause();
-
-        TypedQuery<Member> selectAllQuery = entityManager.createQuery(selectStatement + sortClause, Member.class)
+        TypedQuery<Member> selectAllQuery = entityManager.createQuery(selectStatement, Member.class)
                 .setMaxResults(end - start)
                 .setFirstResult(start);
         return selectAllQuery.getResultList();
     }
 
-    //TODO extract in a query in Member
-    private String generateSortQueryClause() {
-        String sortClause = " ORDER BY m.memberSince";
+    private String generateSortQueryClause(String sortCriteria, String sortOrder) {
+        String sortClause = " ORDER BY ";
 
-        return sortClause;
+        if (sortCriteria == null)
+            return sortClause + "m.memberSince DESC";
+
+        switch (sortCriteria) {
+            case "firstName":
+                return sortClause + "lower(m.firstName)" + " " + sortOrder;
+            case "lastName":
+                return sortClause + "lower(m.lastName)" + " " + sortOrder;
+            case "address":
+                return sortClause + "lower(m.address)" + " " + sortOrder;
+            case "city":
+                return sortClause + "lower(m.city)" + " " + sortOrder;
+            default:
+                return sortClause + "m.memberSince DESC";
+        }
     }
 
     public Long countMembers(){

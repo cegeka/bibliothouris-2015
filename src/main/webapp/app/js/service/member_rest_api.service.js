@@ -28,17 +28,8 @@
                 });
         }
 
-        function getMembers(itemsPerPage) {
-            var searchUrl = "";
-            console.log('lalal');
-            if (!$location.search().start && !$location.search().end) {
-                if (angular.equals($location.search(), {}))
-                    searchUrl += "?";
-                else
-                    searchUrl += "&";
-                searchUrl += "start=0&end=" + itemsPerPage;
-            }
-            return $http.get("/api" + $location.url() + searchUrl)
+        function getMembers(searchUrlForMembers) {
+            return $http.get("/api/member" + searchUrlForMembers)
                 .then(function (response) {
                     return response.data;
                 });

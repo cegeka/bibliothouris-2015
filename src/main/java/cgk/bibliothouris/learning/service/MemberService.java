@@ -42,10 +42,10 @@ public class MemberService extends BiblioService{
     }
 
     @Transactional(readOnly = true)
-    public MemberListingTO findAllMembers(String start, String end) {
+    public MemberListingTO findAllMembers(String start, String end, String sort, String order) {
         Pair<Integer, Integer> paginationParams = findPaginationParameters(start, end, () -> countMembers());
 
-        return repository.findAllMembers(paginationParams.getFirst(), paginationParams.getSecond());
+        return repository.findAllMembers(paginationParams.getFirst(), paginationParams.getSecond(), sort, order);
     }
 
     @Transactional(readOnly = true)

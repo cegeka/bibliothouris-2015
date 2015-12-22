@@ -60,8 +60,9 @@ public class MemberResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllMembers(@QueryParam("start") String start, @QueryParam("end") String end) {
-        MemberListingTO foundMembers = service.findAllMembers(start, end);
+    public Response getAllMembers(@QueryParam("start") String start, @QueryParam("end") String end,
+                                  @QueryParam("sort") String sort, @QueryParam("order") String order) {
+        MemberListingTO foundMembers = service.findAllMembers(start, end, sort, order);
 
         if (foundMembers.getMembers().isEmpty())
             return Response.status(Response.Status.NOT_FOUND).build();

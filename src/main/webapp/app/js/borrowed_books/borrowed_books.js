@@ -51,11 +51,6 @@
 
             vm.sortString = field;
 
-            if (!($location.search().start) && !($location.search().end)) {
-                $location.search('start', 0);
-                $location.search('end', vm.itemsPerPage);
-            }
-
             vm.currentPage = 1;
             pageChanged();
         }
