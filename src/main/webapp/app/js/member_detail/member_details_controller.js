@@ -10,7 +10,7 @@
         vm.noMember = false;
         vm.noBorrowedBooks = false;
         vm.maxSize = 5;
-        vm.itemsPerPage = 4;
+        vm.itemsPerPage = 5;
         vm.availableItemsPerPage = 10;
         vm.borrowedAndNotReturnedBooks = [];
         vm.noAvailableBooks = false;
