@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,7 +54,15 @@ public class BorrowHistoryRepository {
 
         List<BorrowHistoryItem> borrowHistoryItems = query.getResultList();
 
-        return borrowHistoryItems.stream().map(DetailedBorrowHistoryTO::new).collect(Collectors.toList());
+        return borrowHistoryItems
+                .stream()
+                .map(item -> {
+                    DetailedBorrowHistoryTO detailedBorrowHistoryTO = new DetailedBorrowHistoryTO(item);
+                    detailedBorrowHistoryTO.setDueDate(item.getStartDate().plusDays(ALLOWED_BORROW_DAYS_NUMBER.longValue()));
+                    detailedBorrowHistoryTO.setOverdue(detailedBorrowHistoryTO.getDueDate().until(LocalDate.now(), ChronoUnit.DAYS));
+                    return detailedBorrowHistoryTO;
+                })
+                .collect(Collectors.toList());
     }
 
     public Long countBorrowedBooks() {
@@ -70,7 +80,14 @@ public class BorrowHistoryRepository {
         List<BorrowHistoryItem> overdueBooks = query.getResultList();
         Long overdueBooksCount = countOverdueBooks();
 
-        List<DetailedBorrowHistoryTO> bookTOS = overdueBooks.stream().map(book -> new DetailedBorrowHistoryTO(book)).collect(Collectors.toList());
+        List<DetailedBorrowHistoryTO> bookTOS = overdueBooks.stream()
+                .map(item -> {
+                    DetailedBorrowHistoryTO detailedBorrowHistoryTO = new DetailedBorrowHistoryTO(item);
+                    detailedBorrowHistoryTO.setDueDate(item.getStartDate().plusDays(ALLOWED_BORROW_DAYS_NUMBER.longValue()));
+                    detailedBorrowHistoryTO.setOverdue(detailedBorrowHistoryTO.getDueDate().until(LocalDate.now(), ChronoUnit.DAYS));
+                    return detailedBorrowHistoryTO;
+                })
+                .collect(Collectors.toList());
 
         return new BookListingTO(bookTOS, overdueBooksCount);
     }

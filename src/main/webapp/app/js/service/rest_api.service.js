@@ -21,29 +21,29 @@
             getBookBorrowerDetails: getBookBorrowerDetails,
             getAvailableBooks: getAvailableBooks,
             getGlobalBorrowedBooks: getGlobalBorrowedBooks,
-            countBorrowedBooks : countBorrowedBooks,
-            getBookBorrowerDetails: getBookBorrowerDetails
+            countBorrowedBooks: countBorrowedBooks,
+            getOverdueBooks: getOverdueBooks
         };
 
         return service;
 
         function addBook(book) {
             return $http.post("/api/books", book)
-                .then(function(response){
+                .then(function (response) {
                     return response.data;
                 });
         }
 
         function borrowBook(book) {
             return $http.post("/api/borrow", book)
-                .then(function(response){
+                .then(function (response) {
                     return response.data;
                 });
         }
 
         function addMember(member) {
             return $http.post("/api/member", member)
-                .then(function(response){
+                .then(function (response) {
                     return response.data;
                 });
         }
@@ -53,55 +53,54 @@
 
             if (!$location.search().start && !$location.search().end) {
                 if (angular.equals($location.search(), {}))
-                    searchUrl +="?";
+                    searchUrl += "?";
                 else
                     searchUrl += "&";
                 searchUrl += "start=0&end=" + itemsPerPage;
             }
 
             return $http.get("/api" + $location.url() + searchUrl)
-                .then(function(response){
+                .then(function (response) {
                     return response.data;
                 });
         }
 
         function getAuthors() {
             return $http.get("/api/authors")
-                .then(function(response){
+                .then(function (response) {
                     return response.data;
                 });
         }
 
         function getBookCategories() {
             return $http.get("/api/categories")
-                .then(function(response){
+                .then(function (response) {
                     return response.data;
                 });
         }
 
         function getBookDetails(bookId) {
             return $http.get("/api/books/" + bookId)
-                .then(function(response){
+                .then(function (response) {
                     return response.data;
                 });
         }
 
         function getBookTitles() {
             return $http.get("/api/books/titles")
-                .then(function(response){
+                .then(function (response) {
                     return response.data;
                 });
         }
 
         function getBookIsbnCodes() {
             return $http.get("/api/books/isbnCodes")
-                .then(function(response){
+                .then(function (response) {
                     return response.data;
                 });
         }
 
         function getAvailableBooks(itemsPerPage) {
-
             var searchUrl = "?";
 
             if (!$location.search().aStart && !$location.search().aEnd) {
@@ -109,7 +108,6 @@
             } else {
                 searchUrl += "start=" + $location.search().aStart + "&end=" + $location.search().aEnd;
             }
-['title','isbn','date']
             if ($location.search().title) {
                 searchUrl += "&title=" + $location.search().title;
             }
@@ -119,14 +117,14 @@
             }
 
             return $http.get("/api/books/available" + searchUrl)
-                .then(function(response){
+                .then(function (response) {
                     return response.data;
                 });
         }
 
         function getMemberDetail(memberId) {
             return $http.get("/api/member/" + memberId)
-                .then(function(response){
+                .then(function (response) {
                     return response.data;
                 });
         }
@@ -136,13 +134,13 @@
             console.log('lalal');
             if (!$location.search().start && !$location.search().end) {
                 if (angular.equals($location.search(), {}))
-                    searchUrl +="?";
+                    searchUrl += "?";
                 else
                     searchUrl += "&";
                 searchUrl += "start=0&end=" + itemsPerPage;
             }
             return $http.get("/api" + $location.url() + searchUrl)
-                .then(function(response){
+                .then(function (response) {
                     return response.data;
                 });
         }
@@ -152,35 +150,42 @@
             if ($location.search().start && $location.search().end)
                 searchUrl = "?start=" + $location.search().start + "&" + "end=" + $location.search().end;
             return $http.get("/api/borrow/" + memberId + searchUrl)
-                .then(function(response){
+                .then(function (response) {
                     return response.data;
                 });
         }
 
         function countBorrowedHistoryItems(memberId) {
             return $http.get("/api/borrow/" + memberId + "/size")
-                .then(function(response){
+                .then(function (response) {
                     return response.data;
                 });
         }
 
         function countBorrowedBooks() {
             return $http.get("/api/borrow/size")
-                .then(function(response){
+                .then(function (response) {
                     return response.data;
                 });
         }
 
         function getGlobalBorrowedBooks(searchUrl) {
             return $http.get("/api/borrow/" + searchUrl)
-                .then(function(response){
+                .then(function (response) {
                     return response.data;
                 });
         }
 
         function getBookBorrowerDetails(bookId) {
             return $http.get("/api/books/" + bookId + "/borrowedBy")
-                .then(function(response){
+                .then(function (response) {
+                    return response.data;
+                });
+        }
+
+        function getOverdueBooks(searchUrl) {
+            return $http.get("/api/borrow/overdue" + searchUrl)
+                .then(function (response) {
                     return response.data;
                 });
         }

@@ -9,12 +9,12 @@
         vm.maxSize = 5;
         vm.itemsPerPage = 10;
         vm.viewFilters = ["All borrowed books", "Only overdue books"];
-        vm.filter = vm.viewFilters[0];
 
         vm.borrowedBooks = {};
         vm.noBorrows = false;
         vm.pageChanged = pageChanged;
         vm.addFieldToSort = addFieldToSort;
+        vm.changeViewData = changeViewData;
 
         activate();
 
@@ -32,20 +32,16 @@
                 vm.sortString = $location.search().sort;
             }
 
-            restService
-                .countBorrowedBooks()
-                .then(function (data) {
-                    vm.numberOfItems = data;
-                    vm.currentPage = ($location.search().start / vm.itemsPerPage) + 1;
-                });
+            if (!$location.search().view)
+                $location.search("view", "all");
 
-            restService
-                .getGlobalBorrowedBooks(searchUrl)
-                .then(function (data) {
-                    vm.borrowedBooks = data;
-                }, function () {
-                    vm.noBorrows = true;
-                });
+            if ($location.search().view == "all") {
+                vm.filter = vm.viewFilters[0];
+                getAllBorrowedBooks(searchUrl);
+            } else {
+                vm.filter = vm.viewFilters[1];
+                getOverdueBooks(searchUrl);
+            }
         }
 
         function pageChanged() {
@@ -73,6 +69,49 @@
 
             vm.currentPage = 1;
             pageChanged();
+        }
+
+        function changeViewData() {
+            var viewMode = $location.search().view;
+
+            for (var key in $location.search())
+                $location.search(key, null);
+
+            if (viewMode == "all")
+                $location.search("view", "overdue");
+            else if (viewMode == "overdue")
+                $location.search("view", "all");
+
+            activate();
+        }
+
+        function getAllBorrowedBooks(searchUrl) {
+            restService
+                .countBorrowedBooks()
+                .then(function (data) {
+                    vm.numberOfItems = data;
+                    vm.currentPage = ($location.search().start / vm.itemsPerPage) + 1;
+                });
+
+            restService
+                .getGlobalBorrowedBooks(searchUrl)
+                .then(function (data) {
+                    vm.borrowedBooks = data;
+                }, function () {
+                    vm.noBorrows = true;
+                });
+        }
+
+        function getOverdueBooks(searchUrl) {
+            restService
+                .getOverdueBooks(searchUrl)
+                .then(function (data) {
+                    vm.borrowedBooks = data.books;
+                    vm.numberOfItems = data.booksCount;
+                    vm.currentPage = ($location.search().start / vm.itemsPerPage) + 1;
+                }, function () {
+                    vm.noBorrows = true;
+                });
         }
     }
 })();
