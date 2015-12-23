@@ -6,6 +6,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
+import java.util.List;
+
 public class MemberDetailsPage {
 
     public MemberDetailsPage(WebDriver driver) {
@@ -33,6 +35,21 @@ public class MemberDetailsPage {
     @FindBy(how = How.ID, using = "email")
     WebElement emailOutput;
 
+    @FindBy(how = How.XPATH, using = "//*[@id=\"availableBookRow\"]/td[4]/button")
+    WebElement borrowBookButton;
+
+    @FindBy(how = How.XPATH, using = "//*[@id=\"availableBookRow\"]/td[1]")
+    WebElement firstAvailableBookTitle;
+
+    @FindBy(how = How.XPATH, using = "//*[@id=\"borrowedBookRow\"]/td[1]")
+    WebElement firstBorrowedBookTitle;
+
+    @FindBy(how = How.XPATH, using = "//*[@id=\"borrowedBookRow\"]/td[5]")
+    WebElement firstBorrowedBookEndDate;
+
+    @FindBy(how = How.XPATH, using = "//*[@id=\"borrowedBookRow\"]/td[6]/button")
+    WebElement returnBookButton;
+
     public String getNameText(){
         return nameOutput.getText();
     }
@@ -59,5 +76,25 @@ public class MemberDetailsPage {
 
     public String getEmailText(){
         return emailOutput.getText();
+    }
+
+    public void clickOnBorrowButtonForTheFirstAvailableBook() {
+        borrowBookButton.click();
+    }
+
+    public void clickOnReturnButtonForTheFirstBorrowedBook() {
+        returnBookButton.click();
+    }
+
+    public String getFirstAvailableBookTitle() {
+        return firstAvailableBookTitle.getText();
+    }
+
+    public String getFirstBorrowedBookTitle() {
+        return firstBorrowedBookTitle.getText();
+    }
+
+    public String getFirstBorrowedBookEndDate() {
+        return firstBorrowedBookEndDate.getText();
     }
 }

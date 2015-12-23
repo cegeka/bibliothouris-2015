@@ -15,7 +15,6 @@ public class ITMemberDetails  extends BaseAcceptance {
 
     private static AddMemberPage addMemberPage;
     private static MemberDetailsPage memberDetailsPage;
-    private static ListMemberPage listMemberPage;
     private static WebDriver driver = getDriver();
 
     private static final String FIRST_NAME = "John";
@@ -28,16 +27,6 @@ public class ITMemberDetails  extends BaseAcceptance {
     private static final String EMAIL = "default@email.com";
     private static final String PHONE_NUMBER = "123456789";
 
-    private static final String FIRST_NAME_SECOND = "Luck";
-    private static final String LAST_NAME_SECOND = "Johnson";
-    private static final String BIRTH_DATE_SECOND = "2250-12-31";
-    private static final String ADDRESS_SECOND = "Liberty Street";
-    private static final String NATIONAL_NUMBER_SECOND = String.valueOf(RandomStringUtils.randomNumeric(12));
-    private static final String POSTAL_CODE_SECOND = "1234";
-    private static final String CITY_SECOND = "Zurich";
-    private static final String EMAIL_SECOND = "default@email.com";
-    private static final String PHONE_NUMBER_SECOND = "123456789";
-
     @BeforeClass
     public static void setup() throws InterruptedException {
         driver.get(baseUrl);
@@ -46,16 +35,10 @@ public class ITMemberDetails  extends BaseAcceptance {
 
         addMemberPage = new AddMemberPage(driver);
         memberDetailsPage = new MemberDetailsPage(driver);
-        listMemberPage = new ListMemberPage(driver);
-        addMemberPage.clickOnAddMemberButton();
-        sleepABit();
 
-        addANewMember();
-        sleepABit();
         addMemberPage.clickOnAddMemberButton();
-        addASecondNewMember();
         sleepABit();
-        navigateToMember();
+        addANewMember();
         sleepABit();
     }
 
@@ -70,28 +53,6 @@ public class ITMemberDetails  extends BaseAcceptance {
         addMemberPage.inputTextIntoEmailField(EMAIL);
         addMemberPage.inputTextIntoPhoneNumberField(PHONE_NUMBER);
         addMemberPage.clickOnSubmitButton();
-        sleepABit();
-    }
-
-    private static void addASecondNewMember() {
-        addMemberPage.inputTextIntoFirstNameField(FIRST_NAME_SECOND);
-        addMemberPage.inputTextIntoLastNameField(LAST_NAME_SECOND);
-        addMemberPage.inputTextIntoBirthDateField(BIRTH_DATE_SECOND);
-        addMemberPage.inputTextIntoAddressField(ADDRESS_SECOND);
-        addMemberPage.inputTextIntoNationalNumberField(NATIONAL_NUMBER_SECOND);
-        addMemberPage.inputTextIntoPostalCodeField(POSTAL_CODE_SECOND);
-        addMemberPage.inputTextIntoCityField(CITY_SECOND);
-        addMemberPage.inputTextIntoEmailField(EMAIL_SECOND);
-        addMemberPage.inputTextIntoPhoneNumberField(PHONE_NUMBER_SECOND);
-        addMemberPage.clickOnSubmitButton();
-        sleepABit();
-    }
-
-    private static void navigateToMember() throws InterruptedException {
-        listMemberPage.clickOnListAllButton();
-        sleepABit();
-
-        listMemberPage.clickOnTheFirstMemberFromList();
         sleepABit();
     }
 
@@ -128,5 +89,26 @@ public class ITMemberDetails  extends BaseAcceptance {
     @Test
     public void phoneNumberIsListed() {
         Assertions.assertThat(memberDetailsPage.getPhoneText()).isEqualTo(PHONE_NUMBER);
+    }
+
+    @Test
+    public void whenBorrowABook_theBorrowedBookIsAddedToMemberHistoryList() {
+        String borrowedBookTitle = memberDetailsPage.getFirstAvailableBookTitle();
+
+        memberDetailsPage.clickOnBorrowButtonForTheFirstAvailableBook();
+        sleepABit();
+
+        Assertions.assertThat(memberDetailsPage.getFirstBorrowedBookTitle()).isEqualTo(borrowedBookTitle);
+    }
+
+    @Test
+    public void whenReturnABook_theBorrowedBookIsAddedToMemberHistoryList() {
+        memberDetailsPage.clickOnBorrowButtonForTheFirstAvailableBook();
+        sleepABit();
+
+        memberDetailsPage.clickOnReturnButtonForTheFirstBorrowedBook();
+        sleepABit();
+
+        Assertions.assertThat(memberDetailsPage.getFirstBorrowedBookEndDate()).isNotEqualTo("-");
     }
 }
