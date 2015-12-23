@@ -1,9 +1,11 @@
 package cgk.bibliothouris.learning.application.transferobject;
 
+import cgk.bibliothouris.learning.service.dateconverter.LocalDateAdapter;
 import cgk.bibliothouris.learning.service.entity.Author;
 import cgk.bibliothouris.learning.service.entity.BorrowHistoryItem;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -20,7 +22,11 @@ public class MemberBorrowHistoryTO {
 
     private LocalDate endLendDate;
 
-    public MemberBorrowHistoryTO() { }
+    private LocalDate dueDate;
+
+    private Long overdue;
+
+    public MemberBorrowHistoryTO() {}
 
     public MemberBorrowHistoryTO(BorrowHistoryItem borrowHistoryItem) {
         this.isbn = borrowHistoryItem.getBook().getIsbn();
@@ -58,6 +64,7 @@ public class MemberBorrowHistoryTO {
         return startLendDate;
     }
 
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     public void setStartLendDate(LocalDate startLendDate) {
         this.startLendDate = startLendDate;
     }
@@ -66,8 +73,26 @@ public class MemberBorrowHistoryTO {
         return endLendDate;
     }
 
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     public void setEndLendDate(LocalDate endLendDate) {
         this.endLendDate = endLendDate;
+    }
+
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
+
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public Long getOverdue() {
+        return overdue;
+    }
+
+    public void setOverdue(Long overdue) {
+        this.overdue = overdue;
     }
 
     @Override
@@ -95,5 +120,67 @@ public class MemberBorrowHistoryTO {
         result = 31 * result + (startLendDate != null ? startLendDate.hashCode() : 0);
         result = 31 * result + (endLendDate != null ? endLendDate.hashCode() : 0);
         return result;
+    }
+
+    public static class MemberBorrowHistoryTOBuilder {
+
+        private MemberBorrowHistoryTO memberBorrowHistoryTO;
+
+        private MemberBorrowHistoryTOBuilder()
+        {
+            memberBorrowHistoryTO = new MemberBorrowHistoryTO();
+        }
+
+        public MemberBorrowHistoryTOBuilder withIsbn(String isbn)
+        {
+            memberBorrowHistoryTO.isbn = isbn;
+            return this;
+        }
+
+        public MemberBorrowHistoryTOBuilder withTitle(String title)
+        {
+            memberBorrowHistoryTO.title = title;
+            return this;
+        }
+
+        public MemberBorrowHistoryTOBuilder withAuthors(Set<Author> authors)
+        {
+            memberBorrowHistoryTO.authors = authors;
+            return this;
+        }
+
+        public MemberBorrowHistoryTOBuilder withStartLendDate(LocalDate startLendDate)
+        {
+            memberBorrowHistoryTO.startLendDate = startLendDate;
+            return this;
+        }
+
+        public MemberBorrowHistoryTOBuilder withEndLendDate(LocalDate endLendDate)
+        {
+            memberBorrowHistoryTO.endLendDate = endLendDate;
+            return this;
+        }
+
+        public MemberBorrowHistoryTOBuilder withDueDate(LocalDate dueDate)
+        {
+            memberBorrowHistoryTO.dueDate = dueDate;
+            return this;
+        }
+
+        public MemberBorrowHistoryTOBuilder withOverdue(Long overdue)
+        {
+            memberBorrowHistoryTO.overdue = overdue;
+            return this;
+        }
+
+        public static MemberBorrowHistoryTOBuilder memberBorrowHistoryTO()
+        {
+            return new MemberBorrowHistoryTOBuilder();
+        }
+
+        public MemberBorrowHistoryTO build()
+        {
+            return memberBorrowHistoryTO;
+        }
     }
 }

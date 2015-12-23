@@ -63,10 +63,10 @@ public class BorrowHistoryServiceTest {
 
     @Test
     public void givenAMemberIdAndPositivePaginationParameters_whenFindBorrowBooksByMember_shouldReturnTheCorrectListWithBorrowedBooks() {
-        List<MemberBorrowHistoryTO> expectedBorrowedHistoryItems = new ArrayList<>();
+        BookListingTO<MemberBorrowHistoryTO> expectedBorrowedHistoryItems = new BookListingTO<>();
         Mockito.when(borrowHistoryRepository.findBorrowedBooksByMember("uuid", 0, 10)).thenReturn(expectedBorrowedHistoryItems);
 
-        List<MemberBorrowHistoryTO> foundBorrowedHistoryItems = service.findBorrowedBooksByMember("uuid", "0", "10");
+        BookListingTO<MemberBorrowHistoryTO> foundBorrowedHistoryItems = service.findBorrowedBooksByMember("uuid", "0", "10");
 
         Assertions.assertThat(foundBorrowedHistoryItems).isEqualTo(expectedBorrowedHistoryItems);
     }
@@ -74,22 +74,22 @@ public class BorrowHistoryServiceTest {
 
     @Test
     public void givenAMemberIdAndNegativePaginationParameters_whenFindBorrowBooksByMember_shouldReturnTheCorrectListWithBorrowedBooks() {
-        List<MemberBorrowHistoryTO> expectedBorrowedHistoryItems = new ArrayList<>();
+        BookListingTO<MemberBorrowHistoryTO> expectedBorrowedHistoryItems = new BookListingTO<>();
         Mockito.when(borrowHistoryRepository.findBorrowedBooksByMember("uuid", 0, 0)).thenReturn(expectedBorrowedHistoryItems);
 
-        List<MemberBorrowHistoryTO> foundBorrowedHistoryItems = service.findBorrowedBooksByMember("uuid", "-3", "-1");
+        BookListingTO<MemberBorrowHistoryTO> foundBorrowedHistoryItems = service.findBorrowedBooksByMember("uuid", "-3", "-1");
 
         Assertions.assertThat(foundBorrowedHistoryItems).isEqualTo(expectedBorrowedHistoryItems);
     }
 
     @Test
     public void givenAPopulatedHistory_whenWeRetrieveIt_weGetThatHistory(){
-        List<DetailedBorrowHistoryTO> borrowHistoryList = BorrowedHistoryFixture.createDetailedBorrowHistoryTOList();
-        Mockito.when(borrowHistoryRepository.getBorrowedBooks(1, 10, "title,isbn,date","asc,asc,desc")).thenReturn(borrowHistoryList);
+        BookListingTO<DetailedBorrowHistoryTO> borrowHistoryTO = new BookListingTO<>();
+        Mockito.when(borrowHistoryRepository.getBorrowedBooks(1, 10, "title,isbn,date", "asc,asc,desc")).thenReturn(borrowHistoryTO);
 
-        List<DetailedBorrowHistoryTO> foundGlobalBorrowedHistoryItems = service.getActiveBorrowedBooks("1", "10", "title,isbn,date","asc,asc,desc");
+        BookListingTO<DetailedBorrowHistoryTO> foundGlobalBorrowedHistoryItems = service.getActiveBorrowedBooks("1", "10", "title,isbn,date","asc,asc,desc");
 
-        Assertions.assertThat(foundGlobalBorrowedHistoryItems).isEqualTo(borrowHistoryList);
+        Assertions.assertThat(foundGlobalBorrowedHistoryItems).isEqualTo(borrowHistoryTO);
     }
 
     @Test

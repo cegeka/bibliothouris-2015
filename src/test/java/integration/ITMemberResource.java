@@ -3,7 +3,7 @@ package integration;
 
 
 import cgk.bibliothouris.learning.application.resource.MemberResource;
-import cgk.bibliothouris.learning.application.transferobject.StringTO;
+import cgk.bibliothouris.learning.application.transferobject.*;
 import cgk.bibliothouris.learning.config.JpaConfig;
 import cgk.bibliothouris.learning.service.entity.Member;
 import fixture.MemberTestFixture;
@@ -17,6 +17,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.web.filter.RequestContextFilter;
 
 import javax.ws.rs.core.Application;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -90,13 +91,14 @@ public class ITMemberResource extends JerseyTest {
         assertThat(response.getStatus()).isEqualTo(Response.Status.NOT_FOUND.getStatusCode());
     }
 
-    //TODO make integration test for resource work
-   /* @Test
+    @Test
     public void givenAListOfMembers_GET_returnsTheListOfBooks() {
         Member member = MemberTestFixture.createMember();
         Member actualMember = client.post(PATH, member).readEntity(Member.class);
+        MemberTO actualMemberTO = new MemberTO(actualMember);
 
-        Member readEntity = client.get(PATH).readEntity(Member.class);
-        assertThat(readEntity).isEqualTo(actualMember);
-    }*/
+        MemberListingTO<MemberTO> readEntity = client.get(PATH).readEntity(new GenericType<MemberListingTO<MemberTO>>(){}) ;
+
+        assertThat(readEntity.getMembers()).contains(actualMemberTO);
+    }
 }

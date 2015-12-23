@@ -42,12 +42,12 @@ public class BorrowHistoryResource {
     @Path("{memberUuid}")
     public Response getBorrowHistoryItemsByMember(@PathParam("memberUuid") String memberUuid,
                                                   @QueryParam("start") String start, @QueryParam("end") String end) {
-        List<MemberBorrowHistoryTO> borrowedHistoryItems = service.findBorrowedBooksByMember(memberUuid, start, end);
+        BookListingTO<MemberBorrowHistoryTO> borrowedHistoryItems = service.findBorrowedBooksByMember(memberUuid, start, end);
 
-        if(borrowedHistoryItems.size() == 0)
+        if(borrowedHistoryItems.getBooks().size() == 0)
             return Response.status(Response.Status.NOT_FOUND).build();
 
-        return Response.ok().entity(new GenericEntity<List<MemberBorrowHistoryTO>>(borrowedHistoryItems){}).build();
+        return Response.ok().entity(new GenericEntity<BookListingTO<MemberBorrowHistoryTO>>(borrowedHistoryItems){}).build();
     }
 
     @GET
@@ -70,11 +70,11 @@ public class BorrowHistoryResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllHistoryItems(@QueryParam("start") String start, @QueryParam("end") String end,
                                        @QueryParam("sort") String sort, @QueryParam("order") String order){
-        List<DetailedBorrowHistoryTO> borrowedBooks = service.getActiveBorrowedBooks(start, end, sort, order);
+        BookListingTO<DetailedBorrowHistoryTO> borrowedBooks = service.getActiveBorrowedBooks(start, end, sort, order);
 
-        if(borrowedBooks.size() == 0)
+        if(borrowedBooks.getBooks().size() == 0)
             return Response.status(Response.Status.NOT_FOUND).build();
-        return Response.ok().entity(new GenericEntity<List<DetailedBorrowHistoryTO>>(borrowedBooks) {}).build();
+        return Response.ok().entity(new GenericEntity<BookListingTO<DetailedBorrowHistoryTO>>(borrowedBooks) {}).build();
     }
 
     @GET

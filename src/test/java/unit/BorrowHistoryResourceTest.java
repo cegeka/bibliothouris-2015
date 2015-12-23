@@ -80,9 +80,10 @@ public class BorrowHistoryResourceTest {
         Assertions.assertThat(response.getEntity()).isEqualTo(1L);
     }
 
+    //TODO verify  that this test is correct given the fact there is no getBooks() attached to findBorrowedBooksByMember
     @Test
     public void givenAMemberUuid_findBorrowedHistoryItems_returns404NOTFOUND() {
-        List<MemberBorrowHistoryTO> borrowHistoryTOs = new ArrayList<>();
+        BookListingTO<MemberBorrowHistoryTO> borrowHistoryTOs = new BookListingTO<>();
         Mockito.when(service.findBorrowedBooksByMember("uuid", "0", "10")).thenReturn(borrowHistoryTOs);
 
         Response response = resource.getBorrowHistoryItemsByMember("uuid", "0", "10");
@@ -92,7 +93,8 @@ public class BorrowHistoryResourceTest {
 
     @Test
     public void givenAMemberUuid_findBorrowedHistoryItems_returns200OK() {
-        List<MemberBorrowHistoryTO> borrowHistoryTOs = Arrays.asList(new MemberBorrowHistoryTO());
+        BookListingTO<MemberBorrowHistoryTO> borrowHistoryTOs = new BookListingTO<>();
+        borrowHistoryTOs.setBooks(Arrays.asList(new MemberBorrowHistoryTO()));
         Mockito.when(service.findBorrowedBooksByMember("uuid", "0", "10")).thenReturn(borrowHistoryTOs);
 
         Response response = resource.getBorrowHistoryItemsByMember("uuid", "0", "10");
@@ -102,7 +104,8 @@ public class BorrowHistoryResourceTest {
 
     @Test
     public void givenAMemberUuid_findBorrowedHistoryItems_returnsTheCorrectEntity() {
-        List<MemberBorrowHistoryTO> borrowHistoryTOs = Arrays.asList(new MemberBorrowHistoryTO());
+        BookListingTO<MemberBorrowHistoryTO> borrowHistoryTOs = new BookListingTO<>();
+        borrowHistoryTOs.setBooks(Arrays.asList(new MemberBorrowHistoryTO()));
         Mockito.when(service.findBorrowedBooksByMember("uuid", "0", "10")).thenReturn(borrowHistoryTOs);
 
         Response response = resource.getBorrowHistoryItemsByMember("uuid", "0", "10");
@@ -112,8 +115,9 @@ public class BorrowHistoryResourceTest {
 
     @Test
     public void givenValidBorrowHistoryItems_whenWeRetrieveThemAll_thenWeGet200OK(){
-        List<DetailedBorrowHistoryTO> borrowHistoryList = BorrowedHistoryFixture.createDetailedBorrowHistoryTOList();
-        Mockito.when(service.getActiveBorrowedBooks("1", "10", "title,isbn,date","asc,asc,desc")).thenReturn(borrowHistoryList);
+        BookListingTO<DetailedBorrowHistoryTO> borrowHistoryTOs = new BookListingTO<>();
+        borrowHistoryTOs.setBooks(Arrays.asList(new DetailedBorrowHistoryTO()));
+        Mockito.when(service.getActiveBorrowedBooks("1", "10", "title,isbn,date","asc,asc,desc")).thenReturn(borrowHistoryTOs);
 
         Response response = resource.getAllHistoryItems("1", "10", "title,isbn,date","asc,asc,desc");
 
@@ -122,18 +126,19 @@ public class BorrowHistoryResourceTest {
 
     @Test
     public void givenValidBorrowHistoryItems_whenWeRetrieveThemAll_thenWeGetThemALl(){
-        List<DetailedBorrowHistoryTO> borrowHistoryList = BorrowedHistoryFixture.createDetailedBorrowHistoryTOList();
-        Mockito.when(service.getActiveBorrowedBooks("1", "10", "title,isbn,date","asc,asc,desc")).thenReturn(borrowHistoryList);
+        BookListingTO<DetailedBorrowHistoryTO> borrowHistoryTOs = new BookListingTO<>();
+        borrowHistoryTOs.setBooks(Arrays.asList(new DetailedBorrowHistoryTO()));
+        Mockito.when(service.getActiveBorrowedBooks("1", "10", "title,isbn,date", "asc,asc,desc")).thenReturn(borrowHistoryTOs);
 
         Response response = resource.getAllHistoryItems("1", "10", "title,isbn,date","asc,asc,desc");
 
-        Assertions.assertThat(response.getEntity()).isEqualTo(borrowHistoryList);
+        Assertions.assertThat(response.getEntity()).isEqualTo(borrowHistoryTOs);
     }
 
     @Test
     public void givenNoBorrowHistoryItems_whenWeRetrieveThemAll_thenWeGet404NotFound(){
-        List<DetailedBorrowHistoryTO> borrowHistoryList = BorrowedHistoryFixture.createEmptyDetailedBorrowHistoryTOList();
-        Mockito.when(service.getActiveBorrowedBooks("1", "10","","")).thenReturn(borrowHistoryList);
+        BookListingTO<DetailedBorrowHistoryTO> borrowHistoryTOs = new BookListingTO<>();
+        Mockito.when(service.getActiveBorrowedBooks("1", "10", "","")).thenReturn(borrowHistoryTOs);
 
         Response response = resource.getAllHistoryItems("1", "10","","");
 

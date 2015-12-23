@@ -30,8 +30,7 @@ public class DetailedBorrowHistoryTO {
 
     private Long overdue;
 
-    public DetailedBorrowHistoryTO() {
-    }
+    public DetailedBorrowHistoryTO() {}
 
     public DetailedBorrowHistoryTO(BorrowHistoryItem borrowHistoryItem) {
         this.isbn = borrowHistoryItem.getBook().getIsbn();

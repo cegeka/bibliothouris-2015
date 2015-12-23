@@ -79,9 +79,9 @@ public class ITBorrowHistoryResource extends JerseyTest{
     public void givenAMemberId_GET_returnsTheListOfBorrowedHistoryItems() {
         client.post(PATH, borrowHistoryItemTO);
 
-        List<MemberBorrowHistoryTO> memberBorrowHistoryTOs = client.get(PATH + "/" + borrowHistoryItemTO.getMemberUuid()).readEntity(new GenericType<List<MemberBorrowHistoryTO>>() {});
+        BookListingTO<MemberBorrowHistoryTO> memberBorrowHistoryTOs = client.get(PATH + "/" + borrowHistoryItemTO.getMemberUuid()).readEntity(new GenericType<BookListingTO<MemberBorrowHistoryTO>>() {});
 
-        assertThat(memberBorrowHistoryTOs.size()).isEqualTo(1);
+        assertThat(memberBorrowHistoryTOs.getBooks().size()).isEqualTo(1);
     }
 
     @Test
@@ -97,7 +97,7 @@ public class ITBorrowHistoryResource extends JerseyTest{
     public void givenAListOfOverdueBooks_GET_returnsTheListOfOverdueBooks() {
         client.post(PATH, borrowHistoryItemTO);
 
-        BookListingTO<DetailedBorrowHistoryTO> overdueBooks = client.get(PATH + "/overdue").readEntity(new GenericType<BookListingTO<DetailedBorrowHistoryTO>>() {});
+        BookListingTO<DetailedBorrowHistoryTO> overdueBooks = client.get(PATH + "/overdue").readEntity(new GenericType<BookListingTO<DetailedBorrowHistoryTO>>(){}) ;
 
         assertThat(overdueBooks.getBooks().size()).isEqualTo(1);
     }

@@ -44,7 +44,7 @@ public class BorrowHistoryService extends BiblioService{
     }
 
     @Transactional(readOnly = true)
-    public List<MemberBorrowHistoryTO> findBorrowedBooksByMember(String memberUuid, String start, String end) {
+    public BookListingTO<MemberBorrowHistoryTO> findBorrowedBooksByMember(String memberUuid, String start, String end) {
         Pair<Integer, Integer> paginationParams = findPaginationParameters(start, end, () -> countBorrowedBooksByMember(memberUuid));
 
         return borrowHistoryRepository.findBorrowedBooksByMember(memberUuid, paginationParams.getFirst(), paginationParams.getSecond());
@@ -70,7 +70,7 @@ public class BorrowHistoryService extends BiblioService{
     }
 
     @Transactional
-    public List<DetailedBorrowHistoryTO> getActiveBorrowedBooks(String start, String end, String sort, String order) {
+    public BookListingTO<DetailedBorrowHistoryTO> getActiveBorrowedBooks(String start, String end, String sort, String order) {
         Pair<Integer, Integer> paginationParams = findPaginationParameters(start, end, () -> countBorrowedBooks());
 
         return borrowHistoryRepository.getBorrowedBooks(paginationParams.getFirst(), paginationParams.getSecond(), sort, order);
