@@ -42,7 +42,7 @@
                 </thead>
 
                 <tbody>
-                <tr id="bookRow" ng-repeat = "member in vm.members" ng-click="vm.showMember(member.UUID)" style="cursor: pointer;">
+                <tr id="memberRow" ng-repeat = "member in vm.members" ng-click="vm.showMember(member.UUID)" style="cursor: pointer;">
                     <td class="table-column-ellipsis">
                         <span tooltip-placement="bottom" uib-tooltip="{{member.UUID}}" tooltip-append-to-body="true">
                             [{{member.UUID.substring(0,2) + ".." + member.UUID.substring(member.UUID.length - 3, member.UUID.length - 1)}}]

@@ -53,7 +53,7 @@ public class MemberRepository {
         String sortClause = " ORDER BY ";
 
         if (sortCriteria == null)
-            return sortClause + "m.memberSince DESC";
+            return sortClause + "m.memberSince DESC NULLS LAST";
 
         switch (sortCriteria) {
             case "firstName":
@@ -65,7 +65,7 @@ public class MemberRepository {
             case "city":
                 return sortClause + "lower(m.city)" + " " + sortOrder;
             default:
-                return sortClause + "m.memberSince DESC";
+                return sortClause + "m.memberSince DESC NULLS LAST";
         }
     }
 
