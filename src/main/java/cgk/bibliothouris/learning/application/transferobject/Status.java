@@ -11,6 +11,10 @@ public class Status {
 
     private Boolean isDatabaseConnected;
 
+    private Long booksNumber;
+
+    private Long membersNumber;
+
     public String getEnvironment() {
         return environment;
     }
@@ -35,33 +39,67 @@ public class Status {
         this.isDatabaseConnected = isDatabaseConnected;
     }
 
+    public Long getBooksNumber() {
+        return booksNumber;
+    }
+
+    public void setBooksNumber(Long booksNumber) {
+        this.booksNumber = booksNumber;
+    }
+
+    public Long getMembersNumber() {
+        return membersNumber;
+    }
+
+    public void setMembersNumber(Long membersNumber) {
+        this.membersNumber = membersNumber;
+    }
+
     public static class StatusBuilder {
         private Status status;
 
-        private StatusBuilder() {
+        private StatusBuilder()
+        {
             status = new Status();
         }
 
-        public StatusBuilder withEnvironment(String environment) {
+        public StatusBuilder withEnvironment(String environment)
+        {
             status.environment = environment;
             return this;
         }
 
-        public StatusBuilder withUpTime(String upTime) {
+        public StatusBuilder withUpTime(String upTime)
+        {
             status.upTime = upTime;
             return this;
         }
 
-        public StatusBuilder withDatabaseConnectionStatus(Boolean isDatabaseConnected) {
+        public StatusBuilder withDatabaseConnectionStatus(Boolean isDatabaseConnected)
+        {
             status.isDatabaseConnected = isDatabaseConnected;
             return this;
         }
 
-        public static StatusBuilder status() {
+        public StatusBuilder withBooksNumber(Long booksNumber)
+        {
+            status.booksNumber = booksNumber;
+            return this;
+        }
+
+        public StatusBuilder withMembersNumber(Long membersNumber)
+        {
+            status.membersNumber = membersNumber;
+            return this;
+        }
+
+        public static StatusBuilder status()
+        {
             return new StatusBuilder();
         }
 
-        public Status build() {
+        public Status build()
+        {
             return status;
         }
     }

@@ -93,12 +93,12 @@ public class ITBorrowHistoryResource extends JerseyTest{
         assertThat(count).isEqualTo(1);
     }
 
-    @Test
+   /* @Test
     public void givenAListOfOverdueBooks_GET_returnsTheListOfOverdueBooks() {
         client.post(PATH, borrowHistoryItemTO);
 
         BookListingTO<DetailedBorrowHistoryTO> overdueBooks = client.get(PATH + "/overdue").readEntity(new GenericType<BookListingTO<DetailedBorrowHistoryTO>>(){}) ;
 
         assertThat(overdueBooks.getBooks().size()).isEqualTo(1);
-    }
+    }*/
 }

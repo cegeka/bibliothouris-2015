@@ -4,9 +4,9 @@ import org.glassfish.grizzly.utils.Pair;
 
 import java.util.function.Supplier;
 
-public abstract class BiblioService {
+public class BiblioService {
 
-    public Pair<Integer, Integer> findPaginationParameters(String start, String end, Supplier<Long> countItems) {
+    public static Pair<Integer, Integer> findPaginationParameters(String start, String end, Supplier<Long> countItems) {
         Integer startPosition, endPosition;
 
         if (start == null || isNegative(start))
@@ -22,7 +22,7 @@ public abstract class BiblioService {
         return new Pair<>(startPosition, endPosition);
     }
 
-    private boolean isNegative(String number) {
+    private static boolean isNegative(String number) {
         try {
             if (Integer.parseInt(number) < 0)
                 return true;

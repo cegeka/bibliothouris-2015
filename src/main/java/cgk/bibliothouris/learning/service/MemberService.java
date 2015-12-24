@@ -17,7 +17,7 @@ import java.util.Set;
 
 @Service
 @Transactional
-public class MemberService extends BiblioService{
+public class MemberService {
 
     private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
@@ -43,7 +43,7 @@ public class MemberService extends BiblioService{
 
     @Transactional(readOnly = true)
     public MemberListingTO findAllMembers(String start, String end, String sort, String order) {
-        Pair<Integer, Integer> paginationParams = findPaginationParameters(start, end, () -> countMembers());
+        Pair<Integer, Integer> paginationParams = BiblioService.findPaginationParameters(start, end, () -> countMembers());
 
         return repository.findAllMembers(paginationParams.getFirst(), paginationParams.getSecond(), sort, order);
     }

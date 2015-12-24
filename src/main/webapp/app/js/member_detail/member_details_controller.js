@@ -13,6 +13,7 @@
         vm.itemsPerPage = 5;
         vm.availableItemsPerPage = 10;
         vm.borrowedAndNotReturnedBooks = [];
+        vm.overdueBooks = [];
         vm.noAvailableBooks = false;
         vm.searchFilters = ["Title", "ISBN"];
         vm.filter = vm.searchFilters[0];
@@ -47,11 +48,15 @@
             memberService
                 .getMemberBorrowedHistory($routeParams.memberId, searchUrlForBorrowedBooks)
                 .then(function(data){
-                    vm.borrowedBooks = data;
+                    vm.borrowedBooks = data.books;
 
                     vm.borrowedBooks.forEach(function(book){
                         if(!book.endLendDate)
                             vm.borrowedAndNotReturnedBooks.push(book);
+                    })
+                    vm.borrowedBooks.forEach(function(book){
+                        if(book.overdue > 0)
+                            vm.overdueBooks.push(book);
                     })
                 }, function() {
                     vm.noBorrowedBooks = true;

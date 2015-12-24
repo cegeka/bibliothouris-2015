@@ -67,18 +67,21 @@
                         <table class="table table-fixed">
                             <thead>
                             <tr>
-                                <th width=28%>Title</th>
-                                <th width=27% class="hidden-xs hidden-sm">Authors</th>
-                                <th width=15% class="hidden-xs hidden-sm hidden-md">ISBN</th>
-                                <th width=10% class="text-center">Lend date</th>
-                                <th width=10% class="text-center">Return date</th>
-                                <th width=10% class="text-center">Return</th>
+                                <th width=20%>Title</th>
+                                <th width=17% class="hidden-xs hidden-sm">Authors</th>
+                                <th width=17% class="hidden-xs hidden-sm hidden-md">ISBN</th>
+                                <th width=13% class="text-center">Lend date</th>
+                                <th width=13% class="text-center">Return date</th>
+                                <th width=15% class="text-center">Due date</th>
+                                <th width=10% class="text-center">Overdue</th>
+                                <th width=15% class="text-center">Return</th>
                             </tr>
                             </thead>
 
                             <tbody>
                             <tr id="borrowedBookRow" ng-repeat = "book in vm.borrowedBooks"
-                                ng-class='{borrowedBooksRowColor : vm.borrowedAndNotReturnedBooks.indexOf(book) != -1}'>
+                                ng-class='{borrowedBooksRowColor : vm.borrowedAndNotReturnedBooks.indexOf(book) != -1,
+                                overdueBooksRowColor : vm.overdueBooks.indexOf(book) != -1}'>
                                 <td class="table-column-ellipsis">{{book.title}}</td>
                                 <td class="table-column-ellipsis hidden-xs hidden-sm" on-ellipsis="vm.enableAuthorTooltip(param, book)"
                                     uib-tooltip="{{vm.getAuthorTooltipContent(book)}}"
@@ -90,6 +93,8 @@
                                 <td class="hidden-xs hidden-sm hidden-md">{{book.isbn}}</td>
                                 <td class="text-center">{{book.startLendDate}}</td>
                                 <td class="text-center">{{book.endLendDate || "-"}}</td>
+                                <td class="text-center">{{book.dueDate}}</td>
+                                <td class="text-center">{{book.overdue}}</td>
                                 <td class="text-center" style="vertical-align: middle">
                                     <button type="button" class="btn btn-default" ng-click="vm.returnBook(book.borrowHistoryId)">
                                         <i class="glyphicon glyphicon-minus"></i>

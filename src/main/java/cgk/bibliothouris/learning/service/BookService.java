@@ -19,7 +19,7 @@ import java.util.Set;
 
 @Service
 @Transactional
-public class BookService extends BiblioService{
+public class BookService {
 
     @Autowired
     private BookRepository bookRepository;
@@ -34,7 +34,7 @@ public class BookService extends BiblioService{
 
     @Transactional(readOnly = true)
     public BookListingTO findAllBooks(String start, String end, String title, String isbn) {
-        Pair<Integer, Integer> paginationParams = findPaginationParameters(start, end, () -> countBooks());
+        Pair<Integer, Integer> paginationParams = BiblioService.findPaginationParameters(start, end, () -> countBooks());
 
         return bookRepository.findAllBooks(paginationParams.getFirst(), paginationParams.getSecond(), title, isbn);
     }
@@ -79,7 +79,7 @@ public class BookService extends BiblioService{
 
     @Transactional(readOnly = true)
     public BookListingTO findAllAvailableBooks(String start, String end, String title, String isbn) {
-        Pair<Integer, Integer> paginationParams = findPaginationParameters(start, end, () -> countAvailableBooks());
+        Pair<Integer, Integer> paginationParams = BiblioService.findPaginationParameters(start, end, () -> countAvailableBooks());
 
         return bookRepository.findAllAvailableBooks(paginationParams.getFirst(), paginationParams.getSecond(), title, isbn);
     }

@@ -20,7 +20,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class BorrowHistoryService extends BiblioService{
+public class BorrowHistoryService {
 
     @Autowired
     private BorrowHistoryRepository borrowHistoryRepository;
@@ -45,7 +45,7 @@ public class BorrowHistoryService extends BiblioService{
 
     @Transactional(readOnly = true)
     public BookListingTO<MemberBorrowHistoryTO> findBorrowedBooksByMember(String memberUuid, String start, String end) {
-        Pair<Integer, Integer> paginationParams = findPaginationParameters(start, end, () -> countBorrowedBooksByMember(memberUuid));
+        Pair<Integer, Integer> paginationParams = BiblioService.findPaginationParameters(start, end, () -> countBorrowedBooksByMember(memberUuid));
 
         return borrowHistoryRepository.findBorrowedBooksByMember(memberUuid, paginationParams.getFirst(), paginationParams.getSecond());
     }
@@ -71,14 +71,14 @@ public class BorrowHistoryService extends BiblioService{
 
     @Transactional
     public BookListingTO<DetailedBorrowHistoryTO> getActiveBorrowedBooks(String start, String end, String sort, String order) {
-        Pair<Integer, Integer> paginationParams = findPaginationParameters(start, end, () -> countBorrowedBooks());
+        Pair<Integer, Integer> paginationParams = BiblioService.findPaginationParameters(start, end, () -> countBorrowedBooks());
 
         return borrowHistoryRepository.getBorrowedBooks(paginationParams.getFirst(), paginationParams.getSecond(), sort, order);
     }
 
     @Transactional
     public BookListingTO<DetailedBorrowHistoryTO> getOverdueBooks(String start, String end, String sort, String order) {
-        Pair<Integer, Integer> paginationParams = findPaginationParameters(start, end, () -> countBorrowedBooks());
+        Pair<Integer, Integer> paginationParams = BiblioService.findPaginationParameters(start, end, () -> countBorrowedBooks());
 
         return borrowHistoryRepository.getOverdueBooks(paginationParams.getFirst(), paginationParams.getSecond(), sort, order);
     }

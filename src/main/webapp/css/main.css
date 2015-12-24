@@ -31,6 +31,10 @@ ng-messages{
     background-color: darkseagreen;
 }
 
+.overdueBooksRowColor {
+    background-color: red;
+}
+
 .greenColor {
     color: green;
 }
