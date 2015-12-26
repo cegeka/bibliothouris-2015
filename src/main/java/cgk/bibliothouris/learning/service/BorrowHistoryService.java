@@ -1,9 +1,6 @@
 package cgk.bibliothouris.learning.service;
 
-import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
-import cgk.bibliothouris.learning.application.transferobject.BorrowHistoryItemTO;
-import cgk.bibliothouris.learning.application.transferobject.DetailedBorrowHistoryTO;
-import cgk.bibliothouris.learning.application.transferobject.MemberBorrowHistoryTO;
+import cgk.bibliothouris.learning.application.transferobject.*;
 import cgk.bibliothouris.learning.repository.BookRepository;
 import cgk.bibliothouris.learning.repository.BorrowHistoryRepository;
 import cgk.bibliothouris.learning.repository.MemberRepository;
@@ -16,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -38,13 +36,23 @@ public class BorrowHistoryService {
         BorrowHistoryItem borrowHistoryItem = BorrowHistoryItem.BorrowedHistoryBuilder.borrowedHistory()
                 .withBook(book)
                 .withMember(member)
-                .withStartDate(borrowHistoryItemTO.getDate()).build();
+                .withStartDate(LocalDate.now()).build();
 
         return borrowHistoryRepository.addBorrowedBook(borrowHistoryItem);
     }
 
+    public BorrowHistoryItem updateBorrowHistoryItem(IntegerTO historyItemIdTO) {
+        BorrowHistoryItem borrowHistoryItem = borrowHistoryRepository.findBorrowHistoryItemById(historyItemIdTO.getValue());
+        if (borrowHistoryItem == null)
+            return borrowHistoryItem;
+
+        borrowHistoryItem.setEndDate(LocalDate.now());
+
+        return borrowHistoryRepository.updateBorrowedBook(borrowHistoryItem);
+    }
+
     @Transactional(readOnly = true)
-    public BookListingTO<MemberBorrowHistoryTO> findBorrowedBooksByMember(String memberUuid, String start, String end) {
+    public ItemsListingTO<MemberBorrowHistoryTO> findBorrowedBooksByMember(String memberUuid, String start, String end) {
         Pair<Integer, Integer> paginationParams = BiblioService.findPaginationParameters(start, end, () -> countBorrowedBooksByMember(memberUuid));
 
         return borrowHistoryRepository.findBorrowedBooksByMember(memberUuid, paginationParams.getFirst(), paginationParams.getSecond());
@@ -70,14 +78,14 @@ public class BorrowHistoryService {
     }
 
     @Transactional
-    public BookListingTO<DetailedBorrowHistoryTO> getActiveBorrowedBooks(String start, String end, String sort, String order) {
+    public ItemsListingTO<DetailedBorrowHistoryTO> getActiveBorrowedBooks(String start, String end, String sort, String order) {
         Pair<Integer, Integer> paginationParams = BiblioService.findPaginationParameters(start, end, () -> countBorrowedBooks());
 
         return borrowHistoryRepository.getBorrowedBooks(paginationParams.getFirst(), paginationParams.getSecond(), sort, order);
     }
 
     @Transactional
-    public BookListingTO<DetailedBorrowHistoryTO> getOverdueBooks(String start, String end, String sort, String order) {
+    public ItemsListingTO<DetailedBorrowHistoryTO> getOverdueBooks(String start, String end, String sort, String order) {
         Pair<Integer, Integer> paginationParams = BiblioService.findPaginationParameters(start, end, () -> countBorrowedBooks());
 
         return borrowHistoryRepository.getOverdueBooks(paginationParams.getFirst(), paginationParams.getSecond(), sort, order);

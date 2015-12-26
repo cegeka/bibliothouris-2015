@@ -21,8 +21,8 @@ import java.util.Set;
         @NamedQuery(name = Book.DELETE_ALL_BOOKS, query = "DELETE FROM Book b"),
         @NamedQuery(name = Book.COUNT_BOOKS, query = "SELECT COUNT(b.id) FROM Book b"),
         @NamedQuery(name = Book.COUNT_AVAILABLE_BOOKS, query = "SELECT COUNT(b.id) FROM Book b WHERE b.id NOT IN (SELECT bHist.book.id FROM BorrowHistoryItem bHist WHERE bHist.endDate IS NULL)"),
-        @NamedQuery(name = Book.GET_BOOK_TITLES, query = "SELECT DISTINCT new cgk.bibliothouris.learning.application.transferobject.BookFilterValueTO(b.title) FROM Book b"),
-        @NamedQuery(name = Book.GET_BOOK_ISBN_CODES, query = "SELECT DISTINCT new cgk.bibliothouris.learning.application.transferobject.BookFilterValueTO(b.isbn) FROM Book b"),
+        @NamedQuery(name = Book.GET_BOOK_TITLES, query = "SELECT DISTINCT new cgk.bibliothouris.learning.application.transferobject.StringTO(b.title) FROM Book b"),
+        @NamedQuery(name = Book.GET_BOOK_ISBN_CODES, query = "SELECT DISTINCT new cgk.bibliothouris.learning.application.transferobject.StringTO(b.isbn) FROM Book b"),
         @NamedQuery(name = Book.COUNT_ALL_CURRENTLY_BORROWED_BOOKS, query = "SELECT COUNT(bHist.book.id) FROM BorrowHistoryItem bHist WHERE (bHist.member.UUID = :memberId) AND (bHist.endDate IS NULL)")
 })
 @XmlRootElement

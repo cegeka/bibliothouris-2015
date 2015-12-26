@@ -1,7 +1,7 @@
 package cgk.bibliothouris.learning.repository;
 
-import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
 import cgk.bibliothouris.learning.application.transferobject.DetailedBorrowHistoryTO;
+import cgk.bibliothouris.learning.application.transferobject.ItemsListingTO;
 import cgk.bibliothouris.learning.application.transferobject.MemberBorrowHistoryTO;
 import cgk.bibliothouris.learning.service.entity.BorrowHistoryItem;
 import org.springframework.stereotype.Repository;
@@ -30,7 +30,17 @@ public class BorrowHistoryRepository {
         return historyItem;
     }
 
-    public BookListingTO<MemberBorrowHistoryTO> findBorrowedBooksByMember(String memberUID, Integer start, Integer end) {
+    public BorrowHistoryItem updateBorrowedBook(BorrowHistoryItem borrowHistoryItem) {
+        entityManager.persist(borrowHistoryItem);
+
+        return borrowHistoryItem;
+    }
+
+    public BorrowHistoryItem findBorrowHistoryItemById(Integer historyItemId) {
+        return entityManager.find(BorrowHistoryItem.class, historyItemId);
+    }
+
+    public ItemsListingTO<MemberBorrowHistoryTO> findBorrowedBooksByMember(String memberUID, Integer start, Integer end) {
         TypedQuery<BorrowHistoryItem> query = entityManager.createNamedQuery(BorrowHistoryItem.LIST_ALL_MEMBER_BORROWED_BOOKS, BorrowHistoryItem.class);
         query.setParameter("uuid", memberUID)
              .setMaxResults(end - start)
@@ -45,12 +55,17 @@ public class BorrowHistoryRepository {
                     .map(item -> {
                         MemberBorrowHistoryTO memberBorrowHistoryTO = new MemberBorrowHistoryTO(item);
                         memberBorrowHistoryTO.setDueDate(item.getStartDate().plusDays(ALLOWED_BORROW_DAYS_NUMBER.longValue()));
-                        memberBorrowHistoryTO.setOverdue(memberBorrowHistoryTO.getDueDate().until(LocalDate.now(), ChronoUnit.DAYS));
+
+                        if (memberBorrowHistoryTO.getEndLendDate() == null)
+                            memberBorrowHistoryTO.setOverdue(memberBorrowHistoryTO.getDueDate().until(LocalDate.now(), ChronoUnit.DAYS));
+                        else
+                            memberBorrowHistoryTO.setOverdue(memberBorrowHistoryTO.getDueDate().until(memberBorrowHistoryTO.getEndLendDate(), ChronoUnit.DAYS));
+
                         return memberBorrowHistoryTO;
                     })
                     .collect(Collectors.toList());
 
-        return new BookListingTO(borrowedBooksByMember, countBorrowedBooksByMember);
+        return new ItemsListingTO(borrowedBooksByMember, countBorrowedBooksByMember);
     }
 
     public Long countBorrowedBooksByMember(String memberUID) {
@@ -60,7 +75,7 @@ public class BorrowHistoryRepository {
         return query.getSingleResult();
     }
 
-    public BookListingTO<DetailedBorrowHistoryTO> getBorrowedBooks(Integer start, Integer end, String sort, String order) {
+    public ItemsListingTO<DetailedBorrowHistoryTO> getBorrowedBooks(Integer start, Integer end, String sort, String order) {
         TypedQuery<BorrowHistoryItem> query = entityManager.createQuery("SELECT b from BorrowHistoryItem b where (b.endDate IS NULL)" + generateSortQueryClause(sort, order), BorrowHistoryItem.class);
         query.setMaxResults(end - start).setFirstResult(start);
 
@@ -78,7 +93,7 @@ public class BorrowHistoryRepository {
                     })
                     .collect(Collectors.toList());
 
-        return new BookListingTO(borrowedBookTOS, countBorrowedBooks);
+        return new ItemsListingTO(borrowedBookTOS, countBorrowedBooks);
     }
     //TODO make the methods private
     public Long countBorrowedBooks() {
@@ -87,11 +102,10 @@ public class BorrowHistoryRepository {
         return query.getSingleResult();
     }
 
-    public BookListingTO<DetailedBorrowHistoryTO> getOverdueBooks(Integer start, Integer end, String sort, String order) {
-        TypedQuery<BorrowHistoryItem> query = entityManager.createQuery("SELECT b from BorrowHistoryItem b where (CURRENT_DATE - to_date(b.startDate) > :daysNo)" + generateSortQueryClause(sort, order), BorrowHistoryItem.class);
+    public ItemsListingTO<DetailedBorrowHistoryTO> getOverdueBooks(Integer start, Integer end, String sort, String order) {
+        TypedQuery<BorrowHistoryItem> query = entityManager.createQuery("SELECT b from BorrowHistoryItem b where b.endDate IS NULL AND (CURRENT_DATE - to_date(b.startDate) > :daysNo)" + generateSortQueryClause(sort, order), BorrowHistoryItem.class);
         query.setParameter("daysNo", ALLOWED_BORROW_DAYS_NUMBER);
         query.setMaxResults(end - start).setFirstResult(start);
-
 
         List<BorrowHistoryItem> overdueBooks = query.getResultList();
         Long overdueBooksCount = countOverdueBooks();
@@ -107,7 +121,7 @@ public class BorrowHistoryRepository {
                     })
                     .collect(Collectors.toList());
 
-        return new BookListingTO(overdueBooksTOS, overdueBooksCount);
+        return new ItemsListingTO<>(overdueBooksTOS, overdueBooksCount);
     }
 
     private Long countOverdueBooks() {

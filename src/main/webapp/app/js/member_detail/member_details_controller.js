@@ -25,6 +25,7 @@
 
         vm.pageChanged = pageChanged;
         vm.borrowBook = borrowBook;
+        vm.returnBook = returnBook;
         vm.availableBooksPageChanged = availableBooksPageChanged;
         vm.populateFilterValues = populateFilterValues;
         vm.onSelectFilter = onSelectFilter;
@@ -48,25 +49,14 @@
             memberService
                 .getMemberBorrowedHistory($routeParams.memberId, searchUrlForBorrowedBooks)
                 .then(function(data){
-                    vm.borrowedBooks = data.books;
+                    vm.borrowedBooks = data.items;
+                    vm.totalItems = data.itemsCount;
+                    vm.currentPage = ($location.search().start / vm.itemsPerPage) + 1;
 
                     vm.borrowedBooks.forEach(function(book){
                         if(!book.endLendDate)
                             vm.borrowedAndNotReturnedBooks.push(book);
-                    })
-                    vm.borrowedBooks.forEach(function(book){
-                        if(book.overdue > 0)
-                            vm.overdueBooks.push(book);
-                    })
-                }, function() {
-                    vm.noBorrowedBooks = true;
-                });
-
-            memberService
-                .countBorrowedHistoryItems($routeParams.memberId)
-                .then(function(data){
-                    vm.totalItems = data;
-                    vm.currentPage = ($location.search().start / vm.itemsPerPage) + 1;
+                    });
                 }, function() {
                     vm.noBorrowedBooks = true;
                 });
@@ -74,8 +64,8 @@
             borrowService
                 .getAvailableBooks(searchUrlForAvailableBooks)
                 .then(function(data){
-                    vm.availableBooks = data.books;
-                    vm.totalAvailableItems = data.booksCount;
+                    vm.availableBooks = data.items;
+                    vm.totalAvailableItems = data.itemsCount;
                     vm.currentAvailablePage = ($location.search().aStart / vm.availableItemsPerPage) + 1;
                 }, function() {
                     vm.noAvailableBooks = true;
@@ -151,6 +141,23 @@
                 }, function(data){
                     if(data.status == 400) {
                         vm.tooManyBorrowedBooks = true;
+                    }
+                });
+        }
+
+        function returnBook(borrowHistoryItemId) {
+            console.log(borrowHistoryItemId);
+            vm.borrowHistoryItemIdTO = {
+                value: borrowHistoryItemId
+            };
+
+            borrowService
+                .returnBook(vm.borrowHistoryItemIdTO)
+                .then(function(){
+                    if(angular.equals($location.search(), {})) {
+                        $route.reload();
+                    } else {
+                        $location.url("/member/" + vm.member.UUID);
                     }
                 });
         }

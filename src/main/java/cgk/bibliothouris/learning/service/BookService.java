@@ -1,8 +1,8 @@
 package cgk.bibliothouris.learning.service;
 
 import cgk.bibliothouris.learning.application.transferobject.BookBorrowerTO;
-import cgk.bibliothouris.learning.application.transferobject.BookFilterValueTO;
-import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
+import cgk.bibliothouris.learning.application.transferobject.ItemsListingTO;
+import cgk.bibliothouris.learning.application.transferobject.StringTO;
 import cgk.bibliothouris.learning.repository.BookRepository;
 import cgk.bibliothouris.learning.service.entity.Book;
 import cgk.bibliothouris.learning.service.exception.ValidationException;
@@ -33,7 +33,7 @@ public class BookService {
     }
 
     @Transactional(readOnly = true)
-    public BookListingTO findAllBooks(String start, String end, String title, String isbn) {
+    public ItemsListingTO findAllBooks(String start, String end, String title, String isbn) {
         Pair<Integer, Integer> paginationParams = BiblioService.findPaginationParameters(start, end, () -> countBooks());
 
         return bookRepository.findAllBooks(paginationParams.getFirst(), paginationParams.getSecond(), title, isbn);
@@ -50,12 +50,12 @@ public class BookService {
     }
 
     @Transactional(readOnly = true)
-    public List<BookFilterValueTO> findAllBookTitles() {
+    public List<StringTO> findAllBookTitles() {
         return bookRepository.findAllBookTitles();
     }
 
     @Transactional(readOnly = true)
-    public List<BookFilterValueTO> findAllBookIsbnCodes() {
+    public List<StringTO> findAllBookIsbnCodes() {
         return bookRepository.findAllBookIsbnCodes();
     }
 
@@ -78,7 +78,7 @@ public class BookService {
     }
 
     @Transactional(readOnly = true)
-    public BookListingTO findAllAvailableBooks(String start, String end, String title, String isbn) {
+    public ItemsListingTO findAllAvailableBooks(String start, String end, String title, String isbn) {
         Pair<Integer, Integer> paginationParams = BiblioService.findPaginationParameters(start, end, () -> countAvailableBooks());
 
         return bookRepository.findAllAvailableBooks(paginationParams.getFirst(), paginationParams.getSecond(), title, isbn);

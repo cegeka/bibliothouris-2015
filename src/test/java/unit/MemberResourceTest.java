@@ -1,7 +1,7 @@
 package unit;
 
 import cgk.bibliothouris.learning.application.resource.MemberResource;
-import cgk.bibliothouris.learning.application.transferobject.MemberListingTO;
+import cgk.bibliothouris.learning.application.transferobject.ItemsListingTO;
 import cgk.bibliothouris.learning.application.transferobject.MemberTO;
 import cgk.bibliothouris.learning.service.MemberService;
 import cgk.bibliothouris.learning.service.entity.Member;
@@ -17,10 +17,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.Arrays;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.times;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -116,7 +115,7 @@ public class MemberResourceTest {
 
     @Test
     public void givenAnEmptyListOfMembers_getAllMembers_return404NotFound() {
-        MemberListingTO memberListingTO = new MemberListingTO();
+        ItemsListingTO memberListingTO = new ItemsListingTO();
         Mockito.when(service.findAllMembers("0", "100", "", "")).thenReturn(memberListingTO);
 
         Response response = resource.getAllMembers(Integer.toString(0),Integer.toString(100), "", "");
@@ -127,8 +126,8 @@ public class MemberResourceTest {
 
     @Test
     public void givenAListOfMembers_getAllMembers_return200OK() {
-        MemberListingTO memberListingTO = new MemberListingTO();
-        memberListingTO.setMembers(Arrays.asList(new MemberTO()));
+        ItemsListingTO memberListingTO = new ItemsListingTO();
+        memberListingTO.setItems(Arrays.asList(new MemberTO()));
         Mockito.when(service.findAllMembers("0", "100", "", "")).thenReturn(memberListingTO);
 
         Response response = resource.getAllMembers(Integer.toString(0),Integer.toString(100), "", "");
@@ -139,8 +138,8 @@ public class MemberResourceTest {
 
     @Test
     public void givenAListOfMembers_getAllMembers_returnTheCorrectEntity() {
-        MemberListingTO memberListingTO = new MemberListingTO();
-        memberListingTO.setMembers(Arrays.asList(new MemberTO()));
+        ItemsListingTO memberListingTO = new ItemsListingTO();
+        memberListingTO.setItems(Arrays.asList(new MemberTO()));
         Mockito.when(service.findAllMembers("0", "100", "city", "asc")).thenReturn(memberListingTO);
 
         Response response = resource.getAllMembers(Integer.toString(0),Integer.toString(100), "city", "asc");
@@ -151,8 +150,8 @@ public class MemberResourceTest {
 
     @Test
     public void givenAListOfMembers_getAllMembersWithoutParams_returnTheCorrectEntity() {
-        MemberListingTO memberListingTO = new MemberListingTO();
-        memberListingTO.setMembers(Arrays.asList(new MemberTO()));
+        ItemsListingTO memberListingTO = new ItemsListingTO();
+        memberListingTO.setItems(Arrays.asList(new MemberTO()));
         Mockito.when(service.findAllMembers("", "", "", "")).thenReturn(memberListingTO);
 
         Response response = resource.getAllMembers("","", "", "");
@@ -163,8 +162,8 @@ public class MemberResourceTest {
 
     @Test
     public void givenAListOfMembers_getAllMembersWithNegativeParams_returnTheCorrectEntity() {
-        MemberListingTO memberListingTO = new MemberListingTO();
-        memberListingTO.setMembers(Arrays.asList(new MemberTO()));
+        ItemsListingTO memberListingTO = new ItemsListingTO();
+        memberListingTO.setItems(Arrays.asList(new MemberTO()));
         Mockito.when(service.findAllMembers("-1", "-5", "address", "asc")).thenReturn(memberListingTO);
 
         Response response = resource.getAllMembers("-1","-5", "address", "asc");

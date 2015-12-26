@@ -6,11 +6,11 @@
     function borrowService($http) {
         var service = {
             borrowBook: borrowBook,
+            returnBook: returnBook,
             getMemberBorrowedHistory: getMemberBorrowedHistory,
             getBookBorrowerDetails: getBookBorrowerDetails,
             getAvailableBooks: getAvailableBooks,
             getGlobalBorrowedBooks: getGlobalBorrowedBooks,
-            countBorrowedBooks: countBorrowedBooks,
             getOverdueBooks: getOverdueBooks
         };
 
@@ -18,6 +18,13 @@
 
         function borrowBook(book) {
             return $http.post("/api/borrow", book)
+                .then(function (response) {
+                    return response.data;
+                });
+        }
+
+        function returnBook(borrowHistoryItemIdTO) {
+            return $http.put("/api/borrow", borrowHistoryItemIdTO)
                 .then(function (response) {
                     return response.data;
                 });
@@ -32,13 +39,6 @@
 
         function getMemberBorrowedHistory(memberId, searchUrl) {
             return $http.get("/api/borrow/" + memberId + searchUrl)
-                .then(function (response) {
-                    return response.data;
-                });
-        }
-
-        function countBorrowedBooks() {
-            return $http.get("/api/borrow/size")
                 .then(function (response) {
                     return response.data;
                 });

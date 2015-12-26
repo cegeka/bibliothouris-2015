@@ -75,7 +75,7 @@ public class BookRepositoryJPA implements BookRepository {
     }
 
     @Override
-    public BookListingTO findAllBooks(Integer start, Integer end, String title, String isbn){
+    public ItemsListingTO findAllBooks(Integer start, Integer end, String title, String isbn){
         List<Book> books = findBooks(start, end, title, isbn);
         Long booksCount = countBooks(title, isbn);
 
@@ -83,7 +83,7 @@ public class BookRepositoryJPA implements BookRepository {
         for (BookWithStatusTO bookTO : bookTOS)
             bookTO.setIsAvailable(!findBookBorrowerDetails(bookTO.getId()).getIsBorrowed());
 
-        return new BookListingTO(bookTOS, booksCount);
+        return new ItemsListingTO(bookTOS, booksCount);
     }
 
     private List<Book> findBooks(Integer start, Integer end, String title, String isbn) {
@@ -129,13 +129,13 @@ public class BookRepositoryJPA implements BookRepository {
     }
 
     @Override
-    public BookListingTO findAllAvailableBooks(Integer start, Integer end, String title, String isbn){
+    public ItemsListingTO findAllAvailableBooks(Integer start, Integer end, String title, String isbn){
         List<Book> books = findAvailableBooks(start, end, title, isbn);
         Long booksCount = countAvailableBooks(title, isbn);
 
         List<BookTO> bookTOS = books.stream().map(book -> new BookTO(book)).collect(Collectors.toList());
 
-        return new BookListingTO(bookTOS, booksCount);
+        return new ItemsListingTO(bookTOS, booksCount);
     }
 
     private List<Book> findAvailableBooks(Integer start, Integer end, String title, String isbn) {
@@ -156,13 +156,13 @@ public class BookRepositoryJPA implements BookRepository {
     }
 
     @Override
-    public List<BookFilterValueTO> findAllBookTitles() {
-        return entityManager.createNamedQuery(Book.GET_BOOK_TITLES, BookFilterValueTO.class).getResultList();
+    public List<StringTO> findAllBookTitles() {
+        return entityManager.createNamedQuery(Book.GET_BOOK_TITLES, StringTO.class).getResultList();
     }
 
     @Override
-    public List<BookFilterValueTO> findAllBookIsbnCodes() {
-        return entityManager.createNamedQuery(Book.GET_BOOK_ISBN_CODES, BookFilterValueTO.class).getResultList();
+    public List<StringTO> findAllBookIsbnCodes() {
+        return entityManager.createNamedQuery(Book.GET_BOOK_ISBN_CODES, StringTO.class).getResultList();
     }
 
     @Override

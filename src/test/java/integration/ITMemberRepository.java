@@ -1,6 +1,6 @@
 package integration;
 
-import cgk.bibliothouris.learning.application.transferobject.MemberListingTO;
+import cgk.bibliothouris.learning.application.transferobject.ItemsListingTO;
 import cgk.bibliothouris.learning.application.transferobject.MemberTO;
 import cgk.bibliothouris.learning.config.AppConfig;
 import cgk.bibliothouris.learning.repository.BookRepository;
@@ -69,10 +69,10 @@ public class ITMemberRepository {
         MemberTO expectedMemberTO1 = new MemberTO(createdMember1);
         MemberTO expectedMemberTO2 = new MemberTO(createdMember2);
 
-        MemberListingTO foundMemberListingTO = memberRepository.findAllMembers(0, 100, "firstName", "asc");
+        ItemsListingTO foundMemberListingTO = memberRepository.findAllMembers(0, 100, "firstName", "asc");
 
-        assertThat(foundMemberListingTO.getMembers()).contains(expectedMemberTO1);
-        assertThat(foundMemberListingTO.getMembers()).contains(expectedMemberTO2);
+        assertThat(foundMemberListingTO.getItems()).contains(expectedMemberTO1);
+        assertThat(foundMemberListingTO.getItems()).contains(expectedMemberTO2);
     }
 
 }

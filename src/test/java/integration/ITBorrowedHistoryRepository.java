@@ -1,9 +1,6 @@
 package integration;
 
-import cgk.bibliothouris.learning.application.transferobject.BookBorrowerTO;
-import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
-import cgk.bibliothouris.learning.application.transferobject.DetailedBorrowHistoryTO;
-import cgk.bibliothouris.learning.application.transferobject.MemberBorrowHistoryTO;
+import cgk.bibliothouris.learning.application.transferobject.*;
 import cgk.bibliothouris.learning.config.AppConfig;
 import cgk.bibliothouris.learning.repository.BookRepository;
 import cgk.bibliothouris.learning.repository.BorrowHistoryRepository;
@@ -79,9 +76,9 @@ public class ITBorrowedHistoryRepository {
         BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(buildBorrowHistoryIem(borrowHistoryItem));
         MemberBorrowHistoryTO memberBorrowHistoryTO = new MemberBorrowHistoryTO(persistedHistoryItem);
 
-        BookListingTO<MemberBorrowHistoryTO> memberBorrowHistoryTOs = borrowHistoryRepository.findBorrowedBooksByMember(persistedHistoryItem.getMember().getUUID(), 0, 10);
+        ItemsListingTO<MemberBorrowHistoryTO> memberBorrowHistoryTOs = borrowHistoryRepository.findBorrowedBooksByMember(persistedHistoryItem.getMember().getUUID(), 0, 10);
 
-        assertThat(memberBorrowHistoryTOs.getBooks()).contains(memberBorrowHistoryTO);
+        assertThat(memberBorrowHistoryTOs.getItems()).contains(memberBorrowHistoryTO);
     }
 
     @Test
@@ -92,9 +89,9 @@ public class ITBorrowedHistoryRepository {
         transformedPersistedItem.setDueDate(borrowHistoryItem.getStartDate().plusDays(BorrowHistoryRepository.ALLOWED_BORROW_DAYS_NUMBER.longValue()));
         transformedPersistedItem.setOverdue(transformedPersistedItem.getDueDate().until(LocalDate.now(), ChronoUnit.DAYS));
 
-        BookListingTO<DetailedBorrowHistoryTO> borrowedBooks = borrowHistoryRepository.getBorrowedBooks(0, 1000, "title", "asc");
+        ItemsListingTO<DetailedBorrowHistoryTO> borrowedBooks = borrowHistoryRepository.getBorrowedBooks(0, 1000, "title", "asc");
 
-        assertThat(borrowedBooks.getBooks()).contains(transformedPersistedItem);
+        assertThat(borrowedBooks.getItems()).contains(transformedPersistedItem);
     }
 
     @Test
@@ -128,27 +125,51 @@ public class ITBorrowedHistoryRepository {
     }
 
     @Test
-    public void givenOverdueBooks_findOverdueBooks_returnsTheCorrectListOfOverdueBooks(){
-        BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createOverdueHistoryItem();
+    public void givenOverdueBooksInPresent_findOverdueBooks_returnsTheCorrectListOfOverdueBooks(){
+        BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createOverdueHistoryItemInPresent();
         BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(buildBorrowHistoryIem(borrowHistoryItem));
         DetailedBorrowHistoryTO detailedBorrowHistoryTO = new DetailedBorrowHistoryTO(persistedHistoryItem);
         detailedBorrowHistoryTO.setDueDate(borrowHistoryItem.getStartDate().plusDays(BorrowHistoryRepository.ALLOWED_BORROW_DAYS_NUMBER.longValue()));
         detailedBorrowHistoryTO.setOverdue(detailedBorrowHistoryTO.getDueDate().until(LocalDate.now(), ChronoUnit.DAYS));
 
-        BookListingTO<DetailedBorrowHistoryTO> overdueBooks = borrowHistoryRepository.getOverdueBooks(0, 1000, "title", "asc");
+        ItemsListingTO<DetailedBorrowHistoryTO> overdueBooks = borrowHistoryRepository.getOverdueBooks(0, 1000, "title", "asc");
 
-        assertThat(overdueBooks.getBooks()).contains(detailedBorrowHistoryTO);
+        assertThat(overdueBooks.getItems()).contains(detailedBorrowHistoryTO);
     }
 
-   /* @Test
+    @Test
+    public void givenOverdueBooksInThePast_findOverdueBooks_returnsNoOverdueBooks(){
+        BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createOverdueHistoryItemInThePast();
+        BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(buildBorrowHistoryIem(borrowHistoryItem));
+        DetailedBorrowHistoryTO detailedBorrowHistoryTO = new DetailedBorrowHistoryTO(persistedHistoryItem);
+        detailedBorrowHistoryTO.setDueDate(borrowHistoryItem.getStartDate().plusDays(BorrowHistoryRepository.ALLOWED_BORROW_DAYS_NUMBER.longValue()));
+        detailedBorrowHistoryTO.setOverdue(detailedBorrowHistoryTO.getDueDate().until(LocalDate.now(), ChronoUnit.DAYS));
+
+        ItemsListingTO<DetailedBorrowHistoryTO> overdueBooks = borrowHistoryRepository.getOverdueBooks(0, 1000, "title", "asc");
+
+        assertThat(overdueBooks.getItems()).doesNotContain(detailedBorrowHistoryTO);
+    }
+
+    @Test
     public void givenOverdueBooks_countOverdueBooks_returnsTheCorrectNumberOfOverdueBooks(){
-        BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createOverdueHistoryItem();
+        BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createOverdueHistoryItemInPresent();
         BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(buildBorrowHistoryIem(borrowHistoryItem));
 
-        Long memberBorrowHistoryTOsSize = borrowHistoryRepository.countOverdueBooks();
+        Long memberBorrowHistoryTOsSize = borrowHistoryRepository.getOverdueBooks(0, 1000, "title", "asc").getItemsCount();
 
-        assertThat(memberBorrowHistoryTOsSize).isGreaterThan(1);
-    }*/
+        assertThat(memberBorrowHistoryTOsSize).isGreaterThanOrEqualTo(1);
+    }
+
+    @Test
+    public void givenABorrowHistoryItemId_updateBorrowedBook_returnsUpdatedBorrowedHistoryItem(){
+        BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createBorrowedHistoryItem();
+        BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(buildBorrowHistoryIem(borrowHistoryItem));
+        persistedHistoryItem.setEndDate(LocalDate.now());
+
+        BorrowHistoryItem updatedHistoryItem = borrowHistoryRepository.updateBorrowedBook(persistedHistoryItem);
+
+        assertThat(updatedHistoryItem.getEndDate()).isNotNull();
+    }
 
     private BorrowHistoryItem buildBorrowHistoryIem(BorrowHistoryItem borrowHistoryItem) {
         Book book = bookRepository.createBook(BookTestFixture.createBookWithOneAuthorAndOneCategory());

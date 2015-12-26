@@ -81,7 +81,7 @@
                             <tbody>
                             <tr id="borrowedBookRow" ng-repeat = "book in vm.borrowedBooks"
                                 ng-class='{borrowedBooksRowColor : vm.borrowedAndNotReturnedBooks.indexOf(book) != -1,
-                                overdueBooksRowColor : vm.overdueBooks.indexOf(book) != -1}'>
+                                overdueBooksRowColor : vm.borrowedAndNotReturnedBooks.indexOf(book) != -1 && book.overdue > 0}'>
                                 <td class="table-column-ellipsis">{{book.title}}</td>
                                 <td class="table-column-ellipsis hidden-xs hidden-sm" on-ellipsis="vm.enableAuthorTooltip(param, book)"
                                     uib-tooltip="{{vm.getAuthorTooltipContent(book)}}"
@@ -96,8 +96,8 @@
                                 <td class="text-center">{{book.dueDate}}</td>
                                 <td class="text-center">{{book.overdue}}</td>
                                 <td class="text-center" style="vertical-align: middle">
-                                    <button type="button" class="btn btn-default" ng-click="vm.returnBook(book.borrowHistoryId)">
-                                        <i class="glyphicon glyphicon-minus"></i>
+                                    <button type="button" class="btn btn-default btn-sm" ng-disabled="{{book.endLendDate}}" ng-click="vm.returnBook(book.borrowHistoryId)">
+                                        <i class="glyphicon glyphicon-remove"></i>
                                     </button>
                                 </td>
                             </tr>
@@ -169,7 +169,7 @@
                                 </td>
                                 <td class="hidden-xs hidden-sm hidden-md" style="vertical-align: middle">{{book.isbn}}</td>
                                 <td class="text-center" style="vertical-align: middle">
-                                    <button type="button" class="btn btn-default" ng-click="vm.borrowBook(book.id)">
+                                    <button type="button" class="btn btn-default btn-sm" ng-click="vm.borrowBook(book.id)">
                                         <i class="glyphicon glyphicon-plus"></i>
                                     </button>
                                 </td>

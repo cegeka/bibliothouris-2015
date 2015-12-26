@@ -1,7 +1,5 @@
 package integration;
 
-
-
 import cgk.bibliothouris.learning.application.resource.MemberResource;
 import cgk.bibliothouris.learning.application.transferobject.*;
 import cgk.bibliothouris.learning.config.JpaConfig;
@@ -97,8 +95,8 @@ public class ITMemberResource extends JerseyTest {
         Member actualMember = client.post(PATH, member).readEntity(Member.class);
         MemberTO actualMemberTO = new MemberTO(actualMember);
 
-        MemberListingTO<MemberTO> readEntity = client.get(PATH).readEntity(new GenericType<MemberListingTO<MemberTO>>(){}) ;
+        ItemsListingTO<MemberTO> readEntity = client.get(PATH).readEntity(new GenericType<ItemsListingTO<MemberTO>>(){}) ;
 
-        assertThat(readEntity.getMembers()).contains(actualMemberTO);
+        assertThat(readEntity.getItems()).contains(actualMemberTO);
     }
 }

@@ -45,8 +45,8 @@
             bookService
                 .getBooks(searchUrlForBooks)
                 .then(function(data){
-                    vm.books = data.books;
-                    vm.totalItems = data.booksCount;
+                    vm.books = data.items;
+                    vm.totalItems = data.itemsCount;
                     vm.currentPage = ($location.search().start / vm.itemsPerPage) + 1;
                 }, function(){
                     vm.noBooks = true;

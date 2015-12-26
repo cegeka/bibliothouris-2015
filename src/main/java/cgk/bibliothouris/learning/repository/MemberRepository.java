@@ -1,6 +1,6 @@
 package cgk.bibliothouris.learning.repository;
 
-import cgk.bibliothouris.learning.application.transferobject.MemberListingTO;
+import cgk.bibliothouris.learning.application.transferobject.ItemsListingTO;
 import cgk.bibliothouris.learning.application.transferobject.MemberTO;
 import cgk.bibliothouris.learning.service.entity.Member;
 import org.springframework.stereotype.Repository;
@@ -31,13 +31,13 @@ public class MemberRepository {
         return entityManager.find(Member.class, uuid);
     }
 
-    public MemberListingTO findAllMembers(Integer start, Integer end, String sort, String order){
+    public ItemsListingTO findAllMembers(Integer start, Integer end, String sort, String order){
         List<Member> members = findMembers(start, end, sort, order);
         Long membersCount = countMembers();
 
         List<MemberTO> memberTOS = members.stream().map(MemberTO::new).collect(Collectors.toList());
 
-        return new MemberListingTO(memberTOS, membersCount);
+        return new ItemsListingTO(memberTOS, membersCount);
     }
 
     private List<Member> findMembers(Integer start, Integer end, String sort, String order) {

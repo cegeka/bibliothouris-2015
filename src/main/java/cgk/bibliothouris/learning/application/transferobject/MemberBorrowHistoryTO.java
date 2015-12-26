@@ -12,6 +12,8 @@ import java.util.Set;
 @XmlRootElement
 public class MemberBorrowHistoryTO {
 
+    private Integer borrowHistoryId;
+
     private String isbn;
 
     private String title;
@@ -29,11 +31,20 @@ public class MemberBorrowHistoryTO {
     public MemberBorrowHistoryTO() {}
 
     public MemberBorrowHistoryTO(BorrowHistoryItem borrowHistoryItem) {
+        this.borrowHistoryId = borrowHistoryItem.getId();
         this.isbn = borrowHistoryItem.getBook().getIsbn();
         this.title = borrowHistoryItem.getBook().getTitle();
         this.authors = borrowHistoryItem.getBook().getAuthors();
         this.startLendDate = borrowHistoryItem.getStartDate();
         this.endLendDate = borrowHistoryItem.getEndDate();
+    }
+
+    public Integer getBorrowHistoryId() {
+        return borrowHistoryId;
+    }
+
+    public void setBorrowHistoryId(Integer borrowHistoryId) {
+        this.borrowHistoryId = borrowHistoryId;
     }
 
     public String getIsbn() {

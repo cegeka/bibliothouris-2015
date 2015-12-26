@@ -57,10 +57,6 @@ public class ITBorrowHistoryResource extends JerseyTest{
                                                                             .withBookId(newBook.getId())
                                                                             .withMemberUuid(newMember.getUUID())
                                                                             .withStartDate(LocalDate.of(2015, Month.DECEMBER, 3)).build();
-        borrowHistoryItemTO = BorrowHistoryItemTO.BorrowHistoryItemTOBuilder.borrowHistoryItemTO()
-                .withBookId(newBook.getId())
-                .withMemberUuid(newMember.getUUID())
-                .withStartDate(LocalDate.of(2015, Month.DECEMBER, 3)).build();
     }
 
     @After
@@ -79,9 +75,9 @@ public class ITBorrowHistoryResource extends JerseyTest{
     public void givenAMemberId_GET_returnsTheListOfBorrowedHistoryItems() {
         client.post(PATH, borrowHistoryItemTO);
 
-        BookListingTO<MemberBorrowHistoryTO> memberBorrowHistoryTOs = client.get(PATH + "/" + borrowHistoryItemTO.getMemberUuid()).readEntity(new GenericType<BookListingTO<MemberBorrowHistoryTO>>() {});
+        ItemsListingTO<MemberBorrowHistoryTO> memberBorrowHistoryTOs = client.get(PATH + "/" + borrowHistoryItemTO.getMemberUuid()).readEntity(new GenericType<ItemsListingTO<MemberBorrowHistoryTO>>() {});
 
-        assertThat(memberBorrowHistoryTOs.getBooks().size()).isEqualTo(1);
+        assertThat(memberBorrowHistoryTOs.getItems().size()).isEqualTo(1);
     }
 
     @Test
@@ -93,12 +89,23 @@ public class ITBorrowHistoryResource extends JerseyTest{
         assertThat(count).isEqualTo(1);
     }
 
-   /* @Test
-    public void givenAListOfOverdueBooks_GET_returnsTheListOfOverdueBooks() {
+//    @Test
+//    public void givenAListOfOverdueBooks_GET_returnsTheListOfOverdueBooks() {
+//        client.post(PATH, borrowHistoryItemTO);
+//
+//        BookListingTO<DetailedBorrowHistoryTO> overdueBooks = client.get(PATH + "/overdue").readEntity(new GenericType<BookListingTO<DetailedBorrowHistoryTO>>(){}) ;
+//
+//        assertThat(overdueBooks.getBooks().size()).isEqualTo(1);
+//    }
+
+    @Test
+    public void givenABorrowHistoryItemId_PUT_makesTheBorrowedBookAvailable() {
         client.post(PATH, borrowHistoryItemTO);
+        ItemsListingTO<MemberBorrowHistoryTO> memberBorrowHistoryTOs = client.get(PATH + "/" + borrowHistoryItemTO.getMemberUuid()).readEntity(new GenericType<ItemsListingTO<MemberBorrowHistoryTO>>() {});
 
-        BookListingTO<DetailedBorrowHistoryTO> overdueBooks = client.get(PATH + "/overdue").readEntity(new GenericType<BookListingTO<DetailedBorrowHistoryTO>>(){}) ;
+        client.put(PATH, new IntegerTO(memberBorrowHistoryTOs.getItems().get(0).getBorrowHistoryId()));
 
-        assertThat(overdueBooks.getBooks().size()).isEqualTo(1);
-    }*/
+        ItemsListingTO<MemberBorrowHistoryTO> updatedBorrowHistoryTOs = client.get(PATH + "/" + borrowHistoryItemTO.getMemberUuid()).readEntity(new GenericType<ItemsListingTO<MemberBorrowHistoryTO>>() {});
+        assertThat(updatedBorrowHistoryTOs.getItems().get(0).getEndLendDate()).isEqualTo(LocalDate.now());
+    }
 }

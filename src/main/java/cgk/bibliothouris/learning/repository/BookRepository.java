@@ -1,8 +1,8 @@
 package cgk.bibliothouris.learning.repository;
 
 import cgk.bibliothouris.learning.application.transferobject.BookBorrowerTO;
-import cgk.bibliothouris.learning.application.transferobject.BookFilterValueTO;
-import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
+import cgk.bibliothouris.learning.application.transferobject.ItemsListingTO;
+import cgk.bibliothouris.learning.application.transferobject.StringTO;
 import cgk.bibliothouris.learning.service.entity.Book;
 
 import java.util.List;
@@ -11,7 +11,7 @@ public interface BookRepository {
 
     Book createBook(Book book);
 
-    BookListingTO findAllBooks(Integer start, Integer end, String title, String isbn);
+    ItemsListingTO findAllBooks(Integer start, Integer end, String title, String isbn);
 
     void deleteAllBooks();
 
@@ -19,11 +19,11 @@ public interface BookRepository {
 
     Book findBookById(Integer bookId);
 
-    List<BookFilterValueTO> findAllBookTitles();
+    List<StringTO> findAllBookTitles();
 
-    List<BookFilterValueTO> findAllBookIsbnCodes();
+    List<StringTO> findAllBookIsbnCodes();
 
-    BookListingTO findAllAvailableBooks(Integer start, Integer end, String title, String isbn);
+    ItemsListingTO findAllAvailableBooks(Integer start, Integer end, String title, String isbn);
 
     Long countAvailableBooks();
 

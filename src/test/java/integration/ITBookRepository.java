@@ -1,9 +1,9 @@
 package integration;
 
-import cgk.bibliothouris.learning.application.transferobject.BookFilterValueTO;
-import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
 import cgk.bibliothouris.learning.application.transferobject.BookTO;
 import cgk.bibliothouris.learning.application.transferobject.BookWithStatusTO;
+import cgk.bibliothouris.learning.application.transferobject.ItemsListingTO;
+import cgk.bibliothouris.learning.application.transferobject.StringTO;
 import cgk.bibliothouris.learning.config.AppConfig;
 import cgk.bibliothouris.learning.repository.BookRepository;
 import cgk.bibliothouris.learning.repository.BorrowHistoryRepository;
@@ -78,10 +78,10 @@ public class ITBookRepository {
         Book book1 = bookRepository.createBook(bookWithOneAuthorAndThreeCategories);
         BookWithStatusTO expectedBookTO = new BookWithStatusTO(book1);
 
-        BookListingTO foundBookListingTO = bookRepository.findAllBooks(0, 5, null, null);
+        ItemsListingTO foundBookListingTO = bookRepository.findAllBooks(0, 5, null, null);
 
-        assertThat(foundBookListingTO.getBooksCount()).isEqualTo(1);
-        assertThat(foundBookListingTO.getBooks()).contains(expectedBookTO);
+        assertThat(foundBookListingTO.getItemsCount()).isEqualTo(1);
+        assertThat(foundBookListingTO.getItems()).contains(expectedBookTO);
     }
 
     @Test
@@ -95,10 +95,10 @@ public class ITBookRepository {
         BorrowHistoryItem borrowedHistory = borrowRepository.addBorrowedBook(borrowHistoryItem);
         BookTO expectedBookTO = new BookTO(availableBook);
 
-        BookListingTO foundBookListingTO = bookRepository.findAllAvailableBooks(0, 5, null, null);
+        ItemsListingTO foundBookListingTO = bookRepository.findAllAvailableBooks(0, 5, null, null);
 
-        assertThat(foundBookListingTO.getBooksCount()).isEqualTo(1);
-        assertThat(foundBookListingTO.getBooks()).contains(expectedBookTO);
+        assertThat(foundBookListingTO.getItemsCount()).isEqualTo(1);
+        assertThat(foundBookListingTO.getItems()).contains(expectedBookTO);
     }
 
     @Test
@@ -125,11 +125,11 @@ public class ITBookRepository {
         BookWithStatusTO expectedBookTO1 = new BookWithStatusTO(book1);
         BookWithStatusTO expectedBookTO2 = new BookWithStatusTO(book2);
 
-        BookListingTO foundBookListingTO = bookRepository.findAllBooks(0, 5, null, null);
+        ItemsListingTO foundBookListingTO = bookRepository.findAllBooks(0, 5, null, null);
 
-        assertThat(foundBookListingTO.getBooksCount()).isEqualTo(2);
-        assertThat(foundBookListingTO.getBooks()).contains(expectedBookTO1);
-        assertThat(foundBookListingTO.getBooks()).contains(expectedBookTO2);
+        assertThat(foundBookListingTO.getItemsCount()).isEqualTo(2);
+        assertThat(foundBookListingTO.getItems()).contains(expectedBookTO1);
+        assertThat(foundBookListingTO.getItems()).contains(expectedBookTO2);
     }
 
     @Test
@@ -138,10 +138,10 @@ public class ITBookRepository {
         Book book2 = bookRepository.createBook(bookWithOneAuthorAndOneCategory);
         BookWithStatusTO expectedBookTO = new BookWithStatusTO(book1);
 
-        BookListingTO foundBookListingTO = bookRepository.findAllBooks(0, 5, "Clean Code", null);
+        ItemsListingTO foundBookListingTO = bookRepository.findAllBooks(0, 5, "Clean Code", null);
 
-        assertThat(foundBookListingTO.getBooksCount()).isEqualTo(1);
-        assertThat(foundBookListingTO.getBooks()).contains(expectedBookTO);
+        assertThat(foundBookListingTO.getItemsCount()).isEqualTo(1);
+        assertThat(foundBookListingTO.getItems()).contains(expectedBookTO);
     }
 
     @Test
@@ -150,10 +150,10 @@ public class ITBookRepository {
         Book book2 = bookRepository.createBook(bookWithOneAuthorAndOneCategory);
         BookWithStatusTO expectedBookTO = new BookWithStatusTO(book1);
 
-        BookListingTO foundBookListingTO = bookRepository.findAllBooks(0, 5, null, book1.getIsbn());
+        ItemsListingTO foundBookListingTO = bookRepository.findAllBooks(0, 5, null, book1.getIsbn());
 
-        assertThat(foundBookListingTO.getBooksCount()).isEqualTo(2);
-        assertThat(foundBookListingTO.getBooks()).contains(expectedBookTO);
+        assertThat(foundBookListingTO.getItemsCount()).isEqualTo(2);
+        assertThat(foundBookListingTO.getItems()).contains(expectedBookTO);
     }
 
     @Test
@@ -180,7 +180,7 @@ public class ITBookRepository {
         bookRepository.createBook(bookWithOneAuthorAndOneCategory);
         bookRepository.createBook(bookWithFourAuthorsAndThreeCategories);
 
-        List<BookFilterValueTO> bookTitles = bookRepository.findAllBookTitles();
+        List<StringTO> bookTitles = bookRepository.findAllBookTitles();
 
         assertThat(bookTitles.size()).isEqualTo(2);
     }
@@ -190,7 +190,7 @@ public class ITBookRepository {
         bookRepository.createBook(bookWithOneAuthorAndOneCategory);
         bookRepository.createBook(bookWithFourAuthorsAndThreeCategories);
 
-        List<BookFilterValueTO> bookIsbnCodes = bookRepository.findAllBookIsbnCodes();
+        List<StringTO> bookIsbnCodes = bookRepository.findAllBookIsbnCodes();
 
         assertThat(bookIsbnCodes.size()).isEqualTo(1);
     }

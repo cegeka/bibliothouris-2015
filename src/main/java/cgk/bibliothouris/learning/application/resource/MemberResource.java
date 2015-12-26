@@ -1,6 +1,6 @@
 package cgk.bibliothouris.learning.application.resource;
 
-import cgk.bibliothouris.learning.application.transferobject.MemberListingTO;
+import cgk.bibliothouris.learning.application.transferobject.ItemsListingTO;
 import cgk.bibliothouris.learning.application.transferobject.MemberTO;
 import cgk.bibliothouris.learning.application.transferobject.StringTO;
 import cgk.bibliothouris.learning.service.MemberService;
@@ -39,8 +39,7 @@ public class MemberResource {
     }
 
     private Response getStringResponse(Response.Status status, String message) {
-        StringTO stringTO = new StringTO();
-        stringTO.setMessage(message);
+        StringTO stringTO = new StringTO(message);
 
         return Response.status(status).entity(stringTO).build();
     }
@@ -62,11 +61,11 @@ public class MemberResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllMembers(@QueryParam("start") String start, @QueryParam("end") String end,
                                   @QueryParam("sort") String sort, @QueryParam("order") String order) {
-        MemberListingTO foundMembers = service.findAllMembers(start, end, sort, order);
+        ItemsListingTO<MemberTO> foundMembers = service.findAllMembers(start, end, sort, order);
 
-        if (foundMembers.getMembers().isEmpty())
+        if (foundMembers.getItems().isEmpty())
             return Response.status(Response.Status.NOT_FOUND).build();
 
-        return Response.ok().entity(new GenericEntity<MemberListingTO<MemberTO>>(foundMembers) {}).build();
+        return Response.ok().entity(new GenericEntity<ItemsListingTO<MemberTO>>(foundMembers) {}).build();
     }
 }

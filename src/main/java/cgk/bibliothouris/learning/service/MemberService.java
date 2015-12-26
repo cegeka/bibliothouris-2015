@@ -1,7 +1,7 @@
 package cgk.bibliothouris.learning.service;
 
-import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
-import cgk.bibliothouris.learning.application.transferobject.MemberListingTO;
+import cgk.bibliothouris.learning.application.transferobject.ItemsListingTO;
+import cgk.bibliothouris.learning.application.transferobject.MemberTO;
 import cgk.bibliothouris.learning.repository.MemberRepository;
 import cgk.bibliothouris.learning.service.entity.Member;
 import cgk.bibliothouris.learning.service.exception.ValidationException;
@@ -42,7 +42,7 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public MemberListingTO findAllMembers(String start, String end, String sort, String order) {
+    public ItemsListingTO<MemberTO> findAllMembers(String start, String end, String sort, String order) {
         Pair<Integer, Integer> paginationParams = BiblioService.findPaginationParameters(start, end, () -> countMembers());
 
         return repository.findAllMembers(paginationParams.getFirst(), paginationParams.getSecond(), sort, order);

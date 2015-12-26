@@ -1,19 +1,15 @@
 package unit;
 
-import cgk.bibliothouris.learning.application.transferobject.MemberListingTO;
+import cgk.bibliothouris.learning.application.transferobject.ItemsListingTO;
 import cgk.bibliothouris.learning.repository.MemberRepository;
-import cgk.bibliothouris.learning.service.BiblioService;
 import cgk.bibliothouris.learning.service.MemberService;
 import cgk.bibliothouris.learning.service.entity.Member;
 import cgk.bibliothouris.learning.service.exception.ValidationException;
 import fixture.MemberTestFixture;
-import org.assertj.core.api.Assertions;
-import org.glassfish.grizzly.utils.Pair;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -89,20 +85,20 @@ public class MemberServiceTest {
 
     @Test
     public void givenOneMember_findAllMembers_returnsTheMember() {
-        MemberListingTO expectedMemberListingTO = new MemberListingTO();
+        ItemsListingTO expectedMemberListingTO = new ItemsListingTO();
         when(mockRepository.findAllMembers(0, 100, "", "")).thenReturn(expectedMemberListingTO);
 
-        MemberListingTO memberListingTO = service.findAllMembers("0","100", "", "");
+        ItemsListingTO memberListingTO = service.findAllMembers("0","100", "", "");
 
         assertThat(memberListingTO).isEqualTo(expectedMemberListingTO);
     }
 
     @Test
     public void givenOneMember_findAllMembersWithNegativeParams_returnsListOfMembers() {
-        MemberListingTO expectedMemberListingTO = new MemberListingTO();
+        ItemsListingTO expectedMemberListingTO = new ItemsListingTO();
         when(mockRepository.findAllMembers(0, 0, "lastName", "desc")).thenReturn(expectedMemberListingTO);
 
-        MemberListingTO memberListingTO = service.findAllMembers("-1", "-5", "lastName", "desc");
+        ItemsListingTO memberListingTO = service.findAllMembers("-1", "-5", "lastName", "desc");
 
         verify(mockRepository).findAllMembers(0, 0, "lastName", "desc");
         assertThat(memberListingTO).isEqualTo(expectedMemberListingTO);

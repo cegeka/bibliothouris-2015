@@ -24,9 +24,8 @@
             memberService
                 .getMembers(searchUrlForMembers)
                 .then(function(data) {
-                    vm.members = data.members;
-                    console.log(data);
-                    vm.totalItems = data.membersCount;
+                    vm.members = data.items;
+                    vm.totalItems = data.itemsCount;
                     vm.currentPage = ($location.search().start / vm.itemsPerPage) + 1;
                 }, function(){
                     vm.noMembers = true;

@@ -89,7 +89,7 @@
                     <td>
                         <a class="blackAnch" ng-href="#/member/{{book.borrowerUUID}}">{{book.borrowerFirstName}} {{book.borrowerLastName}}</a>
                         <span tooltip-placement="bottom" uib-tooltip="{{book.borrowerUUID}}" tooltip-append-to-body="true">
-                            [{{book.borrowerUUID.substring(0,2) + ".." + book.borrowerUUID.substring(book.borrowerUUID.length - 3,book.borrowerUUID.length - 1)}}]
+                            [{{book.borrowerUUID.substring(0,2) + ".." + book.borrowerUUID.substring(book.borrowerUUID.length - 2,book.borrowerUUID.length)}}]
                         </span>
                     </td>
                     <td class="text-center hidden-xs hidden-sm hidden-md">{{book.startLendDate}}</td>
