@@ -14,7 +14,14 @@
             <span class="badge" style="background-color: green" ng-show="vm.status.isDatabaseConnected">On</span>
             <span class="badge" style="background-color: darkred" ng-show="!vm.status.isDatabaseConnected">Off</span>
         </div>
-        </br>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading  has-error">
+        <h3 class="panel-title">Application statistics</h3>
+    </div>
+    <div class="panel-body">
         <div><b>Number of books: </b> {{vm.status.booksNumber}} </div>
         </br>
         <div><b>Number of members: </b> {{vm.status.membersNumber}} </div>
