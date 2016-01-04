@@ -2,7 +2,7 @@ package unit;
 
 import cgk.bibliothouris.learning.application.transferobject.ItemsListingTO;
 import cgk.bibliothouris.learning.repository.MemberRepository;
-import cgk.bibliothouris.learning.service.BiblioService;
+import cgk.bibliothouris.learning.service.BiblioUtilityService;
 import cgk.bibliothouris.learning.service.MemberService;
 import cgk.bibliothouris.learning.service.entity.Member;
 import cgk.bibliothouris.learning.service.exception.ValidationException;
@@ -113,7 +113,7 @@ public class MemberServiceTest {
         ItemsListingTO expectedMemberListingTO = new ItemsListingTO();
         expectedMemberListingTO.setItems(new ArrayList<>());
         expectedMemberListingTO.setItemsCount(0L);
-        Pair<Integer, Integer> findParams = BiblioService.findPaginationParameters("-1", "-5", () -> expectedMemberListingTO.getItemsCount());
+        Pair<Integer, Integer> findParams = BiblioUtilityService.findPaginationParameters("-1", "-5", () -> expectedMemberListingTO.getItemsCount());
 
         assertThat(findParams.getFirst()).isEqualTo(0);
         assertThat(findParams.getSecond()).isEqualTo((int)(long)(expectedMemberListingTO.getItemsCount()));
@@ -124,7 +124,7 @@ public class MemberServiceTest {
         ItemsListingTO expectedMemberListingTO = new ItemsListingTO();
         expectedMemberListingTO.setItems(new ArrayList<>());
         expectedMemberListingTO.setItemsCount(7L);
-        Pair<Integer, Integer> findParams = BiblioService.findPaginationParameters("1", "5", () -> expectedMemberListingTO.getItemsCount());
+        Pair<Integer, Integer> findParams = BiblioUtilityService.findPaginationParameters("1", "5", () -> expectedMemberListingTO.getItemsCount());
 
         assertThat(findParams.getFirst()).isEqualTo(1);
         assertThat(findParams.getSecond()).isEqualTo(5);

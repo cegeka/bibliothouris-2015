@@ -43,7 +43,7 @@ public class MemberService {
 
     @Transactional(readOnly = true)
     public ItemsListingTO<MemberTO> findAllMembers(String start, String end, String sort, String order) {
-        Pair<Integer, Integer> paginationParams = BiblioService.findPaginationParameters(start, end, () -> countMembers());
+        Pair<Integer, Integer> paginationParams = BiblioUtilityService.findPaginationParameters(start, end, () -> countMembers());
 
         return repository.findAllMembers(paginationParams.getFirst(), paginationParams.getSecond(), sort, order);
     }

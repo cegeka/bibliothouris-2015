@@ -34,7 +34,7 @@ public class BookService {
 
     @Transactional(readOnly = true)
     public ItemsListingTO findAllBooks(String start, String end, String title, String isbn) {
-        Pair<Integer, Integer> paginationParams = BiblioService.findPaginationParameters(start, end, () -> countBooks());
+        Pair<Integer, Integer> paginationParams = BiblioUtilityService.findPaginationParameters(start, end, () -> countBooks());
 
         return bookRepository.findAllBooks(paginationParams.getFirst(), paginationParams.getSecond(), title, isbn);
     }
@@ -79,7 +79,7 @@ public class BookService {
 
     @Transactional(readOnly = true)
     public ItemsListingTO findAllAvailableBooks(String start, String end, String title, String isbn) {
-        Pair<Integer, Integer> paginationParams = BiblioService.findPaginationParameters(start, end, () -> countAvailableBooks());
+        Pair<Integer, Integer> paginationParams = BiblioUtilityService.findPaginationParameters(start, end, () -> countAvailableBooks());
 
         return bookRepository.findAllAvailableBooks(paginationParams.getFirst(), paginationParams.getSecond(), title, isbn);
     }

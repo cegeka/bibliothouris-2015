@@ -4,7 +4,7 @@ import org.glassfish.grizzly.utils.Pair;
 
 import java.util.function.Supplier;
 
-public class BiblioService {
+public class BiblioUtilityService {
 
     public static Pair<Integer, Integer> findPaginationParameters(String start, String end, Supplier<Long> countItems) {
         Integer startPosition, endPosition;
