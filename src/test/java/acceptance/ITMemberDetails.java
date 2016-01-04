@@ -7,7 +7,10 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.LocalDate;
 
@@ -93,6 +96,10 @@ public class ITMemberDetails  extends BaseAcceptance {
 
     @Test
     public void whenBorrowABook_theBorrowedBookIsAddedToMemberHistoryList() {
+//        WebDriverWait wait = new WebDriverWait(driver, 5);
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"availableBookRow\"]/td[1]")));
+        sleepABit();
+        sleepABit();
         String borrowedBookTitle = memberDetailsPage.getFirstAvailableBookTitle();
 
         memberDetailsPage.clickOnBorrowButtonForTheFirstAvailableBook();
