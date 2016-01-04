@@ -2,15 +2,19 @@ package unit;
 
 import cgk.bibliothouris.learning.application.transferobject.ItemsListingTO;
 import cgk.bibliothouris.learning.repository.MemberRepository;
+import cgk.bibliothouris.learning.service.BiblioService;
 import cgk.bibliothouris.learning.service.MemberService;
 import cgk.bibliothouris.learning.service.entity.Member;
 import cgk.bibliothouris.learning.service.exception.ValidationException;
 import fixture.MemberTestFixture;
+import org.glassfish.grizzly.utils.Pair;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -104,15 +108,26 @@ public class MemberServiceTest {
         assertThat(memberListingTO).isEqualTo(expectedMemberListingTO);
     }
 
-    //TODO verify that the method findPaginationParams(...) returns the correct Params-for negative & positive params
     @Test
     public void givenTwoNegativeParameters_findPaginationParameters_returnCorrectParameters() {
+        ItemsListingTO expectedMemberListingTO = new ItemsListingTO();
+        expectedMemberListingTO.setItems(new ArrayList<>());
+        expectedMemberListingTO.setItemsCount(0L);
+        Pair<Integer, Integer> findParams = BiblioService.findPaginationParameters("-1", "-5", () -> expectedMemberListingTO.getItemsCount());
 
+        assertThat(findParams.getFirst()).isEqualTo(0);
+        assertThat(findParams.getSecond()).isEqualTo((int)(long)(expectedMemberListingTO.getItemsCount()));
     }
 
     @Test
     public void givenTwoParameters_findPaginationParameters_returnCorrectParameters() {
+        ItemsListingTO expectedMemberListingTO = new ItemsListingTO();
+        expectedMemberListingTO.setItems(new ArrayList<>());
+        expectedMemberListingTO.setItemsCount(7L);
+        Pair<Integer, Integer> findParams = BiblioService.findPaginationParameters("1", "5", () -> expectedMemberListingTO.getItemsCount());
 
+        assertThat(findParams.getFirst()).isEqualTo(1);
+        assertThat(findParams.getSecond()).isEqualTo(5);
     }
 
 
