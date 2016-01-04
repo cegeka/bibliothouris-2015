@@ -96,9 +96,6 @@ public class ITMemberDetails  extends BaseAcceptance {
 
     @Test
     public void whenBorrowABook_theBorrowedBookIsAddedToMemberHistoryList() {
-//        WebDriverWait wait = new WebDriverWait(driver, 5);
-//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"availableBookRow\"]/td[1]")));
-        sleepABit();
         sleepABit();
         String borrowedBookTitle = memberDetailsPage.getFirstAvailableBookTitle();
 
@@ -110,6 +107,7 @@ public class ITMemberDetails  extends BaseAcceptance {
 
     @Test
     public void whenReturnABook_theBorrowedBookIsAddedToMemberHistoryList() {
+        sleepABit();
         memberDetailsPage.clickOnBorrowButtonForTheFirstAvailableBook();
         sleepABit();
 
