@@ -97,6 +97,7 @@ public class ITMemberDetails  extends BaseAcceptance {
     @Test
     public void whenBorrowABook_theBorrowedBookIsAddedToMemberHistoryList() {
         sleepABit();
+        sleepABit();
         String borrowedBookTitle = memberDetailsPage.getFirstAvailableBookTitle();
         sleepABit();
 
