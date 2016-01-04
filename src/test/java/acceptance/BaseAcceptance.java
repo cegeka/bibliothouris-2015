@@ -6,7 +6,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class BaseAcceptance {
 
-    protected static String baseUrl = "http://localhost:8090/";
+    protected static String baseUrl = "http://localhost:8089/";
     private static final WebDriver driver = new FirefoxDriver();
 
     public static WebDriver getDriver(){
