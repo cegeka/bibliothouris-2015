@@ -1,6 +1,7 @@
 package acceptance;
 
-import acceptance.pageobject.ListPage;
+import acceptance.pageobject.ListBookPage;
+import acceptance.pageobject.ListMemberPage;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,24 +9,34 @@ import org.openqa.selenium.WebDriver;
 
 public class ITList extends BaseAcceptance {
 
-    private ListPage listPage;
+    private ListBookPage listBookPage;
+    private ListMemberPage listMemberPage;
     private static WebDriver driver = getDriver();
 
     @Before
     public void setup() {
         driver.get(baseUrl);
 
-        listPage = new ListPage(driver);
+        listBookPage = new ListBookPage(driver);
+        listMemberPage = new ListMemberPage(driver);
 
         login();
     }
 
     @Test
     public void booksAreListed() throws InterruptedException {
-        listPage.clickOnListAllButton();
+        listBookPage.clickOnListAllButton();
         sleepABit();
 
-        Assertions.assertThat(listPage.getListOfBooks()).isNotEmpty();
+        Assertions.assertThat(listBookPage.getListOfBooks()).isNotEmpty();
+    }
+
+    @Test
+    public void membersAreListed() throws InterruptedException {
+        listMemberPage.clickOnListAllButton();
+        sleepABit();
+
+        Assertions.assertThat(listMemberPage.getListOfMembers()).isNotEmpty();
     }
 
 }

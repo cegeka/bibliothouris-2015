@@ -70,9 +70,9 @@ public class ITBookResource extends JerseyTest {
         Book newBook = client.post(PATH, bookWithOneAuthorAndOneCategory).readEntity(Book.class);
         BookWithStatusTO expectedBookTO = new BookWithStatusTO(newBook);
 
-        BookListingTO<BookWithStatusTO> bookListingTO = client.get(PATH).readEntity(new GenericType<BookListingTO<BookWithStatusTO>>() {});
+        ItemsListingTO<BookWithStatusTO> bookListingTO = client.get(PATH).readEntity(new GenericType<ItemsListingTO<BookWithStatusTO>>() {});
 
-        assertThat(bookListingTO.getBooks()).contains(expectedBookTO);
+        assertThat(bookListingTO.getItems()).contains(expectedBookTO);
     }
 
     @Test
@@ -87,9 +87,9 @@ public class ITBookResource extends JerseyTest {
     @Test
     public void givenAListOfBooks_GET_returnsTheCorrectListOfBookTitles() {
         Book book = client.post(PATH, bookWithOneAuthorAndOneCategory).readEntity(Book.class);
-        BookFilterValueTO expectedBookTitle = new BookFilterValueTO(book.getTitle());
+        StringTO expectedBookTitle = new StringTO(book.getTitle());
 
-        List<BookFilterValueTO> foundBookTitles = client.get(PATH + "/titles").readEntity(new GenericType<List<BookFilterValueTO>>() {});
+        List<StringTO> foundBookTitles = client.get(PATH + "/titles").readEntity(new GenericType<List<StringTO>>() {});
 
         assertThat(foundBookTitles).contains(expectedBookTitle);
     }
@@ -97,9 +97,9 @@ public class ITBookResource extends JerseyTest {
     @Test
     public void givenAListOfBooks_GET_returnsTheCorrectListOfBookIsbnCodes() {
         Book book = client.post(PATH, bookWithOneAuthorAndOneCategory).readEntity(Book.class);
-        BookFilterValueTO expectedBookIsbnCode = new BookFilterValueTO(book.getIsbn());
+        StringTO expectedBookIsbnCode = new StringTO(book.getIsbn());
 
-        List<BookFilterValueTO> foundBookIsbnCodes = client.get(PATH + "/isbnCodes").readEntity(new GenericType<List<BookFilterValueTO>>() {});
+        List<StringTO> foundBookIsbnCodes = client.get(PATH + "/isbnCodes").readEntity(new GenericType<List<StringTO>>() {});
 
         assertThat(foundBookIsbnCodes).contains(expectedBookIsbnCode);
     }

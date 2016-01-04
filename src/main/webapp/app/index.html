@@ -41,6 +41,7 @@
                 <li id="addMember"><a href="#member/add">Add member</a></li>
                 <li id="listBooks"><a href="#books">List books</a></li>
                 <li id="clarkKent"><a href="#/member/577b8f24-2f81-43f4-998a-16ddaf5c93ec">Clark Kent</a></li>
+                <li id="listMembers"><a href="#member">List members</a></li>
                 <li id="borrow"><a href="#/borrow">Borrowed Books</a></li>
             </ul>
             <form class="navbar-form navbar-right" role="search">
@@ -84,18 +85,22 @@
 <script src="../components/angular-loading-bar/src/loading-bar.js"></script>
 
 <script src="app.js"></script>
+<script src="js/service/borrow_rest_api.service.js"></script>
+<script src="js/service/book_rest_api.service.js"></script>
+<script src="js/service/member_rest_api.service.js"></script>
 <script src="js/application_status/application_status.controller.js"></script>
 <script src="js/application_status/application_status.service.js"></script>
 <script src="js/add_book/add_book.controller.js"></script>
 <script src="js/book_details/book_details.controller.js"></script>
 <script src="js/list_books/ListBooksCtrl.js"></script>
-<script src="js/service/rest_api.service.js"></script>
 <script src="js/add_member/add_member_controller.js"></script>
 <script src="js/add_member/date_picker_controller.js"></script>
 <script src="js/directive/file_input.directive.js"></script>
 <script src="js/directive/on-ellipsis.directive.js"></script>
 <script src="js/member_detail/member_details_controller.js"></script>
+<script src="js/list_members/ListMembersCtrl.js"></script>
 <script src="js/borrowed_books/borrowed_books.js"></script>
+<script src="js/filter/absolute_value.filter.js"></script>
 
 </body>
 </html>

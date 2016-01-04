@@ -3,7 +3,7 @@
         .module("Bibliothouris")
         .controller("ListBooksCtrl", ListBooksCtrl);
 
-    function ListBooksCtrl(restService, $location, $scope) {
+    function ListBooksCtrl(bookService, $location, $scope) {
         var vm = this;
 
         vm.noBooks = false;
@@ -26,13 +26,13 @@
 
         function populateFilterValues() {
             if (vm.filter == "Title")
-                restService
+                bookService
                     .getBookTitles()
                     .then(function(data){
                         vm.populatedFilterValues = data;
                     });
             else if (vm.filter == "ISBN")
-                restService
+                bookService
                     .getBookIsbnCodes()
                     .then(function(data){
                         vm.populatedFilterValues = data;
@@ -40,19 +40,21 @@
         }
 
         function activate() {
-            $scope.$watch('vm.filter', function() {
-                populateFilterValues();
-            });
+            var searchUrlForBooks = createSearchUrlForBooks();
 
-            restService
-                .getBooks(vm.itemsPerPage)
+            bookService
+                .getBooks(searchUrlForBooks)
                 .then(function(data){
-                    vm.books = data.books;
-                    vm.totalItems = data.booksCount;
+                    vm.books = data.items;
+                    vm.totalItems = data.itemsCount;
                     vm.currentPage = ($location.search().start / vm.itemsPerPage) + 1;
                 }, function(){
                     vm.noBooks = true;
                 });
+
+            $scope.$watch('vm.filter', function() {
+                populateFilterValues();
+            });
         }
 
         function onSelectFilter() {
@@ -91,6 +93,13 @@
             return book.authors.map(function(author){
                 return author.firstName + " " + author.lastName;
             }).join(", ");
+        }
+
+        function createSearchUrlForBooks() {
+            if (!$location.search().start && !$location.search().end)
+                return "?start=0&end=" + vm.itemsPerPage;
+            else
+                return $location.url().substr($location.path().length);
         }
     }
 })();

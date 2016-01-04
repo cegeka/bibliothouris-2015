@@ -26,17 +26,17 @@ public class DetailedBorrowHistoryTO {
 
     private LocalDate startLendDate;
 
-    private LocalDate endLendDate;
+    private LocalDate dueDate;
 
-    public DetailedBorrowHistoryTO() {
-    }
+    private Long overdue;
+
+    public DetailedBorrowHistoryTO() {}
 
     public DetailedBorrowHistoryTO(BorrowHistoryItem borrowHistoryItem) {
         this.isbn = borrowHistoryItem.getBook().getIsbn();
         this.title = borrowHistoryItem.getBook().getTitle();
         this.authors = borrowHistoryItem.getBook().getAuthors();
         this.startLendDate = borrowHistoryItem.getStartDate();
-        this.endLendDate = borrowHistoryItem.getEndDate();
         this.borrowerFirstName = borrowHistoryItem.getMember().getFirstName();
         this.borrowerLastName = borrowHistoryItem.getMember().getLastName();
         this.borrowerUUID = borrowHistoryItem.getMember().getUUID();
@@ -75,10 +75,6 @@ public class DetailedBorrowHistoryTO {
         this.startLendDate = startLendDate;
     }
 
-    public LocalDate getEndLendDate() {
-        return endLendDate;
-    }
-
     public String getBorrowerFirstName() {
         return borrowerFirstName;
     }
@@ -103,10 +99,21 @@ public class DetailedBorrowHistoryTO {
         this.borrowerUUID = borrowerUUID;
     }
 
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
 
     @XmlJavaTypeAdapter(LocalDateAdapter.class)
-    public void setEndLendDate(LocalDate endLendDate) {
-        this.endLendDate = endLendDate;
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public Long getOverdue() {
+        return overdue;
+    }
+
+    public void setOverdue(Long overdue) {
+        this.overdue = overdue;
     }
 
     public static class DetailedBorrowHistoryTOBuilder {
@@ -151,8 +158,13 @@ public class DetailedBorrowHistoryTO {
             return this;
         }
 
-        public DetailedBorrowHistoryTOBuilder withEndLendDate(LocalDate endLendDate) {
-            detailedBorrowHistoryTO.endLendDate = endLendDate;
+        public DetailedBorrowHistoryTOBuilder withDueDate(LocalDate dueDate) {
+            detailedBorrowHistoryTO.dueDate = dueDate;
+            return this;
+        }
+
+        public DetailedBorrowHistoryTOBuilder withOverdue(Long overdue) {
+            detailedBorrowHistoryTO.overdue = overdue;
             return this;
         }
 
@@ -178,8 +190,9 @@ public class DetailedBorrowHistoryTO {
         if (borrowerLastName != null ? !borrowerLastName.equals(that.borrowerLastName) : that.borrowerLastName != null)
             return false;
         if (borrowerUUID != null ? !borrowerUUID.equals(that.borrowerUUID) : that.borrowerUUID != null) return false;
-        if (endLendDate != null ? !endLendDate.equals(that.endLendDate) : that.endLendDate != null) return false;
+        if (dueDate != null ? !dueDate.equals(that.dueDate) : that.dueDate != null) return false;
         if (isbn != null ? !isbn.equals(that.isbn) : that.isbn != null) return false;
+        if (overdue != null ? !overdue.equals(that.overdue) : that.overdue != null) return false;
         if (startLendDate != null ? !startLendDate.equals(that.startLendDate) : that.startLendDate != null)
             return false;
         if (title != null ? !title.equals(that.title) : that.title != null) return false;
@@ -196,7 +209,8 @@ public class DetailedBorrowHistoryTO {
         result = 31 * result + (borrowerUUID != null ? borrowerUUID.hashCode() : 0);
         result = 31 * result + (authors != null ? authors.hashCode() : 0);
         result = 31 * result + (startLendDate != null ? startLendDate.hashCode() : 0);
-        result = 31 * result + (endLendDate != null ? endLendDate.hashCode() : 0);
+        result = 31 * result + (dueDate != null ? dueDate.hashCode() : 0);
+        result = 31 * result + (overdue != null ? overdue.hashCode() : 0);
         return result;
     }
 }

@@ -7,6 +7,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
 public class BookDetailsPage {
+
     public BookDetailsPage(WebDriver driver) {
         PageFactory.initElements(driver, this);
     }

@@ -29,11 +29,11 @@ public class BookResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllBooks(@QueryParam("start") String start, @QueryParam("end") String end,
                                 @QueryParam("title") String title, @QueryParam("isbn") String isbn){
-        BookListingTO bookListingTO = bookService.findAllBooks(start, end, title, isbn);
-        if(bookListingTO.getBooks().size() == 0){
+        ItemsListingTO bookListingTO = bookService.findAllBooks(start, end, title, isbn);
+        if(bookListingTO.getItems().size() == 0){
             return Response.status(Status.NOT_FOUND).build();
         }
-        return Response.ok().entity(new GenericEntity<BookListingTO<BookWithStatusTO>>(bookListingTO){}).build();
+        return Response.ok().entity(new GenericEntity<ItemsListingTO<BookWithStatusTO>>(bookListingTO){}).build();
     }
 
     @GET
@@ -41,11 +41,11 @@ public class BookResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllAvailableBooks(@QueryParam("start") String start, @QueryParam("end") String end,
                                 @QueryParam("title") String title, @QueryParam("isbn") String isbn){
-        BookListingTO bookListingTO = bookService.findAllAvailableBooks(start, end, title, isbn);
-        if(bookListingTO.getBooks().size() == 0){
+        ItemsListingTO bookListingTO = bookService.findAllAvailableBooks(start, end, title, isbn);
+        if(bookListingTO.getItems().size() == 0){
             return Response.status(Status.NOT_FOUND).build();
         }
-        return Response.ok().entity(new GenericEntity<BookListingTO<BookTO>>(bookListingTO){}).build();
+        return Response.ok().entity(new GenericEntity<ItemsListingTO<BookTO>>(bookListingTO){}).build();
     }
 
     @GET
@@ -100,24 +100,24 @@ public class BookResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/titles")
     public Response getBookTitles() {
-        List<BookFilterValueTO> bookTitles = bookService.findAllBookTitles();
+        List<StringTO> bookTitles = bookService.findAllBookTitles();
 
         if(bookTitles.size() == 0)
             return Response.status(Status.NOT_FOUND).build();
 
-        return Response.ok().entity(new GenericEntity<List<BookFilterValueTO>>(bookTitles){}).build();
+        return Response.ok().entity(new GenericEntity<List<StringTO>>(bookTitles){}).build();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/isbnCodes")
     public Response getBookIsbnCodes() {
-        List<BookFilterValueTO> bookIsbnCodes = bookService.findAllBookIsbnCodes();
+        List<StringTO> bookIsbnCodes = bookService.findAllBookIsbnCodes();
 
         if(bookIsbnCodes.size() == 0)
             return Response.status(Status.NOT_FOUND).build();
 
-        return Response.ok().entity(new GenericEntity<List<BookFilterValueTO>>(bookIsbnCodes){}).build();
+        return Response.ok().entity(new GenericEntity<List<StringTO>>(bookIsbnCodes){}).build();
     }
 
     @GET
@@ -130,8 +130,7 @@ public class BookResource {
     }
 
     private Response getStringResponse(Status status, String message) {
-        StringTO stringTO = new StringTO();
-        stringTO.setMessage(message);
+        StringTO stringTO = new StringTO(message);
 
         return Response.status(status).entity(stringTO).build();
     }

@@ -18,6 +18,12 @@ public class TestIntegrationClient {
                     .post(Entity.entity(entity, MediaType.APPLICATION_JSON));
     }
 
+    public <T> Response put(String path, T entity) {
+        return target.path(path)
+                .request(MediaType.APPLICATION_JSON)
+                .put(Entity.entity(entity, MediaType.APPLICATION_JSON));
+    }
+
     public Response get(String path) {
         return target.path(path)
                      .request(MediaType.APPLICATION_JSON)

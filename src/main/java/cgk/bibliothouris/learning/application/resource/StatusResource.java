@@ -2,6 +2,7 @@ package cgk.bibliothouris.learning.application.resource;
 
 import cgk.bibliothouris.learning.application.transferobject.Status;
 import cgk.bibliothouris.learning.service.entity.Book;
+import cgk.bibliothouris.learning.service.entity.Member;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
@@ -34,6 +35,8 @@ public class StatusResource {
                                 .withEnvironment(activeProfile)
                                 .withUpTime(getServerUpTime())
                                 .withDatabaseConnectionStatus(isDatabaseConnectionOn())
+                                .withBooksNumber(getBooksNumber())
+                                .withMembersNumber(getMembersNumber())
                                 .build();
 
         return Response.status(Response.Status.OK).entity(status).build();
@@ -60,5 +63,15 @@ public class StatusResource {
         } catch (QueryTimeoutException e) {
             return false;
         }
+    }
+
+    private Long getBooksNumber() {
+        TypedQuery<Long> query = entityManager.createNamedQuery(Book.COUNT_BOOKS, Long.class);
+        return query.getSingleResult();
+    }
+
+    public Long getMembersNumber(){
+        TypedQuery<Long> countQuery = entityManager.createNamedQuery(Member.COUNT_MEMBERS, Long.class);
+        return countQuery.getSingleResult();
     }
 }

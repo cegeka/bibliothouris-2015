@@ -3,47 +3,34 @@
         .module("Bibliothouris")
         .controller("BorrowedBooksCtrl", BorrowedBooksCtrl);
 
-    function BorrowedBooksCtrl(restService, $location) {
+    function BorrowedBooksCtrl(borrowService, $location) {
         var vm = this;
 
         vm.maxSize = 5;
         vm.itemsPerPage = 10;
+        vm.viewFilters = ["All borrowed books", "Only overdue books"];
 
         vm.borrowedBooks = {};
-        vm.noBorrows = false;
+        vm.noBorrowedBooks = false;
         vm.pageChanged = pageChanged;
-        vm.addTitleToSort = addTitleToSort;
-        vm.enableTooltip = enableTooltip;
+        vm.addFieldToSort = addFieldToSort;
+        vm.changeViewData = changeViewData;
+        vm.enableAuthorTooltip = enableAuthorTooltip;
+        vm.getAuthorTooltipContent = getAuthorTooltipContent;
 
         activate();
 
         function activate() {
-            if (!($location.search().start) && !($location.search().end)) {
-                $location.search('start', 0);
-                $location.search('end', vm.itemsPerPage);
-                $location.search('sort', 'title');
-                $location.search('order', "asc");
+            if (!$location.search().view)
+                $location.search("view", "all");
+
+            if ($location.search().view == "all") {
+                vm.filter = vm.viewFilters[0];
+                getAllBorrowedBooks();
+            } else {
+                vm.filter = vm.viewFilters[1];
+                getOverdueBooks();
             }
-
-            var searchUrl = "?start=" + $location.search().start +
-                "&" + "end=" + $location.search().end +
-                "&" + "sort=" + $location.search().sort +
-                "&" + "order=" + $location.search().order
-            restService
-                .countBorrowedBooks()
-                .then(function (data) {
-                    vm.numberOfItems = data;
-                });
-
-            restService
-                .getGlobalBorrowedBooks(searchUrl)
-                .then(function (data) {
-                    console.log(data);
-                    vm.borrowedBooks = data;
-                    vm.currentPage = ($location.search().start / vm.itemsPerPage) + 1;
-                }, function () {
-                    vm.noBorrows = true;
-                });
         }
 
         function pageChanged() {
@@ -52,22 +39,80 @@
 
             $location.search('start', start);
             $location.search('end', end);
+            $location.search('sort', vm.sortString);
+            $location.search('order', vm.orderString);
         }
 
-        function addTitleToSort(field) {
-            var orderString = $location.search().order;
-            if(orderString=="asc"){
-                orderString="desc";
+        function addFieldToSort(field) {
+            if (vm.sortString != field)
+                vm.orderString = "asc";
+            else
+                vm.orderString = vm.orderString == "asc" ? "desc" : "asc";
+
+            vm.sortString = field;
+
+            vm.currentPage = 1;
+            pageChanged();
+        }
+
+        function changeViewData() {
+            var viewMode = $location.search().view;
+
+            for (var key in $location.search())
+                $location.search(key, null);
+
+            if (viewMode == "all")
+                $location.search("view", "overdue");
+            else if (viewMode == "overdue")
+                $location.search("view", "all");
+
+            activate();
+        }
+
+        function getAllBorrowedBooks() {
+            borrowService
+                .getGlobalBorrowedBooks(createSearchUrlForBorrowedBooks())
+                .then(function (data) {
+                    vm.borrowedBooks = data.items;
+                    vm.numberOfItems = data.itemsCount;
+                    vm.currentPage = ($location.search().start / vm.itemsPerPage) + 1;
+                }, function () {
+                    vm.noBorrowedBooks = true;
+                });
+        }
+
+        function getOverdueBooks() {
+            borrowService
+                .getOverdueBooks(createSearchUrlForBorrowedBooks())
+                .then(function (data) {
+                    vm.borrowedBooks = data.items;
+                    vm.numberOfItems = data.itemsCount;
+                    vm.currentPage = ($location.search().start / vm.itemsPerPage) + 1;
+                }, function () {
+                    vm.noBorrowedBooks = true;
+                });
+        }
+
+        function createSearchUrlForBorrowedBooks() {
+            if (!$location.search().start && !$location.search().end) {
+                vm.orderString = "asc";
+                vm.sortString = "title";
+                return "?start=0&end=" + vm.itemsPerPage + "&sort=title&order=asc";
             } else {
-                orderString="asc";
+                vm.orderString = $location.search().order;
+                vm.sortString = $location.search().sort;
+                return $location.url().substr($location.path().length);
             }
-            $location.search("order", orderString);
-            $location.search("sort", field);
         }
 
-        function enableTooltip(member) {
-            vm.tooltip = member;
+        function enableAuthorTooltip(param, book) {
+            book.authorTooltip = param;
         }
 
+        function getAuthorTooltipContent(book) {
+            return book.authors.map(function(author){
+                return author.firstName + " " + author.lastName;
+            }).join(", ");
+        }
     }
 })();

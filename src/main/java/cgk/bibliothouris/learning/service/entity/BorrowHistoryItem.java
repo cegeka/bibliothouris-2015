@@ -13,9 +13,10 @@ import java.time.LocalDate;
 @Table(name = "BORROWED_HISTORY")
 @NamedQueries({
         @NamedQuery(name = BorrowHistoryItem.LIST_ALL_MEMBER_BORROWED_BOOKS,
-                    query = "SELECT b FROM BorrowHistoryItem b WHERE b.member.UUID = :uuid ORDER BY b.endDate DESC"),
+                    query = "SELECT b FROM BorrowHistoryItem b WHERE b.member.UUID = :uuid ORDER BY b.endDate DESC, b.book.title"),
         @NamedQuery(name = BorrowHistoryItem.COUNT_ALL_MEMBER_BORROWED_BOOKS,
                 query = "SELECT COUNT(b.id) FROM BorrowHistoryItem b WHERE b.member.UUID = :uuid"),
+        @NamedQuery(name=BorrowHistoryItem.COUNT_ALL_OVERDUE_BOOKS, query="SELECT COUNT(b.id) from BorrowHistoryItem b where b.endDate IS NULL AND (CURRENT_DATE - to_date(b.startDate) > :daysNo)"),
         @NamedQuery(name=BorrowHistoryItem.COUNT_ALL_BORROWED_BOOKS, query="SELECT COUNT(b.id) from BorrowHistoryItem b where (b.endDate IS NULL)"),
         @NamedQuery(name=BorrowHistoryItem.GET_CURRENT_BORROWER_DETAILS_FOR_BOOK,
                     query="SELECT NEW cgk.bibliothouris.learning.application.transferobject.BookBorrowerTO(b.member.UUID, b.member.firstName, b.member.lastName) from BorrowHistoryItem b WHERE b.book.id = :bookId AND b.endDate is NULL "),
@@ -25,6 +26,7 @@ public class BorrowHistoryItem {
     public static final String LIST_ALL_MEMBER_BORROWED_BOOKS = "LIST_ALL_MEMBER_BORROWED_BOOKS";
     public static final String COUNT_ALL_MEMBER_BORROWED_BOOKS = "COUNT_ALL_MEMBER_BORROWED_BOOKS";
     public static final String COUNT_ALL_BORROWED_BOOKS = "COUNT_ALL_BORROWED_BOOKS";
+    public static final String COUNT_ALL_OVERDUE_BOOKS = "COUNT_ALL_OVERDUE_BOOKS";
     public static final String GET_CURRENT_BORROWER_DETAILS_FOR_BOOK = "GET_CURRENT_BORROWER_DETAILS_FOR_BOOK";
 
     @Id
@@ -152,7 +154,6 @@ public class BorrowHistoryItem {
         if (endDate != null ? !endDate.equals(that.endDate) : that.endDate != null) return false;
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (member != null ? !member.equals(that.member) : that.member != null) return false;
-        if (startDate != null ? !startDate.equals(that.startDate) : that.startDate != null) return false;
 
         return true;
     }
@@ -160,7 +161,6 @@ public class BorrowHistoryItem {
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
         result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
         result = 31 * result + (book != null ? book.hashCode() : 0);
         result = 31 * result + (member != null ? member.hashCode() : 0);

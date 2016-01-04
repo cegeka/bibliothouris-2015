@@ -2,11 +2,10 @@ package unit;
 
 import cgk.bibliothouris.learning.application.resource.BookResource;
 import cgk.bibliothouris.learning.application.transferobject.BookBorrowerTO;
-import cgk.bibliothouris.learning.application.transferobject.BookFilterValueTO;
-import cgk.bibliothouris.learning.application.transferobject.BookListingTO;
 import cgk.bibliothouris.learning.application.transferobject.BookTO;
+import cgk.bibliothouris.learning.application.transferobject.ItemsListingTO;
+import cgk.bibliothouris.learning.application.transferobject.StringTO;
 import cgk.bibliothouris.learning.service.BookService;
-import cgk.bibliothouris.learning.service.BorrowHistoryService;
 import cgk.bibliothouris.learning.service.entity.Book;
 import cgk.bibliothouris.learning.service.exception.ValidationException;
 import fixture.BookTestFixture;
@@ -86,8 +85,8 @@ public class BookResourceTest {
 
     @Test
     public void givenAListOfBooks_findAllBooks_return200OKResponse() {
-        BookListingTO bookListingTO = new BookListingTO();
-        bookListingTO.setBooks(Arrays.asList(new BookTO()));
+        ItemsListingTO bookListingTO = new ItemsListingTO();
+        bookListingTO.setItems(Arrays.asList(new BookTO()));
         Mockito.when(mockBookService.findAllBooks("0", "5", null, null)).thenReturn(bookListingTO);
 
         Response response = bookResource.getAllBooks(Integer.toString(0), Integer.toString(5), null, null);
@@ -98,8 +97,8 @@ public class BookResourceTest {
 
     @Test
     public void givenAListOfBooks_findAllAvailableBooks_return200OKResponse() {
-        BookListingTO bookListingTO = new BookListingTO();
-        bookListingTO.setBooks(Arrays.asList(new BookTO()));
+        ItemsListingTO bookListingTO = new ItemsListingTO();
+        bookListingTO.setItems(Arrays.asList(new BookTO()));
         Mockito.when(mockBookService.findAllAvailableBooks("0", "5", null, null)).thenReturn(bookListingTO);
 
         Response response = bookResource.getAllAvailableBooks(Integer.toString(0), Integer.toString(5), null, null);
@@ -110,8 +109,8 @@ public class BookResourceTest {
 
     @Test
     public void givenAListOfBooks_findAllBooksWithoutParams_returnCorrectEntity() {
-        BookListingTO bookListingTO = new BookListingTO();
-        bookListingTO.setBooks(Arrays.asList(new BookTO()));
+        ItemsListingTO bookListingTO = new ItemsListingTO();
+        bookListingTO.setItems(Arrays.asList(new BookTO()));
         Mockito.when(mockBookService.findAllBooks("", "", null, null)).thenReturn(bookListingTO);
 
         Response response = bookResource.getAllBooks("", "", null, null);
@@ -122,8 +121,8 @@ public class BookResourceTest {
 
     @Test
     public void givenAListOfBooks_findAllAvailableBooksWithoutParams_returnCorrectEntity() {
-        BookListingTO bookListingTO = new BookListingTO();
-        bookListingTO.setBooks(Arrays.asList(new BookTO()));
+        ItemsListingTO bookListingTO = new ItemsListingTO();
+        bookListingTO.setItems(Arrays.asList(new BookTO()));
         Mockito.when(mockBookService.findAllAvailableBooks("", "", null, null)).thenReturn(bookListingTO);
 
         Response response = bookResource.getAllAvailableBooks("", "", null, null);
@@ -134,8 +133,8 @@ public class BookResourceTest {
 
     @Test
     public void givenAnEmptyListOfBooks_findAllBooks_return404NotFound() {
-        BookListingTO bookListingTO = new BookListingTO();
-        bookListingTO.setBooks(new ArrayList<>());
+        ItemsListingTO bookListingTO = new ItemsListingTO();
+        bookListingTO.setItems(new ArrayList<>());
         Mockito.when(mockBookService.findAllBooks("0", "5", null, null)).thenReturn(bookListingTO);
 
         Response response = bookResource.getAllBooks(Integer.toString(0),Integer.toString(5), null, null);
@@ -146,8 +145,8 @@ public class BookResourceTest {
 
     @Test
     public void givenAnEmptyListOfBooks_findAllAvailableBooks_return404NotFound() {
-        BookListingTO bookListingTO = new BookListingTO();
-        bookListingTO.setBooks(new ArrayList<>());
+        ItemsListingTO bookListingTO = new ItemsListingTO();
+        bookListingTO.setItems(new ArrayList<>());
         Mockito.when(mockBookService.findAllAvailableBooks("0", "5", null, null)).thenReturn(bookListingTO);
 
         Response response = bookResource.getAllAvailableBooks(Integer.toString(0),Integer.toString(5), null, null);
@@ -187,7 +186,7 @@ public class BookResourceTest {
 
     @Test
     public void givenAnEmptyListOfBookTitles_getBookTitles_returns404NotFound() {
-        List<BookFilterValueTO> bookTitles = new ArrayList<>();
+        List<StringTO> bookTitles = new ArrayList<>();
         Mockito.when(mockBookService.findAllBookTitles()).thenReturn(bookTitles);
 
         Response response = bookResource.getBookTitles();
@@ -197,7 +196,7 @@ public class BookResourceTest {
 
     @Test
     public void givenAListOfBookTitles_getBookTitles_returns200OK() {
-        List<BookFilterValueTO> bookTitles = Arrays.asList(new BookFilterValueTO("Clean Code"));
+        List<StringTO> bookTitles = Arrays.asList(new StringTO("Clean Code"));
         Mockito.when(mockBookService.findAllBookTitles()).thenReturn(bookTitles);
 
         Response response = bookResource.getBookTitles();
@@ -207,7 +206,7 @@ public class BookResourceTest {
 
     @Test
     public void givenAListOfBookTitles_getBookTitles_returnsTheCorrectListOfBookTitles() {
-        List<BookFilterValueTO> bookTitles = Arrays.asList(new BookFilterValueTO("Clean Code"));
+        List<StringTO> bookTitles = Arrays.asList(new StringTO("Clean Code"));
         Mockito.when(mockBookService.findAllBookTitles()).thenReturn(bookTitles);
 
         Response response = bookResource.getBookTitles();
@@ -217,7 +216,7 @@ public class BookResourceTest {
 
     @Test
     public void givenAnEmptyListOfBookIsbnCodes_getBookIsbnCodes_returns404NotFound() {
-        List<BookFilterValueTO> bookIsbnCodes = new ArrayList<>();
+        List<StringTO> bookIsbnCodes = new ArrayList<>();
         Mockito.when(mockBookService.findAllBookIsbnCodes()).thenReturn(bookIsbnCodes);
 
         Response response = bookResource.getBookIsbnCodes();
@@ -227,7 +226,7 @@ public class BookResourceTest {
 
     @Test
     public void givenAListOfBookIsbnCodes_getBookIsbnCodes_returns200OK() {
-        List<BookFilterValueTO> bookIsbnCodes = Arrays.asList(new BookFilterValueTO("978-0-13-235088-4"));
+        List<StringTO> bookIsbnCodes = Arrays.asList(new StringTO("978-0-13-235088-4"));
         Mockito.when(mockBookService.findAllBookIsbnCodes()).thenReturn(bookIsbnCodes);
 
         Response response = bookResource.getBookIsbnCodes();
@@ -237,7 +236,7 @@ public class BookResourceTest {
 
     @Test
     public void givenAListOfBookIsbnCodes_getBookIsbnCodes_returnsTheCorrectListOfBookIsbnCodes() {
-        List<BookFilterValueTO> bookIsbnCodes = Arrays.asList(new BookFilterValueTO("978-0-13-235088-4"));
+        List<StringTO> bookIsbnCodes = Arrays.asList(new StringTO("978-0-13-235088-4"));
         Mockito.when(mockBookService.findAllBookIsbnCodes()).thenReturn(bookIsbnCodes);
 
         Response response = bookResource.getBookIsbnCodes();

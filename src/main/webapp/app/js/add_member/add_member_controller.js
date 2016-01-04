@@ -3,7 +3,7 @@
         .module("Bibliothouris")
         .controller("AddMemberCtrl", AddMemberCtrl);
 
-    function AddMemberCtrl(restService,$location) {
+    function AddMemberCtrl(memberService, $location) {
 
         var vm = this;
 
@@ -25,7 +25,7 @@
             }
             vm.member.memberSince = moment(new Date()).format("YYYY-MM-DD");
             if(memberForm.$valid){
-                    restService
+                memberService
                         .addMember(vm.member)
                         .then(function(data){
                             console.log(data);

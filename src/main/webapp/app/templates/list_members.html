@@ -1,0 +1,69 @@
+<h3 class="midnightblueColor">All members</h3>
+<hr class="addBorderStyle"/>
+
+<div class="alert alert-info text-center" role="alert" ng-show="vm.noMembers">
+    <p class="alert-link">There are no members to be displayed!</p>
+</div>
+
+<div class="panel panel-default" ng-hide="vm.noMembers">
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-fixed table-hover">
+                <thead>
+                <tr>
+                    <th width=10%>
+                        UUID
+                    </th>
+                    <th width=15%>
+                        Birth Date
+                    </th>
+                    <th width=15%>
+                        First Name
+                        <i ng-show="vm.orderString == 'asc' || vm.sortString != 'firstName'" ng-class="{grayColor: vm.sortString != 'firstName'}" class="glyphicon glyphicon-sort-by-attributes" ng-click="vm.addFieldToSort('firstName')"></i>
+                        <i ng-show="vm.orderString == 'desc' && vm.sortString == 'firstName'" ng-class="{grayColor: vm.sortString != 'firstName'}" class="glyphicon glyphicon-sort-by-attributes-alt" ng-click="vm.addFieldToSort('firstName')"></i>
+                    </th>
+                    <th width=15%>
+                        Last Name
+                        <i ng-show="vm.orderString == 'asc' || vm.sortString != 'lastName'" ng-class="{grayColor: vm.sortString != 'lastName'}" class="glyphicon glyphicon-sort-by-attributes" ng-click="vm.addFieldToSort('lastName')"></i>
+                        <i ng-show="vm.orderString == 'desc' && vm.sortString == 'lastName'" ng-class="{grayColor: vm.sortString != 'lastName'}" class="glyphicon glyphicon-sort-by-attributes-alt" ng-click="vm.addFieldToSort('lastName')"></i>
+                    </th>
+                    <th width=15%>
+                        Address
+                        <i ng-show="vm.orderString == 'asc' || vm.sortString != 'address'" ng-class="{grayColor: vm.sortString != 'address'}" class="glyphicon glyphicon-sort-by-attributes" ng-click="vm.addFieldToSort('address')"></i>
+                        <i ng-show="vm.orderString == 'desc' && vm.sortString == 'address'" ng-class="{grayColor: vm.sortString != 'address'}" class="glyphicon glyphicon-sort-by-attributes-alt" ng-click="vm.addFieldToSort('address')"></i>
+                    </th>
+                    <th width=10%>
+                        City
+                        <i ng-show="vm.orderString == 'asc' || vm.sortString != 'city'" ng-class="{grayColor: vm.sortString != 'city'}" class="glyphicon glyphicon-sort-by-attributes" ng-click="vm.addFieldToSort('city')"></i>
+                        <i ng-show="vm.orderString == 'desc' && vm.sortString == 'city'" ng-class="{grayColor: vm.sortString != 'city'}" class="glyphicon glyphicon-sort-by-attributes-alt" ng-click="vm.addFieldToSort('city')"></i>
+                    </th>
+                    <th width=15%>Member since...</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr id="memberRow" ng-repeat = "member in vm.members" ng-click="vm.showMember(member.UUID)" style="cursor: pointer;">
+                    <td class="table-column-ellipsis">
+                        <span tooltip-placement="bottom" uib-tooltip="{{member.UUID}}" tooltip-append-to-body="true">
+                            [{{member.UUID.substring(0,2) + ".." + member.UUID.substring(member.UUID.length - 2, member.UUID.length)}}]
+                        </span>
+                    </td>
+                    <td class="table-column-ellipsis">{{member.birthDate}}</td>
+                    <td class="table-column-ellipsis">{{member.firstName}}</td>
+                    <td class="table-column-ellipsis">{{member.lastName}}</td>
+                    <td class="table-column-ellipsis">{{member.address}}</td>
+                    <td class="table-column-ellipsis">{{member.city}}</td>
+                    <td class="table-column-ellipsis">{{member.memberSince}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="panel-footer text-center">
+        <uib-pagination boundary-links="true" total-items="vm.totalItems" max-size="vm.maxSize" items-per-page="vm.itemsPerPage"
+                        ng-model="vm.currentPage" ng-change="vm.pageChanged()"
+                        class="pagination paginationFooter"
+                        previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;">
+        </uib-pagination>
+    </div>
+</div>

@@ -1,8 +1,6 @@
 package cgk.bibliothouris.learning.service;
 
-import cgk.bibliothouris.learning.application.transferobject.BorrowHistoryItemTO;
-import cgk.bibliothouris.learning.application.transferobject.DetailedBorrowHistoryTO;
-import cgk.bibliothouris.learning.application.transferobject.MemberBorrowHistoryTO;
+import cgk.bibliothouris.learning.application.transferobject.*;
 import cgk.bibliothouris.learning.repository.BookRepository;
 import cgk.bibliothouris.learning.repository.BorrowHistoryRepository;
 import cgk.bibliothouris.learning.repository.MemberRepository;
@@ -10,11 +8,12 @@ import cgk.bibliothouris.learning.service.entity.Book;
 import cgk.bibliothouris.learning.service.entity.BorrowHistoryItem;
 import cgk.bibliothouris.learning.service.entity.Member;
 import cgk.bibliothouris.learning.service.exception.ValidationException;
+import org.glassfish.grizzly.utils.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.time.LocalDate;
 
 @Service
 @Transactional
@@ -30,34 +29,32 @@ public class BorrowHistoryService {
     private MemberRepository memberRepository;
 
     public BorrowHistoryItem createBorrowHistoryItem(BorrowHistoryItemTO borrowHistoryItemTO) {
-
         Book book = bookRepository.findBookById(borrowHistoryItemTO.getBookId());
         Member member = memberRepository.getMember(borrowHistoryItemTO.getMemberUuid());
         validateBorrowHistoryItem(borrowHistoryItemTO, book, member);
         BorrowHistoryItem borrowHistoryItem = BorrowHistoryItem.BorrowedHistoryBuilder.borrowedHistory()
                 .withBook(book)
                 .withMember(member)
-                .withStartDate(borrowHistoryItemTO.getStartDate())
-                .withEndDate(borrowHistoryItemTO.getEndDate()).build();
+                .withStartDate(LocalDate.now()).build();
 
         return borrowHistoryRepository.addBorrowedBook(borrowHistoryItem);
     }
 
+    public BorrowHistoryItem updateBorrowHistoryItem(IntegerTO historyItemIdTO) {
+        BorrowHistoryItem borrowHistoryItem = borrowHistoryRepository.findBorrowHistoryItemById(historyItemIdTO.getValue());
+        if (borrowHistoryItem == null)
+            return borrowHistoryItem;
+
+        borrowHistoryItem.setEndDate(LocalDate.now());
+
+        return borrowHistoryRepository.updateBorrowedBook(borrowHistoryItem);
+    }
+
     @Transactional(readOnly = true)
-    public List<MemberBorrowHistoryTO> findBorrowedBooksByMember(String memberUuid, String start, String end) {
-        Integer startPosition, endPosition;
+    public ItemsListingTO<MemberBorrowHistoryTO> findBorrowedBooksByMember(String memberUuid, String start, String end) {
+        Pair<Integer, Integer> paginationParams = BiblioUtilityService.findPaginationParameters(start, end, () -> countBorrowedBooksByMember(memberUuid));
 
-        if (start == null || isNegative(start))
-            startPosition = 0;
-        else
-            startPosition = Integer.valueOf(start);
-
-        if (end == null || isNegative(end))
-            endPosition = countBorrowedBooksByMember(memberUuid).intValue();
-        else
-            endPosition = Integer.valueOf(end);
-
-        return borrowHistoryRepository.findBorrowedBooksByMember(memberUuid, startPosition, endPosition);
+        return borrowHistoryRepository.findBorrowedBooksByMember(memberUuid, paginationParams.getFirst(), paginationParams.getSecond());
     }
 
     @Transactional(readOnly = true)
@@ -71,14 +68,7 @@ public class BorrowHistoryService {
     }
 
     private void validateBorrowHistoryItem(BorrowHistoryItemTO borrowHistoryItemTO, Book book, Member member) {
-        Boolean isEndDateAfterStartDate = false;
-        Boolean isDateInvalid = borrowHistoryItemTO.getEndDate() == null;
-        if (!isDateInvalid) {
-            isEndDateAfterStartDate = borrowHistoryItemTO.getEndDate().isBefore(borrowHistoryItemTO.getStartDate());
-        }
-        Boolean isBookInvalid = (book == null);
-        Boolean isMemberInvalid = (member == null);
-        if (isEndDateAfterStartDate || isBookInvalid || isMemberInvalid)
+        if (book == null || member == null)
             throw new ValidationException("The borrow history item is invalid!");
 
         Long countCurrentlyBorrowedBooksByMember = bookRepository.countCurrentlyBorrowedBooksByMember(member.getUUID());
@@ -86,28 +76,17 @@ public class BorrowHistoryService {
             throw new ValidationException("Too many borrowed books!");
     }
 
-    private boolean isNegative(String number) {
-        try {
-            if (Integer.parseInt(number) < 0)
-                return true;
-        } catch (NumberFormatException e) {
-        }
-        return false;
+    @Transactional
+    public ItemsListingTO<DetailedBorrowHistoryTO> getActiveBorrowedBooks(String start, String end, String sort, String order) {
+        Pair<Integer, Integer> paginationParams = BiblioUtilityService.findPaginationParameters(start, end, () -> countBorrowedBooks());
+
+        return borrowHistoryRepository.getBorrowedBooks(paginationParams.getFirst(), paginationParams.getSecond(), sort, order);
     }
 
-    public List<DetailedBorrowHistoryTO> getActiveBorrowedBooks(String start, String end, String sort, String order) {
-        Integer startPosition, endPosition;
+    @Transactional
+    public ItemsListingTO<DetailedBorrowHistoryTO> getOverdueBooks(String start, String end, String sort, String order) {
+        Pair<Integer, Integer> paginationParams = BiblioUtilityService.findPaginationParameters(start, end, () -> countBorrowedBooks());
 
-        if (start == null || isNegative(start))
-            startPosition = 0;
-        else
-            startPosition = Integer.valueOf(start);
-
-        if (end == null || isNegative(end))
-            endPosition = Integer.valueOf(countBorrowedBooks().intValue());
-        else
-            endPosition = Integer.valueOf(end);
-
-        return borrowHistoryRepository.getBorrowedBooks(startPosition, endPosition, sort, order);
+        return borrowHistoryRepository.getOverdueBooks(paginationParams.getFirst(), paginationParams.getSecond(), sort, order);
     }
 }

@@ -1,6 +1,40 @@
 <h3 id="title" class="midnightblueColor" >Borrowed books</h3>
 <hr style="border-color: midnightblue; margin-top: -5px"/>
 
+<!--<div class="row">
+    <div class="col-sm-offset-6 col-sm-6 right">
+        <div class="media-left media-middle">
+            <b>View</b>
+        </div>
+        <div class="media-body">
+            <div class="radio">
+                <label>
+                    <input type="radio" checked>
+                    All borrowed books
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    <input type="radio">
+                    Only overdue books
+                </label>
+            </div>
+        </div>
+    </div>
+</div>-->
+
+<form class="form-inline">
+    <div class="row">
+        <div class="col-sm-offset-6 col-sm-6 text-right">
+            <label>View</label>
+            <select id="filter" class="form-control" ng-model="vm.filter"
+                    ng-options="filter for filter in vm.viewFilters" ng-change="vm.changeViewData()"></select>
+        </div>
+    </div>
+</form>
+
+<br/>
+
 <div class="alert alert-info text-center" role="alert" ng-show="vm.noBorrowedBooks">
     <p class="alert-link">There are no borrowed books to be displayed!</p>
 </div>
@@ -11,27 +45,56 @@
             <table class="table table-fixed">
                 <thead>
                 <tr>
-                    <th width=20% ng-click="vm.addTitleToSort('title')">Title</th>
-                    <th width=15% class="hidden-xs hidden-sm">Authors</th>
-                    <th width=15% class="hidden-xs hidden-sm hidden-md" ng-click="vm.addTitleToSort('isbn')">ISBN</th>
-                    <th width=10% class="text-center" ng-click="vm.addTitleToSort('date')">Lend date</th>
-                    <th width=10% class="text-center">Borrower</th>
+                    <th width=19% ng-click="vm.addFieldToSort('title')">
+                        Title
+                        <i ng-show="vm.orderString == 'asc' || vm.sortString != 'title'" ng-class="{grayColor: vm.sortString != 'title'}" class="glyphicon glyphicon-sort-by-attributes" ng-click="vm.addFieldToSort('title')"></i>
+                        <i ng-show="vm.orderString == 'desc' && vm.sortString == 'title'" ng-class="{grayColor: vm.sortString != 'title'}" class="glyphicon glyphicon-sort-by-attributes-alt" ng-click="vm.addFieldToSort('title')"></i>
+                    </th>
+                    <th width=20% class="hidden-xs hidden-sm">Authors</th>
+                    <th width=13% class="hidden-xs hidden-sm hidden-md">
+                        ISBN
+                        <i ng-show="vm.orderString == 'asc' || vm.sortString != 'isbn'" ng-class="{grayColor: vm.sortString != 'isbn'}" class="glyphicon glyphicon-sort-by-attributes" ng-click="vm.addFieldToSort('isbn')"></i>
+                        <i ng-show="vm.orderString == 'desc' && vm.sortString == 'isbn'" ng-class="{grayColor: vm.sortString != 'isbn'}" class="glyphicon glyphicon-sort-by-attributes-alt" ng-click="vm.addFieldToSort('isbn')"></i>
+                    </th>
+                    <th width=19%>
+                        Borrowed by
+                        <i ng-show="vm.orderString == 'asc' || vm.sortString != 'borrower'" ng-class="{grayColor: vm.sortString != 'borrower'}" class="glyphicon glyphicon-sort-by-attributes" ng-click="vm.addFieldToSort('borrower')"></i>
+                        <i ng-show="vm.orderString == 'desc' && vm.sortString == 'borrower'" ng-class="{grayColor: vm.sortString != 'borrower'}" class="glyphicon glyphicon-sort-by-attributes-alt" ng-click="vm.addFieldToSort('borrower')"></i>
+                    </th>
+                    <th width=10% class="text-center hidden-xs hidden-sm hidden-md" ng-click="vm.addFieldToSort('date')">
+                        Lend date
+                        <i ng-show="vm.orderString == 'asc' || vm.sortString != 'date'" ng-class="{grayColor: vm.sortString != 'date'}" class="glyphicon glyphicon-sort-by-attributes" ng-click="vm.addFieldToSort('date')"></i>
+                        <i ng-show="vm.orderString == 'desc' && vm.sortString == 'date'" ng-class="{grayColor: vm.sortString != 'date'}" class="glyphicon glyphicon-sort-by-attributes-alt" ng-click="vm.addFieldToSort('date')"></i>
+                    </th>
+                    <th width=10% class="text-center hidden-xs">
+                        Due date
+                    </th>
+                    <th width=9% class="text-center">
+                        Overdue
+                    </th>
                 </tr>
                 </thead>
 
                 <tbody>
                 <tr id="bookRow" ng-repeat = "book in vm.borrowedBooks">
                     <td class="table-column-ellipsis">{{book.title}}</td>
-                    <td class="table-column-ellipsis hidden-xs hidden-sm" on-ellipsis="vm.enableTooltip(param, book)"
-                        uib-tooltip="{{vm.getTooltipContent(book)}}"
-                        tooltip-placement="bottom" tooltip-enable="book.tooltip" tooltip-append-to-body="true">
-                                <span ng-repeat="author in book.authors">
-                                    {{author.firstName}} {{author.lastName}}{{$last ? '' : ', '}}
-                                </span>
+                    <td class="table-column-ellipsis" on-ellipsis="vm.enableAuthorTooltip(param, book)"
+                        uib-tooltip="{{vm.getAuthorTooltipContent(book)}}"
+                        tooltip-placement="bottom" tooltip-enable="book.authorTooltip" tooltip-append-to-body="true">
+                        <span ng-repeat="author in book.authors">
+                            {{author.firstName}} {{author.lastName}}{{$last ? '' : ', '}}
+                        </span>
                     </td>
                     <td class="hidden-xs hidden-sm hidden-md">{{book.isbn}}</td>
-                    <td class="text-center">{{book.startLendDate}}</td>
-                    <td class="text-center" tooltip-placement="bottom" ng-mouseover="vm.enableTooltip(book.borrowerUUID)" uib-tooltip="{{vm.getTooltipContent(book)}}" tooltip-enable="vm.tooltip" tooltip-append-to-body="true">{{book.borrowerFirstName}} {{book.borrowerLastName}}</td>
+                    <td>
+                        <a class="blackAnch" ng-href="#/member/{{book.borrowerUUID}}">{{book.borrowerFirstName}} {{book.borrowerLastName}}</a>
+                        <span tooltip-placement="bottom" uib-tooltip="{{book.borrowerUUID}}" tooltip-append-to-body="true">
+                            [{{book.borrowerUUID.substring(0,2) + ".." + book.borrowerUUID.substring(book.borrowerUUID.length - 2,book.borrowerUUID.length)}}]
+                        </span>
+                    </td>
+                    <td class="text-center hidden-xs hidden-sm hidden-md">{{book.startLendDate}}</td>
+                    <td class="text-center">{{book.dueDate}}</td>
+                    <td class="text-center hidden-xs">{{book.overdue}}</td>
                 </tr>
                 </tbody>
             </table>

@@ -3,7 +3,7 @@
         .module("Bibliothouris")
         .controller("AddBookCtrl", AddBookCtrl);
 
-    function AddBookCtrl($scope, restService, $location) {
+    function AddBookCtrl($scope, bookService, $location) {
         var vm = this;
         vm.oneMB = Math.pow(2, 20);
         vm.originalBook = {};
@@ -41,12 +41,12 @@
             };
             vm.book = angular.copy(vm.originalBook);
 
-            restService
+            bookService
                 .getAuthors()
                 .then(function(data){
                     vm.authors = data;
                 });
-            restService
+            bookService
                 .getBookCategories()
                 .then(function(data){
                     vm.categories = data;
@@ -96,7 +96,7 @@
         function addBook(cover) {
             vm.book.cover = cover;
 
-            restService
+            bookService
                 .addBook(vm.book)
                 .then(function(data){
                     $location.path("/books/" + data.id);
@@ -174,7 +174,7 @@
         };
 
         vm.categoriesSize = function(){
-            if(vm.book.categories.length==0){
+            if(vm.book.categories.length == 0){
                 return {
                     empty: true
                 }

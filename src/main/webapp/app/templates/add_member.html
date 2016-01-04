@@ -18,7 +18,7 @@
                           class="glyphicon glyphicon-ok form-control-feedback has-success" aria-hidden="true"></span>
                     <ng-messages for="add.firstName.$error" role="alert"
                                  ng-if='add.firstName.$invalid && add.$submitted'>
-                        <ng-message when="required">You did not enter a firstName</ng-message>
+                        <ng-message id="firstNameRequiredMsg" when="required">You did not enter a firstName</ng-message>
                     </ng-messages>
                 </div>
 
@@ -29,7 +29,7 @@
                           class="glyphicon glyphicon-ok form-control-feedback has-success" aria-hidden="true"></span>
                     <ng-messages for="add.lastName.$error" role="alert"
                                  ng-if='add.lastName.$invalid && add.$submitted'>
-                        <ng-message when="required">You did not enter a lastName</ng-message>
+                        <ng-message id="lastNameRequiredMsg" when="required">You did not enter a lastName</ng-message>
                     </ng-messages>
                 </div>
             </div>
@@ -45,24 +45,25 @@
                 <div class="col-md-12">
                     <div class="input-group">
                         <input type="text" class="form-control" uib-datepicker-popup ng-model="vm.member.birthDate"
-                               is-open="status.opened" min-date="minDate" max-date="maxDate"
+                               is-open="status.opened" max-date="maxDate"
                                datepicker-options="dateOptions" date-disabled="disabled(date, mode)"
                                ng-required="true" close-text="Close" show-weeks="false" name="birthdate"
                                id="birthdate" show-button-bar="false"/>
                           <span class="input-group-btn">
-                            <button type="button" class="btn btn-default" ng-click="open($event)"><i
-                                    class="glyphicon glyphicon-calendar"></i></button>
+                              <button type="button" class="btn btn-default" ng-click="open($event)">
+                                  <i class="glyphicon glyphicon-calendar"></i>
+                              </button>
                           </span>
                     </div>
                     <ng-messages for="add.birthdate.$error" role="alert"
                                  ng-if='add.birthdate.$invalid && add.$submitted'>
-                        <ng-message when="date">You did not enter a birth date.</ng-message>
+                        <ng-message id="birthdateRequiredMsg" when="required">You did not enter a birth date.</ng-message>
+                        <ng-message id="birthdateInvalidMsg" when="date">You did not enter a valid birth date.</ng-message>
                     </ng-messages>
                 </div>
             </div>
         </div>
     </div>
-
 
     <div class="form-group has-feedback ">
         <label for="nationalNumber" class="col-sm-2 control-label required-mark">National Number</label>
@@ -74,7 +75,7 @@
                       class="glyphicon glyphicon-ok form-control-feedback has-success" aria-hidden="true"></span>
             <ng-messages for="add.nationalNumber.$error" role="alert"
                          ng-if='add.nationalNumber.$invalid && add.$submitted'>
-                <ng-message when="required">You did not enter a nationalNumber</ng-message>
+                <ng-message id="nationalNumberRequiredMsg" when="required">You did not enter a nationalNumber</ng-message>
             </ng-messages>
         </div>
     </div>
@@ -89,7 +90,6 @@
         <div class="col-sm-10">
             <input name="address" type="text" class="form-control" id="address" placeholder="Address"
                    ng-model="vm.member.address">
-
         </div>
     </div>
 
@@ -102,7 +102,7 @@
 
             <ng-messages for="add.postalCode.$error" role="alert"
                          ng-if='add.postalCode.$invalid && add.$submitted'>
-                <ng-message when="number">The postal number must be a number. Duh.</ng-message>
+                <ng-message id="postalCodeInvalidMsg" when="number">The postal number must be a number</ng-message>
             </ng-messages>
         </div>
     </div>
@@ -113,7 +113,6 @@
         <div class="col-sm-10">
             <input name="city" type="text" class="form-control" id="city" placeholder="City"
                    ng-model="vm.member.city">
-
         </div>
     </div>
 
@@ -131,7 +130,7 @@
             <ng-messages for="add.phoneNumber.$error" role="alert"
                          ng-if='add.phoneNumber.$invalid && add.$submitted'>
                 <ng-message when="minlength">The phone number must have at least 10 numbers</ng-message>
-                <ng-message when="number">The phone number must be a number. Duh.</ng-message>
+                <ng-message when="number">The phone number must be a number</ng-message>
             </ng-messages>
         </div>
     </div>
@@ -142,7 +141,6 @@
         <div class="col-sm-10">
             <input name="email" type="email" class="form-control" id="email" placeholder="E-mail"
                    ng-model="vm.member.email">
-
         </div>
     </div>
     <div class="form-group">
