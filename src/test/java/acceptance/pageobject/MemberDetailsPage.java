@@ -47,7 +47,7 @@ public class MemberDetailsPage {
     @FindBy(how = How.XPATH, using = "//*[@id=\"borrowedBookRow\"]/td[5]")
     WebElement firstBorrowedBookEndDate;
 
-    @FindBy(how = How.XPATH, using = "//*[@id=\"borrowedBookRow\"]/td[6]/button")
+    @FindBy(how = How.XPATH, using = "//*[@id=\"borrowedBookRow\"]/td[8]/button")
     WebElement returnBookButton;
 
     public String getNameText(){
