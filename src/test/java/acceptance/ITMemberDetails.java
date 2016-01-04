@@ -100,8 +100,10 @@ public class ITMemberDetails  extends BaseAcceptance {
         sleepABit();
         String borrowedBookTitle = memberDetailsPage.getFirstAvailableBookTitle();
         sleepABit();
+        sleepABit();
 
         memberDetailsPage.clickOnBorrowButtonForTheFirstAvailableBook();
+        sleepABit();
         sleepABit();
 
         Assertions.assertThat(memberDetailsPage.getFirstBorrowedBookTitle()).isEqualTo(borrowedBookTitle);
@@ -110,10 +112,13 @@ public class ITMemberDetails  extends BaseAcceptance {
     @Test
     public void whenReturnABook_theBorrowedBookIsAddedToMemberHistoryList() {
         sleepABit();
+        sleepABit();
         memberDetailsPage.clickOnBorrowButtonForTheFirstAvailableBook();
+        sleepABit();
         sleepABit();
 
         memberDetailsPage.clickOnReturnButtonForTheFirstBorrowedBook();
+        sleepABit();
         sleepABit();
 
         Assertions.assertThat(memberDetailsPage.getFirstBorrowedBookEndDate()).isNotEqualTo("-");
