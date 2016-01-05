@@ -102,9 +102,9 @@ public class BookRepositoryJPA implements BookRepository {
         String conditionalClause = " 1 = 1";
 
         if (title != null)
-            conditionalClause += " AND b.title = '" + title + "'";
+            conditionalClause += " AND lower(b.title) LIKE '%" + title.toLowerCase() + "%'";
         if (isbn != null)
-            conditionalClause += " AND b.isbn = '" + isbn + "'";
+            conditionalClause += " AND b.isbn LIKE '%" + isbn + "%'";
 
         return conditionalClause;
     }
