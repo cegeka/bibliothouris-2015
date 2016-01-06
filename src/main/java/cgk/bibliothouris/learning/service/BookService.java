@@ -24,6 +24,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -100,7 +101,7 @@ public class BookService {
     public Long countAvailableBooks() {
         return bookRepository.countAvailableBooks();
     }
-    
+
     //TODO: show to refactoring reading group
     public List<Book> importContent(String title, String isbn) throws IOException, GeneralSecurityException {
         final Books books = new Books.Builder(GoogleNetHttpTransport.newTrustedTransport(), JacksonFactory.getDefaultInstance(), null).build();
@@ -125,8 +126,7 @@ public class BookService {
                     .withCategories(getCategoriesFromImportedContent(info)).withPages(info.getPageCount()).build();
             List<Book> existingBooks = bookRepository.findBooksByIsbn(ISBN);
             if(existingBooks.size() > 0) {
-                if (existingBooks.get(0).getIsbn().equals(ISBN))
-                    listOfImportedBooks.add(existingBooks.get(0));
+                listOfImportedBooks.add(existingBooks.get(0));
             }
             else
                 listOfImportedBooks.add(builtBookFromImportedContent);
@@ -138,7 +138,7 @@ public class BookService {
         Set<Author> authorSet = new HashSet<>();
         if (info.getAuthors() != null)
             for(String inf : info.getAuthors()) {
-                Author author = Author.AuthorBuilder.author().withLastName(inf).build();
+                Author author = Author.AuthorBuilder.author().withFirstName(inf.substring(0, inf.indexOf(" "))).withLastName(inf.substring(inf.indexOf(" ") + 1)).build();
                 authorSet.add(author);
             }
         return authorSet;
