@@ -43,6 +43,10 @@ ng-messages{
     color: darkred;
 }
 
+.blueColor {
+    color: #428bca;
+}
+
 .grayColor {
     color: lightgrey;
 }

@@ -102,7 +102,10 @@
                     $location.path("/books/" + data.id);
                     createNotification("Book <strong>" + data.title + "</strong> was added in the library!", "success")
                 }, function(){
-                    createNotification("Something wrong happened when you tried to add a new book!", "danger")
+                    if(data.status == 400)
+                        createNotification(data.data, "danger")
+                    else
+                        createNotification("Something wrong happened when you tried to add a new book!", "danger")
                 });
         }
 

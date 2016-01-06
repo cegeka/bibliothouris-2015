@@ -107,10 +107,10 @@ public class BookService {
         final Books books = new Books.Builder(GoogleNetHttpTransport.newTrustedTransport(), JacksonFactory.getDefaultInstance(), null).build();
         Volumes volumes = null;
         if(title != null) {
-            volumes = books.volumes().list("intitle:" + title).execute();
+            volumes = books.volumes().list("intitle:" + title).setMaxResults(40L).execute();
         }
         if(isbn != null) {
-            volumes = books.volumes().list("isbn:" + isbn).execute();
+            volumes = books.volumes().list("isbn:" + isbn).setMaxResults(40L).execute();
         }
         List<Book> listOfImportedBooks = new ArrayList<>();
         for (Volume v : volumes.getItems()) {
@@ -124,13 +124,18 @@ public class BookService {
                     .withDescription(info.getDescription())
                     .withIsbn(ISBN)
                     .withCategories(getCategoriesFromImportedContent(info)).withPages(info.getPageCount()).build();
-            List<Book> existingBooks = bookRepository.findBooksByIsbn(ISBN);
-            if(existingBooks.size() > 0) {
-                listOfImportedBooks.add(existingBooks.get(0));
-            }
-            else
+
+            if (!ISBN.isEmpty()) {
+                List<Book> existingBooks = bookRepository.findBooksByIsbn(ISBN);
+                if(existingBooks.size() > 0)
+                    listOfImportedBooks.add(existingBooks.get(0));
+                else
+                    listOfImportedBooks.add(builtBookFromImportedContent);
+            } else {
                 listOfImportedBooks.add(builtBookFromImportedContent);
+            }
         }
+
         return listOfImportedBooks;
     }
 

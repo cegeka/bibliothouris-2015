@@ -13,6 +13,11 @@
                     controller: "AddBookCtrl",
                     controllerAs: "vm"
                 })
+                .when("/books/import", {
+                    templateUrl: "templates/import_books.html",
+                    controller: "ImportBooksCtrl",
+                    controllerAs: "vm"
+                })
                 .when("/books", {
                     templateUrl: "templates/list_books.html",
                     controller: "ListBooksCtrl",

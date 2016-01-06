@@ -140,7 +140,7 @@ public class ITBookRepository {
 
         ItemsListingTO foundBookListingTO = bookRepository.findAllBooks(0, 5, "Clean Code", null);
 
-        assertThat(foundBookListingTO.getItemsCount()).isEqualTo(1);
+        assertThat(foundBookListingTO.getItemsCount()).isGreaterThanOrEqualTo(1);
         assertThat(foundBookListingTO.getItems()).contains(expectedBookTO);
     }
 

@@ -11,7 +11,8 @@
             getBookCategories: getBookCategories,
             getBookDetails: getBookDetails,
             getBookTitles: getBookTitles,
-            getBookIsbnCodes: getBookIsbnCodes
+            getBookIsbnCodes: getBookIsbnCodes,
+            getImportedBooks: getImportedBooks
         };
 
         return service;
@@ -60,6 +61,13 @@
 
         function getBookIsbnCodes() {
             return $http.get("/api/books/isbnCodes")
+                .then(function (response) {
+                    return response.data;
+                });
+        }
+
+        function getImportedBooks(filterParameters) {
+            return $http.get("/api/books/import/" + filterParameters)
                 .then(function (response) {
                     return response.data;
                 });

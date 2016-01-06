@@ -37,11 +37,23 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li id="addBook"><a href="#books/add">Add book</a></li>
-                <li id="addMember"><a href="#member/add">Add member</a></li>
-                <li id="listBooks"><a href="#books">List books</a></li>
+                <li class="dropdown">
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown">Books<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li id="listBooks"><a href="#books">List books</a></li>
+                        <li id="addBook"><a href="#books/add">Add book</a></li>
+                        <li id="importBook"><a href="#books/import">Import books</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown">Members<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li id="listMembers"><a href="#member">List members</a></li>
+                        <li id="addMember"><a href="#member/add">Add member</a></li>
+                    </ul>
+                </li>
+
                 <li id="clarkKent"><a href="#/member/577b8f24-2f81-43f4-998a-16ddaf5c93ec">Clark Kent</a></li>
-                <li id="listMembers"><a href="#member">List members</a></li>
                 <li id="borrow"><a href="#/borrow">Borrowed Books</a></li>
             </ul>
             <form class="navbar-form navbar-right" role="search">
@@ -101,6 +113,8 @@
 <script src="js/list_members/ListMembersCtrl.js"></script>
 <script src="js/borrowed_books/borrowed_books.js"></script>
 <script src="js/filter/absolute_value.filter.js"></script>
+<script src="js/import_books/import_books.controller.js"></script>
+<script src="js/service/notificationService.js"></script>
 
 </body>
 </html>

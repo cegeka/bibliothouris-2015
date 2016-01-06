@@ -1,0 +1,83 @@
+<h3 class="midnightblueColor">Import books</h3>
+<hr class="addBorderStyle"/>
+
+<form class="form-inline" ng-submit="vm.onSelectFilter()">
+    <div class="row">
+        <div class="col-sm-offset-6 col-sm-6 text-right">
+            <label>Search by</label>
+            <select id="filter" class="form-control" ng-model="vm.filter"
+                    ng-options="filter for filter in vm.searchFilters" ng-change="vm.filterValue=''"></select>
+            <input id="filterValue" class="form-control" placeholder="{{vm.filter}}" ng-model="vm.filterValue">
+        </div>
+    </div>
+    <button type="submit" ng-hide="true"></button>
+</form>
+
+<br/>
+
+<div class="alert alert-info text-center" role="alert" ng-show="vm.noBooks">
+    <p class="alert-link">There are no books to be displayed!</p>
+</div>
+
+<div class="panel panel-default" ng-hide="vm.noBooks">
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-fixed table-hover">
+                <thead>
+                <tr>
+                    <th width=10%></th>
+                    <th width=83%></th>
+                    <th width=7%></th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr id="bookRow" ng-repeat = "book in vm.books">
+                    <td class="table-column-ellipsis" style="vertical-align: middle">
+                        <div style="height: 6em" >
+                            <img ng-src="{{book.cover || '../icons/default_book.png'}}" style="max-height: 100%" class="img-responsive center-block"/>
+                        </div>
+                    </td>
+                    <td style="vertical-align: middle">
+                        <div>
+                            <b>{{book.title}}</b>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div ng-show="vm.getAuthors(book)">
+                                    Author: {{vm.getAuthors(book)}}
+                                </div>
+                                <div ng-show="vm.getCategories(book)">
+                                    Category: {{vm.getCategories(book)}}
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div ng-show="book.isbn">
+                                    ISBN: {{book.isbn}}
+                                </div>
+                                <div ng-show="book.publisher">
+                                    Publisher: {{book.publisher}}
+                                </div>
+                                <div ng-show="book.date">
+                                    Publish date: {{book.date}}
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-show="book.id" class="blueColor" ng-class="{true:'greenColor', false:'darkRedColor'}[book.isAvailable]">
+                            <i class="glyphicon glyphicon-info-sign" style="margin-right: 5px"></i>
+                            This book is already in the library. (Enter
+                            <i><a ng-href="#/books/{{book.id}}">here</a></i>
+                            to see it)
+                        </div>
+                    </td>
+                    <td class="text-center" style="vertical-align: middle" ng-class="{true:'greenColor', false:'darkRedColor'}[book.isAvailable]">
+                        <button type="button" class="btn btn-default btn-sm" ng-disabled="{{book.id}}" ng-click="vm.importBook(book)">
+                            <i class="glyphicon glyphicon-import"></i>
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
