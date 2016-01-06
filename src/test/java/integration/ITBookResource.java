@@ -118,4 +118,12 @@ public class ITBookResource extends JerseyTest {
 
         assertThat(bookBorrowerTO.getIsBorrowed()).isTrue();
     }
+
+    @Test
+    public void givenAListOfImportedBooks_GET_returnTheCorrectList() {
+
+        List<Book> foundBooksFromImport = client.getImportedBooks(PATH + "/import/", "refactoring", null).readEntity(new GenericType<List<Book>>() {});
+
+        assertThat(foundBooksFromImport.get(0).getTitle()).isEqualTo("Refactoring");
+    }
 }

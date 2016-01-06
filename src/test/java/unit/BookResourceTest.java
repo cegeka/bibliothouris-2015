@@ -19,13 +19,15 @@ import org.mockito.runners.MockitoJUnitRunner;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
+import java.io.IOException;
 import java.net.URI;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BookResourceTest {
@@ -147,11 +149,34 @@ public class BookResourceTest {
     public void givenAnEmptyListOfBooks_findAllAvailableBooks_return404NotFound() {
         ItemsListingTO bookListingTO = new ItemsListingTO();
         bookListingTO.setItems(new ArrayList<>());
-        Mockito.when(mockBookService.findAllAvailableBooks("0", "5", null, null)).thenReturn(bookListingTO);
+        when(mockBookService.findAllAvailableBooks("0", "5", null, null)).thenReturn(bookListingTO);
 
         Response response = bookResource.getAllAvailableBooks(Integer.toString(0),Integer.toString(5), null, null);
 
-        Mockito.verify(mockBookService, times(1)).findAllAvailableBooks("0", "5", null, null);
+        verify(mockBookService, times(1)).findAllAvailableBooks("0", "5", null, null);
+        assertThat(response.getStatusInfo()).isEqualTo(Status.NOT_FOUND);
+    }
+
+    @Test
+    public void givenAListOfImportedBooks_getAllImportedBooks_returnTheListOfImportedBooks() throws IOException, GeneralSecurityException {
+        List<Book> listOfImportedBooks = new ArrayList<>();
+        listOfImportedBooks.add(BookTestFixture.createBookWithOneAuthorAndOneCategory());
+        when(mockBookService.importContent("refactoring", null)).thenReturn(listOfImportedBooks);
+
+        Response response = bookResource.getAllImportedBooks("refactoring", null);
+
+        verify(mockBookService, times(1)).importContent("refactoring", null);
+        assertThat(response.getEntity()).isEqualTo(listOfImportedBooks);
+    }
+
+    @Test
+    public void givenAnEmptyListOfImportedBooks_getAllImportedBooks_return404NotFound() throws IOException, GeneralSecurityException {
+        List<Book> listOfImportedBooks = new ArrayList<>();
+        when(mockBookService.importContent("refactoring", null)).thenReturn(listOfImportedBooks);
+
+        Response response = bookResource.getAllImportedBooks("refactoring", null);
+
+        verify(mockBookService, times(1)).importContent("refactoring", null);
         assertThat(response.getStatusInfo()).isEqualTo(Status.NOT_FOUND);
     }
 

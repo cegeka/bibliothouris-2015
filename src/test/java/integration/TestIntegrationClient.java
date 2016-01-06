@@ -30,6 +30,14 @@ public class TestIntegrationClient {
                      .get(Response.class);
     }
 
+    public Response getImportedBooks(String path, String title, String isbn) {
+        return target.path(path)
+                .queryParam("title", title)
+                .queryParam("isbn", isbn)
+                .request(MediaType.APPLICATION_JSON)
+                .get(Response.class);
+    }
+
     public Response getText(String path) {
         return target.path(path)
                 .request(MediaType.TEXT_PLAIN)

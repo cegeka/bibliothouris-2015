@@ -98,6 +98,17 @@ public class BookRepositoryJPA implements BookRepository {
         return selectAllQuery.getResultList();
     }
 
+    @Override
+    public List<Book> findBooksByIsbn(String isbn) {
+        String selectStatement = "SELECT b FROM Book b";
+
+        String filterClause = generateFilterQueryClause(null, isbn);
+
+        TypedQuery<Book> selectAllQuery = entityManager.createQuery(selectStatement + " WHERE" + filterClause, Book.class);
+
+        return selectAllQuery.getResultList();
+    }
+
     private String generateFilterQueryClause(String title, String isbn) {
         String conditionalClause = " 1 = 1";
 

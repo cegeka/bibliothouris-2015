@@ -2,9 +2,7 @@ package cgk.bibliothouris.learning.application.resource;
 
 import cgk.bibliothouris.learning.application.transferobject.*;
 import cgk.bibliothouris.learning.service.BookService;
-import cgk.bibliothouris.learning.service.BorrowHistoryService;
 import cgk.bibliothouris.learning.service.entity.Book;
-import cgk.bibliothouris.learning.service.entity.BorrowHistoryItem;
 import cgk.bibliothouris.learning.service.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,7 +10,9 @@ import org.springframework.stereotype.Component;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.Status;
+import java.io.IOException;
 import java.net.URI;
+import java.security.GeneralSecurityException;
 import java.util.List;
 
 @Path("/books")
@@ -34,6 +34,25 @@ public class BookResource {
             return Response.status(Status.NOT_FOUND).build();
         }
         return Response.ok().entity(new GenericEntity<ItemsListingTO<BookWithStatusTO>>(bookListingTO){}).build();
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/import")
+    public Response getAllImportedBooks(@QueryParam("title") String title, @QueryParam("isbn") String isbn){
+        try {
+            List<Book> listOfImportedBooks = bookService.importContent(title, isbn);
+            if(listOfImportedBooks.size() == 0){
+                return Response.status(Status.NOT_FOUND).build();
+            }
+            return Response.ok().entity(new GenericEntity<List<Book>>(listOfImportedBooks){}).build();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return Response.status(Status.NOT_FOUND).build();
+        } catch (GeneralSecurityException e) {
+            e.printStackTrace();
+            return Response.status(Status.NOT_FOUND).build();
+        }
     }
 
     @GET

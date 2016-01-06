@@ -27,6 +27,8 @@ public interface BookRepository {
 
     Long countAvailableBooks();
 
+    List<Book> findBooksByIsbn(String isbn);
+
     BookBorrowerTO findBookBorrowerDetails(Integer bookId);
 
     Long countCurrentlyBorrowedBooksByMember(String memberId);

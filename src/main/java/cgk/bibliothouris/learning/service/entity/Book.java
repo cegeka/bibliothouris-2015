@@ -18,6 +18,7 @@ import java.util.Set;
 @NamedQueries({
         @NamedQuery(name = Book.LIST_ALL_BOOKS, query = "SELECT b FROM Book b ORDER BY LOWER(b.title)"),
         @NamedQuery(name = Book.LIST_ALL_AVAILABLE_BOOKS, query = "SELECT b FROM Book b WHERE b.id NOT IN (SELECT bHist.book.id FROM BorrowHistoryItem bHist WHERE bHist.endDate IS NULL)"),
+        @NamedQuery(name = Book.LIST_BOOK_BY_ISBN, query = "SELECT b FROM Book b WHERE b.isbn = :isbn"),
         @NamedQuery(name = Book.DELETE_ALL_BOOKS, query = "DELETE FROM Book b"),
         @NamedQuery(name = Book.COUNT_BOOKS, query = "SELECT COUNT(b.id) FROM Book b"),
         @NamedQuery(name = Book.COUNT_AVAILABLE_BOOKS, query = "SELECT COUNT(b.id) FROM Book b WHERE b.id NOT IN (SELECT bHist.book.id FROM BorrowHistoryItem bHist WHERE bHist.endDate IS NULL)"),
@@ -30,6 +31,7 @@ public class Book {
 
     public static final String LIST_ALL_BOOKS = "LIST_ALL_BOOKS";
     public static final String LIST_ALL_AVAILABLE_BOOKS = "LIST_ALL_AVAILABLE_BOOKS";
+    public static final String LIST_BOOK_BY_ISBN = "LIST_BOOK_BY_ISBN";
     public static final String DELETE_ALL_BOOKS = "DELETE_ALL_BOOKS";
     public static final String COUNT_BOOKS = "COUNT_BOOKS";
     public static final String COUNT_AVAILABLE_BOOKS = "COUNT_AVAILABLE_BOOKS";
@@ -182,58 +184,82 @@ public class Book {
         return true;
     }
 
-    public static class BookBuilder {
+   public static class BookBuilder
+    {
         private Book book;
 
-        private BookBuilder() {
+        private BookBuilder()
+        {
             book = new Book();
         }
 
-        public static BookBuilder book() {
-            return new BookBuilder();
+        public BookBuilder withId(Integer id)
+        {
+            book.id = id;
+            return this;
         }
 
-        public BookBuilder withIsbn(String isbn) {
+        public BookBuilder withIsbn(String isbn)
+        {
             book.isbn = isbn;
             return this;
         }
 
-        public BookBuilder withTitle(String title) {
+        public BookBuilder withTitle(String title)
+        {
             book.title = title;
             return this;
         }
 
-        public BookBuilder withAuthors(Set<Author> authors) {
+        public BookBuilder withAuthors(Set<Author> authors)
+        {
             book.authors = authors;
             return this;
         }
 
-        public BookBuilder withDescription(String description) {
+        public BookBuilder withDescription(String description)
+        {
             book.description = description;
             return this;
         }
 
-        public BookBuilder withCategories(Set<BookCategory> categories) {
+        public BookBuilder withCategories(Set<BookCategory> categories)
+        {
             book.categories = categories;
             return this;
         }
 
-        public BookBuilder withPages(Integer pages) {
+        public BookBuilder withPages(Integer pages)
+        {
             book.pages = pages;
             return this;
         }
 
-        public BookBuilder withPublicationDate(LocalDate date) {
+        public BookBuilder withDate(LocalDate date)
+        {
             book.date = date;
             return this;
         }
 
-        public BookBuilder withPublisher(String publisher) {
+        public BookBuilder withPublisher(String publisher)
+        {
             book.publisher = publisher;
             return this;
         }
 
-        public Book build() {
+        public BookBuilder withCover(String cover)
+        {
+            book.cover = cover;
+            return this;
+        }
+
+        public static BookBuilder book()
+        {
+            return new BookBuilder();
+        }
+
+        public Book build()
+        {
             return book;
         }
     }

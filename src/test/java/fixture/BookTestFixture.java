@@ -73,10 +73,22 @@ public class BookTestFixture {
                 .withDescription("Great book for learning how to write clean code")
                 .withCategories(createOneCategory())
                 .withPages(430)
-                .withPublicationDate(LocalDate.of(2013, Month.MARCH, 23))
+                .withDate(LocalDate.of(2013, Month.MARCH, 23))
                 .withPublisher("Prentice Hall")
                 .build();
     }
+
+    /*public static Book createBookFromImport() {
+        return Book.BookBuilder.book().withTitle("Refactoring")
+                .withAuthors(createOneAuthor())
+                .withIsbn("978-0-13-235088-4")
+                .withDescription("Great book for learning how to write clean code")
+                .withCategories(createOneCategory())
+                .withPages(430)
+                .withDate(LocalDate.of(2013, Month.MARCH, 23))
+                .withPublisher("Prentice Hall")
+                .build();
+    }*/
 
     public static Book createBookWithOneAuthorAndThreeCategories() {
         return Book.BookBuilder.book().withTitle("Clean Code")
@@ -85,7 +97,7 @@ public class BookTestFixture {
                 .withDescription("Great book for learning how to write clean code")
                 .withCategories(createThreeCategories())
                 .withPages(430)
-                .withPublicationDate(LocalDate.of(2013, Month.MARCH, 23))
+                .withDate(LocalDate.of(2013, Month.MARCH, 23))
                 .withPublisher("Prentice Hall")
                 .build();
     }
@@ -96,7 +108,7 @@ public class BookTestFixture {
                 .withDescription("Great book for learning how to write clean code")
                 .withCategories(createThreeCategories())
                 .withPages(430)
-                .withPublicationDate(LocalDate.of(2013, Month.MARCH, 23))
+                .withDate(LocalDate.of(2013, Month.MARCH, 23))
                 .withPublisher("Prentice Hall")
                 .build();
     }
@@ -108,7 +120,7 @@ public class BookTestFixture {
                 .withDescription("Great book for learning how to write clean code")
                 .withCategories(createThreeCategories())
                 .withPages(430)
-                .withPublicationDate(LocalDate.of(2013, Month.MARCH, 23))
+                .withDate(LocalDate.of(2013, Month.MARCH, 23))
                 .withPublisher("Prentice Hall")
                 .build();
     }
@@ -120,7 +132,7 @@ public class BookTestFixture {
                 .withDescription("Great book for learning how to write clean code")
                 .withCategories(createThreeCategories())
                 .withPages(430)
-                .withPublicationDate(LocalDate.of(2013, Month.MARCH, 23))
+                .withDate(LocalDate.of(2013, Month.MARCH, 23))
                 .withPublisher("Prentice Hall")
                 .build();
     }
@@ -132,7 +144,7 @@ public class BookTestFixture {
                 .withDescription("Great book for learning how to write clean code")
                 .withCategories(createThreeCategories())
                 .withPages(430)
-                .withPublicationDate(LocalDate.of(2013, Month.MARCH, 23))
+                .withDate(LocalDate.of(2013, Month.MARCH, 23))
                 .withPublisher("Prentice Hall")
                 .build();
     }
@@ -143,7 +155,7 @@ public class BookTestFixture {
                 .withDescription("Great book for learning how to write clean code")
                 .withCategories(createThreeCategories())
                 .withPages(430)
-                .withPublicationDate(LocalDate.of(2013, Month.MARCH, 23))
+                .withDate(LocalDate.of(2013, Month.MARCH, 23))
                 .withPublisher("Prentice Hall")
                 .build();
     }
@@ -154,7 +166,7 @@ public class BookTestFixture {
                 .withDescription("Great book for learning how to write clean code")
                 .withCategories(createThreeCategories())
                 .withPages(-4)
-                .withPublicationDate(LocalDate.of(2013, Month.MARCH, 23))
+                .withDate(LocalDate.of(2013, Month.MARCH, 23))
                 .withPublisher("Prentice Hall")
                 .build();
     }
@@ -165,7 +177,7 @@ public class BookTestFixture {
                 .withDescription("Great book for learning how to write clean code")
                 .withCategories(createThreeCategories())
                 .withPages(430)
-                .withPublicationDate(LocalDate.of(2013, Month.MARCH, 23))
+                .withDate(LocalDate.of(2013, Month.MARCH, 23))
                 .withPublisher("Prentice Hall")
                 .build();
     }
@@ -176,7 +188,7 @@ public class BookTestFixture {
                 .withDescription("Great book for learning how to write clean code")
                 .withCategories(createThreeCategories())
                 .withPages(430)
-                .withPublicationDate(LocalDate.of(2013, Month.MARCH, 23))
+                .withDate(LocalDate.of(2013, Month.MARCH, 23))
                 .withPublisher("Prentice Hall")
                 .build();
     }
@@ -188,7 +200,7 @@ public class BookTestFixture {
                 .withDescription("Great book for learning how to write clean code")
                 .withCategories(createThreeCategories())
                 .withPages(430)
-                .withPublicationDate(LocalDate.of(2013, Month.MARCH, 23))
+                .withDate(LocalDate.of(2013, Month.MARCH, 23))
                 .withPublisher("Prentice Hall")
                 .build();
     }
