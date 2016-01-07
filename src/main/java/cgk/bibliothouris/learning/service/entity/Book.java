@@ -3,10 +3,12 @@ package cgk.bibliothouris.learning.service.entity;
 import cgk.bibliothouris.learning.service.dateconverter.LocalDateAdapter;
 import cgk.bibliothouris.learning.service.dateconverter.LocalDateAttributeConverter;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -64,7 +66,6 @@ public class Book {
     private Set<Author> authors;
 
     @Column(name = "DESCRIPTION")
-    @Size(max = 2000, message = "Book description is too long")
     private String description;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -72,11 +73,11 @@ public class Book {
             name = "BOOK_CATEGORY",
             joinColumns = @JoinColumn(name = "BOOK_ID"),
             inverseJoinColumns = @JoinColumn(name = "CATEGORY_ID"))
+    @NotNull
     private Set<BookCategory> categories;
 
     @Column(name = "PAGES")
-    //@Range(min=1, max=99999)
-    @Digits(integer = 5, fraction = 0)
+    @Range(min=1, max=99999)
     private Integer pages;
 
     @Column(name = "PUBLICATION_DATE")
