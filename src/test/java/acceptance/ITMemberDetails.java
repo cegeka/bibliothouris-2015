@@ -39,6 +39,8 @@ public class ITMemberDetails  extends BaseAcceptance {
         addMemberPage = new AddMemberPage(driver);
         memberDetailsPage = new MemberDetailsPage(driver);
 
+        addMemberPage.clickOnMembersDropdownButton();
+        sleepABit();
         addMemberPage.clickOnAddMemberButton();
         sleepABit();
         addANewMember();
