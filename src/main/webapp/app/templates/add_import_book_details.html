@@ -4,85 +4,77 @@
 
 <div class="modal-body">
 
+    <div>Add the following details in order to import <b>{{vm.book.title}}</b> in the library:</div>
 
+    <br>
 
-
-    <div>
-        Add the following details in order to import <b>{{vm.book.title}}</b> in the library:
-
-        <br><br>
-
-        <form novalidate ng-submit="vm.submitForm(add)" name="add" id="addForm">
-            <div class="form-group has-feedback" ng-show="vm.book.authors.length == 0" ng-repeat="author in vm.authors track by $index" ng-init="authorLastName = $index">
-                <label for="authors" class="control-label required-mark" ng-show="$index == 0">Authors</label>
-                <div class="row" id="authors">
-                    <div class="col-sm-10">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <input name="firstName" type="text" class="form-control" id="firstName"
-                                       placeholder="First name {{$index + 1}} (optional)"
-                                       ng-model="vm.book.authors[$index].firstName">
-                                <span ng-show="vm.showFeedback(add[authorLastName].$error)" class="glyphicon glyphicon-ok form-control-feedback has-success" aria-hidden="true"></span>
-                            </div>
-                            <div class="col-sm-6">
-                                <input name="{{authorLastName}}" type="text" class="form-control" id="lastName"
-                                       placeholder="Last name {{$index + 1}} (required)"
-                                       ng-model="vm.book.authors[$index].lastName" required>
-                                <span ng-show="vm.showFeedback(add[authorLastName].$error)" class="glyphicon glyphicon-ok form-control-feedback has-success" aria-hidden="true"></span>
-                                <ng-messages for="add[authorLastName].$error" style="color:maroon" role="alert" ng-if='add[authorLastName].$invalid && add.$submitted'>
-                                    <ng-message id="lastNameRequiredMsg" when="required">You did not enter a last name</ng-message>
-                                </ng-messages>
-                            </div>
+    <form novalidate ng-submit="vm.submitForm(add)" name="add" id="addForm">
+        <div class="form-group" ng-if="vm.book.authors.length == 0" ng-repeat="author in vm.authors track by $index" ng-init="authorLastName = $index">
+            <label for="authors" class="control-label required-mark" ng-if="$index == 0">Authors</label>
+            <div class="row" id="authors">
+                <div class="col-sm-10">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <input name="firstName" type="text" class="form-control" id="firstName"
+                                   placeholder="First name {{$index + 1}} (optional)"
+                                   ng-model="vm.authors[$index].firstName">
+                        </div>
+                        <div class="col-sm-6">
+                            <input name="{{authorLastName}}" type="text" class="form-control" id="lastName"
+                                   placeholder="Last name {{$index + 1}} (required)"
+                                   ng-model="vm.authors[$index].lastName" required>
+                            <ng-messages for="add[authorLastName].$error" style="color:maroon" role="alert" ng-if='add[authorLastName].$invalid && add.$submitted'>
+                                <ng-message id="lastNameRequiredMsg" when="required">You did not enter a last name</ng-message>
+                            </ng-messages>
                         </div>
                     </div>
-                    <div class="col-sm-2 text-right">
-                        <button class="btn btn-danger" type="button" ng-click="vm.deleteAuthor($index)">
-                            <i class="glyphicon glyphicon-trash"></i>
-                        </button>
-                    </div>
                 </div>
-            </div>
-            <div class="form-group" ng-show="vm.book.authors.length == 0">
-                <div class="col-sm-offset-10 col-sm-2 text-right" style="padding-right: 0">
-                    <button type="button" class="btn btn-success" ng-click="vm.addAuthor()">
-                        <i class="glyphicon glyphicon-plus"></i>
+                <div class="col-sm-2 text-right">
+                    <button class="btn btn-danger" type="button" ng-click="vm.deleteAuthor($index)">
+                        <i class="glyphicon glyphicon-trash"></i>
                     </button>
                 </div>
             </div>
-
-            <div class="form-group has-feedback" ng-show="!vm.book.isbn">
-                <label for="ISBN-groups" class="control-label required-mark">ISBN</label>
-                <div>
-                    <div id="ISBN-groups" name="ISBN-groups">
-                        <input ng-change="vm.onchange()" name="isbn1" type="text" class="form-control form-control-inline" id="isbnPrefix" maxlength="3" minlength="1" ng-model="vm.isbn.prefix" required>
-                        <input ng-change="vm.onchange()" name="isbn2" type="text" class="form-control form-control-inline" id="isbnRegistrationGroupElement" maxlength="5" minlength="1" ng-model="vm.isbn.registrationGroupElement" required>
-                        <input ng-change="vm.onchange()" name="isbn3" type="text" class="form-control form-control-inline" id="isbnRegistrantElement" maxlength="5" minlength="1" ng-model="vm.isbn.registrantElement" required>
-                        <input ng-change="vm.onchange()"name="isbn4" type="text" class="form-control form-control-inline" id="isbnPublicationElement" maxlength="5" minlength="1" ng-model="vm.isbn.publicationElement" required>
-                        <input ng-change="vm.onchange()"name="isbn5" type="text" class="form-control form-control-inline" id="isbnCheckDigit" maxlength="1" minlength="1" ng-model="vm.isbn.checkDigit" required>
-                        <input ng-model="vm.book.isbn" name= "isbn" ng-pattern="vm.isbnPattern" required ng-hide="true">
-                    </div>
-                    <span ng-show="vm.showFeedback(add.isbn.$error) && vm.showIsbnError(add.isbn.$error)" class="glyphicon glyphicon-ok form-control-feedback has-success" aria-hidden="true"></span>
-                    <ng-messages for="add.isbn.$error" style="color:maroon" role="alert" ng-if='add.isbn.$invalid && add.$submitted'>
-                        <ng-message when="required" id="isbnRequiredMsg">You did not enter an ISBN code</ng-message>
-                        <ng-message when="pattern" id="isbnInvalidMsg">You did not enter a valid ISBN code</ng-message>
-                    </ng-messages>
-                </div>
+        </div>
+        <div class="form-group" ng-if="vm.book.authors.length == 0">
+            <div class="col-sm-offset-10 col-sm-2 text-right" style="padding-right: 0">
+                <button type="button" class="btn btn-success" ng-click="vm.addAuthor()">
+                    <i class="glyphicon glyphicon-plus"></i>
+                </button>
             </div>
+        </div>
 
-            <hr>
+        <div class="form-group" ng-if="!vm.book.isbn">
+            <label for="ISBN-groups" class="control-label required-mark">ISBN</label>
+            <div>
+                <div id="ISBN-groups" name="ISBN-groups">
+                    <input ng-change="vm.onChangeIsbnParts()" name="isbn1" type="text" class="form-control form-control-inline" id="isbnPrefix" maxlength="3" minlength="1" ng-model="vm.isbn.prefix" required>
+                    <input ng-change="vm.onChangeIsbnParts()" name="isbn2" type="text" class="form-control form-control-inline" id="isbnRegistrationGroupElement" maxlength="5" minlength="1" ng-model="vm.isbn.registrationGroupElement" required>
+                    <input ng-change="vm.onChangeIsbnParts()" name="isbn3" type="text" class="form-control form-control-inline" id="isbnRegistrantElement" maxlength="5" minlength="1" ng-model="vm.isbn.registrantElement" required>
+                    <input ng-change="vm.onChangeIsbnParts()"name="isbn4" type="text" class="form-control form-control-inline" id="isbnPublicationElement" maxlength="5" minlength="1" ng-model="vm.isbn.publicationElement" required>
+                    <input ng-change="vm.onChangeIsbnParts()"name="isbn5" type="text" class="form-control form-control-inline" id="isbnCheckDigit" maxlength="1" minlength="1" ng-model="vm.isbn.checkDigit" required>
+                    <input ng-model="vm.isbnText" name= "isbn" ng-pattern="vm.isbnPattern" required ng-hide="true">
+                </div>
+                <ng-messages for="add.isbn.$error" style="color:maroon" role="alert" ng-if='add.isbn.$invalid && add.$submitted'>
+                    <ng-message when="required" id="isbnRequiredMsg">You did not enter an ISBN code</ng-message>
+                    <ng-message when="pattern" id="isbnInvalidMsg">You did not enter a valid ISBN code</ng-message>
+                </ng-messages>
+            </div>
+        </div>
 
-            <div class="form-group">
+        <hr>
+
+        <div class="form-group">
+            <div class="row">
                 <div class="col-sm-offset-2 col-sm-4">
                     <button type="submit" id="submit" class="btn btn-primary full-width">Save</button>
                 </div>
                 <div class="col-sm-4">
-                    <button type="button" id="cancel" class="btn btn-default full-width" ng-click="previewImage = ' '; vm.resetForm(add)">
+                    <button type="button" id="cancel" class="btn btn-default full-width" ng-click="vm.closeModal()">
                         Cancel
                     </button>
                 </div>
             </div>
-        </form>
-    </div>
-
-
+        </div>
+    </form>
 </div>

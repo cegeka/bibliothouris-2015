@@ -34,7 +34,6 @@
             bookService
                 .getImportedBooks("?" + vm.searchParametersInUrl)
                 .then(function(data) {
-                    console.log(data);
                     vm.books = data;
                 }, function(){
                     vm.noBooks = true;
@@ -43,8 +42,6 @@
         }
 
         function onSelectFilter() {
-            console.log(vm.filterValue);
-
             for (var key in $location.search())
                 $location.search(key, null);
 
@@ -52,32 +49,11 @@
         }
 
         function importBook(book) {
-            if (!book.isbn || !book.authors) {
+            if (!book.isbn || book.authors.length == 0) {
+                console.log(book);
                 $uibModal.open({
                     templateUrl: 'templates/add_import_book_details.html',
-                    controller: function (book, $uibModalInstance) {
-                        var vm = this;
-
-                        vm.book = book;
-
-                        console.log(vm.book);
-
-                        vm.authors = [""];
-                        //vm.type = type;
-                        //vm.title = title;
-                        //vm.message = message;
-                        //
-                        //vm.onYes = onYes;
-                        //vm.onNo = onNo;
-                        //
-                        //function onYes() {
-                        //    $uibModalInstance.close();
-                        //}
-                        //
-                        //function onNo() {
-                        //    $uibModalInstance.dismiss();
-                        //}
-                    },
+                    controller: "AddImportDetailsCtrl",
                     controllerAs: 'vm',
                     resolve: {
                         book: function () {
@@ -106,6 +82,9 @@
 
         function getAuthors(book) {
             return book.authors.map(function(author){
+                if (!author.firstName)
+                    return author.lastName;
+
                 return author.firstName + " " + author.lastName;
             }).join(", ");
         }
