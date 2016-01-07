@@ -78,22 +78,10 @@ public class BookTestFixture {
                 .build();
     }
 
-    /*public static Book createBookFromImport() {
+    public static Book createBookWithOneAuthorAndThreeCategories() {
         return Book.BookBuilder.book().withTitle("Refactoring")
                 .withAuthors(createOneAuthor())
-                .withIsbn("978-0-13-235088-4")
-                .withDescription("Great book for learning how to write clean code")
-                .withCategories(createOneCategory())
-                .withPages(430)
-                .withDate(LocalDate.of(2013, Month.MARCH, 23))
-                .withPublisher("Prentice Hall")
-                .build();
-    }*/
-
-    public static Book createBookWithOneAuthorAndThreeCategories() {
-        return Book.BookBuilder.book().withTitle("Clean Code")
-                .withAuthors(createOneAuthor())
-                .withIsbn("978-0-13-235088-4")
+                .withIsbn("978-0-13-235088-5")
                 .withDescription("Great book for learning how to write clean code")
                 .withCategories(createThreeCategories())
                 .withPages(430)
@@ -141,6 +129,30 @@ public class BookTestFixture {
         return Book.BookBuilder.book().withTitle("Clean Code")
                 .withAuthors(createOneAuthor())
                 .withIsbn("978-0-13-2350-88-4")
+                .withDescription("Great book for learning how to write clean code")
+                .withCategories(createThreeCategories())
+                .withPages(430)
+                .withDate(LocalDate.of(2013, Month.MARCH, 23))
+                .withPublisher("Prentice Hall")
+                .build();
+    }
+
+    public static Book createBookWith3LinesISBN() {
+        return Book.BookBuilder.book().withTitle("Clean Code")
+                .withAuthors(createOneAuthor())
+                .withIsbn("978-0-3235088-4")
+                .withDescription("Great book for learning how to write clean code")
+                .withCategories(createThreeCategories())
+                .withPages(430)
+                .withDate(LocalDate.of(2013, Month.MARCH, 23))
+                .withPublisher("Prentice Hall")
+                .build();
+    }
+
+    public static Book createBookWithoutLinesISBN() {
+        return Book.BookBuilder.book().withTitle("Clean Code")
+                .withAuthors(createOneAuthor())
+                .withIsbn("9780132350884")
                 .withDescription("Great book for learning how to write clean code")
                 .withCategories(createThreeCategories())
                 .withPages(430)
@@ -204,4 +216,5 @@ public class BookTestFixture {
                 .withPublisher("Prentice Hall")
                 .build();
     }
+
 }

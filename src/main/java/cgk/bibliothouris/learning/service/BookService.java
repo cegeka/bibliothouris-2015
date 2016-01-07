@@ -25,6 +25,7 @@ import javax.validation.Validator;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -123,58 +124,100 @@ public class BookService {
                     .withCover(getCoverFromImportedContent(info))
                     .withDescription(info.getDescription())
                     .withIsbn(ISBN)
-                    .withCategories(getCategoriesFromImportedContent(info)).withPages(info.getPageCount()).build();
-
+                    .withCategories(getCategoriesFromImportedContent(info)).withPages(info.getPageCount())
+                    .withDate(getPublishedDateFromImportedContent(info)).build();
+            List<Book> existingBooks = bookRepository.findBooksByIsbn(ISBN);
             if (!ISBN.isEmpty()) {
-                List<Book> existingBooks = bookRepository.findBooksByIsbn(ISBN);
-                if(existingBooks.size() > 0)
+                if (existingBooks.size() > 0) {
                     listOfImportedBooks.add(existingBooks.get(0));
-                else
+                } else
                     listOfImportedBooks.add(builtBookFromImportedContent);
-            } else {
+            } else
                 listOfImportedBooks.add(builtBookFromImportedContent);
-            }
         }
-
         return listOfImportedBooks;
     }
 
-    private Set<Author> getAuthorsFromImportedContent(Volume.VolumeInfo info){
+    private Set<Author> getAuthorsFromImportedContent(Volume.VolumeInfo info) {
         Set<Author> authorSet = new HashSet<>();
-        if (info.getAuthors() != null)
-            for(String inf : info.getAuthors()) {
-                Author author = Author.AuthorBuilder.author().withFirstName(inf.substring(0, inf.indexOf(" "))).withLastName(inf.substring(inf.indexOf(" ") + 1)).build();
-                authorSet.add(author);
+        Author author;
+            if (info.getAuthors() != null)
+            for (String inf : info.getAuthors()) {
+                if(inf.contains(" ")) {
+                    author = Author.AuthorBuilder.author().withFirstName(inf.substring(0, inf.indexOf(" "))).withLastName(inf.substring(inf.indexOf(" ") + 1)).build();
+                    authorSet.add(author);
+                }
+                else {
+                    author = Author.AuthorBuilder.author().withLastName(inf.substring(inf.indexOf(" ") + 1)).build();
+                    authorSet.add(author);
+                }
             }
         return authorSet;
     }
 
-    private String getISBNFromImportedContent(Volume.VolumeInfo info){
-        String ISBN="";
+    private String getISBNFromImportedContent(Volume.VolumeInfo info) {
+        String ISBN = "";
         if (info.getIndustryIdentifiers() != null)
-            for(Volume.VolumeInfo.IndustryIdentifiers identifiers : info.getIndustryIdentifiers()){
-                if(identifiers.getType().equals("ISBN_13")){
+            for (Volume.VolumeInfo.IndustryIdentifiers identifiers : info.getIndustryIdentifiers()) {
+                if (identifiers.getType().equals("ISBN_13")) {
                     ISBN = identifiers.getIdentifier();
                 }
             }
         return ISBN;
     }
 
-    private Set<BookCategory> getCategoriesFromImportedContent(Volume.VolumeInfo info){
+    private Set<BookCategory> getCategoriesFromImportedContent(Volume.VolumeInfo info) {
         Set<BookCategory> categorySet = new HashSet<>();
         if (info.getCategories() != null)
-            for(String inf : info.getCategories()) {
+            for (String inf : info.getCategories()) {
                 BookCategory category = BookCategory.CategoryBuilder.category().withCategory(inf).build();
                 categorySet.add(category);
             }
         return categorySet;
     }
 
-    private String getCoverFromImportedContent(Volume.VolumeInfo info){
+    private String getCoverFromImportedContent(Volume.VolumeInfo info) {
         String cover = "";
-        if(info.getImageLinks() != null)
+        if (info.getImageLinks() != null)
             cover = info.getImageLinks().getThumbnail();
         return cover;
     }
+    //TODO: show to refactoring group
+    private LocalDate getPublishedDateFromImportedContent(Volume.VolumeInfo info) {
+        LocalDate date = null;
+        if (info.getPublishedDate() != null) {
+                String[] parts = info.getPublishedDate().split("-");
+                if (parts.length == 3)
+                    date = LocalDate.of(Integer.parseInt(parts[0]),
+                            Integer.parseInt(parts[1]),
+                            Integer.parseInt(parts[2]));
+                if (parts.length == 2)
+                    date = LocalDate.of(Integer.parseInt(parts[0]),
+                            Integer.parseInt(parts[1]),
+                            01);
+                if (parts.length == 1) {
+                    if (parts[0].contains("*"))
+                        date = LocalDate.of(Integer.parseInt(info.getPublishedDate().substring(0, info.getPublishedDate().indexOf("*"))),
+                                Month.JANUARY,
+                                01);
 
+                    else
+                        try {
+                            date = LocalDate.of(Integer.parseInt(parts[0]),
+                                    Month.JANUARY,
+                                    01);
+                        } catch(Exception exc){
+                            date = null;
+                        }
+                }
+            }
+
+        return date;
+    }
 }
+
+
+
+
+
+

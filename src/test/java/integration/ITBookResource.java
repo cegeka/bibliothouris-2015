@@ -30,7 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ITBookResource extends JerseyTest {
 
     private TestIntegrationClient client;
-    private Book bookWithOneAuthorAndOneCategory;
+    private Book bookWithOneAuthorAndOneCategory, bookWithOneAuthorAndThreeCategories;
     private static String PATH = "/books";
 
 
@@ -51,6 +51,8 @@ public class ITBookResource extends JerseyTest {
         client = new TestIntegrationClient(target());
 
         bookWithOneAuthorAndOneCategory =  BookTestFixture.createBookWithOneAuthorAndOneCategory();
+        bookWithOneAuthorAndThreeCategories = BookTestFixture.createBookWithOneAuthorAndThreeCategories();
+
     }
 
     @After
@@ -73,6 +75,51 @@ public class ITBookResource extends JerseyTest {
         ItemsListingTO<BookWithStatusTO> bookListingTO = client.get(PATH).readEntity(new GenericType<ItemsListingTO<BookWithStatusTO>>() {});
 
         assertThat(bookListingTO.getItems()).contains(expectedBookTO);
+    }
+
+    /*@Test
+    public void givenAListOfBooksAndPaginationParams_GET_returnsTheListOfBooks() {
+        Book newBook = client.post(PATH, bookWithOneAuthorAndOneCategory).readEntity(Book.class);
+        Book newBook2 = client.post(PATH, bookWithOneAuthorAndThreeCategories).readEntity(Book.class);
+        Book newBook3 = client.post(PATH, bookWithOneAuthorAndOneCategory).readEntity(Book.class);
+        BookWithStatusTO expectedBookTO = new BookWithStatusTO(newBook);
+        BookWithStatusTO expectedBookTO2 = new BookWithStatusTO(newBook2);
+        BookWithStatusTO expectedBookTO3 = new BookWithStatusTO(newBook3);
+
+        ItemsListingTO<BookWithStatusTO> bookListingTO = client.getBooksWithParams(PATH, null, null, "0", "1").readEntity(new GenericType<ItemsListingTO<BookWithStatusTO>>() {});
+
+        assertThat(bookListingTO.getItems()).contains(expectedBookTO);
+        //assertThat(bookListingTO.getItems()).doesNotContain(expectedBookTO2);
+
+    }*/
+
+    @Test
+    public void givenAListOfBooksAndTitleFilteringParam_GET_returnsTheListOfBooks() {
+        Book newBook = client.post(PATH, bookWithOneAuthorAndOneCategory).readEntity(Book.class);
+        Book newBook2 = client.post(PATH, bookWithOneAuthorAndThreeCategories).readEntity(Book.class);
+        BookWithStatusTO expectedBookTO = new BookWithStatusTO(newBook);
+        BookWithStatusTO expectedBookTO2 = new BookWithStatusTO(newBook2);
+
+        ItemsListingTO<BookWithStatusTO> bookListingTO = client.getBooksWithParams(PATH, "Clean Code", null, null, null).readEntity(new GenericType<ItemsListingTO<BookWithStatusTO>>() {
+        });
+
+        assertThat(bookListingTO.getItems()).contains(expectedBookTO);
+        assertThat(bookListingTO.getItems()).doesNotContain(expectedBookTO2);
+
+    }
+
+    @Test
+    public void givenAListOfBooksAndISBNFilteringParam_GET_returnsTheListOfBooks() {
+        Book newBook = client.post(PATH, bookWithOneAuthorAndOneCategory).readEntity(Book.class);
+        Book newBook2 = client.post(PATH, bookWithOneAuthorAndThreeCategories).readEntity(Book.class);
+        BookWithStatusTO expectedBookTO = new BookWithStatusTO(newBook);
+        BookWithStatusTO expectedBookTO2 = new BookWithStatusTO(newBook2);
+
+        ItemsListingTO<BookWithStatusTO> bookListingTO = client.getBooksWithParams(PATH, null, "978-0-13-235088-5", null, null).readEntity(new GenericType<ItemsListingTO<BookWithStatusTO>>() {});
+
+        assertThat(bookListingTO.getItems()).contains(expectedBookTO2);
+        assertThat(bookListingTO.getItems()).doesNotContain(expectedBookTO);
+
     }
 
     @Test

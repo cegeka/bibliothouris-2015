@@ -16,6 +16,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -64,6 +66,20 @@ public class BookServiceTest {
     @Test(expected = ValidationException.class)
     public void givenABookWith5LinesISBN_createBook_throwsValidationException() {
         Book book = BookTestFixture.createBookWith5LinesISBN();
+
+        service.createBook(book);
+    }
+
+    @Test(expected = ValidationException.class)
+    public void givenABookWithoutLinesISBN_createBook_throwsValidationException() {
+        Book book = BookTestFixture.createBookWithoutLinesISBN();
+
+        service.createBook(book);
+    }
+
+    @Test(expected = ValidationException.class)
+    public void givenABookWith3LinesISBN_createBook_throwsValidationException() {
+        Book book = BookTestFixture.createBookWith3LinesISBN();
 
         service.createBook(book);
     }
@@ -202,9 +218,23 @@ public class BookServiceTest {
         Assertions.assertThat(foundBookBorrowerTO).isEqualTo(expectedBookBorrowerTO);
     }
 
-    //@Test
-    //public void given
+    @Test
+    public void givenABookTitle_whenWeImportContent_returnACorrectBook() throws IOException, GeneralSecurityException {
+        List<Book> importedBooks = service.importContent("design%20Patterns", null);
+        Assertions.assertThat(importedBooks.get(0).getTitle().toLowerCase()).contains("design patterns");
+    }
 
+    @Test
+    public void givenABookISBN_whenWeImportContent_returnACorrectBook() throws IOException, GeneralSecurityException {
+        List<Book> importedBooks = service.importContent(null, "9780132350884");
+        Assertions.assertThat(importedBooks.get(0).getTitle().toLowerCase()).contains("clean code");
+    }
+
+    /*@Test(expected = ValidationException.class)
+    public void givenABookISBNWith3Lines_whenWeImportContent_throwsValidationException() throws IOException, GeneralSecurityException {
+        List<Book> importedBooks = service.importContent(null, "978-0132-3508-84");
+        Assertions.assertThat(importedBooks.get(0).getTitle().toLowerCase()).contains("clean code");
+    }*/
 
 
 }
