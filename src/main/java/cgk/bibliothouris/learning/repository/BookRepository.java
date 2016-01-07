@@ -32,4 +32,6 @@ public interface BookRepository {
     BookBorrowerTO findBookBorrowerDetails(Integer bookId);
 
     Long countCurrentlyBorrowedBooksByMember(String memberId);
+
+    void deleteBookById(Integer bookId);
 }

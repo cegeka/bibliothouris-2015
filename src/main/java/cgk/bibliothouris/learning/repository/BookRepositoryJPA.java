@@ -26,25 +26,9 @@ public class BookRepositoryJPA implements BookRepository {
 
         Book bookWithAuthorsAndCategories = getBookWithPersistedCategories(bookWithAuthors);
 
-        book.setIsbn(splitContinuousISBN(book.getIsbn()));
-
         entityManager.persist(bookWithAuthorsAndCategories);
 
         return bookWithAuthors;
-    }
-
-    private String splitContinuousISBN(String isbn) {
-        if (isbn.split("-").length > 0)
-            return isbn;
-
-        List<String> isbnParts  = new ArrayList<>();
-        isbnParts.add(isbn.substring(0, 2));
-        isbnParts.add(isbn.substring(3, 3));
-        isbnParts.add(isbn.substring(4, 6));
-        isbnParts.add(isbn.substring(7, 11));
-        isbnParts.add(isbn.substring(12, 12));
-
-        return isbnParts.stream().collect(Collectors.joining(", "));
     }
 
     private Book getBookWithPersistedCategories(Book book) {
@@ -234,5 +218,12 @@ public class BookRepositoryJPA implements BookRepository {
         countQuery.setParameter("memberId", memberId);
 
         return countQuery.getSingleResult();
+    }
+
+    @Override
+    public void deleteBookById(Integer bookId){
+        Book book = entityManager.find(Book.class, bookId);
+
+        entityManager.remove(book);
     }
 }

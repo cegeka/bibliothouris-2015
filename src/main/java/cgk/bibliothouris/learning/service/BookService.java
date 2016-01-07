@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -41,9 +42,25 @@ public class BookService {
     private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     public Book createBook(Book book) {
+        book.setIsbn(splitContinuousISBN(book.getIsbn()));
+
         validateBook(book);
 
         return bookRepository.createBook(book);
+    }
+
+    private String splitContinuousISBN(String isbn) {
+        if (isbn == null || isbn.split("-").length > 1)
+            return isbn;
+
+        List<String> isbnParts  = new ArrayList<>();
+        isbnParts.add(isbn.substring(0, 3));
+        isbnParts.add(isbn.substring(3, 4));
+        isbnParts.add(isbn.substring(4, 7));
+        isbnParts.add(isbn.substring(7, 12));
+        isbnParts.add(isbn.substring(12, 13));
+
+        return isbnParts.stream().collect(Collectors.joining("-"));
     }
 
     @Transactional(readOnly = true)
@@ -81,8 +98,8 @@ public class BookService {
         return bookRepository.findBookBorrowerDetails(bookId);
     }
 
-    public void deleteAllBooks() {
-        bookRepository.deleteAllBooks();
+    public void deleteBookById(Integer bookId) {
+        bookRepository.deleteBookById(bookId);
     }
 
     private void validateBook(Book book) {

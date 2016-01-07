@@ -52,12 +52,12 @@ public class ITBookResource extends JerseyTest {
 
         bookWithOneAuthorAndOneCategory =  BookTestFixture.createBookWithOneAuthorAndOneCategory();
         bookWithOneAuthorAndThreeCategories = BookTestFixture.createBookWithOneAuthorAndThreeCategories();
-
     }
 
     @After
     public void tearDown() {
         // TODO: Leave the DB clean after the tests execution
+
     }
 
     @Test
@@ -77,21 +77,16 @@ public class ITBookResource extends JerseyTest {
         assertThat(bookListingTO.getItems()).contains(expectedBookTO);
     }
 
-    /*@Test
+    @Test
     public void givenAListOfBooksAndPaginationParams_GET_returnsTheListOfBooks() {
-        Book newBook = client.post(PATH, bookWithOneAuthorAndOneCategory).readEntity(Book.class);
-        Book newBook2 = client.post(PATH, bookWithOneAuthorAndThreeCategories).readEntity(Book.class);
-        Book newBook3 = client.post(PATH, bookWithOneAuthorAndOneCategory).readEntity(Book.class);
-        BookWithStatusTO expectedBookTO = new BookWithStatusTO(newBook);
-        BookWithStatusTO expectedBookTO2 = new BookWithStatusTO(newBook2);
-        BookWithStatusTO expectedBookTO3 = new BookWithStatusTO(newBook3);
+        client.post(PATH, bookWithOneAuthorAndOneCategory).readEntity(Book.class);
+        client.post(PATH, bookWithOneAuthorAndThreeCategories).readEntity(Book.class);
+        client.post(PATH, bookWithOneAuthorAndOneCategory).readEntity(Book.class);
 
         ItemsListingTO<BookWithStatusTO> bookListingTO = client.getBooksWithParams(PATH, null, null, "0", "1").readEntity(new GenericType<ItemsListingTO<BookWithStatusTO>>() {});
 
-        assertThat(bookListingTO.getItems()).contains(expectedBookTO);
-        //assertThat(bookListingTO.getItems()).doesNotContain(expectedBookTO2);
-
-    }*/
+        assertThat(bookListingTO.getItems().size()).isEqualTo(1);
+    }
 
     @Test
     public void givenAListOfBooksAndTitleFilteringParam_GET_returnsTheListOfBooks() {

@@ -70,11 +70,14 @@ public class BookServiceTest {
         service.createBook(book);
     }
 
-    @Test(expected = ValidationException.class)
+    @Test
     public void givenABookWithoutLinesISBN_createBook_throwsValidationException() {
         Book book = BookTestFixture.createBookWithoutLinesISBN();
+        Mockito.when(mockRepository.createBook(book)).thenReturn(book);
 
-        service.createBook(book);
+        Book newBook = service.createBook(book);
+
+        assertThat(newBook.getIsbn().split("-").length).isEqualTo(5);
     }
 
     @Test(expected = ValidationException.class)

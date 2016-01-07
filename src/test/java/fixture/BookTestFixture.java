@@ -163,9 +163,9 @@ public class BookTestFixture {
 
     public static Book createBookWithoutCategory() {
         return Book.BookBuilder.book().withTitle("Clean Code")
+                .withIsbn("978-0-201-63361-0")
                 .withAuthors(createOneAuthor())
                 .withDescription("Great book for learning how to write clean code")
-                .withCategories(createThreeCategories())
                 .withPages(430)
                 .withDate(LocalDate.of(2013, Month.MARCH, 23))
                 .withPublisher("Prentice Hall")
@@ -174,6 +174,7 @@ public class BookTestFixture {
 
     public static Book createBookWithNegativePageNumber() {
         return Book.BookBuilder.book().withTitle("Clean Code")
+                .withIsbn("978-0-201-63361-0")
                 .withAuthors(createOneAuthor())
                 .withDescription("Great book for learning how to write clean code")
                 .withCategories(createThreeCategories())
