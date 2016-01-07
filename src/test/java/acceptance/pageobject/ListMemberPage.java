@@ -19,6 +19,9 @@ public class ListMemberPage {
     @FindBy(how = How.ID, using = "listMembers")
     WebElement listAllButton;
 
+    @FindBy(how = How.ID, using = "membersDropdown")
+    WebElement membersDropdown;
+
     public List<WebElement> getListOfMembers() {
         return memberList;
     }
@@ -29,6 +32,10 @@ public class ListMemberPage {
 
     public void clickOnTheFirstMemberFromList() {
         memberList.get(0).click();
+    }
+
+    public void clickOnMembersDropdownButton(){
+        membersDropdown.click();
     }
 
 }

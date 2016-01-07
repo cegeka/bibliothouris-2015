@@ -60,6 +60,9 @@ public class AddMemberPage {
     @FindBy(how = How.ID, using = "addMember")
     WebElement addMemberButton;
 
+    @FindBy(how = How.ID, using = "membersDropdown")
+    WebElement membersDropdown;
+
     public void inputTextIntoFirstNameField(String firstName){
         inputFirstName.sendKeys(firstName);
     }
@@ -102,6 +105,10 @@ public class AddMemberPage {
 
     public void clickOnAddMemberButton(){
         addMemberButton.click();
+    }
+
+    public void clickOnMembersDropdownButton(){
+        membersDropdown.click();
     }
 
     public String getFirstNameRequiredMessage(){

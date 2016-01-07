@@ -25,6 +25,8 @@ public class ITBookDetails extends BaseAcceptance {
     }
 
     private void navigateToBook(String bookTitle) throws InterruptedException {
+        listBookPage.clickOnBooksDropdownButton();
+        sleepABit();
         listBookPage.clickOnListAllButton();
         sleepABit();
 

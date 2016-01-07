@@ -15,15 +15,19 @@ public class ITSearchBooks extends BaseAcceptance {
     public void setup() throws InterruptedException {
         driver.get(baseUrl);
 
+        login();
+
         listBookPage = new ListBookPage(driver);
 
-        login();
+        listBookPage.clickOnBooksDropdownButton();
+        sleepABit();
+        listBookPage.clickOnListAllButton();
+        sleepABit();
+
     }
 
     @Test
     public void whenSearchBookByTitle_TheBookListIsUpdatedWithTheCorrectResults() throws InterruptedException {
-        listBookPage.clickOnListAllButton();
-
         listBookPage.selectFilter("Title");
         listBookPage.setValueForFilter("The Pragmatic Programmer");
         sleepABit();
@@ -33,8 +37,6 @@ public class ITSearchBooks extends BaseAcceptance {
 
     @Test
     public void whenSearchBookByTitle_TheUrlIsUpdatedCorrectly() throws InterruptedException {
-        listBookPage.clickOnListAllButton();
-        sleepABit();
         listBookPage.selectFilter("Title");
         listBookPage.setValueForFilter("The Pragmatic Programmer");
         sleepABit();
@@ -44,8 +46,6 @@ public class ITSearchBooks extends BaseAcceptance {
 
     @Test
     public void whenSearchBookByIsbn_TheBookListIsUpdatedWithTheCorrectResults() throws InterruptedException {
-        listBookPage.clickOnListAllButton();
-        sleepABit();
         listBookPage.selectFilter("ISBN");
         sleepABit();
         listBookPage.setValueForFilter("978-0-201-48567-7");
@@ -56,8 +56,6 @@ public class ITSearchBooks extends BaseAcceptance {
 
     @Test
     public void whenSearchBookByIsbn_TheUrlIsUpdatedCorrectly() throws InterruptedException {
-        listBookPage.clickOnListAllButton();
-        sleepABit();
         listBookPage.selectFilter("ISBN");
         sleepABit();
         listBookPage.setValueForFilter("978-0-201-48567-7");

@@ -25,6 +25,8 @@ public class ITList extends BaseAcceptance {
 
     @Test
     public void booksAreListed() throws InterruptedException {
+        listBookPage.clickOnBooksDropdownButton();
+        sleepABit();
         listBookPage.clickOnListAllButton();
         sleepABit();
 
@@ -33,6 +35,8 @@ public class ITList extends BaseAcceptance {
 
     @Test
     public void membersAreListed() throws InterruptedException {
+        listMemberPage.clickOnMembersDropdownButton();
+        sleepABit();
         listMemberPage.clickOnListAllButton();
         sleepABit();
 

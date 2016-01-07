@@ -78,6 +78,9 @@ public class AddBookPage {
     @FindBy(how = How.ID, using = "addBook")
     WebElement addBookButton;
 
+    @FindBy(how = How.ID, using = "booksDropdown")
+    WebElement booksDropdownButton;
+
     public void inputTextIntoTitleField(String title){
         inputTitle.sendKeys(title);
     }
@@ -118,10 +121,6 @@ public class AddBookPage {
         inputPages.sendKeys(pages);
     }
 
-    public void inputTextIntoPublishDateField(String date){
-        inputDate.sendKeys(date);
-    }
-
     public void inputTextIntoPublisherField(String publisher){
         inputPublisher.sendKeys(publisher);
     }
@@ -132,6 +131,10 @@ public class AddBookPage {
 
     public void clickOnAddBookButton(){
         addBookButton.click();
+    }
+
+    public void clickOnBooksDropdownButton(){
+        booksDropdownButton.click();
     }
 
     public void clickOnDefaultCategory(){

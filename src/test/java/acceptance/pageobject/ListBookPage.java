@@ -22,6 +22,9 @@ public class ListBookPage {
     @FindBy(how = How.ID, using = "listBooks")
     WebElement listAllButton;
 
+    @FindBy(how = How.ID, using = "booksDropdown")
+    WebElement booksDropdownButton;
+
     @FindBy(how = How.ID, using = "filter")
     WebElement filterSelector;
 
@@ -34,6 +37,10 @@ public class ListBookPage {
 
     public void clickOnListAllButton() {
         listAllButton.click();
+    }
+
+    public void clickOnBooksDropdownButton(){
+        booksDropdownButton.click();
     }
 
     public void selectFilter(String filterName) {

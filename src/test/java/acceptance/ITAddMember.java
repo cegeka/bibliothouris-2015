@@ -23,19 +23,21 @@ public class ITAddMember extends BaseAcceptance {
 
         addMemberPagePage = new AddMemberPage(driver);
         memberDetailsPage = new MemberDetailsPage(driver);
+        addMemberPagePage.clickOnMembersDropdownButton();
+        sleepABit();
         addMemberPagePage.clickOnAddMemberButton();
         sleepABit();
     }
 
     @Test
-    public void givenABookWithoutFirstName_whenTheFormIsSubmitted_ThenSubmitFormFails() {
+    public void givenAMemberWithoutFirstName_whenTheFormIsSubmitted_ThenSubmitFormFails() {
         addMemberPagePage.clickOnSubmitButton();
 
         assertThat(addMemberPagePage.getFirstNameRequiredMessage()).isNotNull();
     }
 
     @Test
-    public void givenABookWithoutLastName_whenTheFormIsSubmitted_ThenSubmitFormFails() {
+    public void givenAMemberWithoutLastName_whenTheFormIsSubmitted_ThenSubmitFormFails() {
         addMemberPagePage.inputTextIntoFirstNameField("John");
 
         addMemberPagePage.clickOnSubmitButton();
@@ -44,7 +46,7 @@ public class ITAddMember extends BaseAcceptance {
     }
 
     @Test
-    public void givenABookWithoutBirthDate_whenTheFormIsSubmitted_ThenSubmitFormFails() {
+    public void givenAMemberWithoutBirthDate_whenTheFormIsSubmitted_ThenSubmitFormFails() {
         addMemberPagePage.inputTextIntoFirstNameField("John");
         addMemberPagePage.inputTextIntoLastNameField("Doe");
 
@@ -54,7 +56,7 @@ public class ITAddMember extends BaseAcceptance {
     }
 
     @Test
-    public void givenABookWithAnInvalidBirthDate_whenTheFormIsSubmitted_ThenSubmitFormFails() {
+    public void givenAMemberWithAnInvalidBirthDate_whenTheFormIsSubmitted_ThenSubmitFormFails() {
         addMemberPagePage.inputTextIntoFirstNameField("John");
         addMemberPagePage.inputTextIntoLastNameField("Doe");
         addMemberPagePage.inputTextIntoBirthDateField("invalid date format");
@@ -65,7 +67,7 @@ public class ITAddMember extends BaseAcceptance {
     }
 
     @Test
-    public void givenABookWithoutNationalNumber_whenTheFormIsSubmitted_ThenSubmitFormFails() {
+    public void givenAMemberWithoutNationalNumber_whenTheFormIsSubmitted_ThenSubmitFormFails() {
         addMemberPagePage.inputTextIntoFirstNameField("John");
         addMemberPagePage.inputTextIntoLastNameField("Doe");
         addMemberPagePage.inputTextIntoBirthDateField("2015-12-31");

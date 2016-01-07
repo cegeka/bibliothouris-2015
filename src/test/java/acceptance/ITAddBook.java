@@ -22,6 +22,8 @@ public class ITAddBook extends BaseAcceptance {
 
         addBookPage = new AddBookPage(driver);
         bookDetailsPage = new BookDetailsPage(driver);
+        addBookPage.clickOnBooksDropdownButton();
+        sleepABit();
         addBookPage.clickOnAddBookButton();
         sleepABit();
     }
