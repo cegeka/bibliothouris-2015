@@ -24,9 +24,9 @@ public class ITAddMember extends BaseAcceptance {
         addMemberPagePage = new AddMemberPage(driver);
         memberDetailsPage = new MemberDetailsPage(driver);
         addMemberPagePage.clickOnMembersDropdownButton();
-        sleepABit();
+        sleepABit(500);
         addMemberPagePage.clickOnAddMemberButton();
-        sleepABit();
+        sleepABit(500);
     }
 
     @Test
@@ -90,7 +90,7 @@ public class ITAddMember extends BaseAcceptance {
         addMemberPagePage.inputTextIntoPhoneNumberField("0123456789");
 
         addMemberPagePage.clickOnSubmitButton();
-        sleepABit();
+        sleepABit(500);
 
         assertThat(memberDetailsPage.getNameText()).isEqualTo("John Doe");
     }

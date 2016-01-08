@@ -3,19 +3,25 @@ package acceptance;
 import acceptance.pageobject.LoginPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class BaseAcceptance {
 
-    protected static String baseUrl = "http://localhost:8089/";
+    protected static String baseUrl = "http://localhost:8080/";
     private static final WebDriver driver = new FirefoxDriver();
+    private static final WebDriverWait wait = new WebDriverWait(driver, 10);
 
     public static WebDriver getDriver(){
         return driver;
     }
 
-    public static void sleepABit(){
+    public static WebDriverWait getWait() {
+        return wait;
+    }
+
+    public static void sleepABit(long time){
         try {
-            Thread.sleep(500);
+            Thread.sleep(time);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

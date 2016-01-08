@@ -16,7 +16,8 @@
                 .when("/books/import", {
                     templateUrl: "templates/import_books.html",
                     controller: "ImportBooksCtrl",
-                    controllerAs: "vm"
+                    controllerAs: "vm",
+                    reloadOnSearch: false
                 })
                 .when("/books", {
                     templateUrl: "templates/list_books.html",

@@ -2,7 +2,7 @@
     <h3 class="modal-title">Import book</h3>
 </div>
 
-<div class="modal-body">
+<div class="modal-body" id="importModal">
 
     <div>Add the following details in order to import <b>{{vm.book.title}}</b> in the library:</div>
 
@@ -49,9 +49,9 @@
             <div>
                 <div id="ISBN-groups" name="ISBN-groups">
                     <input ng-change="vm.onChangeIsbnParts()" name="isbn1" type="text" class="form-control form-control-inline" id="isbnPrefix" maxlength="3" minlength="1" ng-model="vm.isbn.prefix" required>
-                    <input ng-change="vm.onChangeIsbnParts()" name="isbn2" type="text" class="form-control form-control-inline" id="isbnRegistrationGroupElement" maxlength="5" minlength="1" ng-model="vm.isbn.registrationGroupElement" required>
-                    <input ng-change="vm.onChangeIsbnParts()" name="isbn3" type="text" class="form-control form-control-inline" id="isbnRegistrantElement" maxlength="5" minlength="1" ng-model="vm.isbn.registrantElement" required>
-                    <input ng-change="vm.onChangeIsbnParts()"name="isbn4" type="text" class="form-control form-control-inline" id="isbnPublicationElement" maxlength="5" minlength="1" ng-model="vm.isbn.publicationElement" required>
+                    <input ng-change="vm.onChangeIsbnParts()" name="isbn2" type="text" class="form-control form-control-inline" id="isbnRegistrationGroup" maxlength="5" minlength="1" ng-model="vm.isbn.registrationGroupElement" required>
+                    <input ng-change="vm.onChangeIsbnParts()" name="isbn3" type="text" class="form-control form-control-inline" id="isbnRegistrant" maxlength="5" minlength="1" ng-model="vm.isbn.registrantElement" required>
+                    <input ng-change="vm.onChangeIsbnParts()"name="isbn4" type="text" class="form-control form-control-inline" id="isbnPublication" maxlength="5" minlength="1" ng-model="vm.isbn.publicationElement" required>
                     <input ng-change="vm.onChangeIsbnParts()"name="isbn5" type="text" class="form-control form-control-inline" id="isbnCheckDigit" maxlength="1" minlength="1" ng-model="vm.isbn.checkDigit" required>
                     <input ng-model="vm.isbnText" name= "isbn" ng-pattern="vm.isbnPattern" required ng-hide="true">
                 </div>

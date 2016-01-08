@@ -2,10 +2,11 @@ package acceptance;
 
 import acceptance.pageobject.ListBookPage;
 import acceptance.pageobject.ListMemberPage;
-import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ITList extends BaseAcceptance {
 
@@ -26,21 +27,21 @@ public class ITList extends BaseAcceptance {
     @Test
     public void booksAreListed() throws InterruptedException {
         listBookPage.clickOnBooksDropdownButton();
-        sleepABit();
+        sleepABit(500);
         listBookPage.clickOnListAllButton();
-        sleepABit();
+        sleepABit(500);
 
-        Assertions.assertThat(listBookPage.getListOfBooks()).isNotEmpty();
+        assertThat(listBookPage.getListOfBooks()).isNotEmpty();
     }
 
     @Test
     public void membersAreListed() throws InterruptedException {
         listMemberPage.clickOnMembersDropdownButton();
-        sleepABit();
+        sleepABit(500);
         listMemberPage.clickOnListAllButton();
-        sleepABit();
+        sleepABit(500);
 
-        Assertions.assertThat(listMemberPage.getListOfMembers()).isNotEmpty();
+        assertThat(listMemberPage.getListOfMembers()).isNotEmpty();
     }
 
 }

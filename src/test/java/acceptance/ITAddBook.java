@@ -23,9 +23,9 @@ public class ITAddBook extends BaseAcceptance {
         addBookPage = new AddBookPage(driver);
         bookDetailsPage = new BookDetailsPage(driver);
         addBookPage.clickOnBooksDropdownButton();
-        sleepABit();
+        sleepABit(500);
         addBookPage.clickOnAddBookButton();
-        sleepABit();
+        sleepABit(500);
     }
 
     @Test
@@ -54,8 +54,7 @@ public class ITAddBook extends BaseAcceptance {
         addBookPage.inputTextIntoIsbnCheckDigit("1");
 
         addBookPage.clickOnSubmitButton();
-
-        sleepABit();
+        sleepABit(500);
 
         assertThat(addBookPage.getLastNameRequiredMessage()).isNotNull();
     }
@@ -68,6 +67,7 @@ public class ITAddBook extends BaseAcceptance {
         addBookPage.inputTextIntoLastNameField(lastName);
 
         addBookPage.clickOnSubmitButton();
+        sleepABit(500);
 
         assertThat(addBookPage.getCatRequiredMessage()).isEqualTo("You did not select a category");
     }
@@ -80,8 +80,9 @@ public class ITAddBook extends BaseAcceptance {
         addBookPage.inputTextIntoLastNameField(lastName);
         addBookPage.clickOnDefaultCategory();
         addBookPage.inputTextIntoPagesField("-50");
-        sleepABit();
+
         addBookPage.clickOnSubmitButton();
+        sleepABit(500);
 
         assertThat(addBookPage.getPagesRequiredPositiveNumberMessage()).isEqualTo("You typed a negative pages number");
     }
@@ -96,7 +97,7 @@ public class ITAddBook extends BaseAcceptance {
         addBookPage.inputTextIntoPagesField("aaa");
 
         addBookPage.clickOnSubmitButton();
-        sleepABit();
+        sleepABit(500);
 
         assertThat(addBookPage.getPagesRequiredNumberMessage()).isEqualTo("You typed a text page number");
     }
@@ -112,10 +113,9 @@ public class ITAddBook extends BaseAcceptance {
         addBookPage.inputTextIntoLastNameField("Creanga");
         addBookPage.inputTextIntoFirstNameField("Ion");
         addBookPage.clickOnDefaultCategory();
-        //addBookPage.inputTextIntoPublishDateField("2015-12-10");
 
         addBookPage.clickOnSubmitButton();
-        sleepABit();
+        sleepABit(500);
 
         assertThat(bookDetailsPage.getTitleText()).isEqualTo("Amintiri din copilarie");
     }
@@ -133,7 +133,7 @@ public class ITAddBook extends BaseAcceptance {
         addBookPage.clickOnDefaultCategory();
 
         addBookPage.clickOnSubmitButton();
-        sleepABit();
+        sleepABit(500);
 
         assertThat(addBookPage.getIsbnInvalidMessage()).isEqualTo("You did not enter a valid ISBN code");
     }

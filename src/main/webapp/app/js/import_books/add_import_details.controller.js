@@ -3,10 +3,10 @@
         .module("Bibliothouris")
         .controller("AddImportDetailsCtrl", AddImportDetailsCtrl);
 
-    function AddImportDetailsCtrl(bookService, notificationService, book, $uibModalInstance, $route) {
+    function AddImportDetailsCtrl(book, $uibModalInstance) {
         var vm = this;
 
-        vm.book = angular.copy(book);
+        vm.book = book;
         vm.authors = [""];
         vm.isbn = {
             prefix: "",
@@ -45,27 +45,12 @@
                 if (!vm.book.isbn)
                     vm.book.isbn = vm.isbnText;
 
-                saveBook(vm.book);
                 $uibModalInstance.close(vm.book);
             }
         }
 
         function closeModal() {
             $uibModalInstance.dismiss('cancel');
-        }
-
-        function saveBook(book) {
-            bookService
-                .addBook(book)
-                .then(function(data){
-                    $route.reload();
-                    notificationService.createNotification("Book <strong>" + data.title + "</strong> was added in the library!", "success");
-                }, function(data){
-                    if(data.status == 400)
-                        notificationService.createNotification(data.data.value, "danger");
-                    else
-                        notificationService.createNotification("Something wrong happened when you tried to add a new book!", "danger");
-                });
         }
     }
 })();

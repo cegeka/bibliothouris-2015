@@ -37,7 +37,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
-
         auth.jdbcAuthentication().dataSource(dataSource)
                 .passwordEncoder(passwordEncoder())
                 .usersByUsernameQuery(
@@ -70,6 +69,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessHandler(logoutSuccess)
                 .and()
                 .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
+//                .sessionManagement().invalidSessionUrl("/login.html#?error");
     }
 
     private CsrfTokenRepository csrfTokenRepository() {

@@ -1,18 +1,15 @@
 package acceptance;
 
 import acceptance.pageobject.AddMemberPage;
-import acceptance.pageobject.ListMemberPage;
 import acceptance.pageobject.MemberDetailsPage;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.assertj.core.api.Assertions;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.LocalDate;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ITMemberDetails  extends BaseAcceptance {
 
@@ -40,11 +37,11 @@ public class ITMemberDetails  extends BaseAcceptance {
         memberDetailsPage = new MemberDetailsPage(driver);
 
         addMemberPage.clickOnMembersDropdownButton();
-        sleepABit();
+        sleepABit(500);
         addMemberPage.clickOnAddMemberButton();
-        sleepABit();
+        sleepABit(500);
         addANewMember();
-        sleepABit();
+        sleepABit(500);
     }
 
     private static void addANewMember() {
@@ -58,71 +55,65 @@ public class ITMemberDetails  extends BaseAcceptance {
         addMemberPage.inputTextIntoEmailField(EMAIL);
         addMemberPage.inputTextIntoPhoneNumberField(PHONE_NUMBER);
         addMemberPage.clickOnSubmitButton();
-        sleepABit();
+        sleepABit(500);
     }
 
     @Test
     public void memberNameIsListed() {
-        Assertions.assertThat(memberDetailsPage.getNameText()).isEqualTo(FIRST_NAME + " " + LAST_NAME);
+        assertThat(memberDetailsPage.getNameText()).isEqualTo(FIRST_NAME + " " + LAST_NAME);
     }
 
     @Test
     public void memberRegistrationDateIsListed() {
-        Assertions.assertThat(memberDetailsPage.getMemberSinceText()).isEqualTo(LocalDate.now().toString());
+        assertThat(memberDetailsPage.getMemberSinceText()).isEqualTo(LocalDate.now().toString());
     }
 
     @Test
     public void memberAddressIsListed() {
-        Assertions.assertThat(memberDetailsPage.getAddressText()).isEqualTo(ADDRESS + ", " + CITY);
+        assertThat(memberDetailsPage.getAddressText()).isEqualTo(ADDRESS + ", " + CITY);
     }
 
     @Test
     public void memberPostalCodeIsListed() {
-        Assertions.assertThat(memberDetailsPage.getPostalCodeText()).isEqualTo(POSTAL_CODE);
+        assertThat(memberDetailsPage.getPostalCodeText()).isEqualTo(POSTAL_CODE);
     }
 
     @Test
     public void memberBirthDateIsListed() {
-        Assertions.assertThat(memberDetailsPage.getBirthDateText()).isEqualTo(BIRTH_DATE);
+        assertThat(memberDetailsPage.getBirthDateText()).isEqualTo(BIRTH_DATE);
     }
 
     @Test
     public void memberEmailIsListed() {
-        Assertions.assertThat(memberDetailsPage.getEmailText()).isEqualTo(EMAIL);
+        assertThat(memberDetailsPage.getEmailText()).isEqualTo(EMAIL);
     }
 
     @Test
     public void phoneNumberIsListed() {
-        Assertions.assertThat(memberDetailsPage.getPhoneText()).isEqualTo(PHONE_NUMBER);
+        assertThat(memberDetailsPage.getPhoneText()).isEqualTo(PHONE_NUMBER);
     }
 
     @Test
     public void whenBorrowABook_theBorrowedBookIsAddedToMemberHistoryList() {
-        sleepABit();
-        sleepABit();
+        sleepABit(1000);
         String borrowedBookTitle = memberDetailsPage.getFirstAvailableBookTitle();
-        sleepABit();
-        sleepABit();
+        sleepABit(1000);
 
         memberDetailsPage.clickOnBorrowButtonForTheFirstAvailableBook();
-        sleepABit();
-        sleepABit();
+        sleepABit(1000);
 
-        Assertions.assertThat(memberDetailsPage.getFirstBorrowedBookTitle()).isEqualTo(borrowedBookTitle);
+        assertThat(memberDetailsPage.getFirstBorrowedBookTitle()).isEqualTo(borrowedBookTitle);
     }
 
     @Test
     public void whenReturnABook_theBorrowedBookIsAddedToMemberHistoryList() {
-        sleepABit();
-        sleepABit();
+        sleepABit(1000);
         memberDetailsPage.clickOnBorrowButtonForTheFirstAvailableBook();
-        sleepABit();
-        sleepABit();
+        sleepABit(1000);
 
         memberDetailsPage.clickOnReturnButtonForTheFirstBorrowedBook();
-        sleepABit();
-        sleepABit();
+        sleepABit(1000);
 
-        Assertions.assertThat(memberDetailsPage.getFirstBorrowedBookEndDate()).isNotEqualTo("-");
+        assertThat(memberDetailsPage.getFirstBorrowedBookEndDate()).isNotEqualTo("-");
     }
 }

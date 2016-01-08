@@ -39,13 +39,13 @@
                         </div>
                     </td>
                     <td style="vertical-align: middle">
-                        <div>
+                        <div id="title">
                             <b>{{book.title}}</b>
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
                                 <div ng-show="vm.getAuthors(book)">
-                                    Author: {{vm.getAuthors(book)}}
+                                    Author: <span id="authors">{{vm.getAuthors(book)}}</span>
                                 </div>
                                 <div ng-show="vm.getCategories(book)">
                                     Category: {{vm.getCategories(book)}}
@@ -53,7 +53,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <div ng-show="book.isbn">
-                                    ISBN: {{book.isbn}}
+                                    ISBN: <span id="isbn">{{book.isbn}}</span>
                                 </div>
                                 <div ng-show="book.publisher">
                                     Publisher: {{book.publisher}}
@@ -71,7 +71,7 @@
                         </div>
                     </td>
                     <td class="text-center" style="vertical-align: middle" ng-class="{true:'greenColor', false:'darkRedColor'}[book.isAvailable]">
-                        <button type="button" class="btn btn-default btn-sm" ng-disabled="{{book.id}}" ng-click="vm.importBook(book)">
+                        <button id="importButton" type="button" class="btn btn-default btn-sm" ng-click="vm.importBook(book)">
                             <i class="glyphicon glyphicon-import"></i>
                         </button>
                     </td>

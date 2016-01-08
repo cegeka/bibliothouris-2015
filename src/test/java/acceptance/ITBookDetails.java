@@ -2,10 +2,11 @@ package acceptance;
 
 import acceptance.pageobject.BookDetailsPage;
 import acceptance.pageobject.ListBookPage;
-import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ITBookDetails extends BaseAcceptance {
 
@@ -26,55 +27,55 @@ public class ITBookDetails extends BaseAcceptance {
 
     private void navigateToBook(String bookTitle) throws InterruptedException {
         listBookPage.clickOnBooksDropdownButton();
-        sleepABit();
+        sleepABit(500);
         listBookPage.clickOnListAllButton();
-        sleepABit();
+        sleepABit(500);
 
         listBookPage.selectFilter("Title");
         listBookPage.setValueForFilter(bookTitle);
-        sleepABit();
+        sleepABit(500);
 
         listBookPage.clickOnTheFirstBookFromList();
-        sleepABit();
+        sleepABit(500);
     }
 
     @Test
     public void bookTitleIsListed() {
-        Assertions.assertThat(bookDetailsPage.getTitleText()).isEqualTo("Clean Code");
+        assertThat(bookDetailsPage.getTitleText()).isEqualTo("Clean Code");
     }
 
     @Test
     public void bookISBNIsListed() {
-        Assertions.assertThat(bookDetailsPage.getIsbnText()).isEqualTo("978-0-13-235088-4");
+        assertThat(bookDetailsPage.getIsbnText()).isEqualTo("978-0-13-235088-4");
     }
 
     @Test
     public void bookAuthorsAreListed() {
-        Assertions.assertThat(bookDetailsPage.getAuthorsText()).contains("Robert C. Martin");
+        assertThat(bookDetailsPage.getAuthorsText()).contains("Robert C. Martin");
     }
 
     @Test
     public void bookCategoriesAreListed() {
-        Assertions.assertThat(bookDetailsPage.getCategoriesText()).contains("Agile, Science");
+        assertThat(bookDetailsPage.getCategoriesText()).contains("Agile, Science");
     }
 
     @Test
     public void bookPublisherIsListed() {
-        Assertions.assertThat(bookDetailsPage.getPublisherText()).contains("Prentice Hall Pearson Education");
+        assertThat(bookDetailsPage.getPublisherText()).contains("Prentice Hall Pearson Education");
     }
 
     @Test
     public void bookPublishDateIsListed() {
-        Assertions.assertThat(bookDetailsPage.getPublishDateText()).contains("2009-06-18");
+        assertThat(bookDetailsPage.getPublishDateText()).contains("2009-06-18");
     }
 
     @Test
     public void bookPagesIsListed() {
-        Assertions.assertThat(bookDetailsPage.getPagesText()).isEqualTo("431");
+        assertThat(bookDetailsPage.getPagesText()).isEqualTo("431");
     }
 
     @Test
     public void bookDescriptionIsListed() {
-        Assertions.assertThat(bookDetailsPage.getDescriptionText()).isNotEmpty();
+        assertThat(bookDetailsPage.getDescriptionText()).isNotEmpty();
     }
 }

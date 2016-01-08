@@ -135,6 +135,10 @@ public class BookService {
             volumes = books.volumes().list("isbn:" + isbn).setMaxResults(40L).execute();
         }
         List<Book> listOfImportedBooks = new ArrayList<>();
+
+        if (volumes.getTotalItems() == 0)
+            return listOfImportedBooks;
+
         for (Volume v : volumes.getItems()) {
             Volume.VolumeInfo info = v.getVolumeInfo();
             bookConverter = new ImportedBookConverter(info);
