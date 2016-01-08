@@ -1,6 +1,6 @@
 package cgk.bibliothouris.learning.application.transferobject;
 
-import cgk.bibliothouris.learning.service.dateconverter.LocalDateAdapter;
+import cgk.bibliothouris.learning.service.converter.LocalDateAdapter;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;

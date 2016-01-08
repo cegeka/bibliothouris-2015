@@ -1,7 +1,7 @@
 package cgk.bibliothouris.learning.service.entity;
 
-import cgk.bibliothouris.learning.service.dateconverter.LocalDateAdapter;
-import cgk.bibliothouris.learning.service.dateconverter.LocalDateAttributeConverter;
+import cgk.bibliothouris.learning.service.converter.LocalDateAdapter;
+import cgk.bibliothouris.learning.service.converter.LocalDateAttributeConverter;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;

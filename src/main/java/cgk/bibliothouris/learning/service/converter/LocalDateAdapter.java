@@ -1,4 +1,4 @@
-package cgk.bibliothouris.learning.service.dateconverter;
+package cgk.bibliothouris.learning.service.converter;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.time.LocalDate;
 

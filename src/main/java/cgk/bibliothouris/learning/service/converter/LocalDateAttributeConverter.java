@@ -1,4 +1,4 @@
-package cgk.bibliothouris.learning.service.dateconverter;
+package cgk.bibliothouris.learning.service.converter;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 import java.sql.Date;

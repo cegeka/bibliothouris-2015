@@ -1,20 +1,17 @@
 package cgk.bibliothouris.learning.service.entity;
 
-import cgk.bibliothouris.learning.service.dateconverter.LocalDateAdapter;
-import cgk.bibliothouris.learning.service.dateconverter.LocalDateAttributeConverter;
-import com.google.common.collect.Lists;
+import cgk.bibliothouris.learning.service.converter.LocalDateAdapter;
+import cgk.bibliothouris.learning.service.converter.LocalDateAttributeConverter;
 import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
