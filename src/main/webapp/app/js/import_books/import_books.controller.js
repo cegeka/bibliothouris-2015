@@ -26,8 +26,6 @@
         }
 
         function loadElementsInPage() {
-            console.log("abc");
-
             if ($location.search().title != null) {
                 vm.filter = "Title";
                 vm.filterValue = $location.search().title;

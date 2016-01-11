@@ -47,7 +47,8 @@
                 .when("/member/:memberId", {
                     templateUrl: "templates/member_detail.html",
                     controller: "MemberDetailCtrl",
-                    controllerAs: "vm"
+                    controllerAs: "vm",
+                    reloadOnSearch: false
                 })
 
                 .when("/borrow", {

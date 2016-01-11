@@ -14,7 +14,7 @@ import java.time.Month;
 import java.util.HashSet;
 import java.util.Set;
 
-@Component
+//@Component
 public class ImportedBookConverter {
 
     private Volume.VolumeInfo info;

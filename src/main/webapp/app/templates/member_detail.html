@@ -73,8 +73,8 @@
                                 <th width=13% class="text-center">Lend date</th>
                                 <th width=13% class="text-center">Return date</th>
                                 <th width=15% class="text-center">Due date</th>
-                                <th width=10% class="text-center">Overdue</th>
-                                <th width=15% class="text-center">Return</th>
+                                <th width=15% class="text-center">Overdue</th>
+                                <th width=10% class="text-center">Return</th>
                             </tr>
                             </thead>
 
@@ -82,7 +82,11 @@
                             <tr id="borrowedBookRow" ng-repeat = "book in vm.borrowedBooks"
                                 ng-class='{borrowedBooksRowColor : vm.borrowedAndNotReturnedBooks.indexOf(book) != -1,
                                 overdueBooksRowColor : vm.borrowedAndNotReturnedBooks.indexOf(book) != -1 && book.overdue > 0}'>
-                                <td class="table-column-ellipsis">{{book.title}}</td>
+                                <td class="table-column-ellipsis"
+                                    on-ellipsis="vm.enableTitleTooltip(param, book)" uib-tooltip="{{book.title}}"
+                                    tooltip-placement="bottom" tooltip-enable="book.titleTooltip" tooltip-append-to-body="true">
+                                    {{book.title}}
+                                </td>
                                 <td class="table-column-ellipsis hidden-xs hidden-sm" on-ellipsis="vm.enableAuthorTooltip(param, book)"
                                     uib-tooltip="{{vm.getAuthorTooltipContent(book)}}"
                                     tooltip-placement="bottom" tooltip-enable="book.authorTooltip" tooltip-append-to-body="true">
@@ -94,7 +98,7 @@
                                 <td class="text-center">{{book.startLendDate}}</td>
                                 <td class="text-center">{{book.endLendDate || "-"}}</td>
                                 <td class="text-center">{{book.dueDate}}</td>
-                                <td class="text-center">{{book.overdue}}</td>
+                                <td class="text-center">{{book.overdue > 0 ? book.overdue + ' days late' : book.overdue * (0 - 1) + ' days left'}}</td>
                                 <td class="text-center" style="vertical-align: middle">
                                     <button type="button" class="btn btn-default btn-sm" ng-disabled="{{book.endLendDate}}" ng-click="vm.returnBook(book.borrowHistoryId)">
                                         <i class="glyphicon glyphicon-remove"></i>
@@ -131,13 +135,14 @@
                 <p class="alert-link">Too many borrowed books!</p>
             </div>
 
-            <form class="form-inline">
+            <form class="form-inline" ng-submit="vm.onSelectFilter()">
                 <label>Search by</label>
                 <select id="filter" class="form-control" ng-model="vm.filter"
-                        ng-options="filter for filter in vm.searchFilters"></select>
+                        ng-options="filter for filter in vm.searchFilters" ng-change="vm.filterValue=''"></select>
                 <input id="filterValue" class="form-control" placeholder="{{vm.filter}}" ng-model="vm.filterValue"
                        uib-typeahead="value.value for value in vm.populatedFilterValues | filter:$viewValue | limitTo:10"
-                       typeahead-on-select='vm.onSelectFilter()' typeahead-select-on-exact="true">
+                       typeahead-on-select='vm.onSelectFilter()' typeahead-focus-first="false">
+                <button type="submit" ng-hide="true"></button>
             </form>
 
             <br/>
@@ -152,22 +157,30 @@
                         <table class="table table-fixed">
                             <thead>
                             <tr>
-                                <th width=30%>Title</th>
+                                <th width=45%>Title</th>
                                 <th width=30% class="hidden-xs hidden-sm">Authors</th>
-                                <th width=20% class="hidden-xs hidden-sm hidden-md">ISBN</th>
-                                <th width=20% class="text-center">Borrow</th>
+                                <th width=15% class="hidden-xs hidden-sm hidden-md text-center">ISBN</th>
+                                <th width=10% class="text-center">Borrow</th>
                             </tr>
                             </thead>
 
                             <tbody>
                             <tr id="availableBookRow" ng-repeat = "book in vm.availableBooks">
-                                <td class="table-column-ellipsis" style="vertical-align: middle">{{book.title}}</td>
-                                <td class="table-column-ellipsis hidden-xs hidden-sm" style="vertical-align: middle">
+                                <td class="table-column-ellipsis" style="vertical-align: middle"
+                                    on-ellipsis="vm.enableTitleTooltip(param, book)"
+                                    uib-tooltip="{{book.title}}"
+                                    tooltip-placement="bottom" tooltip-enable="book.titleTooltip" tooltip-append-to-body="true">
+                                    {{book.title}}
+                                </td>
+                                <td class="table-column-ellipsis hidden-xs hidden-sm" style="vertical-align: middle"
+                                    on-ellipsis="vm.enableAuthorTooltip(param, book)"
+                                    uib-tooltip="{{vm.getAuthorTooltipContent(book)}}"
+                                    tooltip-placement="bottom" tooltip-enable="book.authorTooltip" tooltip-append-to-body="true">
                                     <span ng-repeat="author in book.authors">
                                         {{author.firstName}} {{author.lastName}}{{$last ? '' : ', '}}
                                     </span>
                                 </td>
-                                <td class="hidden-xs hidden-sm hidden-md" style="vertical-align: middle">{{book.isbn}}</td>
+                                <td class="hidden-xs hidden-sm hidden-md text-center" style="vertical-align: middle">{{book.isbn}}</td>
                                 <td class="text-center" style="vertical-align: middle">
                                     <button type="button" class="btn btn-default btn-sm" ng-click="vm.borrowBook(book.id)">
                                         <i class="glyphicon glyphicon-plus"></i>

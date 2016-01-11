@@ -69,7 +69,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessHandler(logoutSuccess)
                 .and()
                 .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
-//                .sessionManagement().invalidSessionUrl("/login.html#?error");
     }
 
     private CsrfTokenRepository csrfTokenRepository() {
