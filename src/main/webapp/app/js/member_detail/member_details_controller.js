@@ -82,6 +82,7 @@
                         if(!book.endLendDate)
                             vm.borrowedAndNotReturnedBooks.push(book);
                     });
+                    vm.noBorrowedBooks = false;
                 }, function() {
                     vm.noBorrowedBooks = true;
                 });

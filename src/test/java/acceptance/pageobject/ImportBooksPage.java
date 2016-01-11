@@ -104,10 +104,19 @@ public class ImportBooksPage {
         return bookList.get(0).findElement(By.id("isbn")).getText();
     }
 
-    public void clickOnTheFirstBookWithMissingDetailsImportButton(String detail) {
+    public void clickOnTheFirstBookWithMissingAuthorsImportButton() {
 //        wait.until(ExpectedConditions.visibilityOfAllElements(bookList));
         for (WebElement bookElement : bookList)
-            if (bookElement.findElement(By.id(detail)).getText().isEmpty()) {
+            if (bookElement.findElement(By.id("authors")).getText().isEmpty() && !bookElement.findElement(By.id("isbn")).getText().isEmpty()) {
+                bookElement.findElement(By.id("importButton")).click();
+                break;
+            }
+    }
+
+    public void clickOnTheFirstBookWithMissingISBNImportButton() {
+//        wait.until(ExpectedConditions.visibilityOfAllElements(bookList));
+        for (WebElement bookElement : bookList)
+            if (bookElement.findElement(By.id("isbn")).getText().isEmpty()) {
                 bookElement.findElement(By.id("importButton")).click();
                 break;
             }

@@ -54,14 +54,14 @@ public class ITImportBooks extends BaseAcceptance {
 
     @Test
     public void whenTryToImportABookWithoutAuthors_AModalWithAFormForMissingDetailsAppears() throws InterruptedException {
-        importBooksPage.clickOnTheFirstBookWithMissingDetailsImportButton("authors");
+        importBooksPage.clickOnTheFirstBookWithMissingAuthorsImportButton();
 
         assertThat(importBooksPage.isFormModalVisible()).isTrue();
     }
 
     @Test
     public void whenTryToImportABookWithoutISBN_AModalWithAFormForMissingDetailsAppears() throws InterruptedException {
-        importBooksPage.clickOnTheFirstBookWithMissingDetailsImportButton("isbn");
+        importBooksPage.clickOnTheFirstBookWithMissingISBNImportButton();
 
         assertThat(importBooksPage.isFormModalVisible()).isTrue();
     }
@@ -75,7 +75,7 @@ public class ITImportBooks extends BaseAcceptance {
 
     @Test
     public void whenTryToImportABookWithoutISBNAndCompleteItInTheModal_ASuccessNotificationAppears() throws InterruptedException {
-        importBooksPage.clickOnTheFirstBookWithMissingDetailsImportButton("isbn");
+        importBooksPage.clickOnTheFirstBookWithMissingISBNImportButton();
         importBooksPage.inputTextIntoIsbnPrefix("978");
         importBooksPage.inputTextIntoIsbnRegistrantElement("111");
         importBooksPage.inputTextIntoIsbnRegistrationGroupElement("111");
@@ -89,7 +89,7 @@ public class ITImportBooks extends BaseAcceptance {
 
     @Test
     public void whenTryToImportABookWithoutAuthorsAndCompleteThemInTheModal_ASuccessNotificationAppears() throws InterruptedException {
-        importBooksPage.clickOnTheFirstBookWithMissingDetailsImportButton("authors");
+        importBooksPage.clickOnTheFirstBookWithMissingAuthorsImportButton();
         importBooksPage.inputTextIntoFirstNameField("John");
         importBooksPage.inputTextIntoLastNameField("Doe");
 
