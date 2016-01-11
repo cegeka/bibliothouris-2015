@@ -83,7 +83,7 @@ public class JpaConfig {
     Properties additionalProperties() {
         Properties properties = new Properties();
 
-        properties.setProperty("hibernate.show_sql", "true");
+        properties.setProperty("hibernate.show_sql", "false");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.Oracle10gDialect");
         properties.setProperty("hibernate.max_fetch_depth", "3");
 
