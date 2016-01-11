@@ -47,6 +47,7 @@
                     vm.books = data.items;
                     vm.totalItems = data.itemsCount;
                     vm.currentPage = ($location.search().start / vm.itemsPerPage) + 1;
+                    vm.noBooks = false;
                 }, function(){
                     vm.noBooks = true;
                 });
