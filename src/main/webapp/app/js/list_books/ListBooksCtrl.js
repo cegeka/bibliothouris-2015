@@ -3,7 +3,7 @@
         .module("Bibliothouris")
         .controller("ListBooksCtrl", ListBooksCtrl);
 
-    function ListBooksCtrl(bookService, $location, $scope) {
+    function ListBooksCtrl(bookService, $location, $scope, $rootScope) {
         var vm = this;
 
         vm.noBooks = false;
@@ -24,6 +24,34 @@
 
         activate();
 
+        function activate() {
+            loadElementsInPage();
+
+            $rootScope.$on('$routeUpdate', loadElementsInPage);
+
+            $scope.$watch('vm.filter', populateFilterValues);
+        }
+
+        function loadElementsInPage() {
+            if ($location.search().title != null) {
+                vm.filter = "Title";
+                vm.filterValue = $location.search().title;
+            } else if ($location.search().isbn != null) {
+                vm.filter = "ISBN";
+                vm.filterValue = $location.search().isbn;
+            }
+
+            bookService
+                .getBooks(createSearchUrlForBooks())
+                .then(function(data){
+                    vm.books = data.items;
+                    vm.totalItems = data.itemsCount;
+                    vm.currentPage = ($location.search().start / vm.itemsPerPage) + 1;
+                }, function(){
+                    vm.noBooks = true;
+                });
+        }
+
         function populateFilterValues() {
             if (vm.filter == "Title")
                 bookService
@@ -37,24 +65,6 @@
                     .then(function(data){
                         vm.populatedFilterValues = data;
                     });
-        }
-
-        function activate() {
-            var searchUrlForBooks = createSearchUrlForBooks();
-
-            bookService
-                .getBooks(searchUrlForBooks)
-                .then(function(data){
-                    vm.books = data.items;
-                    vm.totalItems = data.itemsCount;
-                    vm.currentPage = ($location.search().start / vm.itemsPerPage) + 1;
-                }, function(){
-                    vm.noBooks = true;
-                });
-
-            $scope.$watch('vm.filter', function() {
-                populateFilterValues();
-            });
         }
 
         function onSelectFilter() {

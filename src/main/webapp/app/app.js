@@ -22,7 +22,8 @@
                 .when("/books", {
                     templateUrl: "templates/list_books.html",
                     controller: "ListBooksCtrl",
-                    controllerAs: "vm"
+                    controllerAs: "vm",
+                    reloadOnSearch: false
                 })
                 .when("/books/:bookId", {
                     templateUrl: "templates/book_details.html",
@@ -36,7 +37,8 @@
                 .when("/member", {
                     templateUrl: "templates/list_members.html",
                     controller: "ListMembersCtrl",
-                    controllerAs: "vm"
+                    controllerAs: "vm",
+                    reloadOnSearch: false
                 })
                 .when("/member/add", {
                     templateUrl: "templates/add_member.html",
@@ -54,7 +56,8 @@
                 .when("/borrow", {
                     templateUrl: "templates/borrowed_books.html",
                     controller: "BorrowedBooksCtrl",
-                    controllerAs: "vm"
+                    controllerAs: "vm",
+                    reloadOnSearch: false
                 })
                 .otherwise({redirectTo:"/books"});
 

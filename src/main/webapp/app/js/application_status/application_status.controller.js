@@ -8,10 +8,10 @@
 
         var onTimeout = function() {
             getAppStatus();
-            timer = $timeout(onTimeout, 1000);
+            timer = $timeout(onTimeout, 3600 * 1000);
         };
 
-        var timer = $timeout(onTimeout, 1000);
+        var timer = $timeout(onTimeout, 3600 * 1000);
 
         getAppStatus();
 

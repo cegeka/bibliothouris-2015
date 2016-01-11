@@ -3,7 +3,7 @@
         .module("Bibliothouris")
         .controller("BorrowedBooksCtrl", BorrowedBooksCtrl);
 
-    function BorrowedBooksCtrl(borrowService, $location) {
+    function BorrowedBooksCtrl(borrowService, $location, $rootScope) {
         var vm = this;
 
         vm.maxSize = 5;
@@ -21,6 +21,12 @@
         activate();
 
         function activate() {
+            loadElementsInPage();
+
+            $rootScope.$on('$routeUpdate', loadElementsInPage);
+        }
+
+        function loadElementsInPage() {
             if (!$location.search().view)
                 $location.search("view", "all");
 
@@ -76,6 +82,7 @@
                     vm.borrowedBooks = data.items;
                     vm.numberOfItems = data.itemsCount;
                     vm.currentPage = ($location.search().start / vm.itemsPerPage) + 1;
+                    vm.noBorrowedBooks = false;
                 }, function () {
                     vm.noBorrowedBooks = true;
                 });

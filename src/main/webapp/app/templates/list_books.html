@@ -1,17 +1,18 @@
 <h3 class="midnightblueColor">All books</h3>
 <hr class="addBorderStyle"/>
 
-<form class="form-inline">
+<form class="form-inline" ng-submit="vm.onSelectFilter()">
     <div class="row">
         <div class="col-sm-offset-6 col-sm-6 text-right">
             <label>Search by</label>
             <select id="filter" class="form-control" ng-model="vm.filter"
-                    ng-options="filter for filter in vm.searchFilters"></select>
+                    ng-options="filter for filter in vm.searchFilters" ng-change="vm.filterValue = ''"></select>
             <input id="filterValue" class="form-control" placeholder="{{vm.filter}}" ng-model="vm.filterValue"
                    uib-typeahead="value.value for value in vm.populatedFilterValues | filter:$viewValue | limitTo:10"
-                   typeahead-on-select='vm.onSelectFilter()' typeahead-select-on-exact="true">
+                   typeahead-on-select='vm.onSelectFilter()' typeahead-focus-first="false">
         </div>
     </div>
+    <button type="submit" ng-hide="true"></button>
 </form>
 
 <br/>
@@ -26,10 +27,10 @@
             <table class="table table-fixed table-hover">
                 <thead>
                 <tr>
-                    <th width=30%>Title</th>
-                    <th width=30%>Authors</th>
-                    <th width=20%>ISBN</th>
-                    <th width=20%>Status</th>
+                    <th width=40%>Title</th>
+                    <th width=35%>Authors</th>
+                    <th width=15% class="text-center">ISBN</th>
+                    <th width=10% class="text-center">Status</th>
                 </tr>
                 </thead>
 
@@ -43,8 +44,8 @@
                             {{author.firstName}} {{author.lastName}}{{$last ? '' : ', '}}
                         </span>
                     </td>
-                    <td>{{book.isbn}}</td>
-                    <td ng-class="{true:'greenColor', false:'darkRedColor'}[book.isAvailable]">
+                    <td class="text-center">{{book.isbn}}</td>
+                    <td class="text-center" ng-class="{true:'greenColor', false:'darkRedColor'}[book.isAvailable]">
                         {{book.isAvailable ? "AVAILABLE" : "LOANED"}}
                     </td>
                 </tr>

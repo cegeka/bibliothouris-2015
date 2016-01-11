@@ -3,7 +3,7 @@
         .module("Bibliothouris")
         .controller("ListMembersCtrl", ListMembersCtrl);
 
-    function ListMembersCtrl(memberService, $location) {
+    function ListMembersCtrl(memberService, $location, $rootScope) {
         var vm = this;
 
         vm.itemsPerPage = 10;
@@ -19,10 +19,14 @@
         activate();
 
         function activate() {
-            var searchUrlForMembers = createSearchUrlForMembers();
+            loadElementsInPage();
 
+            $rootScope.$on('$routeUpdate', loadElementsInPage);
+        }
+
+        function loadElementsInPage() {
             memberService
-                .getMembers(searchUrlForMembers)
+                .getMembers(createSearchUrlForMembers())
                 .then(function(data) {
                     vm.members = data.items;
                     vm.totalItems = data.itemsCount;
@@ -44,16 +48,13 @@
             start = vm.itemsPerPage * (vm.currentPage - 1);
             end = start + vm.itemsPerPage;
 
-            //if (start != $location.search().start && end != $location.search().end) {
-                $location.search('start', start);
-                $location.search('end', end);
-                $location.search('sort', vm.sortString);
-                $location.search('order', vm.orderString);
-            //}
+            $location.search('start', start);
+            $location.search('end', end);
+            $location.search('sort', vm.sortString);
+            $location.search('order', vm.orderString);
         }
 
         function addFieldToSort(field) {
-            console.log('sorting..');
             if (vm.sortString != field)
                 vm.orderString = "asc";
             else
