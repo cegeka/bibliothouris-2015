@@ -1,4 +1,3 @@
 {
-  "directory" : "src/main/webapp/components",
-  "shorthand-resolver": "https://github.com/{{package}}/{{package}}.git"
+  "directory" : "src/main/webapp/components"
 }
