@@ -144,7 +144,7 @@
                         <id>exec-node-install</id>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <executable>node-js legacy</executable>
+                            <executable>node-js</executable>
                             <arguments>
                                 <argument>install</argument>
                             </arguments>
