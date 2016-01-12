@@ -26,12 +26,6 @@ public class ITMemberRepository {
     @Autowired
     private MemberRepository memberRepository;
 
-    @Autowired
-    private BorrowHistoryRepository borrowedHistoryRepository;
-
-    @Autowired
-    private BookRepository bookRepository;
-
     private Member memberWithNoUUID;
 
     @Before

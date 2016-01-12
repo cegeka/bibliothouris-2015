@@ -34,8 +34,6 @@ public class BookService {
     @Autowired
     private BookRepository bookRepository;
 
-    private ImportedBookConverter bookConverter;
-
     private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     public Book createBook(Book book) {

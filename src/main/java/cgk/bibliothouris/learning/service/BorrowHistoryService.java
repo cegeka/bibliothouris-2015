@@ -31,13 +31,22 @@ public class BorrowHistoryService {
     public BorrowHistoryItem createBorrowHistoryItem(BorrowHistoryItemTO borrowHistoryItemTO) {
         Book book = bookRepository.findBookById(borrowHistoryItemTO.getBookId());
         Member member = memberRepository.getMember(borrowHistoryItemTO.getMemberUuid());
-        validateBorrowHistoryItem(borrowHistoryItemTO, book, member);
+        validateBorrowHistoryItem(book, member);
         BorrowHistoryItem borrowHistoryItem = BorrowHistoryItem.BorrowedHistoryBuilder.borrowedHistory()
                 .withBook(book)
                 .withMember(member)
                 .withStartDate(LocalDate.now()).build();
 
         return borrowHistoryRepository.addBorrowedBook(borrowHistoryItem);
+    }
+
+    private void validateBorrowHistoryItem(Book book, Member member) {
+        if (book == null || member == null)
+            throw new ValidationException("The borrow history item is invalid!");
+
+        Long countCurrentlyBorrowedBooksByMember = bookRepository.countCurrentlyBorrowedBooksByMember(member.getUUID());
+        if(countCurrentlyBorrowedBooksByMember >= 3)
+            throw new ValidationException("Too many borrowed books!");
     }
 
     public BorrowHistoryItem updateBorrowHistoryItem(IntegerTO historyItemIdTO) {
@@ -65,15 +74,6 @@ public class BorrowHistoryService {
     @Transactional(readOnly = true)
     public Long countBorrowedBooks(){
         return borrowHistoryRepository.countBorrowedBooks();
-    }
-
-    private void validateBorrowHistoryItem(BorrowHistoryItemTO borrowHistoryItemTO, Book book, Member member) {
-        if (book == null || member == null)
-            throw new ValidationException("The borrow history item is invalid!");
-
-        Long countCurrentlyBorrowedBooksByMember = bookRepository.countCurrentlyBorrowedBooksByMember(member.getUUID());
-        if(countCurrentlyBorrowedBooksByMember >= 3)
-            throw new ValidationException("Too many borrowed books!");
     }
 
     @Transactional

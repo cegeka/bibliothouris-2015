@@ -11,7 +11,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
         @NamedQuery(name = BookCategory.FIND_ALL_CATEGORIES, query = "SELECT bc FROM BookCategory bc ORDER BY bc.category"),
         @NamedQuery(name = BookCategory.FIND_CATEGORY_BY_TYPE, query = "SELECT bc FROM BookCategory bc WHERE bc.category = :category")
-        //SELECT a FROM Author a WHERE a.firstName = :firstName AND a.lastName = :lastName
 })
 @XmlRootElement
 public class BookCategory {

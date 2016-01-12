@@ -45,18 +45,18 @@ public class ITImportBooks extends BaseAcceptance {
     @Test
     public void givenAnISBN_whenSearchBooksByISBN_TheBookListIsUpdatedWithTheCorrectResults() throws InterruptedException {
         importBooksPage.selectFilter("ISBN");
-        importBooksPage.setValueForFilter("9780132350884");
+        importBooksPage.setValueForFilter("9780133065268");
         sleepABit(3000);
 
         if(importBooksPage.getTheFirstBookTitle().isEmpty()) {
             importBooksPage.selectFilter("Title");
             importBooksPage.selectFilter("ISBN");
-            importBooksPage.setValueForFilter("0132350882");
+            importBooksPage.setValueForFilter("013306526X");
             sleepABit(3000);
         }
 
-        assertThat(importBooksPage.getTheFirstBookTitle()).isEqualTo("Clean Code");
-        assertThat(importBooksPage.getTheFirstBookISBN().replace("-", "")).isEqualTo("9780132350884");
+        assertThat(importBooksPage.getTheFirstBookTitle()).isEqualTo("Refactoring");
+        assertThat(importBooksPage.getTheFirstBookISBN().replace("-", "")).isEqualTo("9780133065268");
     }
 
     @Test

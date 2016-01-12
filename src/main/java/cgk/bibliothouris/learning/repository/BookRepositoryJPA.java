@@ -32,47 +32,75 @@ public class BookRepositoryJPA implements BookRepository {
     }
 
     private Book getBookWithPersistedCategories(Book book) {
+        Set<BookCategory> persistedCategories = persistCategoryWhenFoundInCategoryTable(book);
+        book.setCategories(persistedCategories);
+
+        return book;
+    }
+
+    private Set<BookCategory> persistCategoryWhenFoundInCategoryTable(Book book) {
         Set<BookCategory> persistedCategories = new HashSet<>();
 
         for(BookCategory category : book.getCategories()) {
-            TypedQuery<BookCategory> query = entityManager.createNamedQuery(BookCategory.FIND_CATEGORY_BY_TYPE, BookCategory.class);
-            query.setParameter("category", category.getCategory());
-            List<BookCategory> categories = query.getResultList();
+            List<BookCategory> categories = queryCategoryTypeInCategoryTable(category);
 
-            if(!categories.isEmpty()) {
+            if(isCategoryTypeFoundInTable(categories)) {
                 persistedCategories.add(categories.get(0));
             } else {
                 entityManager.persist(category);
                 persistedCategories.add(category);
             }
         }
+        return persistedCategories;
+    }
 
-        book.setCategories(persistedCategories);
+    private List<BookCategory> queryCategoryTypeInCategoryTable(BookCategory category) {
+        TypedQuery<BookCategory> query = entityManager.createNamedQuery(BookCategory.FIND_CATEGORY_BY_TYPE,
+                BookCategory.class);
+        query.setParameter("category", category.getCategory());
+        return query.getResultList();
+    }
+
+    private boolean isCategoryTypeFoundInTable(List<BookCategory> categories) {
+        return categories.isEmpty() ? false : true;
+    }
+
+    private Book getBookWithPersistedAuthors(Book book){
+        Set<Author> persistedAuthors = persistAuthorWhenFoundInAuthorTable(book);
+        book.setAuthors(persistedAuthors);
 
         return book;
     }
 
-    private Book getBookWithPersistedAuthors(Book book){
+    private Set<Author> persistAuthorWhenFoundInAuthorTable(Book book) {
         Set<Author> persistedAuthors = new HashSet<>();
 
         for (Author author : book.getAuthors()) {
-            TypedQuery<Author> query = entityManager.createNamedQuery(Author.FIND_AUHTORS_BY_FIRSTNAME_AND_LASTNAME, Author.class);
-            query.setParameter("firstName", author.getFirstName());
-            query.setParameter("lastName", author.getLastName());
-            List<Author> authors = query.getResultList();
+            List<Author> authors = queryAuthors(author);
 
-            if (!authors.isEmpty()) {
+            if (isAuthorFoundInAuthorTable(authors)) {
                 persistedAuthors.add(authors.get(0));
             } else {
                 entityManager.persist(author);
                 persistedAuthors.add(author);
             }
         }
-
-        book.setAuthors(persistedAuthors);
-
-        return book;
+        return persistedAuthors;
     }
+
+    private List<Author> queryAuthors(Author author) {
+        TypedQuery<Author> query = entityManager.createNamedQuery(Author.FIND_AUHTORS_BY_FIRSTNAME_AND_LASTNAME, Author.class);
+        query.setParameter("firstName", author.getFirstName());
+        query.setParameter("lastName", author.getLastName());
+
+        return query.getResultList();
+    }
+
+    private boolean isAuthorFoundInAuthorTable(List<Author> authors) {
+        return authors.isEmpty() ? false : true;
+    }
+
+
 
     @Override
     public ItemsListingTO findAllBooks(Integer start, Integer end, String title, String isbn){

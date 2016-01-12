@@ -4,8 +4,6 @@ import cgk.bibliothouris.learning.service.entity.Author;
 import cgk.bibliothouris.learning.service.entity.Book;
 import cgk.bibliothouris.learning.service.entity.BookCategory;
 import com.google.api.services.books.model.Volume;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -23,7 +21,7 @@ public class ImportedBookConverter {
     public void setVolumeInfo(Volume.VolumeInfo info) {
         this.info = info;
     }*/
-
+    
     public ImportedBookConverter(Volume.VolumeInfo info) {
         this.info = info;
     }

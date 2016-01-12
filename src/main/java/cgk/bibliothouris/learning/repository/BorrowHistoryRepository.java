@@ -77,7 +77,8 @@ public class BorrowHistoryRepository {
     }
 
     public Long countBorrowedBooksByMember(String memberUID) {
-        TypedQuery<Long> query = entityManager.createNamedQuery(BorrowHistoryItem.COUNT_ALL_MEMBER_BORROWED_BOOKS, Long.class);
+        TypedQuery<Long> query = entityManager.createNamedQuery(BorrowHistoryItem.COUNT_ALL_MEMBER_BORROWED_BOOKS,
+                Long.class);
         query.setParameter("uuid", memberUID);
 
         return query.getSingleResult();
@@ -142,13 +143,15 @@ public class BorrowHistoryRepository {
 
     //TODO make the methods private
     public Long countBorrowedBooks() {
-        TypedQuery<Long> query = entityManager.createNamedQuery(BorrowHistoryItem.COUNT_ALL_BORROWED_BOOKS, Long.class);
+        TypedQuery<Long> query = entityManager.createNamedQuery(BorrowHistoryItem.COUNT_ALL_BORROWED_BOOKS,
+                Long.class);
 
         return query.getSingleResult();
     }
 
     private Long countOverdueBooks() {
-        TypedQuery<Long> query = entityManager.createNamedQuery(BorrowHistoryItem.COUNT_ALL_OVERDUE_BOOKS, Long.class);
+        TypedQuery<Long> query = entityManager.createNamedQuery(BorrowHistoryItem.COUNT_ALL_OVERDUE_BOOKS,
+                Long.class);
         query.setParameter("daysNo", ALLOWED_BORROW_DAYS_NUMBER);
 
         return query.getSingleResult();
