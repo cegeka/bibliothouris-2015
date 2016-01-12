@@ -48,6 +48,13 @@ public class ITImportBooks extends BaseAcceptance {
         importBooksPage.setValueForFilter("9780132350884");
         sleepABit(3000);
 
+        if(importBooksPage.getTheFirstBookTitle().isEmpty()) {
+            importBooksPage.selectFilter("Title");
+            importBooksPage.selectFilter("ISBN");
+            importBooksPage.setValueForFilter("0132350882");
+            sleepABit(3000);
+        }
+
         assertThat(importBooksPage.getTheFirstBookTitle()).isEqualTo("Clean Code");
         assertThat(importBooksPage.getTheFirstBookISBN().replace("-", "")).isEqualTo("9780132350884");
     }
