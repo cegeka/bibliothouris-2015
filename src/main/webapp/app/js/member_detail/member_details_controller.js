@@ -89,18 +89,19 @@
         }
 
         function populateFilterValues() {
-            if (vm.filter == "Title")
+            if (vm.filter == "Title") {
                 bookService
                     .getBookTitles()
-                    .then(function(data){
+                    .then(function (data) {
                         vm.populatedFilterValues = data;
                     });
-            else if (vm.filter == "ISBN")
+            } else if (vm.filter == "ISBN") {
                 bookService
                     .getBookIsbnCodes()
-                    .then(function(data){
+                    .then(function (data) {
                         vm.populatedFilterValues = data;
                     });
+            }
         }
 
         function onSelectFilter() {
