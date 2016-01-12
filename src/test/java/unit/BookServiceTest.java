@@ -230,14 +230,9 @@ public class BookServiceTest {
     @Test
     public void givenABookISBN_whenWeImportContent_returnACorrectBook() throws IOException, GeneralSecurityException {
         List<Book> importedBooks = service.importContent(null, "9780132350884");
+        if (importedBooks.isEmpty())
+            importedBooks = service.importContent(null, "0132350882");
+
         Assertions.assertThat(importedBooks.get(0).getTitle().toLowerCase()).contains("clean code");
     }
-
-    /*@Test(expected = ValidationException.class)
-    public void givenABookISBNWith3Lines_whenWeImportContent_throwsValidationException() throws IOException, GeneralSecurityException {
-        List<Book> importedBooks = service.importContent(null, "978-0132-3508-84");
-        Assertions.assertThat(importedBooks.get(0).getTitle().toLowerCase()).contains("clean code");
-    }*/
-
-
 }
