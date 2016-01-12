@@ -136,6 +136,10 @@
                 .then(function(){
                     vm.currentPage = 1;
                     pageChanged();
+
+                    if (vm.availableBooks.length == 1)
+                        vm.currentAvailablePage = 1;
+                    availableBooksPageChanged();
                 }, function(data){
                     if(data.status == 400)
                         notificationService.createNotification(data.data.value, "danger");
@@ -154,6 +158,8 @@
                 .then(function(){
                     vm.currentPage = 1;
                     pageChanged();
+
+                    availableBooksPageChanged();
                 });
         }
 
