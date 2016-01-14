@@ -7,7 +7,7 @@ import org.openqa.selenium.WebDriver;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ITSearchBooks extends BaseAcceptance {
+public class ITBookList extends BaseAcceptance {
 
     private ListBookPage listBookPage;
     private static WebDriver driver = getDriver();
@@ -24,7 +24,11 @@ public class ITSearchBooks extends BaseAcceptance {
         sleepABit(500);
         listBookPage.clickOnListAllButton();
         sleepABit(500);
+    }
 
+    @Test
+    public void booksAreListed() throws InterruptedException {
+        assertThat(listBookPage.getListOfBooks()).isNotEmpty();
     }
 
     @Test
@@ -64,5 +68,4 @@ public class ITSearchBooks extends BaseAcceptance {
 
         assertThat(driver.getCurrentUrl()).contains("isbn=978-0-201-48567-7");
     }
-
 }

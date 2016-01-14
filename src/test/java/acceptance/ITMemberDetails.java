@@ -17,16 +17,6 @@ public class ITMemberDetails  extends BaseAcceptance {
     private static MemberDetailsPage memberDetailsPage;
     private static WebDriver driver = getDriver();
 
-    private static final String FIRST_NAME = "John";
-    private static final String LAST_NAME = "Doe";
-    private static final String BIRTH_DATE = "2250-12-31";
-    private static final String ADDRESS = "Melvin Street";
-    private static final String NATIONAL_NUMBER = String.valueOf(RandomStringUtils.randomNumeric(12));
-    private static final String POSTAL_CODE = "1234";
-    private static final String CITY = "London";
-    private static final String EMAIL = "default@email.com";
-    private static final String PHONE_NUMBER = "123456789";
-
     @BeforeClass
     public static void setup() throws InterruptedException {
         driver.get(baseUrl);
@@ -40,21 +30,7 @@ public class ITMemberDetails  extends BaseAcceptance {
         sleepABit(500);
         addMemberPage.clickOnAddMemberButton();
         sleepABit(500);
-        addANewMember();
-        sleepABit(500);
-    }
-
-    private static void addANewMember() {
-        addMemberPage.inputTextIntoFirstNameField(FIRST_NAME);
-        addMemberPage.inputTextIntoLastNameField(LAST_NAME);
-        addMemberPage.inputTextIntoBirthDateField(BIRTH_DATE);
-        addMemberPage.inputTextIntoAddressField(ADDRESS);
-        addMemberPage.inputTextIntoNationalNumberField(NATIONAL_NUMBER);
-        addMemberPage.inputTextIntoPostalCodeField(POSTAL_CODE);
-        addMemberPage.inputTextIntoCityField(CITY);
-        addMemberPage.inputTextIntoEmailField(EMAIL);
-        addMemberPage.inputTextIntoPhoneNumberField(PHONE_NUMBER);
-        addMemberPage.clickOnSubmitButton();
+        addANewMember(addMemberPage);
         sleepABit(500);
     }
 
