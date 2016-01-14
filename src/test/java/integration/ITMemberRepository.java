@@ -226,6 +226,30 @@ public class ITMemberRepository {
     }
 
     @Test
+    public void givenTwoMembers_sortMembersByCityAscendingly_sortTheMembers(){
+        member1.setCity("city1");
+        memberRepository.createMember(member1);
+        member2.setCity("city2");
+        memberRepository.createMember(member2);
+
+        ItemsListingTO<MemberTO> foundMemberListingTO = memberRepository.findAllMembers(0, 100, "", "city", "asc");
+
+        assertThat(foundMemberListingTO.getItems()).isSortedAccordingTo((MemberTO m1, MemberTO m2) -> m1.getCity().toLowerCase().compareTo(m2.getCity().toLowerCase()));
+    }
+
+    @Test
+    public void givenTwoMembers_sortMembersByCityDescendingly_sortTheMembers() {
+        member1.setCity("city1");
+        memberRepository.createMember(member1);
+        member2.setCity("city2");
+        memberRepository.createMember(member2);
+
+        ItemsListingTO<MemberTO> foundMemberListingTO = memberRepository.findAllMembers(0, 100, "", "city", "desc");
+
+        assertThat(foundMemberListingTO.getItems()).isSortedAccordingTo((MemberTO m1, MemberTO m2) -> m2.getCity().toLowerCase().compareTo(m1.getCity().toLowerCase()));
+    }
+
+    @Test
     public void givenTwoMembers_findAllMembersNames_returnsTheNewMembersNames() {
         member1.setFirstName("John");
         member1.setLastName("Doe1");

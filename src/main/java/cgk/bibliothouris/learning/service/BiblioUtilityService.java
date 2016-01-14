@@ -9,12 +9,12 @@ public class BiblioUtilityService {
     public static Pair<Integer, Integer> findPaginationParameters(String start, String end, Supplier<Long> countItems) {
         Integer startPosition, endPosition;
 
-        if (start == null || isNegative(start))
+        if (start == null || isNegativeNumber(start))
             startPosition = 0;
         else
             startPosition = Integer.valueOf(start);
 
-        if (end == null || isNegative(end))
+        if (end == null || isNegativeNumber(end))
             endPosition = countItems.get().intValue();
         else
             endPosition = Integer.valueOf(end);
@@ -22,11 +22,12 @@ public class BiblioUtilityService {
         return new Pair<>(startPosition, endPosition);
     }
 
-    private static boolean isNegative(String number) {
+    private static boolean isNegativeNumber(String number) {
         try {
             if (Integer.parseInt(number) < 0)
                 return true;
         } catch (NumberFormatException e) {
+            return true;
         }
         return false;
     }

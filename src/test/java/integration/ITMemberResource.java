@@ -18,6 +18,8 @@ import javax.ws.rs.core.Application;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ITMemberResource extends JerseyTest {
@@ -75,22 +77,13 @@ public class ITMemberResource extends JerseyTest {
     }
 
     @Test
-    public void givenAMember_getOnNonExistentMember_returnsTheMember() {
-        Member member = MemberTestFixture.createMember();
-        Member actualMember = client.post(PATH, member).readEntity(Member.class);
-
-        Member readEntity = client.get(PATH + "/" + "randomNameHere").readEntity(Member.class);
-        assertThat(readEntity).isNotEqualTo(actualMember);
-    }
-
-    @Test
     public void givenAMember_getOnNonExistentMember_returns404() {
         Response response = client.get(PATH + "/" + "randomNameHere");
         assertThat(response.getStatus()).isEqualTo(Response.Status.NOT_FOUND.getStatusCode());
     }
 
     @Test
-    public void givenAListOfMembers_GET_returnsTheListOfBooks() {
+    public void givenAListOfMembers_GET_returnsTheListOfMembers() {
         Member member = MemberTestFixture.createMember();
         Member actualMember = client.post(PATH, member).readEntity(Member.class);
         MemberTO actualMemberTO = new MemberTO(actualMember);
@@ -98,5 +91,25 @@ public class ITMemberResource extends JerseyTest {
         ItemsListingTO<MemberTO> readEntity = client.get(PATH).readEntity(new GenericType<ItemsListingTO<MemberTO>>(){}) ;
 
         assertThat(readEntity.getItems()).contains(actualMemberTO);
+    }
+
+    @Test
+    public void givenAListOfMembersNames_GET_returns200OK() {
+        Member member = MemberTestFixture.createMember();
+        client.post(PATH, member).readEntity(Member.class);
+
+        Response response = client.get(PATH + "/names");
+
+        assertThat(response.getStatus()).isEqualTo(Response.Status.OK.getStatusCode());
+    }
+
+    @Test
+    public void givenAListOfMembersNames_GET_returnsTheListOfMembersNames() {
+        Member member = MemberTestFixture.createMember();
+        client.post(PATH, member).readEntity(Member.class);
+
+        List<MemberNameTO> readEntity = client.get(PATH + "/names").readEntity(new GenericType<List<MemberNameTO>>(){});
+
+        assertThat(readEntity).contains(new MemberNameTO(member.getFirstName(), member.getLastName()));
     }
 }

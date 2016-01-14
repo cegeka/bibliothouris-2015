@@ -166,6 +166,6 @@ public class ITBookResource extends JerseyTest {
 
         List<Book> foundBooksFromImport = client.getImportedBooks(PATH + "/import/", "refactoring", null).readEntity(new GenericType<List<Book>>() {});
 
-        assertThat(foundBooksFromImport.get(0).getTitle()).isEqualTo("Refactoring");
+        assertThat(foundBooksFromImport.get(0).getTitle()).contains("Refactoring");
     }
 }

@@ -100,18 +100,18 @@ public class BookRepositoryJPA implements BookRepository {
         return authors.isEmpty() ? false : true;
     }
 
-
-
     @Override
     public ItemsListingTO findAllBooks(Integer start, Integer end, String title, String isbn){
         List<Book> books = findBooks(start, end, title, isbn);
-        Long booksCount = countBooks(title, isbn);
 
         List<BookWithStatusTO> bookTOS = books.stream().map(BookWithStatusTO::new).collect(Collectors.toList());
         for (BookWithStatusTO bookTO : bookTOS)
             bookTO.setIsAvailable(!findBookBorrowerDetails(bookTO.getId()).getIsBorrowed());
 
-        return new ItemsListingTO(bookTOS, booksCount);
+        Integer booksCount = bookTOS.size();
+        bookTOS = bookTOS.subList(start, Integer.min(end, booksCount));
+
+        return new ItemsListingTO(bookTOS, new Long(booksCount));
     }
 
     private List<Book> findBooks(Integer start, Integer end, String title, String isbn) {
@@ -120,9 +120,7 @@ public class BookRepositoryJPA implements BookRepository {
         String filterClause = generateFilterQueryClause(title, isbn);
         String sortClause = generateSortQueryClause();
 
-        TypedQuery<Book> selectAllQuery = entityManager.createQuery(selectStatement + " WHERE" + filterClause + " " + sortClause, Book.class)
-                .setMaxResults(end - start)
-                .setFirstResult(start);
+        TypedQuery<Book> selectAllQuery = entityManager.createQuery(selectStatement + " WHERE" + filterClause + " " + sortClause, Book.class);
         return selectAllQuery.getResultList();
     }
 
