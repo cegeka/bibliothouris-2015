@@ -116,11 +116,11 @@ public class MemberResourceTest {
     @Test
     public void givenAnEmptyListOfMembers_getAllMembers_return404NotFound() {
         ItemsListingTO memberListingTO = new ItemsListingTO();
-        Mockito.when(service.findAllMembers("0", "100", "", "")).thenReturn(memberListingTO);
+        Mockito.when(service.findAllMembers("0", "100", "", "", "")).thenReturn(memberListingTO);
 
-        Response response = resource.getAllMembers(Integer.toString(0),Integer.toString(100), "", "");
+        Response response = resource.getAllMembers(Integer.toString(0),Integer.toString(100), "", "", "");
 
-        Mockito.verify(service, times(1)).findAllMembers("0", "100", "", "");
+        Mockito.verify(service, times(1)).findAllMembers("0", "100", "", "", "");
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.NOT_FOUND);
     }
 
@@ -128,11 +128,11 @@ public class MemberResourceTest {
     public void givenAListOfMembers_getAllMembers_return200OK() {
         ItemsListingTO memberListingTO = new ItemsListingTO();
         memberListingTO.setItems(Arrays.asList(new MemberTO()));
-        Mockito.when(service.findAllMembers("0", "100", "", "")).thenReturn(memberListingTO);
+        Mockito.when(service.findAllMembers("0", "100", "", "", "")).thenReturn(memberListingTO);
 
-        Response response = resource.getAllMembers(Integer.toString(0),Integer.toString(100), "", "");
+        Response response = resource.getAllMembers(Integer.toString(0),Integer.toString(100), "", "", "");
 
-        Mockito.verify(service, times(1)).findAllMembers("0", "100", "", "");
+        Mockito.verify(service, times(1)).findAllMembers("0", "100", "", "", "");
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.OK);
     }
 
@@ -140,11 +140,11 @@ public class MemberResourceTest {
     public void givenAListOfMembers_getAllMembers_returnTheCorrectEntity() {
         ItemsListingTO memberListingTO = new ItemsListingTO();
         memberListingTO.setItems(Arrays.asList(new MemberTO()));
-        Mockito.when(service.findAllMembers("0", "100", "city", "asc")).thenReturn(memberListingTO);
+        Mockito.when(service.findAllMembers("0", "100", "", "city", "asc")).thenReturn(memberListingTO);
 
-        Response response = resource.getAllMembers(Integer.toString(0),Integer.toString(100), "city", "asc");
+        Response response = resource.getAllMembers(Integer.toString(0),Integer.toString(100), "", "city", "asc");
 
-        Mockito.verify(service, times(1)).findAllMembers("0", "100", "city", "asc");
+        Mockito.verify(service, times(1)).findAllMembers("0", "100", "", "city", "asc");
         assertThat(response.getEntity()).isEqualTo(memberListingTO);
     }
 
@@ -152,11 +152,11 @@ public class MemberResourceTest {
     public void givenAListOfMembers_getAllMembersWithoutParams_returnTheCorrectEntity() {
         ItemsListingTO memberListingTO = new ItemsListingTO();
         memberListingTO.setItems(Arrays.asList(new MemberTO()));
-        Mockito.when(service.findAllMembers("", "", "", "")).thenReturn(memberListingTO);
+        Mockito.when(service.findAllMembers("", "", "", "", "")).thenReturn(memberListingTO);
 
-        Response response = resource.getAllMembers("","", "", "");
+        Response response = resource.getAllMembers("","", "", "", "");
 
-        Mockito.verify(service, times(1)).findAllMembers("", "", "", "");
+        Mockito.verify(service, times(1)).findAllMembers("", "", "", "", "");
         assertThat(response.getEntity()).isEqualTo(memberListingTO);
     }
 
@@ -164,11 +164,11 @@ public class MemberResourceTest {
     public void givenAListOfMembers_getAllMembersWithNegativeParams_returnTheCorrectEntity() {
         ItemsListingTO memberListingTO = new ItemsListingTO();
         memberListingTO.setItems(Arrays.asList(new MemberTO()));
-        Mockito.when(service.findAllMembers("-1", "-5", "address", "asc")).thenReturn(memberListingTO);
+        Mockito.when(service.findAllMembers("-1", "-5", "", "address", "asc")).thenReturn(memberListingTO);
 
-        Response response = resource.getAllMembers("-1","-5", "address", "asc");
+        Response response = resource.getAllMembers("-1","-5", "", "address", "asc");
 
-        Mockito.verify(service, times(1)).findAllMembers("-1", "-5", "address", "asc");
+        Mockito.verify(service, times(1)).findAllMembers("-1", "-5", "", "address", "asc");
         assertThat(response.getEntity()).isEqualTo(memberListingTO);
     }
 }

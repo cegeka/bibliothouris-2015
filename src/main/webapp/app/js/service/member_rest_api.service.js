@@ -3,13 +3,14 @@
         .module("Bibliothouris")
         .factory("memberService", memberService);
 
-    function memberService($http, $location) {
+    function memberService($http) {
         var service = {
             addMember: addMember,
             getMemberDetail: getMemberDetail,
             getMembers: getMembers,
             getMemberBorrowedHistory: getMemberBorrowedHistory,
             countBorrowedHistoryItems: countBorrowedHistoryItems,
+            getMembersNames: getMembersNames
         };
 
         return service;
@@ -44,6 +45,13 @@
 
         function countBorrowedHistoryItems(memberId) {
             return $http.get("/api/borrow/" + memberId + "/size")
+                .then(function (response) {
+                    return response.data;
+                });
+        }
+
+        function getMembersNames() {
+            return $http.get("/api/member/names")
                 .then(function (response) {
                     return response.data;
                 });

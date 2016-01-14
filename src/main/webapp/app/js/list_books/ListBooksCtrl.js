@@ -107,10 +107,15 @@
         }
 
         function createSearchUrlForBooks() {
-            if (!$location.search().start && !$location.search().end)
-                return "?start=0&end=" + vm.itemsPerPage;
-            else
+            if (!$location.search().start && !$location.search().end) {
+                var aux = "?start=0&end=" + vm.itemsPerPage;
+
+                if (vm.filterValue)
+                    aux += "&" + vm.filter.toLowerCase() + "=" + vm.filterValue;
+                return aux;
+            } else {
                 return $location.url().substr($location.path().length);
+            }
         }
     }
 })();

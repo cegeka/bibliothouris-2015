@@ -1,6 +1,7 @@
 package cgk.bibliothouris.learning.application.resource;
 
 import cgk.bibliothouris.learning.application.transferobject.ItemsListingTO;
+import cgk.bibliothouris.learning.application.transferobject.MemberNameTO;
 import cgk.bibliothouris.learning.application.transferobject.MemberTO;
 import cgk.bibliothouris.learning.application.transferobject.StringTO;
 import cgk.bibliothouris.learning.service.MemberService;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.net.URI;
+import java.util.List;
 
 @Path("/member")
 @Component
@@ -60,12 +62,25 @@ public class MemberResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllMembers(@QueryParam("start") String start, @QueryParam("end") String end,
+                                  @QueryParam("name") String name,
                                   @QueryParam("sort") String sort, @QueryParam("order") String order) {
-        ItemsListingTO<MemberTO> foundMembers = service.findAllMembers(start, end, sort, order);
+        ItemsListingTO<MemberTO> foundMembers = service.findAllMembers(start, end, name, sort, order);
 
         if (foundMembers.getItems().isEmpty())
             return Response.status(Response.Status.NOT_FOUND).build();
 
         return Response.ok().entity(new GenericEntity<ItemsListingTO<MemberTO>>(foundMembers) {}).build();
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/names")
+    public Response getAllMembersNames() {
+        List<MemberNameTO> foundMembersNames = service.findAllMembersNames();
+
+        if (foundMembersNames.isEmpty())
+            return Response.status(Response.Status.NOT_FOUND).build();
+
+        return Response.ok().entity(new GenericEntity<List<MemberNameTO>>(foundMembersNames) {}).build();
     }
 }

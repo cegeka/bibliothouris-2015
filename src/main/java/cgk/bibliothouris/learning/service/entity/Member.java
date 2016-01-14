@@ -19,12 +19,16 @@ import java.util.Set;
 @Table(name = "LIBRARY_MEMBER")
 @NamedQueries({
         @NamedQuery(name = Member.COUNT_MEMBERS, query = "SELECT COUNT(m.UUID) FROM Member m"),
-        @NamedQuery(name = Member.DELETE_ALL_MEMBERS, query = "DELETE FROM Member m")
+        @NamedQuery(name = Member.DELETE_ALL_MEMBERS, query = "DELETE FROM Member m"),
+        @NamedQuery(name = Member.GET_ALL_MEMBERS_NAMES,
+                query = "SELECT DISTINCT new cgk.bibliothouris.learning.application.transferobject.MemberNameTO(m.firstName, m.lastName) FROM Member m"),
+
 })
 public class Member {
 
     public static final String COUNT_MEMBERS = "COUNT_MEMBERS";
     public static final String DELETE_ALL_MEMBERS = "DELETE_ALL_MEMBERS";
+    public static final String GET_ALL_MEMBERS_NAMES = "GET_ALL_MEMBERS_NAMES";
 
     @Id
     @Column(name = "U_ID")

@@ -1,6 +1,7 @@
 package cgk.bibliothouris.learning.service;
 
 import cgk.bibliothouris.learning.application.transferobject.ItemsListingTO;
+import cgk.bibliothouris.learning.application.transferobject.MemberNameTO;
 import cgk.bibliothouris.learning.application.transferobject.MemberTO;
 import cgk.bibliothouris.learning.repository.MemberRepository;
 import cgk.bibliothouris.learning.service.entity.Member;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -42,14 +44,19 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public ItemsListingTO<MemberTO> findAllMembers(String start, String end, String sort, String order) {
+    public ItemsListingTO<MemberTO> findAllMembers(String start, String end, String name, String sort, String order) {
         Pair<Integer, Integer> paginationParams = BiblioUtilityService.findPaginationParameters(start, end, () -> countMembers());
 
-        return repository.findAllMembers(paginationParams.getFirst(), paginationParams.getSecond(), sort, order);
+        return repository.findAllMembers(paginationParams.getFirst(), paginationParams.getSecond(), name, sort, order);
     }
 
     @Transactional(readOnly = true)
     public Long countMembers() {
         return repository.countMembers();
+    }
+
+    @Transactional(readOnly = true)
+    public List<MemberNameTO> findAllMembersNames() {
+        return repository.findAllMembersNames();
     }
 }

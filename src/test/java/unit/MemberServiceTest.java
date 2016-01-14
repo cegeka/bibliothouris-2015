@@ -90,9 +90,9 @@ public class MemberServiceTest {
     @Test
     public void givenOneMember_findAllMembers_returnsTheMember() {
         ItemsListingTO expectedMemberListingTO = new ItemsListingTO();
-        when(mockRepository.findAllMembers(0, 100, "", "")).thenReturn(expectedMemberListingTO);
+        when(mockRepository.findAllMembers(0, 100, "", "", "")).thenReturn(expectedMemberListingTO);
 
-        ItemsListingTO memberListingTO = service.findAllMembers("0","100", "", "");
+        ItemsListingTO memberListingTO = service.findAllMembers("0","100","",  "", "");
 
         assertThat(memberListingTO).isEqualTo(expectedMemberListingTO);
     }
@@ -100,11 +100,11 @@ public class MemberServiceTest {
     @Test
     public void givenOneMember_findAllMembersWithNegativeParams_returnsListOfMembers() {
         ItemsListingTO expectedMemberListingTO = new ItemsListingTO();
-        when(mockRepository.findAllMembers(0, 0, "lastName", "desc")).thenReturn(expectedMemberListingTO);
+        when(mockRepository.findAllMembers(0, 0, "", "lastName", "desc")).thenReturn(expectedMemberListingTO);
 
-        ItemsListingTO memberListingTO = service.findAllMembers("-1", "-5", "lastName", "desc");
+        ItemsListingTO memberListingTO = service.findAllMembers("-1", "-5", "", "lastName", "desc");
 
-        verify(mockRepository).findAllMembers(0, 0, "lastName", "desc");
+        verify(mockRepository).findAllMembers(0, 0, "", "lastName", "desc");
         assertThat(memberListingTO).isEqualTo(expectedMemberListingTO);
     }
 

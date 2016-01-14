@@ -1,6 +1,22 @@
 <h3 class="midnightblueColor">All members</h3>
 <hr class="addBorderStyle"/>
 
+<form class="form-inline" ng-submit="vm.onSelectFilter()">
+    <div class="row">
+        <div class="col-sm-offset-6 col-sm-6 text-right">
+            <i class="glyphicon glyphicon-search"></i>
+            <label>Search</label>
+            <input id="filterValue" class="form-control" placeholder="Name" ng-model="vm.filterValue"
+                   uib-typeahead="value for value in vm.populatedFilterValues | filter:$viewValue | limitTo:10"
+                   typeahead-on-select='vm.onSelectFilter()' typeahead-focus-first="false">
+        </div>
+    </div>
+
+    <button type="submit" ng-hide="true"></button>
+</form>
+
+<br/>
+
 <div class="alert alert-info text-center" role="alert" ng-show="vm.noMembers">
     <p class="alert-link">There are no members to be displayed!</p>
 </div>
@@ -15,9 +31,6 @@
                         UUID
                     </th>
                     <th width=15%>
-                        Birth Date
-                    </th>
-                    <th width=15%>
                         First Name
                         <i ng-show="vm.orderString == 'asc' || vm.sortString != 'firstName'" ng-class="{grayColor: vm.sortString != 'firstName'}" class="glyphicon glyphicon-sort-by-attributes" ng-click="vm.addFieldToSort('firstName')"></i>
                         <i ng-show="vm.orderString == 'desc' && vm.sortString == 'firstName'" ng-class="{grayColor: vm.sortString != 'firstName'}" class="glyphicon glyphicon-sort-by-attributes-alt" ng-click="vm.addFieldToSort('firstName')"></i>
@@ -27,6 +40,11 @@
                         <i ng-show="vm.orderString == 'asc' || vm.sortString != 'lastName'" ng-class="{grayColor: vm.sortString != 'lastName'}" class="glyphicon glyphicon-sort-by-attributes" ng-click="vm.addFieldToSort('lastName')"></i>
                         <i ng-show="vm.orderString == 'desc' && vm.sortString == 'lastName'" ng-class="{grayColor: vm.sortString != 'lastName'}" class="glyphicon glyphicon-sort-by-attributes-alt" ng-click="vm.addFieldToSort('lastName')"></i>
                     </th>
+                    <th width=15%>
+                        Birth Date
+                        <i ng-show="vm.orderString == 'asc' || vm.sortString != 'birthDate'" ng-class="{grayColor: vm.sortString != 'birthDate'}" class="glyphicon glyphicon-sort-by-attributes" ng-click="vm.addFieldToSort('birthDate')"></i>
+                        <i ng-show="vm.orderString == 'desc' && vm.sortString == 'birthDate'" ng-class="{grayColor: vm.sortString != 'birthDate'}" class="glyphicon glyphicon-sort-by-attributes-alt" ng-click="vm.addFieldToSort('birthDate')"></i>
+                        </th>
                     <th width=15%>
                         Address
                         <i ng-show="vm.orderString == 'asc' || vm.sortString != 'address'" ng-class="{grayColor: vm.sortString != 'address'}" class="glyphicon glyphicon-sort-by-attributes" ng-click="vm.addFieldToSort('address')"></i>
@@ -48,9 +66,9 @@
                             [{{member.UUID.substring(0,2) + ".." + member.UUID.substring(member.UUID.length - 2, member.UUID.length)}}]
                         </span>
                     </td>
-                    <td class="table-column-ellipsis">{{member.birthDate}}</td>
                     <td class="table-column-ellipsis">{{member.firstName}}</td>
                     <td class="table-column-ellipsis">{{member.lastName}}</td>
+                    <td class="table-column-ellipsis">{{member.birthDate}}</td>
                     <td class="table-column-ellipsis">{{member.address}}</td>
                     <td class="table-column-ellipsis">{{member.city}}</td>
                     <td class="table-column-ellipsis">{{member.memberSince}}</td>
