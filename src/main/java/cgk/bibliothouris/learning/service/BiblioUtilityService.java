@@ -1,25 +1,26 @@
 package cgk.bibliothouris.learning.service;
 
+import cgk.bibliothouris.learning.application.valueobject.PaginationParams;
 import org.glassfish.grizzly.utils.Pair;
 
 import java.util.function.Supplier;
 
 public class BiblioUtilityService {
 
-    public static Pair<Integer, Integer> findPaginationParameters(String start, String end, Supplier<Long> countItems) {
+    public static PaginationParams findPaginationParameters(PaginationParams pagination, Supplier<Long> countItems) {
         Integer startPosition, endPosition;
 
-        if (start == null || isNegativeNumber(start))
+        if (pagination.getStart() == null || isNegativeNumber(pagination.getStart()))
             startPosition = 0;
         else
-            startPosition = Integer.valueOf(start);
+            startPosition = Integer.valueOf(pagination.getStart());
 
-        if (end == null || isNegativeNumber(end))
+        if (pagination.getEnd() == null || isNegativeNumber(pagination.getEnd()))
             endPosition = countItems.get().intValue();
         else
-            endPosition = Integer.valueOf(end);
+            endPosition = Integer.valueOf(pagination.getEnd());
 
-        return new Pair<>(startPosition, endPosition);
+        return new PaginationParams(startPosition.toString(), endPosition.toString());
     }
 
     private static boolean isNegativeNumber(String number) {

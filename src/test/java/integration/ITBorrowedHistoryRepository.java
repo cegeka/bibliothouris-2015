@@ -1,6 +1,8 @@
 package integration;
 
 import cgk.bibliothouris.learning.application.transferobject.*;
+import cgk.bibliothouris.learning.application.valueobject.PaginationParams;
+import cgk.bibliothouris.learning.application.valueobject.SortParams;
 import cgk.bibliothouris.learning.config.AppConfig;
 import cgk.bibliothouris.learning.repository.BookRepository;
 import cgk.bibliothouris.learning.repository.BorrowHistoryRepository;
@@ -76,7 +78,7 @@ public class ITBorrowedHistoryRepository {
         BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(buildBorrowHistoryIem(borrowHistoryItem));
         MemberBorrowHistoryTO memberBorrowHistoryTO = new MemberBorrowHistoryTO(persistedHistoryItem);
 
-        ItemsListingTO<MemberBorrowHistoryTO> memberBorrowHistoryTOs = borrowHistoryRepository.findBorrowedBooksByMember(persistedHistoryItem.getMember().getUUID(), 0, 10);
+        ItemsListingTO<MemberBorrowHistoryTO> memberBorrowHistoryTOs = borrowHistoryRepository.findBorrowedBooksByMember(persistedHistoryItem.getMember().getUUID(), new PaginationParams("0", "10"));
 
         assertThat(memberBorrowHistoryTOs.getItems()).contains(memberBorrowHistoryTO);
     }
@@ -89,7 +91,7 @@ public class ITBorrowedHistoryRepository {
         transformedPersistedItem.setDueDate(borrowHistoryItem.getStartDate().plusDays(BorrowHistoryRepository.ALLOWED_BORROW_DAYS_NUMBER.longValue()));
         transformedPersistedItem.setOverdue(transformedPersistedItem.getDueDate().until(LocalDate.now(), ChronoUnit.DAYS));
 
-        ItemsListingTO<DetailedBorrowHistoryTO> borrowedBooks = borrowHistoryRepository.getBorrowedBooks(0, 1000, "title", "asc");
+        ItemsListingTO<DetailedBorrowHistoryTO> borrowedBooks = borrowHistoryRepository.getBorrowedBooks(new PaginationParams("0", "1000"), new SortParams("title", "asc"));
 
         assertThat(borrowedBooks.getItems()).contains(transformedPersistedItem);
     }
@@ -132,7 +134,7 @@ public class ITBorrowedHistoryRepository {
         detailedBorrowHistoryTO.setDueDate(borrowHistoryItem.getStartDate().plusDays(BorrowHistoryRepository.ALLOWED_BORROW_DAYS_NUMBER.longValue()));
         detailedBorrowHistoryTO.setOverdue(detailedBorrowHistoryTO.getDueDate().until(LocalDate.now(), ChronoUnit.DAYS));
 
-        ItemsListingTO<DetailedBorrowHistoryTO> overdueBooks = borrowHistoryRepository.getOverdueBooks(0, 1000, "title", "asc");
+        ItemsListingTO<DetailedBorrowHistoryTO> overdueBooks = borrowHistoryRepository.getOverdueBooks(new PaginationParams("0", "1000"), new SortParams("title", "asc"));
 
         assertThat(overdueBooks.getItems()).contains(detailedBorrowHistoryTO);
     }
@@ -145,7 +147,7 @@ public class ITBorrowedHistoryRepository {
         detailedBorrowHistoryTO.setDueDate(borrowHistoryItem.getStartDate().plusDays(BorrowHistoryRepository.ALLOWED_BORROW_DAYS_NUMBER.longValue()));
         detailedBorrowHistoryTO.setOverdue(detailedBorrowHistoryTO.getDueDate().until(LocalDate.now(), ChronoUnit.DAYS));
 
-        ItemsListingTO<DetailedBorrowHistoryTO> overdueBooks = borrowHistoryRepository.getOverdueBooks(0, 1000, "title", "asc");
+        ItemsListingTO<DetailedBorrowHistoryTO> overdueBooks = borrowHistoryRepository.getOverdueBooks(new PaginationParams("0", "1000"), new SortParams("title", "asc"));
 
         assertThat(overdueBooks.getItems()).doesNotContain(detailedBorrowHistoryTO);
     }
@@ -155,7 +157,7 @@ public class ITBorrowedHistoryRepository {
         BorrowHistoryItem borrowHistoryItem = BorrowedHistoryFixture.createOverdueHistoryItemInPresent();
         BorrowHistoryItem persistedHistoryItem = borrowHistoryRepository.addBorrowedBook(buildBorrowHistoryIem(borrowHistoryItem));
 
-        Long memberBorrowHistoryTOsSize = borrowHistoryRepository.getOverdueBooks(0, 1000, "title", "asc").getItemsCount();
+        Long memberBorrowHistoryTOsSize = borrowHistoryRepository.getOverdueBooks(new PaginationParams("0", "1000"), new SortParams("title", "asc")).getItemsCount();
 
         assertThat(memberBorrowHistoryTOsSize).isGreaterThanOrEqualTo(1);
     }

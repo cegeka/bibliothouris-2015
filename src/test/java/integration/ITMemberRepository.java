@@ -3,6 +3,8 @@ package integration;
 import cgk.bibliothouris.learning.application.transferobject.ItemsListingTO;
 import cgk.bibliothouris.learning.application.transferobject.MemberNameTO;
 import cgk.bibliothouris.learning.application.transferobject.MemberTO;
+import cgk.bibliothouris.learning.application.valueobject.PaginationParams;
+import cgk.bibliothouris.learning.application.valueobject.SortParams;
 import cgk.bibliothouris.learning.config.AppConfig;
 import cgk.bibliothouris.learning.repository.BookRepository;
 import cgk.bibliothouris.learning.repository.BorrowHistoryRepository;
@@ -69,7 +71,7 @@ public class ITMemberRepository {
         member2.setFirstName("Jane");
         memberRepository.createMember(member2);
 
-        ItemsListingTO<MemberTO> foundMemberListingTO = memberRepository.findAllMembers(0, 5, member1.getFirstName(), "firstName", "asc");
+        ItemsListingTO<MemberTO> foundMemberListingTO = memberRepository.findAllMembers(new PaginationParams("0", "5"), member1.getFirstName(), new SortParams("firstName", "asc"));
 
         assertThat(foundMemberListingTO.getItems().size()).isLessThanOrEqualTo(5);
         foundMemberListingTO.getItems().stream().forEach(member -> assertThat(member.getFirstName().contains(member1.getFirstName())));
@@ -82,7 +84,7 @@ public class ITMemberRepository {
         member2.setFirstName("Jane");
         memberRepository.createMember(member2);
 
-        ItemsListingTO<MemberTO> foundMemberListingTO = memberRepository.findAllMembers(0, 100, member1.getFirstName(), "", "");
+        ItemsListingTO<MemberTO> foundMemberListingTO = memberRepository.findAllMembers(new PaginationParams("0", "100"), member1.getFirstName(), new SortParams());
 
         foundMemberListingTO.getItems().stream().forEach(member -> assertThat(member.getFirstName().contains(member1.getFirstName())));
     }
@@ -94,7 +96,7 @@ public class ITMemberRepository {
         member2.setLastName("Doe2");
         memberRepository.createMember(member2);
 
-        ItemsListingTO<MemberTO> foundMemberListingTO = memberRepository.findAllMembers(0, 100, member1.getLastName(), "", "");
+        ItemsListingTO<MemberTO> foundMemberListingTO = memberRepository.findAllMembers(new PaginationParams("0", "100"), member1.getLastName(), new SortParams());
 
         foundMemberListingTO.getItems().stream().forEach(member -> assertThat(member.getLastName().contains(member1.getLastName())));
     }
@@ -109,7 +111,7 @@ public class ITMemberRepository {
         memberRepository.createMember(member2);
         String name = member1.getFirstName() + " " + member1.getLastName();
 
-        ItemsListingTO<MemberTO> foundMemberListingTO = memberRepository.findAllMembers(0, 100, name, "", "");
+        ItemsListingTO<MemberTO> foundMemberListingTO = memberRepository.findAllMembers(new PaginationParams("0", "100"), name, new SortParams());
 
         foundMemberListingTO.getItems().stream().forEach(member -> assertThat(member.getLastName().contains(name)));
     }
@@ -124,7 +126,7 @@ public class ITMemberRepository {
         memberRepository.createMember(member2);
         String name = (member1.getFirstName() + " " + member1.getLastName()).substring(3);
 
-        ItemsListingTO<MemberTO> foundMemberListingTO = memberRepository.findAllMembers(0, 100, name, "", "");
+        ItemsListingTO<MemberTO> foundMemberListingTO = memberRepository.findAllMembers(new PaginationParams("0", "100"), name, new SortParams());
 
         foundMemberListingTO.getItems().stream().forEach(member -> assertThat(member.getLastName().contains(name)));
     }
@@ -136,7 +138,7 @@ public class ITMemberRepository {
         member2.setFirstName("Jane");
         memberRepository.createMember(member2);
 
-        ItemsListingTO<MemberTO> foundMemberListingTO = memberRepository.findAllMembers(0, 100, "", "firstName", "asc");
+        ItemsListingTO<MemberTO> foundMemberListingTO = memberRepository.findAllMembers(new PaginationParams("0", "100"), "", new SortParams("firstName", "asc"));
 
         assertThat(foundMemberListingTO.getItems()).isSortedAccordingTo((MemberTO m1, MemberTO m2) -> m1.getFirstName().toLowerCase().compareTo(m2.getFirstName().toLowerCase()));
     }
@@ -148,7 +150,7 @@ public class ITMemberRepository {
         member2.setFirstName("Jane");
         memberRepository.createMember(member2);
 
-        ItemsListingTO<MemberTO> foundMemberListingTO = memberRepository.findAllMembers(0, 100, "", "firstName", "desc");
+        ItemsListingTO<MemberTO> foundMemberListingTO = memberRepository.findAllMembers(new PaginationParams("0", "100"), "", new SortParams("firstName", "desc"));
 
         assertThat(foundMemberListingTO.getItems()).isSortedAccordingTo((MemberTO m1, MemberTO m2) -> m2.getFirstName().toLowerCase().compareTo(m1.getFirstName().toLowerCase()));
     }
@@ -160,7 +162,7 @@ public class ITMemberRepository {
         member2.setLastName("Doe2");
         memberRepository.createMember(member2);
 
-        ItemsListingTO<MemberTO> foundMemberListingTO = memberRepository.findAllMembers(0, 100, "", "lastName", "asc");
+        ItemsListingTO<MemberTO> foundMemberListingTO = memberRepository.findAllMembers(new PaginationParams("0", "100"), "", new SortParams("lastName", "asc"));
 
         assertThat(foundMemberListingTO.getItems()).isSortedAccordingTo((MemberTO m1, MemberTO m2) -> m1.getLastName().toLowerCase().compareTo(m2.getLastName().toLowerCase()));
     }
@@ -172,7 +174,7 @@ public class ITMemberRepository {
         member2.setLastName("Doe2");
         memberRepository.createMember(member2);
 
-        ItemsListingTO<MemberTO> foundMemberListingTO = memberRepository.findAllMembers(0, 100, "", "lastName", "desc");
+        ItemsListingTO<MemberTO> foundMemberListingTO = memberRepository.findAllMembers(new PaginationParams("0", "100"), "", new SortParams("lastName", "desc"));
 
         assertThat(foundMemberListingTO.getItems()).isSortedAccordingTo((MemberTO m1, MemberTO m2) -> m2.getLastName().toLowerCase().compareTo(m1.getLastName().toLowerCase()));
     }
@@ -184,7 +186,7 @@ public class ITMemberRepository {
         member2.setBirthDate(LocalDate.of(1980, Month.APRIL, 14));
         memberRepository.createMember(member2);
 
-        ItemsListingTO<MemberTO> foundMemberListingTO = memberRepository.findAllMembers(0, 100, "", "birthDate", "asc");
+        ItemsListingTO<MemberTO> foundMemberListingTO = memberRepository.findAllMembers(new PaginationParams("0", "100"), "", new SortParams("birthDate", "asc"));
 
         assertThat(foundMemberListingTO.getItems()).isSortedAccordingTo((MemberTO m1, MemberTO m2) -> m1.getBirthDate().compareTo(m2.getBirthDate()));
     }
@@ -196,7 +198,7 @@ public class ITMemberRepository {
         member2.setBirthDate(LocalDate.of(1980, Month.APRIL, 14));
         memberRepository.createMember(member2);
 
-        ItemsListingTO<MemberTO> foundMemberListingTO = memberRepository.findAllMembers(0, 100, "", "birthDate", "desc");
+        ItemsListingTO<MemberTO> foundMemberListingTO = memberRepository.findAllMembers(new PaginationParams("0", "100"), "", new SortParams("birthDate", "desc"));
 
         assertThat(foundMemberListingTO.getItems()).isSortedAccordingTo((MemberTO m1, MemberTO m2) -> m2.getBirthDate().compareTo(m1.getBirthDate()));
     }
@@ -208,7 +210,7 @@ public class ITMemberRepository {
         member2.setAddress("address2");
         memberRepository.createMember(member2);
 
-        ItemsListingTO<MemberTO> foundMemberListingTO = memberRepository.findAllMembers(0, 100, "", "address", "asc");
+        ItemsListingTO<MemberTO> foundMemberListingTO = memberRepository.findAllMembers(new PaginationParams("0", "100"), "", new SortParams("address", "asc"));
 
         assertThat(foundMemberListingTO.getItems()).isSortedAccordingTo((MemberTO m1, MemberTO m2) -> m1.getAddress().toLowerCase().compareTo(m2.getAddress().toLowerCase()));
     }
@@ -220,7 +222,7 @@ public class ITMemberRepository {
         member2.setAddress("address2");
         memberRepository.createMember(member2);
 
-        ItemsListingTO<MemberTO> foundMemberListingTO = memberRepository.findAllMembers(0, 100, "", "address", "desc");
+        ItemsListingTO<MemberTO> foundMemberListingTO = memberRepository.findAllMembers(new PaginationParams("0", "100"), "", new SortParams("address", "desc"));
 
         assertThat(foundMemberListingTO.getItems()).isSortedAccordingTo((MemberTO m1, MemberTO m2) -> m2.getAddress().toLowerCase().compareTo(m1.getAddress().toLowerCase()));
     }
@@ -232,7 +234,7 @@ public class ITMemberRepository {
         member2.setCity("city2");
         memberRepository.createMember(member2);
 
-        ItemsListingTO<MemberTO> foundMemberListingTO = memberRepository.findAllMembers(0, 100, "", "city", "asc");
+        ItemsListingTO<MemberTO> foundMemberListingTO = memberRepository.findAllMembers(new PaginationParams("0", "100"), "", new SortParams("city", "asc"));
 
         assertThat(foundMemberListingTO.getItems()).isSortedAccordingTo((MemberTO m1, MemberTO m2) -> m1.getCity().toLowerCase().compareTo(m2.getCity().toLowerCase()));
     }
@@ -244,7 +246,7 @@ public class ITMemberRepository {
         member2.setCity("city2");
         memberRepository.createMember(member2);
 
-        ItemsListingTO<MemberTO> foundMemberListingTO = memberRepository.findAllMembers(0, 100, "", "city", "desc");
+        ItemsListingTO<MemberTO> foundMemberListingTO = memberRepository.findAllMembers(new PaginationParams("0", "100"), "", new SortParams("city", "desc"));
 
         assertThat(foundMemberListingTO.getItems()).isSortedAccordingTo((MemberTO m1, MemberTO m2) -> m2.getCity().toLowerCase().compareTo(m1.getCity().toLowerCase()));
     }

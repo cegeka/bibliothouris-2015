@@ -1,6 +1,8 @@
 package cgk.bibliothouris.learning.repository;
 
 import cgk.bibliothouris.learning.application.transferobject.*;
+import cgk.bibliothouris.learning.application.valueobject.BooksFilterParams;
+import cgk.bibliothouris.learning.application.valueobject.PaginationParams;
 import cgk.bibliothouris.learning.service.entity.Author;
 import cgk.bibliothouris.learning.service.entity.Book;
 import cgk.bibliothouris.learning.service.entity.BookCategory;
@@ -101,23 +103,23 @@ public class BookRepositoryJPA implements BookRepository {
     }
 
     @Override
-    public ItemsListingTO findAllBooks(Integer start, Integer end, String title, String isbn){
-        List<Book> books = findBooks(start, end, title, isbn);
+    public ItemsListingTO findAllBooks(PaginationParams pagination, BooksFilterParams filter){
+        List<Book> books = findBooks(pagination, filter);
 
         List<BookWithStatusTO> bookTOS = books.stream().map(BookWithStatusTO::new).collect(Collectors.toList());
         for (BookWithStatusTO bookTO : bookTOS)
             bookTO.setIsAvailable(!findBookBorrowerDetails(bookTO.getId()).getIsBorrowed());
 
         Integer booksCount = bookTOS.size();
-        bookTOS = bookTOS.subList(start, Integer.min(end, booksCount));
+        bookTOS = bookTOS.subList(Integer.valueOf(pagination.getStart()), Integer.min(Integer.valueOf(pagination.getEnd()), booksCount));
 
         return new ItemsListingTO(bookTOS, new Long(booksCount));
     }
 
-    private List<Book> findBooks(Integer start, Integer end, String title, String isbn) {
+    private List<Book> findBooks(PaginationParams pagination, BooksFilterParams filter) {
         String selectStatement = "SELECT b FROM Book b";
 
-        String filterClause = generateFilterQueryClause(title, isbn);
+        String filterClause = generateFilterQueryClause(filter);
         String sortClause = generateSortQueryClause();
 
         TypedQuery<Book> selectAllQuery = entityManager.createQuery(selectStatement + " WHERE" + filterClause + " " + sortClause, Book.class);
@@ -128,20 +130,20 @@ public class BookRepositoryJPA implements BookRepository {
     public List<Book> findBooksByIsbn(String isbn) {
         String selectStatement = "SELECT b FROM Book b";
 
-        String filterClause = generateFilterQueryClause(null, isbn);
+        String filterClause = generateFilterQueryClause(new BooksFilterParams(null, isbn));
 
         TypedQuery<Book> selectAllQuery = entityManager.createQuery(selectStatement + " WHERE" + filterClause, Book.class);
 
         return selectAllQuery.getResultList();
     }
 
-    private String generateFilterQueryClause(String title, String isbn) {
+    private String generateFilterQueryClause(BooksFilterParams filter) {
         String conditionalClause = " 1 = 1";
 
-        if (title != null)
-            conditionalClause += " AND lower(b.title) LIKE '%" + title.toLowerCase() + "%'";
-        if (isbn != null)
-            conditionalClause += " AND b.isbn LIKE '%" + isbn + "%' OR REPLACE(b.isbn, '-', '') LIKE '%" + isbn + "%'";
+        if (filter.getTitle() != null)
+            conditionalClause += " AND lower(b.title) LIKE '%" + filter.getTitle().toLowerCase() + "%'";
+        if (filter.getIsbn() != null)
+            conditionalClause += " AND b.isbn LIKE '%" + filter.getIsbn() + "%' OR REPLACE(b.isbn, '-', '') LIKE '%" + filter.getIsbn() + "%'";
 
         return conditionalClause;
     }
@@ -166,24 +168,24 @@ public class BookRepositoryJPA implements BookRepository {
     }
 
     @Override
-    public ItemsListingTO findAllAvailableBooks(Integer start, Integer end, String title, String isbn){
-        List<Book> books = findAvailableBooks(start, end, title, isbn);
-        Long booksCount = countAvailableBooks(title, isbn);
+    public ItemsListingTO findAllAvailableBooks(PaginationParams pagination, BooksFilterParams filter){
+        List<Book> books = findAvailableBooks(pagination, filter);
+        Long booksCount = countAvailableBooks(filter);
 
         List<BookTO> bookTOS = books.stream().map(book -> new BookTO(book)).collect(Collectors.toList());
 
         return new ItemsListingTO(bookTOS, booksCount);
     }
 
-    private List<Book> findAvailableBooks(Integer start, Integer end, String title, String isbn) {
+    private List<Book> findAvailableBooks(PaginationParams pagination, BooksFilterParams filter) {
         String selectAvailableStatement = "SELECT b FROM Book b WHERE b.id NOT IN (SELECT bHist.book.id FROM BorrowHistoryItem bHist WHERE bHist.endDate IS NULL)";
 
-        String filterClause = generateFilterQueryClause(title, isbn);
+        String filterClause = generateFilterQueryClause(filter);
         String sortClause = generateSortQueryClause();
 
         TypedQuery<Book> selectAllQuery = entityManager.createQuery(selectAvailableStatement + " AND" + filterClause + " " + sortClause, Book.class)
-                .setMaxResults(end - start)
-                .setFirstResult(start);
+                .setMaxResults(Integer.valueOf(pagination.getEnd()) - Integer.valueOf(pagination.getStart()))
+                .setFirstResult(Integer.valueOf(pagination.getStart()));
         return selectAllQuery.getResultList();
     }
 
@@ -220,19 +222,19 @@ public class BookRepositoryJPA implements BookRepository {
         return countQuery.getSingleResult();
     }
 
-    private Long countAvailableBooks(String title, String isbn) {
+    private Long countAvailableBooks(BooksFilterParams filter) {
         String statement = "SELECT COUNT(b.id) FROM Book b WHERE b.id NOT IN (SELECT bHist.book.id FROM BorrowHistoryItem bHist WHERE bHist.endDate IS NULL)";
 
-        String filterClause = generateFilterQueryClause(title, isbn);
+        String filterClause = generateFilterQueryClause(filter);
 
         TypedQuery<Long> countQuery = entityManager.createQuery(statement + "AND" + filterClause, Long.class);
         return countQuery.getSingleResult();
     }
 
-    private Long countBooks(String title, String isbn) {
+    private Long countBooks(BooksFilterParams filter) {
         String statement = "SELECT COUNT(*) FROM Book b";
 
-        String filterClause = generateFilterQueryClause(title, isbn);
+        String filterClause = generateFilterQueryClause(filter);
 
         TypedQuery<Long> countQuery = entityManager.createQuery(statement + " WHERE" + filterClause, Long.class);
         return countQuery.getSingleResult();

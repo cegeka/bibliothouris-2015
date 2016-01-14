@@ -3,6 +3,8 @@ package cgk.bibliothouris.learning.repository;
 import cgk.bibliothouris.learning.application.transferobject.ItemsListingTO;
 import cgk.bibliothouris.learning.application.transferobject.MemberNameTO;
 import cgk.bibliothouris.learning.application.transferobject.MemberTO;
+import cgk.bibliothouris.learning.application.valueobject.PaginationParams;
+import cgk.bibliothouris.learning.application.valueobject.SortParams;
 import cgk.bibliothouris.learning.service.entity.Member;
 import org.springframework.stereotype.Repository;
 
@@ -32,22 +34,23 @@ public class MemberRepository {
         return entityManager.find(Member.class, uuid);
     }
 
-    public ItemsListingTO<MemberTO> findAllMembers(Integer start, Integer end, String name, String sort, String order){
-        List<Member> members = findMembers(start, end, name, sort, order);
+    public ItemsListingTO<MemberTO> findAllMembers(PaginationParams paginationParams, String name, SortParams sortParams){
+        List<Member> members = findMembers(paginationParams, name, sortParams);
 
         List<MemberTO> memberTOS = members.stream().map(MemberTO::new).collect(Collectors.toList());
 
         Integer membersCount = memberTOS.size();
-        memberTOS = memberTOS.subList(start, Integer.min(end, membersCount));
+        memberTOS = memberTOS.subList(Integer.valueOf(paginationParams.getStart()),
+                                        Integer.min(Integer.valueOf(paginationParams.getEnd()), membersCount));
 
         return new ItemsListingTO(memberTOS, new Long(membersCount));
     }
 
-    private List<Member> findMembers(Integer start, Integer end, String name, String sort, String order) {
+    private List<Member> findMembers(PaginationParams paginationParams, String name, SortParams sortParams) {
         String selectStatement = "SELECT m FROM Member m";
 
         String filterClause = generateFilterQueryClause(name);
-        String sortClause = generateSortQueryClause(sort, order);
+        String sortClause = generateSortQueryClause(sortParams);
 
         selectStatement += " WHERE" + filterClause + sortClause;
 
@@ -64,23 +67,23 @@ public class MemberRepository {
         return conditionalClause;
     }
 
-    private String generateSortQueryClause(String sortCriteria, String sortOrder) {
+    private String generateSortQueryClause(SortParams sortParams) {
         String sortClause = " ORDER BY ";
 
-        if (sortCriteria == null)
+        if (sortParams.getSortBy() == null)
             return sortClause + "m.memberSince DESC NULLS LAST";
 
-        switch (sortCriteria) {
+        switch (sortParams.getSortBy()) {
             case "firstName":
-                return sortClause + "lower(m.firstName)" + " " + sortOrder;
+                return sortClause + "lower(m.firstName)" + " " + sortParams.getOrder();
             case "lastName":
-                return sortClause + "lower(m.lastName)" + " " + sortOrder;
+                return sortClause + "lower(m.lastName)" + " " + sortParams.getOrder();
             case "address":
-                return sortClause + "lower(m.address)" + " " + sortOrder;
+                return sortClause + "lower(m.address)" + " " + sortParams.getOrder();
             case "city":
-                return sortClause + "lower(m.city)" + " " + sortOrder;
+                return sortClause + "lower(m.city)" + " " + sortParams.getOrder();
             case "birthDate":
-                return sortClause + "m.birthDate" + " " + sortOrder;
+                return sortClause + "m.birthDate" + " " + sortParams.getOrder();
             default:
                 return sortClause + "m.memberSince DESC NULLS LAST";
         }

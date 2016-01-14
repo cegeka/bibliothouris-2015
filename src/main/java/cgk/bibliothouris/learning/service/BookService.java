@@ -3,6 +3,8 @@ package cgk.bibliothouris.learning.service;
 import cgk.bibliothouris.learning.application.transferobject.BookBorrowerTO;
 import cgk.bibliothouris.learning.application.transferobject.ItemsListingTO;
 import cgk.bibliothouris.learning.application.transferobject.StringTO;
+import cgk.bibliothouris.learning.application.valueobject.BooksFilterParams;
+import cgk.bibliothouris.learning.application.valueobject.PaginationParams;
 import cgk.bibliothouris.learning.repository.BookRepository;
 import cgk.bibliothouris.learning.service.converter.ImportedBookConverter;
 import cgk.bibliothouris.learning.service.entity.Book;
@@ -59,11 +61,10 @@ public class BookService {
     }
 
     @Transactional(readOnly = true)
-    public ItemsListingTO findAllBooks(String start, String end, String title, String isbn) {
-        Pair<Integer, Integer> paginationParams = BiblioUtilityService.findPaginationParameters(start, end,
-                () -> countBooks());
+    public ItemsListingTO findAllBooks(PaginationParams pagination, BooksFilterParams filter) {
+        PaginationParams paginationParams = BiblioUtilityService.findPaginationParameters(pagination, () -> countBooks());
 
-        return bookRepository.findAllBooks(paginationParams.getFirst(), paginationParams.getSecond(), title, isbn);
+        return bookRepository.findAllBooks(paginationParams, filter);
     }
 
     @Transactional(readOnly = true)
@@ -105,12 +106,10 @@ public class BookService {
     }
 
     @Transactional(readOnly = true)
-    public ItemsListingTO findAllAvailableBooks(String start, String end, String title, String isbn) {
-        Pair<Integer, Integer> paginationParams = BiblioUtilityService.findPaginationParameters(start, end,
-                () -> countAvailableBooks());
+    public ItemsListingTO findAllAvailableBooks(PaginationParams pagination, BooksFilterParams filter) {
+        PaginationParams paginationParams = BiblioUtilityService.findPaginationParameters(pagination, () -> countAvailableBooks());
 
-        return bookRepository.findAllAvailableBooks(paginationParams.getFirst(), paginationParams.getSecond(),
-                title, isbn);
+        return bookRepository.findAllAvailableBooks(paginationParams, filter);
     }
 
     @Transactional(readOnly = true)
@@ -119,9 +118,9 @@ public class BookService {
     }
 
     //TODO: show to refactoring reading group
-    public List<Book> importContent(String title, String isbn) throws IOException, GeneralSecurityException {
+    public List<Book> importContent(BooksFilterParams filter) throws IOException, GeneralSecurityException {
         final Books books = new Books.Builder(GoogleNetHttpTransport.newTrustedTransport(), JacksonFactory.getDefaultInstance(), null).build();
-        Volumes volumes = specifyParametersForGoogleBooksSearch(title, isbn, books);
+        Volumes volumes = specifyParametersForGoogleBooksSearch(filter, books);
         List<Book> listOfImportedBooks = new ArrayList<>();
 
         if (volumes.getTotalItems() == 0)
@@ -135,13 +134,13 @@ public class BookService {
         return listOfImportedBooks;
     }
 
-    private Volumes specifyParametersForGoogleBooksSearch(String title, String isbn, Books books)
+    private Volumes specifyParametersForGoogleBooksSearch(BooksFilterParams filter, Books books)
             throws IOException {
-        if(title != null) {
-            return books.volumes().list("intitle:" + title).setMaxResults(40L).execute();
+        if(filter.getTitle() != null) {
+            return books.volumes().list("intitle:" + filter.getTitle()).setMaxResults(40L).execute();
         }
-        if(isbn != null) {
-            return books.volumes().list("isbn:" + isbn).setMaxResults(40L).execute();
+        if(filter.getIsbn() != null) {
+            return books.volumes().list("isbn:" + filter.getIsbn()).setMaxResults(40L).execute();
         }
         return null;
     }

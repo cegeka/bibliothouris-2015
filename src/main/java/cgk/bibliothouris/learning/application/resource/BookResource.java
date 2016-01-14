@@ -1,6 +1,8 @@
 package cgk.bibliothouris.learning.application.resource;
 
 import cgk.bibliothouris.learning.application.transferobject.*;
+import cgk.bibliothouris.learning.application.valueobject.BooksFilterParams;
+import cgk.bibliothouris.learning.application.valueobject.PaginationParams;
 import cgk.bibliothouris.learning.service.BookService;
 import cgk.bibliothouris.learning.service.entity.Book;
 import cgk.bibliothouris.learning.service.exception.ValidationException;
@@ -29,7 +31,9 @@ public class BookResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllBooks(@QueryParam("start") String start, @QueryParam("end") String end,
                                 @QueryParam("title") String title, @QueryParam("isbn") String isbn){
-        ItemsListingTO bookListingTO = bookService.findAllBooks(start, end, title, isbn);
+        PaginationParams pagination = new PaginationParams(start, end);
+        BooksFilterParams filter = new BooksFilterParams(title, isbn);
+        ItemsListingTO bookListingTO = bookService.findAllBooks(pagination, filter);
         if(bookListingTO.getItems().size() == 0){
             return Response.status(Status.NOT_FOUND).build();
         }
@@ -41,7 +45,8 @@ public class BookResource {
     @Path("/import")
     public Response getAllImportedBooks(@QueryParam("title") String title, @QueryParam("isbn") String isbn){
         try {
-            List<Book> listOfImportedBooks = bookService.importContent(title, isbn);
+            BooksFilterParams filter = new BooksFilterParams(title, isbn);
+            List<Book> listOfImportedBooks = bookService.importContent(filter);
             if(listOfImportedBooks.size() == 0){
                 return Response.status(Status.NOT_FOUND).build();
             }
@@ -59,8 +64,10 @@ public class BookResource {
     @Path("/available")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllAvailableBooks(@QueryParam("start") String start, @QueryParam("end") String end,
-                                @QueryParam("title") String title, @QueryParam("isbn") String isbn){
-        ItemsListingTO bookListingTO = bookService.findAllAvailableBooks(start, end, title, isbn);
+                                        @QueryParam("title") String title, @QueryParam("isbn") String isbn){
+        PaginationParams pagination = new PaginationParams(start, end);
+        BooksFilterParams filter = new BooksFilterParams(title, isbn);
+        ItemsListingTO bookListingTO = bookService.findAllAvailableBooks(pagination, filter);
         if(bookListingTO.getItems().size() == 0){
             return Response.status(Status.NOT_FOUND).build();
         }

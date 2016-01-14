@@ -1,6 +1,9 @@
 package cgk.bibliothouris.learning.service;
 
 import cgk.bibliothouris.learning.application.transferobject.*;
+import cgk.bibliothouris.learning.application.valueobject.BooksFilterParams;
+import cgk.bibliothouris.learning.application.valueobject.PaginationParams;
+import cgk.bibliothouris.learning.application.valueobject.SortParams;
 import cgk.bibliothouris.learning.repository.BookRepository;
 import cgk.bibliothouris.learning.repository.BorrowHistoryRepository;
 import cgk.bibliothouris.learning.repository.MemberRepository;
@@ -60,10 +63,10 @@ public class BorrowHistoryService {
     }
 
     @Transactional(readOnly = true)
-    public ItemsListingTO<MemberBorrowHistoryTO> findBorrowedBooksByMember(String memberUuid, String start, String end) {
-        Pair<Integer, Integer> paginationParams = BiblioUtilityService.findPaginationParameters(start, end, () -> countBorrowedBooksByMember(memberUuid));
+    public ItemsListingTO<MemberBorrowHistoryTO> findBorrowedBooksByMember(String memberUuid, PaginationParams pagination) {
+        PaginationParams paginationParams = BiblioUtilityService.findPaginationParameters(pagination, () -> countBorrowedBooksByMember(memberUuid));
 
-        return borrowHistoryRepository.findBorrowedBooksByMember(memberUuid, paginationParams.getFirst(), paginationParams.getSecond());
+        return borrowHistoryRepository.findBorrowedBooksByMember(memberUuid, paginationParams);
     }
 
     @Transactional(readOnly = true)
@@ -77,16 +80,16 @@ public class BorrowHistoryService {
     }
 
     @Transactional
-    public ItemsListingTO<DetailedBorrowHistoryTO> getActiveBorrowedBooks(String start, String end, String sort, String order) {
-        Pair<Integer, Integer> paginationParams = BiblioUtilityService.findPaginationParameters(start, end, () -> countBorrowedBooks());
+    public ItemsListingTO<DetailedBorrowHistoryTO> getActiveBorrowedBooks(PaginationParams pagination, SortParams sortParams) {
+        PaginationParams paginationParams = BiblioUtilityService.findPaginationParameters(pagination, () -> countBorrowedBooks());
 
-        return borrowHistoryRepository.getBorrowedBooks(paginationParams.getFirst(), paginationParams.getSecond(), sort, order);
+        return borrowHistoryRepository.getBorrowedBooks(paginationParams, sortParams);
     }
 
     @Transactional
-    public ItemsListingTO<DetailedBorrowHistoryTO> getOverdueBooks(String start, String end, String sort, String order) {
-        Pair<Integer, Integer> paginationParams = BiblioUtilityService.findPaginationParameters(start, end, () -> countBorrowedBooks());
+    public ItemsListingTO<DetailedBorrowHistoryTO> getOverdueBooks(PaginationParams pagination, SortParams sortParams) {
+        PaginationParams paginationParams = BiblioUtilityService.findPaginationParameters(pagination, () -> countBorrowedBooks());
 
-        return borrowHistoryRepository.getOverdueBooks(paginationParams.getFirst(), paginationParams.getSecond(), sort, order);
+        return borrowHistoryRepository.getOverdueBooks(paginationParams, sortParams);
     }
 }

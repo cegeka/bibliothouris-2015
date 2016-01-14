@@ -4,6 +4,8 @@ import cgk.bibliothouris.learning.application.resource.MemberResource;
 import cgk.bibliothouris.learning.application.transferobject.ItemsListingTO;
 import cgk.bibliothouris.learning.application.transferobject.MemberNameTO;
 import cgk.bibliothouris.learning.application.transferobject.MemberTO;
+import cgk.bibliothouris.learning.application.valueobject.PaginationParams;
+import cgk.bibliothouris.learning.application.valueobject.SortParams;
 import cgk.bibliothouris.learning.service.MemberService;
 import cgk.bibliothouris.learning.service.entity.Member;
 import cgk.bibliothouris.learning.service.exception.ValidationException;
@@ -36,6 +38,8 @@ public class MemberResourceTest {
 
     @Mock
     private UriInfo uriInfo;
+
+    PaginationParams pagination = new PaginationParams("0", "100");
 
     @Test
     public void whenWePostValidMember_WeGetUUIDBack() {
@@ -119,11 +123,11 @@ public class MemberResourceTest {
     @Test
     public void givenAnEmptyListOfMembers_getAllMembers_return404NotFound() {
         ItemsListingTO memberListingTO = new ItemsListingTO();
-        Mockito.when(service.findAllMembers("0", "100", "", "", "")).thenReturn(memberListingTO);
+        Mockito.when(service.findAllMembers(pagination, "", new SortParams())).thenReturn(memberListingTO);
 
-        Response response = resource.getAllMembers(Integer.toString(0),Integer.toString(100), "", "", "");
+        Response response = resource.getAllMembers(pagination.getStart(), pagination.getEnd(), "", "", "");
 
-        Mockito.verify(service, times(1)).findAllMembers("0", "100", "", "", "");
+        Mockito.verify(service, times(1)).findAllMembers(pagination, "", new SortParams());
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.NOT_FOUND);
     }
 
@@ -131,11 +135,11 @@ public class MemberResourceTest {
     public void givenAListOfMembers_getAllMembers_return200OK() {
         ItemsListingTO memberListingTO = new ItemsListingTO();
         memberListingTO.setItems(Arrays.asList(new MemberTO()));
-        Mockito.when(service.findAllMembers("0", "100", "", "", "")).thenReturn(memberListingTO);
+        Mockito.when(service.findAllMembers(pagination, "", new SortParams())).thenReturn(memberListingTO);
 
-        Response response = resource.getAllMembers(Integer.toString(0),Integer.toString(100), "", "", "");
+        Response response = resource.getAllMembers(pagination.getStart(), pagination.getEnd(), "", "", "");
 
-        Mockito.verify(service, times(1)).findAllMembers("0", "100", "", "", "");
+        Mockito.verify(service, times(1)).findAllMembers(pagination, "", new SortParams());
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.OK);
     }
 
@@ -143,11 +147,11 @@ public class MemberResourceTest {
     public void givenAListOfMembers_getAllMembers_returnTheCorrectEntity() {
         ItemsListingTO memberListingTO = new ItemsListingTO();
         memberListingTO.setItems(Arrays.asList(new MemberTO()));
-        Mockito.when(service.findAllMembers("0", "100", "", "city", "asc")).thenReturn(memberListingTO);
+        Mockito.when(service.findAllMembers(pagination, "", new SortParams("city", "asc"))).thenReturn(memberListingTO);
 
-        Response response = resource.getAllMembers(Integer.toString(0),Integer.toString(100), "", "city", "asc");
+        Response response = resource.getAllMembers(pagination.getStart(), pagination.getEnd(), "", "city", "asc");
 
-        Mockito.verify(service, times(1)).findAllMembers("0", "100", "", "city", "asc");
+        Mockito.verify(service, times(1)).findAllMembers(pagination, "", new SortParams("city", "asc"));
         assertThat(response.getEntity()).isEqualTo(memberListingTO);
     }
 

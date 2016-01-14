@@ -1,24 +1,21 @@
 package unit;
 
 import cgk.bibliothouris.learning.application.transferobject.*;
+import cgk.bibliothouris.learning.application.valueobject.PaginationParams;
+import cgk.bibliothouris.learning.application.valueobject.SortParams;
 import cgk.bibliothouris.learning.repository.BookRepository;
 import cgk.bibliothouris.learning.repository.BorrowHistoryRepository;
 import cgk.bibliothouris.learning.repository.MemberRepository;
 import cgk.bibliothouris.learning.service.BorrowHistoryService;
 import cgk.bibliothouris.learning.service.entity.BorrowHistoryItem;
-import cgk.bibliothouris.learning.service.exception.ValidationException;
 import fixture.BorrowedHistoryFixture;
 import org.assertj.core.api.Assertions;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -37,6 +34,8 @@ public class BorrowHistoryServiceTest {
 
     @Mock
     private MemberRepository memberRepository;
+
+    private PaginationParams pagination = new PaginationParams("1", "10");
 
     @Test
     public void givenValidBorrowHistoryItemTO_whenValidated_shouldReturnNewBorrowHistoryItem() {
@@ -64,9 +63,9 @@ public class BorrowHistoryServiceTest {
     @Test
     public void givenAMemberIdAndPositivePaginationParameters_whenFindBorrowBooksByMember_shouldReturnTheCorrectListWithBorrowedBooks() {
         ItemsListingTO<MemberBorrowHistoryTO> expectedBorrowedHistoryItems = new ItemsListingTO<>();
-        Mockito.when(borrowHistoryRepository.findBorrowedBooksByMember("uuid", 0, 10)).thenReturn(expectedBorrowedHistoryItems);
+        Mockito.when(borrowHistoryRepository.findBorrowedBooksByMember("uuid", new PaginationParams("1", "10"))).thenReturn(expectedBorrowedHistoryItems);
 
-        ItemsListingTO<MemberBorrowHistoryTO> foundBorrowedHistoryItems = service.findBorrowedBooksByMember("uuid", "0", "10");
+        ItemsListingTO<MemberBorrowHistoryTO> foundBorrowedHistoryItems = service.findBorrowedBooksByMember("uuid", pagination);
 
         assertThat(foundBorrowedHistoryItems).isEqualTo(expectedBorrowedHistoryItems);
     }
@@ -75,9 +74,9 @@ public class BorrowHistoryServiceTest {
     @Test
     public void givenAMemberIdAndNegativePaginationParameters_whenFindBorrowBooksByMember_shouldReturnTheCorrectListWithBorrowedBooks() {
         ItemsListingTO<MemberBorrowHistoryTO> expectedBorrowedHistoryItems = new ItemsListingTO<>();
-        Mockito.when(borrowHistoryRepository.findBorrowedBooksByMember("uuid", 0, 0)).thenReturn(expectedBorrowedHistoryItems);
+        Mockito.when(borrowHistoryRepository.findBorrowedBooksByMember("uuid", new PaginationParams("0", "0"))).thenReturn(expectedBorrowedHistoryItems);
 
-        ItemsListingTO<MemberBorrowHistoryTO> foundBorrowedHistoryItems = service.findBorrowedBooksByMember("uuid", "-3", "-1");
+        ItemsListingTO<MemberBorrowHistoryTO> foundBorrowedHistoryItems = service.findBorrowedBooksByMember("uuid", new PaginationParams("-3", "-1"));
 
         assertThat(foundBorrowedHistoryItems).isEqualTo(expectedBorrowedHistoryItems);
     }
@@ -85,9 +84,9 @@ public class BorrowHistoryServiceTest {
     @Test
     public void givenAPopulatedHistory_whenWeRetrieveIt_weGetThatHistory(){
         ItemsListingTO<DetailedBorrowHistoryTO> borrowHistoryTO = new ItemsListingTO<>();
-        Mockito.when(borrowHistoryRepository.getBorrowedBooks(1, 10, "title,isbn,date", "asc,asc,desc")).thenReturn(borrowHistoryTO);
+        Mockito.when(borrowHistoryRepository.getBorrowedBooks(new PaginationParams("1", "10"), new SortParams("title", "asc"))).thenReturn(borrowHistoryTO);
 
-        ItemsListingTO<DetailedBorrowHistoryTO> foundGlobalBorrowedHistoryItems = service.getActiveBorrowedBooks("1", "10", "title,isbn,date","asc,asc,desc");
+        ItemsListingTO<DetailedBorrowHistoryTO> foundGlobalBorrowedHistoryItems = service.getActiveBorrowedBooks(pagination, new SortParams("title", "asc"));
 
         Assertions.assertThat(foundGlobalBorrowedHistoryItems).isEqualTo(borrowHistoryTO);
     }
@@ -95,9 +94,9 @@ public class BorrowHistoryServiceTest {
     @Test
     public void givenAPopulatedHistory_whenWeRetrieveOverdueBooks_shouldReturnTheOverdueBooks(){
         ItemsListingTO<DetailedBorrowHistoryTO> overdueBooks = new ItemsListingTO<>();
-        when(borrowHistoryRepository.getOverdueBooks(1, 10, "title", "asc")).thenReturn(overdueBooks);
+        when(borrowHistoryRepository.getOverdueBooks(new PaginationParams("1", "10"), new SortParams("title", "asc"))).thenReturn(overdueBooks);
 
-        ItemsListingTO<DetailedBorrowHistoryTO> foundOverdueBooks = service.getOverdueBooks("1", "10", "title", "asc");
+        ItemsListingTO<DetailedBorrowHistoryTO> foundOverdueBooks = service.getOverdueBooks(pagination, new SortParams("title", "asc"));
 
         assertThat(foundOverdueBooks).isEqualTo(overdueBooks);
     }

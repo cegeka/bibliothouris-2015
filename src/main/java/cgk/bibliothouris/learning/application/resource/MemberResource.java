@@ -4,6 +4,8 @@ import cgk.bibliothouris.learning.application.transferobject.ItemsListingTO;
 import cgk.bibliothouris.learning.application.transferobject.MemberNameTO;
 import cgk.bibliothouris.learning.application.transferobject.MemberTO;
 import cgk.bibliothouris.learning.application.transferobject.StringTO;
+import cgk.bibliothouris.learning.application.valueobject.PaginationParams;
+import cgk.bibliothouris.learning.application.valueobject.SortParams;
 import cgk.bibliothouris.learning.service.MemberService;
 import cgk.bibliothouris.learning.service.entity.Member;
 import cgk.bibliothouris.learning.service.exception.ValidationException;
@@ -64,7 +66,9 @@ public class MemberResource {
     public Response getAllMembers(@QueryParam("start") String start, @QueryParam("end") String end,
                                   @QueryParam("name") String name,
                                   @QueryParam("sort") String sort, @QueryParam("order") String order) {
-        ItemsListingTO<MemberTO> foundMembers = service.findAllMembers(start, end, name, sort, order);
+        PaginationParams pagination = new PaginationParams(start, end);
+        SortParams sortParams = new SortParams(sort, order);
+        ItemsListingTO<MemberTO> foundMembers = service.findAllMembers(pagination, name, sortParams);
 
         if (foundMembers.getItems().isEmpty())
             return Response.status(Response.Status.NOT_FOUND).build();

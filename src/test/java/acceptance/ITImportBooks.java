@@ -39,7 +39,7 @@ public class ITImportBooks extends BaseAcceptance {
         importBooksPage.setValueForFilter("Refactoring");
         sleepABit(2000);
 
-        assertThat(importBooksPage.getTheFirstBookTitle()).isEqualTo("Refactoring");
+        assertThat(importBooksPage.getTheFirstBookTitle()).contains("Refactoring");
     }
 
     @Test

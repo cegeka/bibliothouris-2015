@@ -3,6 +3,8 @@ package unit;
 import cgk.bibliothouris.learning.application.transferobject.BookBorrowerTO;
 import cgk.bibliothouris.learning.application.transferobject.ItemsListingTO;
 import cgk.bibliothouris.learning.application.transferobject.StringTO;
+import cgk.bibliothouris.learning.application.valueobject.BooksFilterParams;
+import cgk.bibliothouris.learning.application.valueobject.PaginationParams;
 import cgk.bibliothouris.learning.repository.BookRepository;
 import cgk.bibliothouris.learning.service.BookService;
 import cgk.bibliothouris.learning.service.entity.Book;
@@ -118,9 +120,9 @@ public class BookServiceTest {
     @Test
     public void givenOneBook_findAllBooks_returnsTheBook() {
         ItemsListingTO expectedBookListingTO = new ItemsListingTO();
-        Mockito.when(mockRepository.findAllBooks(0, 5, null, null)).thenReturn(expectedBookListingTO);
+        Mockito.when(mockRepository.findAllBooks(new PaginationParams("0", "5"), new BooksFilterParams())).thenReturn(expectedBookListingTO);
 
-        ItemsListingTO bookListingTO = service.findAllBooks("0", "5", null, null);
+        ItemsListingTO bookListingTO = service.findAllBooks(new PaginationParams("0", "5"), new BooksFilterParams());
 
         assertThat(bookListingTO).isEqualTo(expectedBookListingTO);
     }
@@ -128,9 +130,9 @@ public class BookServiceTest {
     @Test
     public void givenOneAvailableBook_findAllAvailableBooks_returnsTheAvailableBook() {
         ItemsListingTO expectedBookListingTO = new ItemsListingTO();
-        Mockito.when(mockRepository.findAllAvailableBooks(0, 5, null, null)).thenReturn(expectedBookListingTO);
+        Mockito.when(mockRepository.findAllAvailableBooks(new PaginationParams("0", "5"), new BooksFilterParams())).thenReturn(expectedBookListingTO);
 
-        ItemsListingTO bookListingTO = service.findAllAvailableBooks("0", "5", null, null);
+        ItemsListingTO bookListingTO = service.findAllAvailableBooks(new PaginationParams("0", "5"), new BooksFilterParams());
 
         assertThat(bookListingTO).isEqualTo(expectedBookListingTO);
     }
@@ -138,9 +140,9 @@ public class BookServiceTest {
     @Test
     public void givenOneAvailableBook_findAllBooksWithNegativeParams_returnsListOfBooks() {
         ItemsListingTO expectedBookListingTO = new ItemsListingTO();
-        Mockito.when(mockRepository.findAllAvailableBooks(0, 0, null, null)).thenReturn(expectedBookListingTO);
+        Mockito.when(mockRepository.findAllAvailableBooks(new PaginationParams("0", "0"), new BooksFilterParams())).thenReturn(expectedBookListingTO);
 
-        ItemsListingTO bookListingTO = service.findAllAvailableBooks("-1", "-3", null, null);
+        ItemsListingTO bookListingTO = service.findAllAvailableBooks(new PaginationParams("-1", "-3"), new BooksFilterParams());
 
         assertThat(bookListingTO).isEqualTo(expectedBookListingTO);
     }
@@ -148,9 +150,9 @@ public class BookServiceTest {
     @Test
     public void givenOneBook_findAllBooksWithNegativeParams_returnsListOfBooks() {
         ItemsListingTO expectedBookListingTO = new ItemsListingTO();
-        Mockito.when(mockRepository.findAllBooks(0, 0, null, null)).thenReturn(expectedBookListingTO);
+        Mockito.when(mockRepository.findAllBooks(new PaginationParams("0", "0"), new BooksFilterParams())).thenReturn(expectedBookListingTO);
 
-        ItemsListingTO bookListingTO = service.findAllBooks("-1", "-3", null, null);
+        ItemsListingTO bookListingTO = service.findAllBooks(new PaginationParams("-1", "-3"), new BooksFilterParams());
 
         assertThat(bookListingTO).isEqualTo(expectedBookListingTO);
     }
@@ -158,9 +160,9 @@ public class BookServiceTest {
     @Test
     public void givenOneBook_findAllBooksWithAGivenTitle_returnsListOfBooks() {
         ItemsListingTO expectedBookListingTO = new ItemsListingTO();
-        Mockito.when(mockRepository.findAllBooks(0, 5, "Clean Code", null)).thenReturn(expectedBookListingTO);
+        Mockito.when(mockRepository.findAllBooks(new PaginationParams("0", "5"), new BooksFilterParams("Clean Code", null))).thenReturn(expectedBookListingTO);
 
-        ItemsListingTO bookListingTO = service.findAllBooks("0", "5", "Clean Code", null);
+        ItemsListingTO bookListingTO = service.findAllBooks(new PaginationParams("0", "5"), new BooksFilterParams("Clean Code", null));
 
         assertThat(bookListingTO).isEqualTo(expectedBookListingTO);
     }
@@ -168,9 +170,9 @@ public class BookServiceTest {
     @Test
     public void givenOneBook_findAllBooksWithAGivenIsbn_returnsListOfBooks() {
         ItemsListingTO expectedBookListingTO = new ItemsListingTO();
-        Mockito.when(mockRepository.findAllBooks(0, 5, null, "978-0-13-235088-4")).thenReturn(expectedBookListingTO);
+        Mockito.when(mockRepository.findAllBooks(new PaginationParams("0", "5"), new BooksFilterParams(null, "978-0-13-235088-4"))).thenReturn(expectedBookListingTO);
 
-        ItemsListingTO bookListingTO = service.findAllBooks("0", "5", null, "978-0-13-235088-4");
+        ItemsListingTO bookListingTO = service.findAllBooks(new PaginationParams("0", "5"), new BooksFilterParams(null, "978-0-13-235088-4"));
 
         assertThat(bookListingTO).isEqualTo(expectedBookListingTO);
     }
@@ -223,15 +225,15 @@ public class BookServiceTest {
 
     @Test
     public void givenABookTitle_whenWeImportContent_returnACorrectBook() throws IOException, GeneralSecurityException {
-        List<Book> importedBooks = service.importContent("design%20Patterns", null);
+        List<Book> importedBooks = service.importContent(new BooksFilterParams("design%20Patterns", null));
         Assertions.assertThat(importedBooks.get(0).getTitle().toLowerCase()).contains("design patterns");
     }
 
     @Test
     public void givenABookISBN_whenWeImportContent_returnACorrectBook() throws IOException, GeneralSecurityException {
-        List<Book> importedBooks = service.importContent(null, "9780132350884");
+        List<Book> importedBooks = service.importContent(new BooksFilterParams(null, "9780132350884"));
         if (importedBooks.isEmpty())
-            importedBooks = service.importContent(null, "0132350882");
+            importedBooks = service.importContent(new BooksFilterParams(null, "0132350882"));
 
         Assertions.assertThat(importedBooks.get(0).getTitle().toLowerCase()).contains("clean code");
     }

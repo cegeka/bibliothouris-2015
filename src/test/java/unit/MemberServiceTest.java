@@ -2,6 +2,8 @@ package unit;
 
 import cgk.bibliothouris.learning.application.transferobject.ItemsListingTO;
 import cgk.bibliothouris.learning.application.transferobject.MemberNameTO;
+import cgk.bibliothouris.learning.application.valueobject.PaginationParams;
+import cgk.bibliothouris.learning.application.valueobject.SortParams;
 import cgk.bibliothouris.learning.repository.MemberRepository;
 import cgk.bibliothouris.learning.service.BiblioUtilityService;
 import cgk.bibliothouris.learning.service.MemberService;
@@ -82,7 +84,7 @@ public class MemberServiceTest {
 
     @Test
     public void givenANonExistentUser_afterGet_shouldReturnNull() {
-        when(mockRepository.getMember("inexistentUUID")).thenReturn(null);
+        when(mockRepository.getMember("unexistentUUID")).thenReturn(null);
 
         Member returnedMember = service.findMember("inexistentUUID");
 
@@ -92,9 +94,9 @@ public class MemberServiceTest {
     @Test
     public void givenOneMember_findAllMembers_returnsTheMember() {
         ItemsListingTO expectedMemberListingTO = new ItemsListingTO();
-        when(mockRepository.findAllMembers(0, 100, "John", "address", "desc")).thenReturn(expectedMemberListingTO);
+        when(mockRepository.findAllMembers(new PaginationParams("0", "100"), "John", new SortParams("address", "desc"))).thenReturn(expectedMemberListingTO);
 
-        ItemsListingTO memberListingTO = service.findAllMembers("0", "100", "John", "address", "desc");
+        ItemsListingTO memberListingTO = service.findAllMembers(new PaginationParams("0", "100"), "John", new SortParams("address", "desc"));
 
         assertThat(memberListingTO).isEqualTo(expectedMemberListingTO);
     }
@@ -102,22 +104,22 @@ public class MemberServiceTest {
     @Test
     public void givenOneMember_findAllMembersWithNegativePaginationParams_returnsListOfMembers() {
         ItemsListingTO expectedMemberListingTO = new ItemsListingTO();
-        when(mockRepository.findAllMembers(0, 0, "", "lastName", "desc")).thenReturn(expectedMemberListingTO);
+        when(mockRepository.findAllMembers(new PaginationParams("0", "0"), "", new SortParams("lastName", "desc"))).thenReturn(expectedMemberListingTO);
 
-        ItemsListingTO memberListingTO = service.findAllMembers("-1", "-5", "", "lastName", "desc");
+        ItemsListingTO memberListingTO = service.findAllMembers(new PaginationParams("-1", "-5"), "", new SortParams("lastName", "desc"));
 
-        verify(mockRepository).findAllMembers(0, 0, "", "lastName", "desc");
+        verify(mockRepository).findAllMembers(new PaginationParams("0", "0"), "", new SortParams("lastName", "desc"));
         assertThat(memberListingTO).isEqualTo(expectedMemberListingTO);
     }
 
     @Test
     public void givenOneMember_findAllMembersWithNoPaginationParams_returnsListOfMembers() {
         ItemsListingTO expectedMemberListingTO = new ItemsListingTO();
-        when(mockRepository.findAllMembers(0, 0, "", "lastName", "desc")).thenReturn(expectedMemberListingTO);
+        when(mockRepository.findAllMembers(new PaginationParams("0", "0"), "", new SortParams("lastName", "desc"))).thenReturn(expectedMemberListingTO);
 
-        ItemsListingTO memberListingTO = service.findAllMembers("", "", "", "lastName", "desc");
+        ItemsListingTO memberListingTO = service.findAllMembers(new PaginationParams("", ""), "", new SortParams("lastName", "desc"));
 
-        verify(mockRepository).findAllMembers(0, 0, "", "lastName", "desc");
+        verify(mockRepository).findAllMembers(new PaginationParams("0", "0"), "", new SortParams("lastName", "desc"));
         assertThat(memberListingTO).isEqualTo(expectedMemberListingTO);
     }
 
@@ -126,10 +128,10 @@ public class MemberServiceTest {
         ItemsListingTO expectedMemberListingTO = new ItemsListingTO();
         expectedMemberListingTO.setItemsCount(10L);
 
-        Pair<Integer, Integer> findParams = BiblioUtilityService.findPaginationParameters("-1", "-5", () -> expectedMemberListingTO.getItemsCount());
+        PaginationParams findParams = BiblioUtilityService.findPaginationParameters(new PaginationParams("-1", "-5"), () -> expectedMemberListingTO.getItemsCount());
 
-        assertThat(findParams.getFirst()).isEqualTo(0);
-        assertThat(findParams.getSecond()).isEqualTo(expectedMemberListingTO.getItemsCount().intValue());
+        assertThat(findParams.getStart()).isEqualTo("0");
+        assertThat(findParams.getEnd()).isEqualTo(expectedMemberListingTO.getItemsCount().toString());
     }
 
     @Test
@@ -137,10 +139,10 @@ public class MemberServiceTest {
         ItemsListingTO expectedMemberListingTO = new ItemsListingTO();
         expectedMemberListingTO.setItemsCount(7L);
 
-        Pair<Integer, Integer> findParams = BiblioUtilityService.findPaginationParameters("1", "5", () -> expectedMemberListingTO.getItemsCount());
+        PaginationParams findParams = BiblioUtilityService.findPaginationParameters(new PaginationParams("1", "5"), () -> expectedMemberListingTO.getItemsCount());
 
-        assertThat(findParams.getFirst()).isEqualTo(1);
-        assertThat(findParams.getSecond()).isEqualTo(5);
+        assertThat(findParams.getStart()).isEqualTo("1");
+        assertThat(findParams.getEnd()).isEqualTo("5");
     }
 
     @Test

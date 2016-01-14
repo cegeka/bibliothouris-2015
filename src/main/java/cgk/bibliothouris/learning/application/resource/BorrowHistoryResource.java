@@ -1,6 +1,8 @@
 package cgk.bibliothouris.learning.application.resource;
 
 import cgk.bibliothouris.learning.application.transferobject.*;
+import cgk.bibliothouris.learning.application.valueobject.PaginationParams;
+import cgk.bibliothouris.learning.application.valueobject.SortParams;
 import cgk.bibliothouris.learning.service.BorrowHistoryService;
 import cgk.bibliothouris.learning.service.entity.BorrowHistoryItem;
 import cgk.bibliothouris.learning.service.exception.ValidationException;
@@ -10,7 +12,6 @@ import org.springframework.stereotype.Component;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.net.URI;
-import java.util.List;
 
 @Path("/borrow")
 @Component
@@ -54,7 +55,8 @@ public class BorrowHistoryResource {
     @Path("{memberUuid}")
     public Response getBorrowHistoryItemsByMember(@PathParam("memberUuid") String memberUuid,
                                                   @QueryParam("start") String start, @QueryParam("end") String end) {
-        ItemsListingTO<MemberBorrowHistoryTO> borrowedHistoryItems = service.findBorrowedBooksByMember(memberUuid, start, end);
+        PaginationParams pagination = new PaginationParams(start, end);
+        ItemsListingTO<MemberBorrowHistoryTO> borrowedHistoryItems = service.findBorrowedBooksByMember(memberUuid, pagination);
 
         if(borrowedHistoryItems.getItems().size() == 0)
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -80,8 +82,10 @@ public class BorrowHistoryResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllHistoryItems(@QueryParam("start") String start, @QueryParam("end") String end,
-                                       @QueryParam("sort") String sort, @QueryParam("order") String order){
-        ItemsListingTO<DetailedBorrowHistoryTO> borrowedBooks = service.getActiveBorrowedBooks(start, end, sort, order);
+                                       @QueryParam("sort") String sortBy, @QueryParam("order") String order){
+        PaginationParams pagination = new PaginationParams(start, end);
+        SortParams sortParams = new SortParams(sortBy, order);
+        ItemsListingTO<DetailedBorrowHistoryTO> borrowedBooks = service.getActiveBorrowedBooks(pagination, sortParams);
 
         if(borrowedBooks.getItems().size() == 0)
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -102,7 +106,9 @@ public class BorrowHistoryResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getOverdueBooks(@QueryParam("start") String start, @QueryParam("end") String end,
                                     @QueryParam("sort") String sort, @QueryParam("order") String order){
-        ItemsListingTO<DetailedBorrowHistoryTO> overdueBooks = service.getOverdueBooks(start, end, sort, order);
+        PaginationParams pagination = new PaginationParams(start, end);
+        SortParams sortParams = new SortParams(sort, order);
+        ItemsListingTO<DetailedBorrowHistoryTO> overdueBooks = service.getOverdueBooks(pagination, sortParams);
 
         if(overdueBooks.getItems().size() == 0)
             return Response.status(Response.Status.NOT_FOUND).build();
