@@ -12,7 +12,9 @@
             getBookDetails: getBookDetails,
             getBookTitles: getBookTitles,
             getBookIsbnCodes: getBookIsbnCodes,
-            getImportedBooks: getImportedBooks
+            getImportedBooks: getImportedBooks,
+            getBookAuthorsFirstNames: getBookAuthorsFirstNames,
+            getBookAuthorsLastNames: getBookAuthorsLastNames
         };
 
         return service;
@@ -61,6 +63,20 @@
 
         function getBookIsbnCodes() {
             return $http.get("/api/books/isbnCodes")
+                .then(function (response) {
+                    return response.data;
+                });
+        }
+
+        function getBookAuthorsFirstNames() {
+            return $http.get("/api/authors/firstnames")
+                .then(function (response) {
+                    return response.data;
+                });
+        }
+
+        function getBookAuthorsLastNames() {
+            return $http.get("/api/authors/lastnames")
                 .then(function (response) {
                     return response.data;
                 });

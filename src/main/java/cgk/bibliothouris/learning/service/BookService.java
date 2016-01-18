@@ -5,6 +5,7 @@ import cgk.bibliothouris.learning.application.transferobject.ItemsListingTO;
 import cgk.bibliothouris.learning.application.transferobject.StringTO;
 import cgk.bibliothouris.learning.application.valueobject.BooksFilterParams;
 import cgk.bibliothouris.learning.application.valueobject.PaginationParams;
+import cgk.bibliothouris.learning.application.valueobject.SortParams;
 import cgk.bibliothouris.learning.repository.BookRepository;
 import cgk.bibliothouris.learning.service.converter.ImportedBookConverter;
 import cgk.bibliothouris.learning.service.entity.Book;
@@ -61,10 +62,10 @@ public class BookService {
     }
 
     @Transactional(readOnly = true)
-    public ItemsListingTO findAllBooks(PaginationParams pagination, BooksFilterParams filter) {
+    public ItemsListingTO findAllBooks(PaginationParams pagination, BooksFilterParams filter, SortParams sortParams) {
         PaginationParams paginationParams = BiblioUtilityService.findPaginationParameters(pagination, () -> countBooks());
 
-        return bookRepository.findAllBooks(paginationParams, filter);
+        return bookRepository.findAllBooks(paginationParams, filter, sortParams);
     }
 
     @Transactional(readOnly = true)

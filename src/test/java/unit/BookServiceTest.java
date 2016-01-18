@@ -121,9 +121,9 @@ public class BookServiceTest {
     @Test
     public void givenOneBook_findAllBooks_returnsTheBook() {
         ItemsListingTO expectedBookListingTO = new ItemsListingTO();
-        Mockito.when(mockRepository.findAllBooks(new PaginationParams("0", "5"), new BooksFilterParams())).thenReturn(expectedBookListingTO);
+        Mockito.when(mockRepository.findAllBooks(new PaginationParams("0", "5"), new BooksFilterParams(), null)).thenReturn(expectedBookListingTO);
 
-        ItemsListingTO bookListingTO = service.findAllBooks(new PaginationParams("0", "5"), new BooksFilterParams());
+        ItemsListingTO bookListingTO = service.findAllBooks(new PaginationParams("0", "5"), new BooksFilterParams(), null);
 
         assertThat(bookListingTO).isEqualTo(expectedBookListingTO);
     }
@@ -131,9 +131,9 @@ public class BookServiceTest {
     @Test
     public void givenOneBook_findAllBooksWithAGivenAuthorLastName_returnsTheBook() {
         ItemsListingTO expectedBookListingTO = new ItemsListingTO();
-        Mockito.when(mockRepository.findAllBooks(new PaginationParams("0", "5"), new BooksFilterParams(null, null, null, "Martin"))).thenReturn(expectedBookListingTO);
+        Mockito.when(mockRepository.findAllBooks(new PaginationParams("0", "5"), new BooksFilterParams(null, null, null, "Martin"), null)).thenReturn(expectedBookListingTO);
 
-        ItemsListingTO bookListingTO = service.findAllBooks(new PaginationParams("0", "5"), new BooksFilterParams(null, null, null, "Martin"));
+        ItemsListingTO bookListingTO = service.findAllBooks(new PaginationParams("0", "5"), new BooksFilterParams(null, null, null, "Martin"), null);
 
         assertThat(bookListingTO).isEqualTo(expectedBookListingTO);
     }
@@ -141,9 +141,9 @@ public class BookServiceTest {
     @Test
     public void givenOneBook_findAllBooksWithAGivenAuthorFirstName_returnsTheBook() {
         ItemsListingTO expectedBookListingTO = new ItemsListingTO();
-        Mockito.when(mockRepository.findAllBooks(new PaginationParams("0", "5"), new BooksFilterParams(null, null, "Robert C.", null))).thenReturn(expectedBookListingTO);
+        Mockito.when(mockRepository.findAllBooks(new PaginationParams("0", "5"), new BooksFilterParams(null, null, "Robert C.", null), null)).thenReturn(expectedBookListingTO);
 
-        ItemsListingTO bookListingTO = service.findAllBooks(new PaginationParams("0", "5"), new BooksFilterParams(null, null, "Robert C.", null));
+        ItemsListingTO bookListingTO = service.findAllBooks(new PaginationParams("0", "5"), new BooksFilterParams(null, null, "Robert C.", null), null);
 
         assertThat(bookListingTO).isEqualTo(expectedBookListingTO);
     }
@@ -171,9 +171,9 @@ public class BookServiceTest {
     @Test
     public void givenOneBook_findAllBooksWithNegativeParams_returnsListOfBooks() {
         ItemsListingTO expectedBookListingTO = new ItemsListingTO();
-        Mockito.when(mockRepository.findAllBooks(new PaginationParams("0", "0"), new BooksFilterParams())).thenReturn(expectedBookListingTO);
+        Mockito.when(mockRepository.findAllBooks(new PaginationParams("0", "0"), new BooksFilterParams(), null)).thenReturn(expectedBookListingTO);
 
-        ItemsListingTO bookListingTO = service.findAllBooks(new PaginationParams("-1", "-3"), new BooksFilterParams());
+        ItemsListingTO bookListingTO = service.findAllBooks(new PaginationParams("-1", "-3"), new BooksFilterParams(), null);
 
         assertThat(bookListingTO).isEqualTo(expectedBookListingTO);
     }
@@ -181,9 +181,9 @@ public class BookServiceTest {
     @Test
     public void givenOneBook_findAllBooksWithAGivenTitle_returnsListOfBooks() {
         ItemsListingTO expectedBookListingTO = new ItemsListingTO();
-        Mockito.when(mockRepository.findAllBooks(new PaginationParams("0", "5"), new BooksFilterParams("Clean Code", null))).thenReturn(expectedBookListingTO);
+        Mockito.when(mockRepository.findAllBooks(new PaginationParams("0", "5"), new BooksFilterParams("Clean Code", null), null)).thenReturn(expectedBookListingTO);
 
-        ItemsListingTO bookListingTO = service.findAllBooks(new PaginationParams("0", "5"), new BooksFilterParams("Clean Code", null));
+        ItemsListingTO bookListingTO = service.findAllBooks(new PaginationParams("0", "5"), new BooksFilterParams("Clean Code", null), null);
 
         assertThat(bookListingTO).isEqualTo(expectedBookListingTO);
     }
@@ -191,9 +191,9 @@ public class BookServiceTest {
     @Test
     public void givenOneBook_findAllBooksWithAGivenIsbn_returnsListOfBooks() {
         ItemsListingTO expectedBookListingTO = new ItemsListingTO();
-        Mockito.when(mockRepository.findAllBooks(new PaginationParams("0", "5"), new BooksFilterParams(null, "978-0-13-235088-4"))).thenReturn(expectedBookListingTO);
+        Mockito.when(mockRepository.findAllBooks(new PaginationParams("0", "5"), new BooksFilterParams(null, "978-0-13-235088-4"), null)).thenReturn(expectedBookListingTO);
 
-        ItemsListingTO bookListingTO = service.findAllBooks(new PaginationParams("0", "5"), new BooksFilterParams(null, "978-0-13-235088-4"));
+        ItemsListingTO bookListingTO = service.findAllBooks(new PaginationParams("0", "5"), new BooksFilterParams(null, "978-0-13-235088-4"), null);
 
         assertThat(bookListingTO).isEqualTo(expectedBookListingTO);
     }

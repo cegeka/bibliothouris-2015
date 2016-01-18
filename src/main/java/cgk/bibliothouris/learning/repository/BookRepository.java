@@ -3,6 +3,7 @@ package cgk.bibliothouris.learning.repository;
 import cgk.bibliothouris.learning.application.transferobject.*;
 import cgk.bibliothouris.learning.application.valueobject.BooksFilterParams;
 import cgk.bibliothouris.learning.application.valueobject.PaginationParams;
+import cgk.bibliothouris.learning.application.valueobject.SortParams;
 import cgk.bibliothouris.learning.service.entity.Author;
 import cgk.bibliothouris.learning.service.entity.Book;
 import cgk.bibliothouris.learning.service.entity.BookCategory;
@@ -102,8 +103,8 @@ public class BookRepository {
         return authors.isEmpty() ? false : true;
     }
 
-    public ItemsListingTO findAllBooks(PaginationParams pagination, BooksFilterParams filter){
-        List<Book> books = findBooks(pagination, filter);
+    public ItemsListingTO findAllBooks(PaginationParams pagination, BooksFilterParams filter, SortParams sortParams){
+        List<Book> books = findBooks(pagination, filter, sortParams);
 
         List<BookWithStatusTO> bookTOS = books.stream().map(BookWithStatusTO::new).collect(Collectors.toList());
         for (BookWithStatusTO bookTO : bookTOS)
@@ -115,15 +116,15 @@ public class BookRepository {
         return new ItemsListingTO(bookTOS, new Long(booksCount));
     }
 
-    private List<Book> findBooks(PaginationParams pagination, BooksFilterParams filter) {
+    private List<Book> findBooks(PaginationParams pagination, BooksFilterParams filter, SortParams sortParams) {
         String selectStatement;
-        if(filter.getFirstName() != null || filter.getLastName() != null)
+        if(filter.getFirstName() != null || filter.getLastName() != null || (sortParams.getSortBy() != null && sortParams.getSortBy().equals("lastName")))
             selectStatement = "SELECT b FROM Book b INNER JOIN b.authors a";
         else selectStatement = "SELECT b FROM Book b";
 
 
         String filterClause = generateFilterQueryClause(filter);
-        String sortClause = generateSortQueryClause();
+        String sortClause = generateSortQueryClause(sortParams);
 
         TypedQuery<Book> selectAllQuery = entityManager.createQuery(selectStatement + " WHERE" + filterClause + " " + sortClause, Book.class)
                 .setMaxResults(Integer.valueOf(pagination.getEnd()) - Integer.valueOf(pagination.getStart()))
@@ -156,10 +157,20 @@ public class BookRepository {
         return conditionalClause;
     }
 
-    private String generateSortQueryClause() {
-        String sortClause = "ORDER BY lower(b.title), b.id";
+    private String generateSortQueryClause(SortParams sortParams) {
+        String sortClause = " ORDER BY ";
 
-        return sortClause;
+        if (sortParams.getSortBy() == null)
+            return sortClause + "lower(b.title), b.id";
+
+        switch (sortParams.getSortBy()) {
+            case "title":
+                return sortClause + "lower(b.title)" + " " + sortParams.getOrder();
+            case "lastName":
+                return sortClause + "lower(a.lastName)" + " " + sortParams.getOrder();
+            default:
+                return sortClause + "lower(b.title), b.id";
+        }
     }
 
     public BookBorrowerTO findBookBorrowerDetails(Integer bookId) {
@@ -187,9 +198,8 @@ public class BookRepository {
         String selectAvailableStatement = "SELECT b FROM Book b WHERE b.id NOT IN (SELECT bHist.book.id FROM BorrowHistoryItem bHist WHERE bHist.endDate IS NULL)";
 
         String filterClause = generateFilterQueryClause(filter);
-        String sortClause = generateSortQueryClause();
 
-        TypedQuery<Book> selectAllQuery = entityManager.createQuery(selectAvailableStatement + " AND" + filterClause + " " + sortClause, Book.class)
+        TypedQuery<Book> selectAllQuery = entityManager.createQuery(selectAvailableStatement + " AND" + filterClause, Book.class)
                 .setMaxResults(Integer.valueOf(pagination.getEnd()) - Integer.valueOf(pagination.getStart()))
                 .setFirstResult(Integer.valueOf(pagination.getStart()));
         return selectAllQuery.getResultList();

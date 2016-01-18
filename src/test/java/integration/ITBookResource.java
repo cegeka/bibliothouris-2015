@@ -86,7 +86,7 @@ public class ITBookResource extends JerseyTest {
         client.post(PATH, bookWithOneAuthorAndThreeCategories).readEntity(Book.class);
         client.post(PATH, bookWithOneAuthorAndOneCategory).readEntity(Book.class);
 
-        ItemsListingTO<BookWithStatusTO> bookListingTO = client.getBooksWithParams(PATH, null, null, "0", "1").readEntity(new GenericType<ItemsListingTO<BookWithStatusTO>>() {});
+        ItemsListingTO<BookWithStatusTO> bookListingTO = client.getBooksWithParams(PATH, null, null, "0", "1", null, null).readEntity(new GenericType<ItemsListingTO<BookWithStatusTO>>() {});
 
         assertThat(bookListingTO.getItems().size()).isEqualTo(1);
     }
@@ -98,7 +98,7 @@ public class ITBookResource extends JerseyTest {
         BookWithStatusTO expectedBookTO = new BookWithStatusTO(newBook);
         BookWithStatusTO expectedBookTO2 = new BookWithStatusTO(newBook2);
 
-        ItemsListingTO<BookWithStatusTO> bookListingTO = client.getBooksWithParams(PATH, "Clean Code", null, null, null).readEntity(new GenericType<ItemsListingTO<BookWithStatusTO>>() {
+        ItemsListingTO<BookWithStatusTO> bookListingTO = client.getBooksWithParams(PATH, "Clean Code", null, null, null, null, null).readEntity(new GenericType<ItemsListingTO<BookWithStatusTO>>() {
         });
 
         assertThat(bookListingTO.getItems()).contains(expectedBookTO);
@@ -113,7 +113,7 @@ public class ITBookResource extends JerseyTest {
         BookWithStatusTO expectedBookTO = new BookWithStatusTO(newBook);
         BookWithStatusTO expectedBookTO2 = new BookWithStatusTO(newBook2);
 
-        ItemsListingTO<BookWithStatusTO> bookListingTO = client.getBooksWithParams(PATH, null, "978-0-13-235088-5", null, null).readEntity(new GenericType<ItemsListingTO<BookWithStatusTO>>() {});
+        ItemsListingTO<BookWithStatusTO> bookListingTO = client.getBooksWithParams(PATH, null, "978-0-13-235088-5", null, null, null, null).readEntity(new GenericType<ItemsListingTO<BookWithStatusTO>>() {});
 
         assertThat(bookListingTO.getItems()).contains(expectedBookTO2);
         assertThat(bookListingTO.getItems()).doesNotContain(expectedBookTO);

@@ -7,6 +7,7 @@ import cgk.bibliothouris.learning.application.transferobject.ItemsListingTO;
 import cgk.bibliothouris.learning.application.transferobject.StringTO;
 import cgk.bibliothouris.learning.application.valueobject.BooksFilterParams;
 import cgk.bibliothouris.learning.application.valueobject.PaginationParams;
+import cgk.bibliothouris.learning.application.valueobject.SortParams;
 import cgk.bibliothouris.learning.service.BookService;
 import cgk.bibliothouris.learning.service.entity.Book;
 import cgk.bibliothouris.learning.service.exception.ValidationException;
@@ -93,11 +94,11 @@ public class BookResourceTest {
     public void givenAListOfBooks_findAllBooks_return200OKResponse() {
         ItemsListingTO bookListingTO = new ItemsListingTO();
         bookListingTO.setItems(Arrays.asList(new BookTO()));
-        Mockito.when(mockBookService.findAllBooks(pagination, new BooksFilterParams(null, null, "Robert C.", null))).thenReturn(bookListingTO);
+        Mockito.when(mockBookService.findAllBooks(pagination, new BooksFilterParams(null, null, "Robert C.", null), new SortParams())).thenReturn(bookListingTO);
 
-        Response response = bookResource.getAllBooks(pagination.getStart(), pagination.getEnd(), null, null, "Robert C.", null);
+        Response response = bookResource.getAllBooks(pagination.getStart(), pagination.getEnd(), null, null, "Robert C.", null, null, null);
 
-        Mockito.verify(mockBookService, times(1)).findAllBooks(pagination, new BooksFilterParams(null, null, "Robert C.", null));
+        Mockito.verify(mockBookService, times(1)).findAllBooks(pagination, new BooksFilterParams(null, null, "Robert C.", null), new SortParams());
         assertThat(response.getStatusInfo()).isEqualTo(Status.OK);
     }
 
@@ -118,11 +119,11 @@ public class BookResourceTest {
         PaginationParams noPagination = new PaginationParams("", "");
         ItemsListingTO bookListingTO = new ItemsListingTO();
         bookListingTO.setItems(Arrays.asList(new BookTO()));
-        Mockito.when(mockBookService.findAllBooks(noPagination, new BooksFilterParams())).thenReturn(bookListingTO);
+        Mockito.when(mockBookService.findAllBooks(noPagination, new BooksFilterParams(), new SortParams())).thenReturn(bookListingTO);
 
-        Response response = bookResource.getAllBooks("", "", null, null, null, null);
+        Response response = bookResource.getAllBooks("", "", null, null, null, null, null, null);
 
-        Mockito.verify(mockBookService, times(1)).findAllBooks(noPagination, new BooksFilterParams());
+        Mockito.verify(mockBookService, times(1)).findAllBooks(noPagination, new BooksFilterParams(), new SortParams());
         assertThat(response.getEntity()).isEqualTo(bookListingTO);
     }
 
@@ -143,11 +144,11 @@ public class BookResourceTest {
     public void givenAnEmptyListOfBooks_findAllBooks_return404NotFound() {
         ItemsListingTO bookListingTO = new ItemsListingTO();
         bookListingTO.setItems(new ArrayList<>());
-        Mockito.when(mockBookService.findAllBooks(pagination, new BooksFilterParams())).thenReturn(bookListingTO);
+        Mockito.when(mockBookService.findAllBooks(pagination, new BooksFilterParams(), new SortParams())).thenReturn(bookListingTO);
 
-        Response response = bookResource.getAllBooks(pagination.getStart(), pagination.getEnd(), null, null, null, null);
+        Response response = bookResource.getAllBooks(pagination.getStart(), pagination.getEnd(), null, null, null, null, null, null);
 
-        Mockito.verify(mockBookService, times(1)).findAllBooks(pagination, new BooksFilterParams());
+        Mockito.verify(mockBookService, times(1)).findAllBooks(pagination, new BooksFilterParams(), new SortParams());
         assertThat(response.getStatusInfo()).isEqualTo(Status.NOT_FOUND);
     }
 

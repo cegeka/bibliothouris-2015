@@ -35,7 +35,7 @@ public class AuthorResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/firstNames")
+    @Path("/firstnames")
     public Response getAllAuthorsFirstNames(){
         List<StringTO> authors = authorService.findAllBookAuthorFirstName();
 
@@ -48,7 +48,7 @@ public class AuthorResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/lastNames")
+    @Path("/lastnames")
     public Response getAllAuthorsLastNames(){
         List<StringTO> authors = authorService.findAllBookAuthorLastName();
 

@@ -30,12 +30,14 @@ public class TestIntegrationClient {
                      .get(Response.class);
     }
 
-    public Response getBooksWithParams(String path, String title, String isbn, String start, String end) {
+    public Response getBooksWithParams(String path, String title, String isbn, String start, String end, String sortBy, String order) {
         return target.path(path)
                 .queryParam("title", title)
                 .queryParam("isbn", isbn)
                 .queryParam("start", start)
                 .queryParam("end", end)
+                .queryParam("sort", sortBy)
+                .queryParam("order", order)
                 .request(MediaType.APPLICATION_JSON)
                 .get(Response.class);
     }

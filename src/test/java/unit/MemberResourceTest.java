@@ -125,7 +125,7 @@ public class MemberResourceTest {
         ItemsListingTO memberListingTO = new ItemsListingTO();
         Mockito.when(service.findAllMembers(pagination, "", new SortParams())).thenReturn(memberListingTO);
 
-        Response response = resource.getAllMembers(pagination.getStart(), pagination.getEnd(), "", "", "");
+        Response response = resource.getAllMembers(pagination.getStart(), pagination.getEnd(), "", null, null);
 
         Mockito.verify(service, times(1)).findAllMembers(pagination, "", new SortParams());
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.NOT_FOUND);
@@ -137,7 +137,7 @@ public class MemberResourceTest {
         memberListingTO.setItems(Arrays.asList(new MemberTO()));
         Mockito.when(service.findAllMembers(pagination, "", new SortParams())).thenReturn(memberListingTO);
 
-        Response response = resource.getAllMembers(pagination.getStart(), pagination.getEnd(), "", "", "");
+        Response response = resource.getAllMembers(pagination.getStart(), pagination.getEnd(), "", null, null);
 
         Mockito.verify(service, times(1)).findAllMembers(pagination, "", new SortParams());
         assertThat(response.getStatusInfo()).isEqualTo(Response.Status.OK);

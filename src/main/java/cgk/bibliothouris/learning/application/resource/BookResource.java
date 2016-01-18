@@ -1,8 +1,7 @@
 package cgk.bibliothouris.learning.application.resource;
 
 import cgk.bibliothouris.learning.application.transferobject.*;
-import cgk.bibliothouris.learning.application.valueobject.BooksFilterParams;
-import cgk.bibliothouris.learning.application.valueobject.PaginationParams;
+import cgk.bibliothouris.learning.application.valueobject.*;
 import cgk.bibliothouris.learning.application.valueobject.BooksFilterParams;
 import cgk.bibliothouris.learning.application.valueobject.PaginationParams;
 import cgk.bibliothouris.learning.service.BookService;
@@ -33,10 +32,12 @@ public class BookResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllBooks(@QueryParam("start") String start, @QueryParam("end") String end,
                                 @QueryParam("title") String title, @QueryParam("isbn") String isbn,
-                                @QueryParam("firstName") String firstName, @QueryParam("lastName") String lastName){
+                                @QueryParam("firstname") String firstName, @QueryParam("lastname") String lastName,
+                                @QueryParam("sort") String sort, @QueryParam("order") String order){
         PaginationParams pagination = new PaginationParams(start, end);
-        BooksFilterParams filter = new BooksFilterParams(title, isbn, firstName, lastName);    
-        ItemsListingTO bookListingTO = bookService.findAllBooks(pagination, filter);
+        BooksFilterParams filter = new BooksFilterParams(title, isbn, firstName, lastName);
+        SortParams sortParams = new SortParams(sort, order);
+        ItemsListingTO bookListingTO = bookService.findAllBooks(pagination, filter, sortParams);
         if(bookListingTO.getItems().size() == 0){
             return Response.status(Status.NOT_FOUND).build();
         }

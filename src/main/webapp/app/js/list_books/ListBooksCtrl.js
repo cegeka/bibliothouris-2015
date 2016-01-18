@@ -7,7 +7,7 @@
         var vm = this;
 
         vm.noBooks = false;
-        vm.searchFilters = ["Title", "ISBN"];
+        vm.searchFilters = ["Title", "ISBN", "FirstName", "LastName"];
         vm.filter = vm.searchFilters[0];
         vm.filterValue = "";
         vm.maxSize = 5;
@@ -18,7 +18,7 @@
         vm.onSelectFilter = onSelectFilter;
         vm.showBook = showBook;
         vm.pageChanged = pageChanged;
-        vm.populateFilterValues = populateFilterValues;
+        vm.populateFilterValues = populateFilterValuesForAutocomplete;
         vm.enableTooltip = enableTooltip;
         vm.getTooltipContent = getTooltipContent;
 
@@ -29,21 +29,23 @@
 
             $rootScope.$on('$routeUpdate', loadElementsInPage);
 
-            $scope.$watch('vm.filter', populateFilterValues);
+            $scope.$watch('vm.filter', populateFilterValuesForAutocomplete);
         }
 
         function loadElementsInPage() {
             if ($location.search().title != null) {
                 vm.filter = "Title";
                 vm.filterValue = $location.search().title;
+                console.log('title');
             } else if ($location.search().isbn != null) {
                 vm.filter = "ISBN";
                 vm.filterValue = $location.search().isbn;
             } else if ($location.search().firstName != null) {
-                vm.filter = "Author first name";
+                vm.filter = "FirstName";
                 vm.filterValue = $location.search().firstName;
+                console.log('first name');
             } else if ($location.search().lastName != null) {
-                vm.filter = "Author last name";
+                vm.filter = "LastName";
                 vm.filterValue = $location.search().lastName;
             }
 
@@ -59,7 +61,7 @@
                 });
         }
 
-        function populateFilterValues() {
+        function populateFilterValuesForAutocomplete() {
             if (vm.filter == "Title")
                 bookService
                     .getBookTitles()
@@ -72,9 +74,16 @@
                     .then(function(data){
                         vm.populatedFilterValues = data;
                     });
-            else if (vm.filter == "Author first name")
+            else if (vm.filter == "FirstName")
                 bookService
-                    .getBookIsbnCodes()
+                    .getBookAuthorsFirstNames()
+                    .then(function(data){
+                        vm.populatedFilterValues = data;
+                        console.log(data);
+                    });
+            else if (vm.filter == "LastName")
+                bookService
+                    .getBookAuthorsLastNames()
                     .then(function(data){
                         vm.populatedFilterValues = data;
                     });

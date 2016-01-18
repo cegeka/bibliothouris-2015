@@ -6,8 +6,6 @@ public class SortParams {
     private String order;
 
     public SortParams() {
-        this.sortBy = "";
-        this.order = "";
     }
 
     public SortParams(String sortBy, String order) {
