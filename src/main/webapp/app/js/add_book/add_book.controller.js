@@ -100,12 +100,12 @@
                 .addBook(vm.book)
                 .then(function(data){
                     $location.path("/books/" + data.id);
-                    createNotification("Book <strong>" + data.title + "</strong> was added in the library!", "success")
+                    createNotification("Book <strong>" + data.title + "</strong> was added in the library!", "success");
                 }, function(){
                     if(data.status == 400)
-                        createNotification(data.data, "danger")
+                        createNotification(data.data, "danger");
                     else
-                        createNotification("Something wrong happened when you tried to add a new book!", "danger")
+                        createNotification("Something wrong happened when you tried to add a new book!", "danger");
                 });
         }
 
@@ -171,7 +171,7 @@
             }
 
             if(index == -1)
-                vm.book.categories.push({category: item.category});
+                vm.book.categories.push(item);
             else
                 vm.book.categories.splice(index, 1);
         };
@@ -193,7 +193,7 @@
         };
         vm.onchange = function(){
             vm.book.isbn = vm.isbn.prefix +"-"+ vm.isbn.registrationGroupElement+"-"+vm.isbn.registrantElement +"-"+vm.isbn.publicationElement +"-"+vm.isbn.checkDigit ;
-        }
+        };
 
         vm.isbnPattern = "(?=[0-9]{13}$|(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)97[89][- ]?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9]";
     }

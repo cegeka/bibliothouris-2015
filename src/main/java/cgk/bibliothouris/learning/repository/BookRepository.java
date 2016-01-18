@@ -27,45 +27,9 @@ public class BookRepository {
     public Book createBook(Book book) {
         Book bookWithAuthors = getBookWithPersistedAuthors(book);
 
-        Book bookWithAuthorsAndCategories = getBookWithPersistedCategories(bookWithAuthors);
-
-        entityManager.persist(bookWithAuthorsAndCategories);
+        entityManager.persist(bookWithAuthors);
 
         return bookWithAuthors;
-    }
-
-    private Book getBookWithPersistedCategories(Book book) {
-        Set<BookCategory> persistedCategories = persistCategoryWhenFoundInCategoryTable(book);
-        book.setCategories(persistedCategories);
-
-        return book;
-    }
-
-    private Set<BookCategory> persistCategoryWhenFoundInCategoryTable(Book book) {
-        Set<BookCategory> persistedCategories = new HashSet<>();
-
-        for(BookCategory category : book.getCategories()) {
-            List<BookCategory> categories = queryCategoryTypeInCategoryTable(category);
-
-            if(isCategoryTypeFoundInTable(categories)) {
-                persistedCategories.add(categories.get(0));
-            } else {
-                entityManager.persist(category);
-                persistedCategories.add(category);
-            }
-        }
-        return persistedCategories;
-    }
-
-    private List<BookCategory> queryCategoryTypeInCategoryTable(BookCategory category) {
-        TypedQuery<BookCategory> query = entityManager.createNamedQuery(BookCategory.FIND_CATEGORY_BY_TYPE,
-                BookCategory.class);
-        query.setParameter("category", category.getCategory());
-        return query.getResultList();
-    }
-
-    private boolean isCategoryTypeFoundInTable(List<BookCategory> categories) {
-        return categories.isEmpty() ? false : true;
     }
 
     private Book getBookWithPersistedAuthors(Book book){
