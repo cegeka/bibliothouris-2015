@@ -1,14 +1,21 @@
 package cgk.bibliothouris.learning.repository;
 
 import cgk.bibliothouris.learning.service.entity.BookCategory;
+import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
-public interface CategoryRepository {
+@Repository
+public class CategoryRepository {
 
-    BookCategory createCategory(BookCategory category);
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    List<BookCategory> findAllCategories();
-
-    Long countAllCategories();
+    public List<BookCategory> findAllCategories() {
+        TypedQuery<BookCategory> query = entityManager.createNamedQuery(BookCategory.FIND_ALL_CATEGORIES, BookCategory.class);
+        return query.getResultList();
+    }
 }

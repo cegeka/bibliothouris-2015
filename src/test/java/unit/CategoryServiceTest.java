@@ -1,10 +1,7 @@
 package unit;
 
-import cgk.bibliothouris.learning.repository.AuthorRepository;
 import cgk.bibliothouris.learning.repository.CategoryRepository;
-import cgk.bibliothouris.learning.service.AuthorService;
 import cgk.bibliothouris.learning.service.CategoryService;
-import cgk.bibliothouris.learning.service.entity.Author;
 import cgk.bibliothouris.learning.service.entity.BookCategory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
