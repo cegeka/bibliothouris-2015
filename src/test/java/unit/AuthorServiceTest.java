@@ -1,5 +1,6 @@
 package unit;
 
+import cgk.bibliothouris.learning.application.transferobject.StringTO;
 import cgk.bibliothouris.learning.repository.AuthorRepository;
 import cgk.bibliothouris.learning.service.AuthorService;
 import cgk.bibliothouris.learning.service.entity.Author;
@@ -33,4 +34,26 @@ public class AuthorServiceTest {
 
         assertThat(foundAuthors).isEqualTo(expectedAuthors);
     }
+
+    @Test
+    public void givenOneAuthor_findAllBookAuthorFirstName_returnsTheAuthor() {
+        List<StringTO> expectedAuthors = new ArrayList<>();
+        Mockito.when(mockRepository.findAllBookAuthorFirstName()).thenReturn(expectedAuthors);
+
+        List<Author> foundAuthors = service.findAllAuthors();
+
+        assertThat(foundAuthors).isEqualTo(expectedAuthors);
+    }
+
+    @Test
+    public void givenOneAuthor_findAllBookAuthorLastName_returnsTheAuthor() {
+        List<StringTO> expectedAuthors = new ArrayList<>();
+        Mockito.when(mockRepository.findAllBookAuthorLastName()).thenReturn(expectedAuthors);
+
+        List<Author> foundAuthors = service.findAllAuthors();
+
+        assertThat(foundAuthors).isEqualTo(expectedAuthors);
+    }
+
+
 }

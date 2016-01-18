@@ -13,9 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
@@ -27,13 +25,50 @@ public class BookRepository {
     public Book createBook(Book book) {
         Book bookWithAuthors = getBookWithPersistedAuthors(book);
 
-        entityManager.persist(bookWithAuthors);
+        Book bookWithAuthorsAndCategories = getBookWithPersistedCategories(bookWithAuthors);
+
+        entityManager.persist(bookWithAuthorsAndCategories);
 
         return bookWithAuthors;
     }
 
+    private Book getBookWithPersistedCategories(Book book) {
+        Set<BookCategory> persistedCategories = persistCategoryWhenFoundInCategoryTable(book);
+        book.setCategories(persistedCategories);
+
+        return book;
+    }
+
+    private Set<BookCategory> persistCategoryWhenFoundInCategoryTable(Book book) {
+        Set<BookCategory> persistedCategories = new HashSet<>();
+
+        for(BookCategory category : book.getCategories()) {
+            List<BookCategory> categories = queryCategoryTypeInCategoryTable(category);
+
+            if(isCategoryTypeFoundInTable(categories)) {
+                persistedCategories.add(categories.get(0));
+            } else {
+                entityManager.persist(category);
+                persistedCategories.add(category);
+            }
+        }
+        return persistedCategories;
+    }
+
+    private List<BookCategory> queryCategoryTypeInCategoryTable(BookCategory category) {
+        TypedQuery<BookCategory> query = entityManager.createNamedQuery(BookCategory.FIND_CATEGORY_BY_TYPE,
+                BookCategory.class);
+        query.setParameter("category", category.getCategory());
+        return query.getResultList();
+    }
+
+    private boolean isCategoryTypeFoundInTable(List<BookCategory> categories) {
+        return categories.isEmpty() ? false : true;
+    }
+
     private Book getBookWithPersistedAuthors(Book book){
         Set<Author> persistedAuthors = persistAuthorWhenFoundInAuthorTable(book);
+
         book.setAuthors(persistedAuthors);
 
         return book;
@@ -81,12 +116,18 @@ public class BookRepository {
     }
 
     private List<Book> findBooks(PaginationParams pagination, BooksFilterParams filter) {
-        String selectStatement = "SELECT b FROM Book b";
+        String selectStatement;
+        if(filter.getFirstName() != null || filter.getLastName() != null)
+            selectStatement = "SELECT b FROM Book b INNER JOIN b.authors a";
+        else selectStatement = "SELECT b FROM Book b";
+
 
         String filterClause = generateFilterQueryClause(filter);
         String sortClause = generateSortQueryClause();
 
-        TypedQuery<Book> selectAllQuery = entityManager.createQuery(selectStatement + " WHERE" + filterClause + " " + sortClause, Book.class);
+        TypedQuery<Book> selectAllQuery = entityManager.createQuery(selectStatement + " WHERE" + filterClause + " " + sortClause, Book.class)
+                .setMaxResults(Integer.valueOf(pagination.getEnd()) - Integer.valueOf(pagination.getStart()))
+                .setFirstResult(Integer.valueOf(pagination.getStart()));
         return selectAllQuery.getResultList();
     }
 
@@ -107,6 +148,10 @@ public class BookRepository {
             conditionalClause += " AND lower(b.title) LIKE '%" + filter.getTitle().toLowerCase() + "%'";
         if (filter.getIsbn() != null)
             conditionalClause += " AND b.isbn LIKE '%" + filter.getIsbn() + "%' OR REPLACE(b.isbn, '-', '') LIKE '%" + filter.getIsbn() + "%'";
+        if (filter.getFirstName() != null)
+            conditionalClause += " AND a.firstName = '" + filter.getFirstName() + "'";
+        if (filter.getLastName() != null)
+            conditionalClause += " AND a.lastName = '" + filter.getLastName() + "'";
 
         return conditionalClause;
     }
@@ -187,7 +232,10 @@ public class BookRepository {
     }
 
     private Long countBooks(BooksFilterParams filter) {
-        String statement = "SELECT COUNT(*) FROM Book b";
+        String statement;
+        if(filter.getFirstName() != null || filter.getLastName() != null)
+            statement = "SELECT COUNT(*) FROM Book b INNER JOIN b.authors a";
+        else statement = "SELECT COUNT(*) FROM Book b";
 
         String filterClause = generateFilterQueryClause(filter);
 

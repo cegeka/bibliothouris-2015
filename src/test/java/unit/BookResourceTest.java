@@ -93,11 +93,11 @@ public class BookResourceTest {
     public void givenAListOfBooks_findAllBooks_return200OKResponse() {
         ItemsListingTO bookListingTO = new ItemsListingTO();
         bookListingTO.setItems(Arrays.asList(new BookTO()));
-        Mockito.when(mockBookService.findAllBooks(pagination, new BooksFilterParams())).thenReturn(bookListingTO);
+        Mockito.when(mockBookService.findAllBooks(pagination, new BooksFilterParams(null, null, "Robert C.", null))).thenReturn(bookListingTO);
 
-        Response response = bookResource.getAllBooks(pagination.getStart(), pagination.getEnd(), null, null);
+        Response response = bookResource.getAllBooks(pagination.getStart(), pagination.getEnd(), null, null, "Robert C.", null);
 
-        Mockito.verify(mockBookService, times(1)).findAllBooks(pagination, new BooksFilterParams());
+        Mockito.verify(mockBookService, times(1)).findAllBooks(pagination, new BooksFilterParams(null, null, "Robert C.", null));
         assertThat(response.getStatusInfo()).isEqualTo(Status.OK);
     }
 
@@ -120,7 +120,7 @@ public class BookResourceTest {
         bookListingTO.setItems(Arrays.asList(new BookTO()));
         Mockito.when(mockBookService.findAllBooks(noPagination, new BooksFilterParams())).thenReturn(bookListingTO);
 
-        Response response = bookResource.getAllBooks("", "", null, null);
+        Response response = bookResource.getAllBooks("", "", null, null, null, null);
 
         Mockito.verify(mockBookService, times(1)).findAllBooks(noPagination, new BooksFilterParams());
         assertThat(response.getEntity()).isEqualTo(bookListingTO);
@@ -145,7 +145,7 @@ public class BookResourceTest {
         bookListingTO.setItems(new ArrayList<>());
         Mockito.when(mockBookService.findAllBooks(pagination, new BooksFilterParams())).thenReturn(bookListingTO);
 
-        Response response = bookResource.getAllBooks(pagination.getStart(), pagination.getEnd(), null, null);
+        Response response = bookResource.getAllBooks(pagination.getStart(), pagination.getEnd(), null, null, null, null);
 
         Mockito.verify(mockBookService, times(1)).findAllBooks(pagination, new BooksFilterParams());
         assertThat(response.getStatusInfo()).isEqualTo(Status.NOT_FOUND);

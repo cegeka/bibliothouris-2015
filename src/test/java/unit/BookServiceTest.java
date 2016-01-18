@@ -20,6 +20,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -123,6 +124,26 @@ public class BookServiceTest {
         Mockito.when(mockRepository.findAllBooks(new PaginationParams("0", "5"), new BooksFilterParams())).thenReturn(expectedBookListingTO);
 
         ItemsListingTO bookListingTO = service.findAllBooks(new PaginationParams("0", "5"), new BooksFilterParams());
+
+        assertThat(bookListingTO).isEqualTo(expectedBookListingTO);
+    }
+
+    @Test
+    public void givenOneBook_findAllBooksWithAGivenAuthorLastName_returnsTheBook() {
+        ItemsListingTO expectedBookListingTO = new ItemsListingTO();
+        Mockito.when(mockRepository.findAllBooks(new PaginationParams("0", "5"), new BooksFilterParams(null, null, null, "Martin"))).thenReturn(expectedBookListingTO);
+
+        ItemsListingTO bookListingTO = service.findAllBooks(new PaginationParams("0", "5"), new BooksFilterParams(null, null, null, "Martin"));
+
+        assertThat(bookListingTO).isEqualTo(expectedBookListingTO);
+    }
+
+    @Test
+    public void givenOneBook_findAllBooksWithAGivenAuthorFirstName_returnsTheBook() {
+        ItemsListingTO expectedBookListingTO = new ItemsListingTO();
+        Mockito.when(mockRepository.findAllBooks(new PaginationParams("0", "5"), new BooksFilterParams(null, null, "Robert C.", null))).thenReturn(expectedBookListingTO);
+
+        ItemsListingTO bookListingTO = service.findAllBooks(new PaginationParams("0", "5"), new BooksFilterParams(null, null, "Robert C.", null));
 
         assertThat(bookListingTO).isEqualTo(expectedBookListingTO);
     }

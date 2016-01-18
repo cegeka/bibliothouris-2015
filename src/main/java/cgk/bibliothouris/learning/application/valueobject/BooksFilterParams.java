@@ -4,12 +4,45 @@ public class BooksFilterParams {
 
     private String title;
     private String isbn;
+    private String firstName;
+    private String lastName;
 
     public BooksFilterParams() {}
+
+    public BooksFilterParams(String title, String isbn, String firstName, String lastName) {
+        this.title = title;
+        this.isbn = isbn;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 
     public BooksFilterParams(String title, String isbn) {
         this.title = title;
         this.isbn = isbn;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getTitle() {

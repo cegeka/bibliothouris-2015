@@ -39,6 +39,12 @@
             } else if ($location.search().isbn != null) {
                 vm.filter = "ISBN";
                 vm.filterValue = $location.search().isbn;
+            } else if ($location.search().firstName != null) {
+                vm.filter = "Author first name";
+                vm.filterValue = $location.search().firstName;
+            } else if ($location.search().lastName != null) {
+                vm.filter = "Author last name";
+                vm.filterValue = $location.search().lastName;
             }
 
             bookService
@@ -61,6 +67,12 @@
                         vm.populatedFilterValues = data;
                     });
             else if (vm.filter == "ISBN")
+                bookService
+                    .getBookIsbnCodes()
+                    .then(function(data){
+                        vm.populatedFilterValues = data;
+                    });
+            else if (vm.filter == "Author first name")
                 bookService
                     .getBookIsbnCodes()
                     .then(function(data){

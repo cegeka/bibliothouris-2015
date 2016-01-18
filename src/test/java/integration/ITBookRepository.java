@@ -147,6 +147,32 @@ public class ITBookRepository {
     }
 
     @Test
+    public void givenTwoBooks_findBooksFilteredByAuthorFirstName_findTheCorrectBooks() {
+        Book book1 = bookRepository.createBook(bookWithFourAuthorsAndThreeCategories);
+        Book book2 = bookRepository.createBook(bookWithOneAuthorAndOneCategory);
+        BookWithStatusTO expectedBookTO1 = new BookWithStatusTO(book1);
+        BookWithStatusTO expectedBookTO2 = new BookWithStatusTO(book2);
+
+        ItemsListingTO foundBookListingTO = bookRepository.findAllBooks(new PaginationParams("0", "5"), new BooksFilterParams(null, null, "Robert C.", null));
+
+        assertThat(foundBookListingTO.getItemsCount()).isGreaterThanOrEqualTo(1);
+        assertThat(foundBookListingTO.getItems()).contains(expectedBookTO2);
+    }
+
+    @Test
+    public void givenTwoBooks_findBooksFilteredByAuthorLastName_findTheCorrectBooks() {
+        Book book1 = bookRepository.createBook(bookWithFourAuthorsAndThreeCategories);
+        Book book2 = bookRepository.createBook(bookWithOneAuthorAndOneCategory);
+        BookWithStatusTO expectedBookTO1 = new BookWithStatusTO(book1);
+        BookWithStatusTO expectedBookTO2 = new BookWithStatusTO(book2);
+
+        ItemsListingTO foundBookListingTO = bookRepository.findAllBooks(new PaginationParams("0", "5"), new BooksFilterParams(null, null, null, "Martin"));
+
+        assertThat(foundBookListingTO.getItemsCount()).isEqualTo(1);
+        assertThat(foundBookListingTO.getItems()).contains(expectedBookTO2);
+    }
+
+    @Test
     public void givenTwoBooks_findBooksFilteredByIsbn_findTheCorrectBooks() {
         Book book1 = bookRepository.createBook(bookWithFourAuthorsAndThreeCategories);
         Book book2 = bookRepository.createBook(bookWithOneAuthorAndOneCategory);

@@ -9,7 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class BaseAcceptance {
 
-    protected static String baseUrl = "http://localhost:8080/";
+    protected static String baseUrl = "http://localhost:8090/";
     private static final WebDriver driver = new FirefoxDriver();
     private static final WebDriverWait wait = new WebDriverWait(driver, 10);
 

@@ -69,12 +69,15 @@ public class ITBookResource extends JerseyTest {
 
     @Test
     public void givenAListOfBooks_GET_returnsTheListOfBooks() {
-        Book newBook = client.post(PATH, bookWithOneAuthorAndOneCategory).readEntity(Book.class);
-        BookWithStatusTO expectedBookTO = new BookWithStatusTO(newBook);
+            Book newBook = client.post(PATH, bookWithOneAuthorAndOneCategory).readEntity(Book.class);
+            BookWithStatusTO expectedBookTO = new BookWithStatusTO(newBook);
+            Long startMs = System.currentTimeMillis();
+            ItemsListingTO<BookWithStatusTO> bookListingTO = client.get(PATH).readEntity(new GenericType<ItemsListingTO<BookWithStatusTO>>() {
+            });
+            Long endMs = System.currentTimeMillis();
+            System.out.println(endMs - startMs);
 
-        ItemsListingTO<BookWithStatusTO> bookListingTO = client.get(PATH).readEntity(new GenericType<ItemsListingTO<BookWithStatusTO>>() {});
-
-        assertThat(bookListingTO.getItems()).contains(expectedBookTO);
+            assertThat(bookListingTO.getItems()).contains(expectedBookTO);
     }
 
     @Test

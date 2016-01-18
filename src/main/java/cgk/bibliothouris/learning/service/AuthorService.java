@@ -1,5 +1,6 @@
 package cgk.bibliothouris.learning.service;
 
+import cgk.bibliothouris.learning.application.transferobject.StringTO;
 import cgk.bibliothouris.learning.repository.AuthorRepository;
 import cgk.bibliothouris.learning.service.entity.Author;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,5 +19,15 @@ public class AuthorService {
     @Transactional(readOnly = true)
     public List<Author> findAllAuthors(){
         return authorRepository.findAllAuthors();
+    }
+
+    @Transactional(readOnly = true)
+    public List<StringTO> findAllBookAuthorFirstName() {
+        return authorRepository.findAllBookAuthorFirstName();
+    }
+
+    @Transactional(readOnly = true)
+    public List<StringTO> findAllBookAuthorLastName() {
+        return authorRepository.findAllBookAuthorLastName();
     }
 }

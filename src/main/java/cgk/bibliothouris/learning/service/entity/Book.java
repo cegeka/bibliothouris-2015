@@ -26,7 +26,9 @@ import java.util.Set;
         @NamedQuery(name = Book.COUNT_AVAILABLE_BOOKS, query = "SELECT COUNT(b.id) FROM Book b WHERE b.id NOT IN (SELECT bHist.book.id FROM BorrowHistoryItem bHist WHERE bHist.endDate IS NULL)"),
         @NamedQuery(name = Book.GET_BOOK_TITLES, query = "SELECT DISTINCT new cgk.bibliothouris.learning.application.transferobject.StringTO(b.title) FROM Book b"),
         @NamedQuery(name = Book.GET_BOOK_ISBN_CODES, query = "SELECT DISTINCT new cgk.bibliothouris.learning.application.transferobject.StringTO(b.isbn) FROM Book b"),
-        @NamedQuery(name = Book.COUNT_ALL_CURRENTLY_BORROWED_BOOKS, query = "SELECT COUNT(bHist.book.id) FROM BorrowHistoryItem bHist WHERE (bHist.member.UUID = :memberId) AND (bHist.endDate IS NULL)")
+        @NamedQuery(name = Book.COUNT_ALL_CURRENTLY_BORROWED_BOOKS, query = "SELECT COUNT(bHist.book.id) FROM BorrowHistoryItem bHist WHERE (bHist.member.UUID = :memberId) AND (bHist.endDate IS NULL)"),
+        @NamedQuery(name = Book.LIST_BOOKS_WITH_GIVEN_AUTHOR_FIRSTNAME, query = "SELECT b FROM Book b INNER JOIN b.authors a WHERE a.firstName = :firstName"),
+        @NamedQuery(name = Book.LIST_BOOKS_WITH_GIVEN_AUTHOR_LASTNAME, query = "SELECT b FROM Book b INNER JOIN b.authors a WHERE a.lastName = :lastName")
 })
 @XmlRootElement
 public class Book {
@@ -34,6 +36,8 @@ public class Book {
     public static final String LIST_ALL_BOOKS = "LIST_ALL_BOOKS";
     public static final String LIST_ALL_AVAILABLE_BOOKS = "LIST_ALL_AVAILABLE_BOOKS";
     public static final String LIST_BOOK_BY_ISBN = "LIST_BOOK_BY_ISBN";
+    public static final String LIST_BOOKS_WITH_GIVEN_AUTHOR_FIRSTNAME = "LIST_BOOKS_WITH_GIVEN_AUTHOR_FIRSTNAME";
+    public static final String LIST_BOOKS_WITH_GIVEN_AUTHOR_LASTNAME = "LIST_BOOKS_WITH_GIVEN_AUTHOR_LASTNAME";
     public static final String DELETE_ALL_BOOKS = "DELETE_ALL_BOOKS";
     public static final String COUNT_BOOKS = "COUNT_BOOKS";
     public static final String COUNT_AVAILABLE_BOOKS = "COUNT_AVAILABLE_BOOKS";

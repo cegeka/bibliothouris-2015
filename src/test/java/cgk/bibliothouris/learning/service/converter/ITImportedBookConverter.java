@@ -2,14 +2,8 @@ package cgk.bibliothouris.learning.service.converter;
 
 import cgk.bibliothouris.learning.service.entity.Author;
 import cgk.bibliothouris.learning.service.entity.BookCategory;
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.services.books.Books;
 import com.google.api.services.books.model.Volume;
-import com.google.api.services.books.model.Volumes;
-import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -19,11 +13,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNull;
 
 public class ITImportedBookConverter {
-    //@Autowired
     ImportedBookConverter bookConverter;
     Volume.VolumeInfo info = new Volume.VolumeInfo();
 

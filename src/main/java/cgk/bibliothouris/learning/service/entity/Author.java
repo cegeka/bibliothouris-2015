@@ -11,12 +11,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
         @NamedQuery(name = Author.FIND_ALL_AUTHORS, query = "SELECT a FROM Author a"),
         @NamedQuery(name = Author.FIND_AUHTORS_BY_FIRSTNAME_AND_LASTNAME,
-                    query = "SELECT a FROM Author a WHERE a.firstName = :firstName AND a.lastName = :lastName")
+                    query = "SELECT a FROM Author a WHERE a.firstName = :firstName AND a.lastName = :lastName"),
+        @NamedQuery(name = Author.FIND_AUTHORS_BY_FIRSTNAME,
+                query = "SELECT DISTINCT new cgk.bibliothouris.learning.application.transferobject.StringTO(a.firstName) FROM Author a"),
+        @NamedQuery(name = Author.FIND_AUTHORS_BY_LASTNAME,
+                query = "SELECT DISTINCT new cgk.bibliothouris.learning.application.transferobject.StringTO(a.lastName) FROM Author a"),
+        @NamedQuery(name = Author.DELETE_ALL_AUTHORS, query = "DELETE FROM Author a")
 })
 public class Author {
 
     public static final String FIND_ALL_AUTHORS = "FIND_ALL_AUTHORS";
     public static final String FIND_AUHTORS_BY_FIRSTNAME_AND_LASTNAME = "FIND_AUHTORS_BY_FIRSTNAME_AND_LASTNAME";
+    public static final String FIND_AUTHORS_BY_FIRSTNAME = "FIND_AUTHORS_BY_FIRSTNAME";
+    public static final String FIND_AUTHORS_BY_LASTNAME = "FIND_AUTHORS_BY_LASTNAME";
+    public static final String DELETE_ALL_AUTHORS = "DELETE_ALL_AUTHORS";
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "author_sequence")
