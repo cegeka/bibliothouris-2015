@@ -47,6 +47,7 @@ public class MemberService {
 
     @Transactional(readOnly = true)
     public ItemsListingTO<MemberTO> findAllMembers(PaginationParams pagination, String name, SortParams sortParams) {
+        BiblioUtilityService.validatePaginationParams(pagination);
         PaginationParams paginationParams = BiblioUtilityService.findPaginationParameters(pagination, () -> countMembers());
 
         return repository.findAllMembers(paginationParams, name, sortParams);

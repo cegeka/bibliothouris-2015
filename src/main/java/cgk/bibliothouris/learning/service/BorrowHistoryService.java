@@ -64,6 +64,7 @@ public class BorrowHistoryService {
 
     @Transactional(readOnly = true)
     public ItemsListingTO<MemberBorrowHistoryTO> findBorrowedBooksByMember(String memberUuid, PaginationParams pagination) {
+        BiblioUtilityService.validatePaginationParams(pagination);
         PaginationParams paginationParams = BiblioUtilityService.findPaginationParameters(pagination, () -> countBorrowedBooksByMember(memberUuid));
 
         return borrowHistoryRepository.findBorrowedBooksByMember(memberUuid, paginationParams);
@@ -81,6 +82,7 @@ public class BorrowHistoryService {
 
     @Transactional
     public ItemsListingTO<DetailedBorrowHistoryTO> getActiveBorrowedBooks(PaginationParams pagination, SortParams sortParams) {
+        BiblioUtilityService.validatePaginationParams(pagination);
         PaginationParams paginationParams = BiblioUtilityService.findPaginationParameters(pagination, () -> countBorrowedBooks());
 
         return borrowHistoryRepository.getBorrowedBooks(paginationParams, sortParams);
@@ -88,6 +90,7 @@ public class BorrowHistoryService {
 
     @Transactional
     public ItemsListingTO<DetailedBorrowHistoryTO> getOverdueBooks(PaginationParams pagination, SortParams sortParams) {
+        BiblioUtilityService.validatePaginationParams(pagination);
         PaginationParams paginationParams = BiblioUtilityService.findPaginationParameters(pagination, () -> countBorrowedBooks());
 
         return borrowHistoryRepository.getOverdueBooks(paginationParams, sortParams);

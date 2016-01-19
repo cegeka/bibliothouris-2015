@@ -53,28 +53,4 @@ public class BorrowedHistoryFixture {
                 .withStartDate(LocalDate.now())
                 .build();
     }
-
-    public static List<DetailedBorrowHistoryTO> createDetailedBorrowHistoryTOList() {
-        List<DetailedBorrowHistoryTO> list = new ArrayList<>();
-        BorrowHistoryItem historyItem = createAvailableHistoryItem();
-        DetailedBorrowHistoryTO gbh = DetailedBorrowHistoryTO.DetailedBorrowHistoryTOBuilder
-                .detailedBorrowHistoryTO()
-                .withAuthors(historyItem.getBook().getAuthors())
-                .withIsbn(historyItem.getBook().getIsbn())
-                .withTitle(historyItem.getBook().getTitle())
-                .withStartLendDate(LocalDate.of(2015, Month.DECEMBER, 4))
-                .withBorrowerFirstName(historyItem.getMember().getFirstName())
-                .withBorrowerLastName(historyItem.getMember().getLastName())
-                .withBorrowerUUID(historyItem.getMember().getUUID())
-                .build();
-
-        list.add(gbh);
-        return list;
-    }
-
-    public static List<DetailedBorrowHistoryTO> createEmptyDetailedBorrowHistoryTOList() {
-        List<DetailedBorrowHistoryTO> list = new ArrayList<>();
-
-        return list;
-    }
 }

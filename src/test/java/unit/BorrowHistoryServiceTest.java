@@ -8,6 +8,7 @@ import cgk.bibliothouris.learning.repository.BorrowHistoryRepository;
 import cgk.bibliothouris.learning.repository.MemberRepository;
 import cgk.bibliothouris.learning.service.BorrowHistoryService;
 import cgk.bibliothouris.learning.service.entity.BorrowHistoryItem;
+import cgk.bibliothouris.learning.service.exception.ValidationException;
 import fixture.BorrowedHistoryFixture;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -71,14 +72,9 @@ public class BorrowHistoryServiceTest {
     }
 
 
-    @Test
-    public void givenAMemberIdAndNegativePaginationParameters_whenFindBorrowBooksByMember_shouldReturnTheCorrectListWithBorrowedBooks() {
-        ItemsListingTO<MemberBorrowHistoryTO> expectedBorrowedHistoryItems = new ItemsListingTO<>();
-        Mockito.when(borrowHistoryRepository.findBorrowedBooksByMember("uuid", new PaginationParams("0", "0"))).thenReturn(expectedBorrowedHistoryItems);
-
-        ItemsListingTO<MemberBorrowHistoryTO> foundBorrowedHistoryItems = service.findBorrowedBooksByMember("uuid", new PaginationParams("-3", "-1"));
-
-        assertThat(foundBorrowedHistoryItems).isEqualTo(expectedBorrowedHistoryItems);
+    @Test(expected = ValidationException.class)
+    public void givenAMemberIdAndNegativePaginationParameters_whenFindBorrowBooksByMember_throwsValidationException() {
+        service.findBorrowedBooksByMember("uuid", new PaginationParams("-3", "-1"));
     }
 
     @Test

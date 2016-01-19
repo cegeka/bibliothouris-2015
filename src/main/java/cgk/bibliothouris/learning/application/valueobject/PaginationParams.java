@@ -5,6 +5,9 @@ public class PaginationParams {
     private String start;
     private String end;
 
+    public PaginationParams() {
+    }
+
     public PaginationParams(String start, String end) {
         this.start = start;
         this.end = end;

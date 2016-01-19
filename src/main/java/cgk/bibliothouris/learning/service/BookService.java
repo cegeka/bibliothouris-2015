@@ -63,6 +63,7 @@ public class BookService {
 
     @Transactional(readOnly = true)
     public ItemsListingTO findAllBooks(PaginationParams pagination, BooksFilterParams filter, SortParams sortParams) {
+        BiblioUtilityService.validatePaginationParams(pagination);
         PaginationParams paginationParams = BiblioUtilityService.findPaginationParameters(pagination, () -> countBooks());
 
         return bookRepository.findAllBooks(paginationParams, filter, sortParams);
@@ -108,6 +109,7 @@ public class BookService {
 
     @Transactional(readOnly = true)
     public ItemsListingTO findAllAvailableBooks(PaginationParams pagination, BooksFilterParams filter) {
+        BiblioUtilityService.validatePaginationParams(pagination);
         PaginationParams paginationParams = BiblioUtilityService.findPaginationParameters(pagination, () -> countAvailableBooks());
 
         return bookRepository.findAllAvailableBooks(paginationParams, filter);

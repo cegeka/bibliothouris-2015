@@ -5,6 +5,7 @@ import cgk.bibliothouris.learning.application.transferobject.ItemsListingTO;
 import cgk.bibliothouris.learning.application.transferobject.StringTO;
 import cgk.bibliothouris.learning.application.valueobject.BooksFilterParams;
 import cgk.bibliothouris.learning.application.valueobject.PaginationParams;
+import cgk.bibliothouris.learning.application.valueobject.SortParams;
 import cgk.bibliothouris.learning.repository.BookRepository;
 import cgk.bibliothouris.learning.service.BookService;
 import cgk.bibliothouris.learning.service.entity.Book;
@@ -158,24 +159,14 @@ public class BookServiceTest {
         assertThat(bookListingTO).isEqualTo(expectedBookListingTO);
     }
 
-    @Test
-    public void givenOneAvailableBook_findAllBooksWithNegativeParams_returnsListOfBooks() {
-        ItemsListingTO expectedBookListingTO = new ItemsListingTO();
-        Mockito.when(mockRepository.findAllAvailableBooks(new PaginationParams("0", "0"), new BooksFilterParams())).thenReturn(expectedBookListingTO);
-
-        ItemsListingTO bookListingTO = service.findAllAvailableBooks(new PaginationParams("-1", "-3"), new BooksFilterParams());
-
-        assertThat(bookListingTO).isEqualTo(expectedBookListingTO);
+    @Test (expected = ValidationException.class)
+    public void givenOneAvailableBook_findAllBooksWithNegativeParams_validationExceptionIsThrown() {
+        service.findAllAvailableBooks(new PaginationParams("-1", "-3"), new BooksFilterParams());
     }
 
-    @Test
-    public void givenOneBook_findAllBooksWithNegativeParams_returnsListOfBooks() {
-        ItemsListingTO expectedBookListingTO = new ItemsListingTO();
-        Mockito.when(mockRepository.findAllBooks(new PaginationParams("0", "0"), new BooksFilterParams(), null)).thenReturn(expectedBookListingTO);
-
-        ItemsListingTO bookListingTO = service.findAllBooks(new PaginationParams("-1", "-3"), new BooksFilterParams(), null);
-
-        assertThat(bookListingTO).isEqualTo(expectedBookListingTO);
+    @Test (expected = ValidationException.class)
+    public void givenOneBook_findAllBooksWithNegativeParams_validationExceptionIsThrown() {
+        service.findAllBooks(new PaginationParams("-1", "-3"), new BooksFilterParams(), new SortParams());
     }
 
     @Test
