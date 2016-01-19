@@ -21,7 +21,7 @@ public class BookTestFixture {
     }
 
     public static Set<BookCategory> createOneCategory() {
-        BookCategory category = BookCategory.CategoryBuilder.category().withCategory("Science").build();
+        BookCategory category = BookCategory.CategoryBuilder.category().withId(1).withCategory("Science").build();
 
         Set<BookCategory> categories = new HashSet<>();
         categories.add(category);
@@ -30,9 +30,9 @@ public class BookTestFixture {
     }
 
     public static Set<BookCategory> createThreeCategories() {
-        BookCategory category = BookCategory.CategoryBuilder.category().withCategory("Science").build();
-        BookCategory category2 = BookCategory.CategoryBuilder.category().withCategory("Programming").build();
-        BookCategory category3 = BookCategory.CategoryBuilder.category().withCategory("Agile").build();
+        BookCategory category = BookCategory.CategoryBuilder.category().withId(1).withCategory("Science").build();
+        BookCategory category2 = BookCategory.CategoryBuilder.category().withId(3).withCategory("Programming").build();
+        BookCategory category3 = BookCategory.CategoryBuilder.category().withId(8).withCategory("Agile").build();
 
         Set<BookCategory> categories = new HashSet<>();
         categories.add(category);

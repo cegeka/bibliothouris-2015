@@ -25,12 +25,11 @@ public class BookRepository {
 
     public Book createBook(Book book) {
         Book bookWithAuthors = getBookWithPersistedAuthors(book);
-
         Book bookWithAuthorsAndCategories = getBookWithPersistedCategories(bookWithAuthors);
 
         entityManager.persist(bookWithAuthorsAndCategories);
 
-        return bookWithAuthors;
+        return bookWithAuthorsAndCategories;
     }
 
     private Book getBookWithPersistedCategories(Book book) {

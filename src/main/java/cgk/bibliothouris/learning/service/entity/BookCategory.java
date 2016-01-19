@@ -52,6 +52,11 @@ public class BookCategory {
             bookCategory = new BookCategory();
         }
 
+        public CategoryBuilder withId(Integer id) {
+            bookCategory.id = id;
+            return this;
+        }
+
         public CategoryBuilder withCategory(String category) {
             bookCategory.category = category;
             return this;
