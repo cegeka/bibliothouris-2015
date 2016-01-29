@@ -125,9 +125,7 @@ public class BookRepository {
         String filterClause = generateFilterQueryClause(filter);
         String sortClause = generateSortQueryClause(sortParams);
 
-        TypedQuery<Book> selectAllQuery = entityManager.createQuery(selectStatement + " WHERE" + filterClause + " " + sortClause, Book.class)
-                .setMaxResults(Integer.valueOf(pagination.getEnd()) - Integer.valueOf(pagination.getStart()))
-                .setFirstResult(Integer.valueOf(pagination.getStart()));
+        TypedQuery<Book> selectAllQuery = entityManager.createQuery(selectStatement + " WHERE" + filterClause + " " + sortClause, Book.class);
         return selectAllQuery.getResultList();
     }
 
