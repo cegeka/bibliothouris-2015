@@ -149,9 +149,9 @@ public class BookRepository {
         if (filter.getIsbn() != null)
             conditionalClause += " AND b.isbn LIKE '%" + filter.getIsbn() + "%' OR REPLACE(b.isbn, '-', '') LIKE '%" + filter.getIsbn() + "%'";
         if (filter.getFirstName() != null)
-            conditionalClause += " AND a.firstName = '" + filter.getFirstName() + "'";
+            conditionalClause += " AND lower(a.firstName) = LIKE '%" + filter.getFirstName().toLowerCase() + "%'";
         if (filter.getLastName() != null)
-            conditionalClause += " AND a.lastName = '" + filter.getLastName() + "'";
+            conditionalClause += " AND lower(a.lastName) = LIKE '%" + filter.getLastName().toLowerCase() + "%'";
 
         return conditionalClause;
     }

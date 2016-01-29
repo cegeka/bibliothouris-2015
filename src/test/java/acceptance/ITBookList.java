@@ -68,4 +68,44 @@ public class ITBookList extends BaseAcceptance {
 
         assertThat(driver.getCurrentUrl()).contains("isbn=978-0-201-48567-7");
     }
+
+    @Test
+    public void whenSearchBookByAuthorsFirstName_TheBookListIsUpdatedWithTheCorrectResults() throws InterruptedException {
+        listBookPage.selectFilter("FirstName");
+        listBookPage.setValueForFilter("Kent");
+        sleepABit(500);
+
+        assertThat(listBookPage.getListOfBooks().size()).isEqualTo(1);
+    }
+
+    @Test
+    public void whenSearchBookByAuthorsFirstName_TheUrlIsUpdatedCorrectly() throws InterruptedException {
+        listBookPage.selectFilter("FirstName");
+        sleepABit(500);
+        listBookPage.setValueForFilter("Kent");
+        sleepABit(500);
+
+        assertThat(driver.getCurrentUrl()).contains("firstname=Kent");
+    }
+
+
+
+    @Test
+    public void whenSearchBookByAuthorsLastName_TheBookListIsUpdatedWithTheCorrectResults() throws InterruptedException {
+        listBookPage.selectFilter("LastName");
+        listBookPage.setValueForFilter("Beck");
+        sleepABit(500);
+
+        assertThat(listBookPage.getListOfBooks().size()).isEqualTo(1);
+    }
+
+    @Test
+    public void whenSearchBookByAuthorsLastName_TheUrlIsUpdatedCorrectly() throws InterruptedException {
+        listBookPage.selectFilter("LastName");
+        sleepABit(500);
+        listBookPage.setValueForFilter("Beck");
+        sleepABit(500);
+
+        assertThat(driver.getCurrentUrl()).contains("lastname=Beck");
+    }
 }

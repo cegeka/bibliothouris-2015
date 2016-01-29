@@ -21,6 +21,7 @@
         vm.populateFilterValues = populateFilterValuesForAutocomplete;
         vm.enableTooltip = enableTooltip;
         vm.getTooltipContent = getTooltipContent;
+        vm.addFieldToSort = addFieldToSort;
 
         activate();
 
@@ -33,6 +34,9 @@
         }
 
         function loadElementsInPage() {
+            vm.orderString = $location.search().order;
+            vm.sortString = $location.search().sort;
+
             if ($location.search().title != null) {
                 vm.filter = "Title";
                 vm.filterValue = $location.search().title;
@@ -137,6 +141,21 @@
             } else {
                 return $location.url().substr($location.path().length);
             }
+        }
+
+        function addFieldToSort(field) {
+            if (vm.sortString != field)
+                vm.orderString = "asc";
+            else
+                vm.orderString = vm.orderString == "asc" ? "desc" : "asc";
+
+            vm.sortString = field;
+
+            $location.search('sort', vm.sortString);
+            $location.search('order', vm.orderString);
+
+            vm.currentPage = 1;
+            pageChanged();
         }
     }
 })();
